@@ -29,7 +29,7 @@ layout: default
   {% if page.galleria %}
   <div class="galleria">
     {% for elemento in page.galleria %}
-      <figure>
+      <figure class="{{ elemento.formato | default: 'intera' }}">
         {% if elemento.type == "video" %}
           {% include video.html url=elemento.link %}
         {% else %}

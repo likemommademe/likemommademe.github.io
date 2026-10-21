@@ -5,7 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% assign info = site.data.impostazioni %}
   <title>{% if page.title %}{{ page.title }} — {% endif %}{{ info.nome }}</title>
-  <meta name="description" content="{{ site.data.home.intro }}">
+  {% assign descrizione = page.seo_descrizione | default: page.sottotitolo | default: site.data.home.intro | strip_html | strip_newlines %}
+  {% assign anteprima = page.seo_immagine | default: page.copertina %}
+  <meta name="description" content="{{ descrizione }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} — {% endif %}{{ info.nome }}">
+  <meta property="og:description" content="{{ descrizione }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  {% if anteprima %}<meta property="og:image" content="{{ anteprima | absolute_url }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
@@ -28,5 +35,10 @@
     <span>© {{ 'now' | date: '%Y' }} {{ info.nome }}</span>
     {% include contatti.html %}
   </footer>
+  <script>
+    if (location.hostname === 'likemommademe.github.io' && navigator.sendBeacon) {
+      navigator.sendBeacon('https://portfolio-login.calfa63.workers.dev/hit', JSON.stringify({ p: location.pathname, r: document.referrer }));
+    }
+  </script>
 </body>
 </html>

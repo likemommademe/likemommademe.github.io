@@ -127,6 +127,10 @@ main, .site-header, .site-footer {
 }
 
 .galleria { display: grid; gap: var(--gap); }
+@media (min-width: 700px) {
+  .galleria { grid-template-columns: 1fr 1fr; }
+  .galleria figure.intera { grid-column: 1 / -1; }
+}
 .galleria figure { margin: 0; }
 .galleria img { width: 100%; }
 figcaption { padding-top: 8px; color: var(--muted); font-size: 14px; }

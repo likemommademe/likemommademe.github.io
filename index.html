@@ -2,7 +2,6 @@
 layout: default
 ---
 {% assign home = site.data.home %}
-{% assign evidenza = site.progetti | where_exp: "p", "p.in_evidenza == true" | sort: "ordine", "last" %}
 
 <section class="intro">
   <p>{{ home.intro }}</p>
@@ -14,8 +13,9 @@ layout: default
     <a href="{{ '/work/' | relative_url }}">Tutti i lavori →</a>
   </div>
   <div class="griglia">
-    {% for p in evidenza %}
-      {% include card.html progetto=p mostra_categoria=true %}
+    {% for slug in home.progetti %}
+      {% assign p = site.progetti | where: "slug", slug | first %}
+      {% if p %}{% include card.html progetto=p mostra_categoria=true %}{% endif %}
     {% endfor %}
   </div>
 </section>

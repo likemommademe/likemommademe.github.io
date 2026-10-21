@@ -14,7 +14,6 @@ galleria:
     didascalia: Un video da Vimeo
 crediti: |
   Art direction: likemommademe
-in_evidenza: true
 ordine: 1
 ---
 Racconta qui il brief, l'idea e il risultato del progetto.

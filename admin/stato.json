@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /admin/stato.json
+---
+{"commit": "{{ site.github.build_revision }}", "time": "{{ site.time | date_to_xmlschema }}"}

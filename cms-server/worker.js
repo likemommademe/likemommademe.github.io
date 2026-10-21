@@ -1,8 +1,9 @@
 // Server del pannello /admin. Gira su Cloudflare Workers (gratis), nel Worker "portfolio-login".
-// Fa due cose:
+// Fa tre cose:
 //   1. accesso con Google o con magic link: controlla che sia la tua email e apre una sessione di 30 giorni;
 //   2. fa da ponte verso GitHub: il pannello chiede di leggere/salvare i file e questo Worker
-//      lo fa con la chiave GitHub, che così non esce mai da Cloudflare.
+//      lo fa con la chiave GitHub, che così non esce mai da Cloudflare;
+//   3. conta le visite al sito pubblico (senza cookie) e le mostra nella dashboard del pannello.
 //
 // Da impostare nel Worker, in Settings → Variables and Secrets:
 //   EMAIL           le email che possono entrare, separate da virgola (es. tu@gmail.com, amica@gmail.com).
@@ -10,6 +11,7 @@
 //                   gli altri entrano con Google.
 //   GITHUB_TOKEN    token GitHub con permesso Contents: Read and write sulla repo del sito
 //   RESEND_API_KEY  chiave di resend.com (serve a spedire la mail)
+// e in Settings → Bindings un database D1 con nome DB (per le statistiche delle visite).
 
 const REPO = 'likemommademe/likemommademe.github.io';
 // ID client di Google Cloud (progetto "portfolio"): non è segreto.
@@ -27,7 +29,7 @@ export default {
       ? {
           'Access-Control-Allow-Origin': origin,
           'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE',
           Vary: 'Origin',
         }
       : {};
@@ -39,6 +41,8 @@ export default {
       if (url.pathname === '/send' && request.method === 'POST') res = await send(request, env);
       else if (url.pathname === '/login' && request.method === 'POST') res = await login(request, env);
       else if (url.pathname === '/google' && request.method === 'POST') res = await google(request, env);
+      else if (url.pathname === '/hit' && request.method === 'POST') res = await hit(request, env);
+      else if (url.pathname === '/stats') res = await stats(request, env, url);
       else if (url.pathname.startsWith('/github/')) res = await github(request, env, url);
       else res = json({ error: 'Not found' }, 404);
     } catch (e) {
@@ -126,11 +130,7 @@ async function startSession(env, email) {
 
 // Inoltra a GitHub le richieste del pannello, solo per la repo del sito.
 async function github(request, env, url) {
-  const auth = request.headers.get('Authorization') || '';
-  const data = await verify(env, auth.replace(/^Bearer /, ''));
-  if (!data || data.use !== 'session' || !allowed(env).includes(data.email)) {
-    return json({ error: 'Sessione scaduta: rientra con un nuovo link.' }, 401);
-  }
+  if (!(await session(request, env))) return json({ error: 'Sessione scaduta: accedi di nuovo.' }, 401);
 
   const path = url.pathname.slice('/github'.length);
   const res = await fetch(`https://api.github.com/repos/${REPO}${path}${url.search}`, {
@@ -145,6 +145,70 @@ async function github(request, env, url) {
   });
   if (res.status === 401) return json({ error: 'La chiave GitHub salvata su Cloudflare non funziona più.' }, 502);
   return res;
+}
+
+async function session(request, env) {
+  const auth = request.headers.get('Authorization') || '';
+  const data = await verify(env, auth.replace(/^Bearer /, ''));
+  return data && data.use === 'session' && allowed(env).includes(data.email) ? data : null;
+}
+
+// ─── Statistiche delle visite ───
+
+let tableReady = false;
+async function ensureTable(env) {
+  if (tableReady) return;
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS hits (day TEXT, path TEXT, country TEXT, ref TEXT, device TEXT, visitor TEXT)').run();
+  await env.DB.prepare('CREATE INDEX IF NOT EXISTS hits_day ON hits (day)').run();
+  tableReady = true;
+}
+
+// Ogni pagina del sito pubblico manda qui una riga. Niente cookie: il "visitatore" è un codice
+// ricavato da indirizzo e browser che cambia ogni giorno, quindi non permette di riconoscere nessuno.
+async function hit(request, env) {
+  const ua = request.headers.get('User-Agent') || '';
+  if (!env.DB || /bot|crawl|spider|slurp|preview|headless|lighthouse/i.test(ua)) return new Response(null, { status: 204 });
+  let body = {};
+  try { body = JSON.parse(await request.text()); } catch {}
+  const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const ip = request.headers.get('CF-Connecting-IP') || '';
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${day}|${ip}|${ua}|${env.GITHUB_TOKEN}`));
+  const visitor = b64url(new Uint8Array(digest)).slice(0, 16);
+  let ref = '';
+  try {
+    const host = new URL(body.r).hostname.replace(/^www\./, '');
+    if (!ALLOWED_ORIGINS.some((o) => new URL(o).hostname === host)) ref = host;
+  } catch {}
+  const device = /iPad|Tablet/i.test(ua) ? 'Tablet' : /Mobi|Android|iPhone/i.test(ua) ? 'Telefono' : 'Computer';
+  await ensureTable(env);
+  await env.DB.prepare('INSERT INTO hits (day, path, country, ref, device, visitor) VALUES (?, ?, ?, ?, ?, ?)')
+    .bind(day, String(body.p || '/').slice(0, 200), request.cf?.country || '', ref, device, visitor).run();
+  return new Response(null, { status: 204 });
+}
+
+async function stats(request, env, url) {
+  if (!(await session(request, env))) return json({ error: 'Sessione scaduta: accedi di nuovo.' }, 401);
+  if (!env.DB) return json({ error: 'Statistiche non attive: manca il database.' }, 503);
+  await ensureTable(env);
+  const days = Math.min(365, Math.max(1, Number(url.searchParams.get('days')) || 30));
+  const from = new Date(Date.now() - (days - 1) * 86_400_000).toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const q = (sql) => env.DB.prepare(sql).bind(from);
+  const [daily, total, countries, pages, refs, devices] = await env.DB.batch([
+    q('SELECT day, COUNT(*) AS views, COUNT(DISTINCT visitor) AS visitors FROM hits WHERE day >= ? GROUP BY day ORDER BY day'),
+    q("SELECT COUNT(*) AS views, COUNT(DISTINCT visitor || day) AS visitors FROM hits WHERE day >= ?"),
+    q('SELECT country, COUNT(*) AS views FROM hits WHERE day >= ? GROUP BY country ORDER BY views DESC LIMIT 8'),
+    q('SELECT path, COUNT(*) AS views FROM hits WHERE day >= ? GROUP BY path ORDER BY views DESC LIMIT 8'),
+    q('SELECT ref, COUNT(*) AS views FROM hits WHERE day >= ? GROUP BY ref ORDER BY views DESC LIMIT 8'),
+    q('SELECT device, COUNT(*) AS views FROM hits WHERE day >= ? GROUP BY device ORDER BY views DESC'),
+  ]);
+  return json({
+    days: daily.results,
+    total: total.results[0],
+    countries: countries.results,
+    pages: pages.results,
+    refs: refs.results,
+    devices: devices.results,
+  });
 }
 
 // Link e sessioni sono firmati con una chiave ricavata dal token GitHub:
