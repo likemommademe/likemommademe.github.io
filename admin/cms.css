@@ -96,6 +96,9 @@ input.narrow { max-width: 160px; }
   background: var(--surface); border-radius: 20px; box-shadow: var(--shadow); border: 1px solid var(--line);
   padding: 32px;
 }
+.google-box { display: flex; justify-content: center; min-height: 44px; }
+.or { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: var(--muted); font-size: 13px; }
+.or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .input-icon { position: relative; margin-bottom: 20px; }
 .input-icon .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
 .input-icon input { padding: 12px 14px 12px 44px; font-size: 16px; border-width: 1.5px; }

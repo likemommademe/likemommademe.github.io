@@ -1,6 +1,6 @@
 // Server del pannello /admin. Gira su Cloudflare Workers (gratis), nel Worker "portfolio-login".
 // Fa due cose:
-//   1. accesso con magic link: manda la mail con il link e, quando lo clicchi, apre una sessione di 30 giorni;
+//   1. accesso con Google o con magic link: controlla che sia la tua email e apre una sessione di 30 giorni;
 //   2. fa da ponte verso GitHub: il pannello chiede di leggere/salvare i file e questo Worker
 //      lo fa con la chiave GitHub, che così non esce mai da Cloudflare.
 //
@@ -10,6 +10,8 @@
 //   RESEND_API_KEY  chiave di resend.com (serve a spedire la mail)
 
 const REPO = 'likemommademe/likemommademe.github.io';
+// ID client di Google Cloud (progetto "portfolio"): non è segreto.
+const GOOGLE_CLIENT_ID = '821581591121-dp0scd35mtevlv0m07fhqi39d2nmo9gu.apps.googleusercontent.com';
 const ALLOWED_ORIGINS = ['https://likemommademe.github.io', 'http://localhost:8080'];
 const LINK_MINUTES = 15;
 const SESSION_DAYS = 30;
@@ -32,6 +34,7 @@ export default {
     try {
       if (url.pathname === '/send' && request.method === 'POST') res = await send(request, env);
       else if (url.pathname === '/login' && request.method === 'POST') res = await login(request, env);
+      else if (url.pathname === '/google' && request.method === 'POST') res = await google(request, env);
       else if (url.pathname.startsWith('/github/')) res = await github(request, env, url);
       else res = json({ error: 'Not found' }, 404);
     } catch (e) {
@@ -86,6 +89,34 @@ async function login(request, env) {
   if (!data || data.use !== 'link') {
     return json({ error: 'Il link non è valido o è scaduto: chiedine uno nuovo.' }, 401);
   }
+  return startSession(env);
+}
+
+// Il pulsante "Accedi con Google" manda un attestato firmato da Google: controlliamo firma, scadenza
+// e che sia proprio la tua email.
+async function google(request, env) {
+  const { credential } = await request.json().catch(() => ({}));
+  const [header, payload, sig] = String(credential || '').split('.');
+  if (!header || !payload || !sig) return json({ error: 'Accesso con Google non valido.' }, 400);
+
+  const { kid } = JSON.parse(new TextDecoder().decode(fromB64url(header)));
+  const { keys } = await (await fetch('https://www.googleapis.com/oauth2/v3/certs')).json();
+  const jwk = keys.find((k) => k.kid === kid);
+  if (!jwk) return json({ error: 'Accesso con Google non valido. Riprova.' }, 401);
+  const key = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);
+  const valid = await crypto.subtle.verify('RSASSA-PKCS1-v1_5', key, fromB64url(sig), new TextEncoder().encode(`${header}.${payload}`));
+  const data = JSON.parse(new TextDecoder().decode(fromB64url(payload)));
+  if (!valid || data.aud !== GOOGLE_CLIENT_ID || !['accounts.google.com', 'https://accounts.google.com'].includes(data.iss)
+      || data.exp * 1000 < Date.now() || !data.email_verified) {
+    return json({ error: 'Accesso con Google non valido. Riprova.' }, 401);
+  }
+  if (data.email.toLowerCase() !== env.EMAIL.trim().toLowerCase()) {
+    return json({ error: `L'account ${data.email} non è autorizzato ad accedere.` }, 403);
+  }
+  return startSession(env);
+}
+
+async function startSession(env) {
   const session = await sign(env, { use: 'session', exp: Date.now() + SESSION_DAYS * 86_400_000 });
   return json({ session, email: env.EMAIL });
 }
@@ -141,7 +172,8 @@ function b64url(bytes) {
 }
 
 function fromB64url(text) {
-  return Uint8Array.from(atob(text.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0));
+  const b64 = text.replace(/-/g, '+').replace(/_/g, '/');
+  return Uint8Array.from(atob(b64 + '='.repeat((4 - (b64.length % 4)) % 4)), (c) => c.charCodeAt(0));
 }
 
 function json(data, status = 200) {

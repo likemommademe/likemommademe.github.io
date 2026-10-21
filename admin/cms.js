@@ -4,6 +4,7 @@
 
 const API = 'https://portfolio-login.calfa63.workers.dev';
 const SITE = 'https://likemommademe.github.io';
+const GOOGLE_CLIENT_ID = '821581591121-dp0scd35mtevlv0m07fhqi39d2nmo9gu.apps.googleusercontent.com';
 const RAW = 'https://raw.githubusercontent.com/likemommademe/likemommademe.github.io/main';
 
 const { collections, pages, settings } = window.CMS;
@@ -511,6 +512,22 @@ function showLogin(message, type = 'error') {
     banner.hidden = !text;
   };
 
+  // Pulsante "Accedi con Google" (lo disegna Google: compare quando il suo script è caricato).
+  const googleBox = h('div', { class: 'google-box' });
+  const drawGoogle = () => {
+    if (!window.google?.accounts?.id) return setTimeout(drawGoogle, 200);
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: ({ credential }) => {
+        say('Accesso in corso…', 'info');
+        signIn('/google', { credential }).catch((e) => say(e.message, 'error'));
+      },
+    });
+    google.accounts.id.renderButton(googleBox, {
+      theme: 'outline', size: 'large', shape: 'pill', text: 'signin_with', locale: 'it', width: googleBox.clientWidth || 320,
+    });
+  };
+
   const form = h('form', {
     class: 'login-card',
     onsubmit: async (e) => {
@@ -529,6 +546,8 @@ function showLogin(message, type = 'error') {
       else say(out.error || 'Non riesco a contattare il server. Riprova tra poco.', 'error');
     },
   },
+  googleBox,
+  h('div', { class: 'or' }, h('span', {}, 'oppure')),
   h('label', { class: 'label', for: 'email' }, 'Email'),
   h('div', { class: 'input-icon' }, icon('mail'), email),
   button,
@@ -543,6 +562,7 @@ function showLogin(message, type = 'error') {
     form,
     h('p', { class: 'login-foot' }, `© ${new Date().getFullYear()} likemommademe · Pannello`)));
   if (message) say(message, type);
+  drawGoogle();
 }
 
 async function dashboard() {
@@ -754,27 +774,33 @@ window.addEventListener('beforeunload', (e) => {
   }
 });
 
-// All'avvio: se si arriva dal link della mail, si scambia il link con una sessione.
-async function start() {
-  const m = location.hash.match(/^#login=(.+)$/);
-  if (m) {
-    history.replaceState(null, '', location.pathname);
-    app.replaceChildren(h('p', { class: 'muted loading' }, 'Accesso in corso…'));
-    const res = await fetch(`${API}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: m[1] }),
-    }).catch(() => null);
-    const out = res ? await res.json().catch(() => ({})) : {};
-    if (!out.session) return showLogin(out.error || 'Non riesco a contattare il server. Riprova tra poco.');
-    state.session = out.session;
-    state.email = out.email;
-    write('cms.session', out.session);
-    write('cms.email', out.email);
-    state.flash = { type: 'ok', text: 'Benvenuta/o! Sei dentro.' };
-  }
+// Scambia il link della mail (o l'accesso Google) con una sessione ed entra.
+async function signIn(path, body) {
+  const res = await fetch(`${API}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).catch(() => null);
+  const out = res ? await res.json().catch(() => ({})) : {};
+  if (!out.session) throw new Error(out.error || 'Non riesco a contattare il server. Riprova tra poco.');
+  state.session = out.session;
+  state.email = out.email;
+  write('cms.session', out.session);
+  write('cms.email', out.email);
+  state.flash = { type: 'ok', text: 'Benvenuta/o! Sei dentro.' };
   currentHash = location.hash;
   route();
+}
+
+async function start() {
+  const m = location.hash.match(/^#login=(.+)$/);
+  if (!m) {
+    currentHash = location.hash;
+    return route();
+  }
+  history.replaceState(null, '', location.pathname);
+  app.replaceChildren(h('p', { class: 'muted loading' }, 'Accesso in corso…'));
+  signIn('/login', { token: m[1] }).catch((e) => showLogin(e.message));
 }
 
 start();
