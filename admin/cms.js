@@ -738,10 +738,10 @@ async function route() {
       if (file) state.cache.impostazioni = { sha: file.sha, ...parse({ format: 'yaml' }, file.text) };
     }
     if (kind === 'c' && findCollection(name)) {
-      return slug ? collectionEditor(findCollection(name), decodeURIComponent(slug)) : listView(findCollection(name));
+      return await (slug ? collectionEditor(findCollection(name), decodeURIComponent(slug)) : listView(findCollection(name)));
     }
-    if (kind === 'p' && findPage(name)) return pageEditor(findPage(name));
-    return dashboard();
+    if (kind === 'p' && findPage(name)) return await pageEditor(findPage(name));
+    return await dashboard();
   } catch (e) {
     if (state.session) shell([['Errore']], h('div', { class: 'banner error' }, icon('alert'), h('span', {}, e.message)));
   }
