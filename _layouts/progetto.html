@@ -1,0 +1,54 @@
+---
+layout: default
+---
+{% assign cat = site.categorie | where: "slug", page.categoria | first %}
+{% assign cliente = site.clienti | where: "slug", page.cliente | first %}
+
+<article class="progetto">
+  <header class="progetto-head">
+    <div>
+      <nav class="briciole">
+        <a href="{{ '/work/' | relative_url }}">Work</a> /
+        {% if cat %}<a href="{{ cat.url | relative_url }}">{{ cat.title }}</a> /{% endif %}
+      </nav>
+      <h1>{{ page.title }}</h1>
+    </div>
+    <dl class="info">
+      {% if cliente %}<div><dt>Cliente</dt><dd>{{ cliente.title }}</dd></div>{% endif %}
+      {% if page.anno %}<div><dt>Anno</dt><dd>{{ page.anno }}</dd></div>{% endif %}
+      {% if cat %}<div><dt>Categoria</dt><dd>{{ cat.title }}</dd></div>{% endif %}
+    </dl>
+  </header>
+
+  {% if page.copertina %}
+    <img class="cover" src="{{ page.copertina | relative_url }}" alt="{{ page.title }}">
+  {% endif %}
+
+  {% if content != "" %}<div class="testo">{{ content }}</div>{% endif %}
+
+  {% if page.galleria %}
+  <div class="galleria">
+    {% for elemento in page.galleria %}
+      <figure>
+        {% if elemento.type == "video" %}
+          {% include video.html url=elemento.link %}
+        {% else %}
+          <img src="{{ elemento.immagine | relative_url }}" alt="{{ elemento.didascalia | default: page.title }}" loading="lazy">
+        {% endif %}
+        {% if elemento.didascalia %}<figcaption>{{ elemento.didascalia }}</figcaption>{% endif %}
+      </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if page.crediti %}
+  <section class="crediti">
+    <h2>Crediti</h2>
+    {{ page.crediti | markdownify }}
+  </section>
+  {% endif %}
+
+  {% if cat %}
+    <a class="indietro" href="{{ cat.url | relative_url }}">← Altri progetti in {{ cat.title }}</a>
+  {% endif %}
+</article>

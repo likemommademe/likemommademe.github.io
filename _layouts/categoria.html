@@ -1,0 +1,20 @@
+---
+layout: default
+---
+{% assign progetti = site.progetti | where: "categoria", page.slug | sort: "ordine", "last" %}
+
+<header class="pagina-head">
+  <nav class="briciole"><a href="{{ '/work/' | relative_url }}">Work</a> /</nav>
+  <h1>{{ page.title }}</h1>
+  {% if content != "" %}<div class="testo-breve">{{ content }}</div>{% endif %}
+</header>
+
+{% if progetti.size > 0 %}
+  <div class="griglia">
+    {% for p in progetti %}
+      {% include card.html progetto=p %}
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="vuoto">Nessun progetto in questa categoria, per ora.</p>
+{% endif %}

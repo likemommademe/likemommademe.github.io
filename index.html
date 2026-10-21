@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{% assign home = site.data.home %}
+{% assign evidenza = site.progetti | where_exp: "p", "p.in_evidenza == true" | sort: "ordine", "last" %}
+
+<section class="intro">
+  <p>{{ home.intro }}</p>
+</section>
+
+<section>
+  <div class="sezione-head">
+    <h2>{{ home.titolo_progetti }}</h2>
+    <a href="{{ '/work/' | relative_url }}">Tutti i lavori →</a>
+  </div>
+  <div class="griglia">
+    {% for p in evidenza %}
+      {% include card.html progetto=p mostra_categoria=true %}
+    {% endfor %}
+  </div>
+</section>

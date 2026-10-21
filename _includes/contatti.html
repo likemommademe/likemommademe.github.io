@@ -1,0 +1,6 @@
+{% assign info = site.data.impostazioni %}
+<ul class="contatti">
+  {% if info.email and info.email != "" %}<li><a href="mailto:{{ info.email }}">{{ info.email }}</a></li>{% endif %}
+  {% if info.instagram and info.instagram != "" %}<li><a href="{{ info.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{% endif %}
+  {% if info.linkedin and info.linkedin != "" %}<li><a href="{{ info.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>{% endif %}
+</ul>

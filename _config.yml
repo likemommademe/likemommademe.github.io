@@ -1,0 +1,27 @@
+# Impostazioni tecniche del sito (Jekyll / GitHub Pages).
+# Contenuti, nome e contatti si modificano dal pannello /admin.
+
+baseurl: ""   # vuoto: il sito è all'indirizzo principale
+url: "https://likemommademe.github.io"
+
+lang: it
+
+# Struttura:  /  ·  /about/  ·  /work/  ·  /work/<categoria>/  ·  /progetti/<progetto>/
+collections:
+  categorie:
+    output: true
+    permalink: /work/:name/
+  progetti:
+    output: true
+    permalink: /progetti/:name/
+  clienti:
+    output: false
+
+defaults:
+  - scope: { path: "", type: categorie }
+    values: { layout: categoria }
+  - scope: { path: "", type: progetti }
+    values: { layout: progetto }
+
+exclude:
+  - README.md

@@ -1,0 +1,14 @@
+{% comment %} Trasforma un link YouTube o Vimeo in un video incorporato. {% endcomment %}
+{% assign url = include.url %}
+{% if url contains "youtu" %}
+  {% assign id = url | split: "v=" | last | split: "&" | first | split: "youtu.be/" | last | split: "?" | first %}
+  {% assign src = "https://www.youtube-nocookie.com/embed/" | append: id %}
+{% elsif url contains "vimeo" %}
+  {% assign id = url | split: "/" | last | split: "?" | first %}
+  {% assign src = "https://player.vimeo.com/video/" | append: id %}
+{% endif %}
+{% if src %}
+<div class="video">
+  <iframe src="{{ src }}" title="Video" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+</div>
+{% endif %}

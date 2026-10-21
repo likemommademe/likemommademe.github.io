@@ -1,0 +1,25 @@
+---
+layout: default
+title: Work
+permalink: /work/
+---
+{% assign categorie = site.categorie | sort: "ordine", "last" %}
+
+<header class="pagina-head">
+  <h1>Work</h1>
+</header>
+
+<div class="griglia griglia-categorie">
+  {% for c in categorie %}
+    {% assign n = site.progetti | where: "categoria", c.slug | size %}
+    <a class="card" href="{{ c.url | relative_url }}">
+      <div class="card-img">
+        {% if c.copertina %}<img src="{{ c.copertina | relative_url }}" alt="{{ c.title }}" loading="lazy">{% endif %}
+      </div>
+      <div class="card-meta">
+        <h3>{{ c.title }}</h3>
+        <p>{{ n }} {% if n == 1 %}progetto{% else %}progetti{% endif %}</p>
+      </div>
+    </a>
+  {% endfor %}
+</div>

@@ -1,0 +1,22 @@
+---
+layout: default
+---
+<article class="about">
+  {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
+  <div>
+    <h1>{{ page.title }}</h1>
+    <div class="testo">{{ content }}</div>
+
+    {% if page.mostra_clienti and site.clienti.size > 0 %}
+      <h2>Clienti</h2>
+      <ul class="clienti">
+        {% for c in site.clienti %}
+          <li>{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <h2>Contatti</h2>
+    {% include contatti.html %}
+  </div>
+</article>

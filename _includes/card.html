@@ -1,0 +1,11 @@
+{% assign p = include.progetto %}
+{% assign cat = site.categorie | where: "slug", p.categoria | first %}
+<a class="card" href="{{ p.url | relative_url }}">
+  <div class="card-img">
+    {% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}
+  </div>
+  <div class="card-meta">
+    <h3>{{ p.title }}</h3>
+    <p>{% if include.mostra_categoria and cat %}{{ cat.title }} · {% endif %}{{ p.sottotitolo | default: p.anno }}</p>
+  </div>
+</a>

@@ -1,0 +1,123 @@
+# Configurazione del pannello /admin (Sveltia CMS).
+# Tutto quello che salvi qui finisce direttamente nella repo GitHub.
+
+backend:
+  name: github
+  repo: likemommademe/likemommademe.github.io
+  branch: main
+
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+collections:
+  # ─── LAVORI ───────────────────────────────────────────────
+  - name: progetti
+    label: Progetti
+    label_singular: Progetto
+    folder: _progetti
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [ordine, anno, title]
+    summary: "{{title}} — {{anno}}"
+    fields:
+      - { label: Titolo, name: title, widget: string }
+      - label: Categoria
+        name: categoria
+        widget: relation
+        collection: categorie
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+      - label: Cliente
+        name: cliente
+        widget: relation
+        collection: clienti
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        required: false
+      - { label: Anno, name: anno, widget: number, value_type: int, required: false }
+      - { label: Immagine di copertina, name: copertina, widget: image }
+      - { label: Descrizione breve, name: sottotitolo, widget: string, required: false, hint: "Una riga, compare sotto la copertina negli elenchi." }
+      - { label: Descrizione, name: body, widget: markdown, required: false }
+      - label: Galleria
+        name: galleria
+        widget: list
+        required: false
+        hint: "Aggiungi foto e video nell'ordine in cui vuoi mostrarli. Trascinali per riordinarli."
+        types:
+          - label: Foto
+            name: foto
+            widget: object
+            summary: "{{didascalia}}"
+            fields:
+              - { label: Immagine, name: immagine, widget: image }
+              - { label: Didascalia, name: didascalia, widget: string, required: false }
+          - label: Video
+            name: video
+            widget: object
+            summary: "{{link}}"
+            fields:
+              - { label: Link YouTube o Vimeo, name: link, widget: string }
+              - { label: Didascalia, name: didascalia, widget: string, required: false }
+      - { label: Crediti, name: crediti, widget: markdown, required: false }
+      - { label: In evidenza in home, name: in_evidenza, widget: boolean, default: false }
+      - { label: Ordine, name: ordine, widget: number, value_type: int, default: 10, hint: "Numero più basso = più in alto nella sua categoria." }
+
+  - name: categorie
+    label: Categorie
+    label_singular: Categoria
+    folder: _categorie
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [ordine, title]
+    fields:
+      - { label: Nome, name: title, widget: string }
+      - { label: Immagine, name: copertina, widget: image, required: false, hint: "Compare nella pagina Work." }
+      - { label: Descrizione, name: body, widget: markdown, required: false }
+      - { label: Ordine, name: ordine, widget: number, value_type: int, default: 10 }
+
+  - name: clienti
+    label: Clienti
+    label_singular: Cliente
+    folder: _clienti
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Nome, name: title, widget: string }
+      - { label: Logo, name: logo, widget: image, required: false }
+      - { label: Sito web, name: sito, widget: string, required: false }
+
+  # ─── PAGINE ───────────────────────────────────────────────
+  - name: pagine
+    label: Pagine
+    files:
+      - name: home
+        label: Home
+        file: _data/home.yml
+        fields:
+          - { label: Frase di apertura, name: intro, widget: text }
+          - { label: Titolo sezione progetti, name: titolo_progetti, widget: string, default: Lavori selezionati }
+
+      - name: about
+        label: About me
+        file: about.md
+        fields:
+          - { label: Layout, name: layout, widget: hidden, default: about }
+          - { label: Indirizzo, name: permalink, widget: hidden, default: /about/ }
+          - { label: Titolo, name: title, widget: string }
+          - { label: Foto, name: foto, widget: image, required: false }
+          - { label: Testo, name: body, widget: markdown }
+          - { label: Mostra i loghi dei clienti, name: mostra_clienti, widget: boolean, default: true }
+
+  - name: impostazioni
+    label: Impostazioni
+    files:
+      - name: generali
+        label: Nome e contatti
+        file: _data/impostazioni.yml
+        fields:
+          - { label: Nome, name: nome, widget: string }
+          - { label: Email, name: email, widget: string, required: false }
+          - { label: Instagram (link), name: instagram, widget: string, required: false }
+          - { label: LinkedIn (link), name: linkedin, widget: string, required: false }
