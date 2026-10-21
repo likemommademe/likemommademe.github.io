@@ -25,3 +25,4 @@ defaults:
 
 exclude:
   - README.md
+  - cms-server
