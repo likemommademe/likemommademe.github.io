@@ -5,7 +5,9 @@
 //      lo fa con la chiave GitHub, che così non esce mai da Cloudflare.
 //
 // Da impostare nel Worker, in Settings → Variables and Secrets:
-//   EMAIL           l'unica email che può entrare (la stessa dell'account Resend)
+//   EMAIL           le email che possono entrare, separate da virgola (es. tu@gmail.com, amica@gmail.com).
+//                   Con Resend gratuito il magic link arriva solo all'email dell'account Resend;
+//                   gli altri entrano con Google.
 //   GITHUB_TOKEN    token GitHub con permesso Contents: Read and write sulla repo del sito
 //   RESEND_API_KEY  chiave di resend.com (serve a spedire la mail)
 
@@ -14,6 +16,8 @@ const REPO = 'likemommademe/likemommademe.github.io';
 const GOOGLE_CLIENT_ID = '821581591121-dp0scd35mtevlv0m07fhqi39d2nmo9gu.apps.googleusercontent.com';
 const ALLOWED_ORIGINS = ['https://likemommademe.github.io', 'http://localhost:8080'];
 const LINK_MINUTES = 15;
+
+const allowed = (env) => env.EMAIL.split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
 const SESSION_DAYS = 30;
 
 export default {
@@ -52,11 +56,10 @@ async function send(request, env) {
   if (typeof back !== 'string' || !ALLOWED_ORIGINS.some((o) => back.startsWith(`${o}/`))) {
     return json({ error: 'Richiesta non valida.' }, 400);
   }
-  if (String(email || '').trim().toLowerCase() !== env.EMAIL.trim().toLowerCase()) {
-    return json({ error: 'Questa email non è autorizzata ad accedere.' }, 403);
-  }
+  const to = String(email || '').trim().toLowerCase();
+  if (!allowed(env).includes(to)) return json({ error: 'Questa email non è autorizzata ad accedere.' }, 403);
 
-  const token = await sign(env, { use: 'link', exp: Date.now() + LINK_MINUTES * 60_000 });
+  const token = await sign(env, { use: 'link', email: to, exp: Date.now() + LINK_MINUTES * 60_000 });
   const link = `${back}#login=${token}`;
   const when = new Date().toLocaleTimeString('it-IT', { timeZone: 'Europe/Rome', hour: '2-digit', minute: '2-digit' });
   const where = [request.cf?.city, request.cf?.country].filter(Boolean).join(', ');
@@ -66,7 +69,7 @@ async function send(request, env) {
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: 'Portfolio <onboarding@resend.dev>',
-      to: env.EMAIL,
+      to,
       subject: 'Il tuo link per entrare nel pannello',
       html: `<div style="font-family:system-ui,sans-serif;max-width:440px">
 <p>Clicca qui per entrare nel pannello del portfolio:</p>
@@ -89,7 +92,7 @@ async function login(request, env) {
   if (!data || data.use !== 'link') {
     return json({ error: 'Il link non è valido o è scaduto: chiedine uno nuovo.' }, 401);
   }
-  return startSession(env);
+  return startSession(env, data.email);
 }
 
 // Il pulsante "Accedi con Google" manda un attestato firmato da Google: controlliamo firma, scadenza
@@ -110,22 +113,24 @@ async function google(request, env) {
       || data.exp * 1000 < Date.now() || !data.email_verified) {
     return json({ error: 'Accesso con Google non valido. Riprova.' }, 401);
   }
-  if (data.email.toLowerCase() !== env.EMAIL.trim().toLowerCase()) {
+  if (!allowed(env).includes(data.email.toLowerCase())) {
     return json({ error: `L'account ${data.email} non è autorizzato ad accedere.` }, 403);
   }
-  return startSession(env);
+  return startSession(env, data.email.toLowerCase());
 }
 
-async function startSession(env) {
-  const session = await sign(env, { use: 'session', exp: Date.now() + SESSION_DAYS * 86_400_000 });
-  return json({ session, email: env.EMAIL });
+async function startSession(env, email) {
+  const session = await sign(env, { use: 'session', email, exp: Date.now() + SESSION_DAYS * 86_400_000 });
+  return json({ session, email });
 }
 
 // Inoltra a GitHub le richieste del pannello, solo per la repo del sito.
 async function github(request, env, url) {
   const auth = request.headers.get('Authorization') || '';
   const data = await verify(env, auth.replace(/^Bearer /, ''));
-  if (!data || data.use !== 'session') return json({ error: 'Sessione scaduta: rientra con un nuovo link.' }, 401);
+  if (!data || data.use !== 'session' || !allowed(env).includes(data.email)) {
+    return json({ error: 'Sessione scaduta: rientra con un nuovo link.' }, 401);
+  }
 
   const path = url.pathname.slice('/github'.length);
   const res = await fetch(`https://api.github.com/repos/${REPO}${path}${url.search}`, {
