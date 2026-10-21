@@ -3,6 +3,7 @@
 // che custodisce la chiave GitHub e manda i magic link. Sezioni e campi sono in schema.js.
 
 const API = 'https://portfolio-login.calfa63.workers.dev';
+const BRAND = 'LIKEMOMMADEME';
 const SITE = 'https://likemommademe.github.io';
 const GOOGLE_CLIENT_ID = '821581591121-dp0scd35mtevlv0m07fhqi39d2nmo9gu.apps.googleusercontent.com';
 const RAW = 'https://raw.githubusercontent.com/likemommademe/likemommademe.github.io/main';
@@ -455,8 +456,8 @@ function shell(crumbs, content) {
   const name = siteName();
   const sidebar = h('aside', { class: 'sidebar' },
     h('div', { class: 'brand' },
-      h('span', { class: 'logo' }, name[0].toUpperCase()),
-      h('div', {}, h('strong', {}, name), h('small', {}, 'Pannello'))),
+      h('span', { class: 'logo' }, BRAND[0]),
+      h('div', {}, h('strong', {}, BRAND), h('small', {}, 'CMS'))),
     h('nav', { class: 'nav' },
       navGroup('generale', 'Generale', [navLink('#/', 'Dashboard', 'gauge')]),
       navGroup('contenuti', 'Contenuti', collections.map((c) => navLink(`#/c/${c.name}`, c.label, c.icon))),
