@@ -132,6 +132,26 @@ function timeAgo(date) {
   return new Date(date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+const countryNames = new Intl.DisplayNames(['it'], { type: 'region' });
+const flag = (code) => (/^[A-Z]{2}$/.test(code) ? String.fromCodePoint(...[...code].map((c) => 0x1f1a5 + c.charCodeAt(0))) : '🌐');
+const COUNTRIES = ('AD AE AF AG AL AM AO AR AT AU AZ BA BB BD BE BF BG BH BI BJ BN BO BR BS BT BW BY BZ CA CD CF CG CH CI CL CM CN CO CR CU CV CY CZ '
+  + 'DE DJ DK DM DO DZ EC EE EG ER ES ET FI FJ FM FR GA GB GD GE GH GM GN GQ GR GT GW GY HK HN HR HT HU ID IE IL IN IQ IR IS IT JM JO JP KE KG KH KI '
+  + 'KM KN KP KR KW KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MG MH MK ML MM MN MO MR MT MU MV MW MX MY MZ NA NE NG NI NL NO NP NR NZ OM PA PE '
+  + 'PG PH PK PL PS PT PW PY QA RO RS RU RW SA SB SC SD SE SG SI SK SL SM SN SO SR SS ST SV SY SZ TD TG TH TJ TL TM TN TO TR TT TV TW TZ UA UG US UY '
+  + 'UZ VA VC VE VN VU WS XK YE ZA ZM ZW').split(' ').sort((a, b) => countryNames.of(a).localeCompare(countryNames.of(b), 'it'));
+const countryLabel = (code) => `${flag(code)} ${countryNames.of(code)}`;
+// Le opzioni di un campo a scelta possono essere scritte come testo semplice o come { value, label }.
+const optionsOf = (field) => field.options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+
+// Come mostrare il valore di un campo negli elenchi (titolo per le relazioni, nome per i paesi…).
+function displayValue(field, value, titles) {
+  if (isEmpty(value)) return null;
+  if (field?.type === 'relation') return titles?.[field.name]?.[value] || value;
+  if (field?.type === 'country') return countryLabel(value);
+  if (field?.type === 'select') return optionsOf(field).find((o) => o.value === value)?.label ?? value;
+  return value;
+}
+
 const findCollection = (name) => collections.find((c) => c.name === name);
 const findPage = (name) => [...pages, ...settings].find((p) => p.name === name);
 const markDirty = () => { state.dirty = true; };
@@ -265,12 +285,9 @@ async function relationTitles(coll) {
 }
 
 function subtitle(coll, entry, titles) {
-  return (coll.subtitle || []).map((key) => {
-    const f = coll.fields.find((f) => f.name === key);
-    const v = entry.data[key];
-    if (isEmpty(v)) return null;
-    return f?.type === 'relation' ? titles[key]?.[v] || v : v;
-  }).filter((v) => v != null).join(' · ');
+  return (coll.subtitle || [])
+    .map((key) => displayValue(coll.fields.find((f) => f.name === key), entry.data[key], titles))
+    .filter((v) => v != null).join(' · ');
 }
 
 async function homeSlugs() {
@@ -478,8 +495,17 @@ async function widget(field, value) {
     }
     case 'select': {
       const current = value ?? field.default;
-      const el = h('select', {}, field.options.map((o, i) => h('option', { value: i, selected: o.value === current }, o.label)));
-      return { el, get: () => field.options[el.value]?.value };
+      const options = optionsOf(field);
+      const el = h('select', {},
+        field.default === undefined && h('option', { value: '' }, field.required ? 'Scegli…' : '— nessuno —'),
+        options.map((o, i) => h('option', { value: i, selected: o.value === current }, o.label)));
+      return { el, get: () => (el.value === '' ? undefined : options[el.value]?.value) };
+    }
+    case 'country': {
+      const el = h('select', {},
+        h('option', { value: '' }, field.required ? 'Scegli…' : '— nessuno —'),
+        COUNTRIES.map((code) => h('option', { value: code, selected: code === value }, countryLabel(code))));
+      return { el, get: () => el.value };
     }
     case 'relation': {
       const coll = findCollection(field.collection);
@@ -817,8 +843,6 @@ const chip = (text, tone) => h('span', { class: `chip ${tone || ''}` }, text);
 
 // ─── Statistiche delle visite al sito ──────────────────────
 
-const countryNames = new Intl.DisplayNames(['it'], { type: 'region' });
-const flag = (code) => (/^[A-Z]{2}$/.test(code) ? String.fromCodePoint(...[...code].map((c) => 0x1f1a5 + c.charCodeAt(0))) : '🌐');
 const shortDate = (day) => new Date(`${day}T12:00:00`).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
 
 function niceMax(n) {
@@ -1061,7 +1085,12 @@ async function listView(coll) {
   const search = h('input', { type: 'text', placeholder: 'Cerca…', value: saved.q || '' });
   const selects = (coll.filters || []).map((name) => {
     const field = coll.fields.find((f) => f.name === name);
-    const options = Object.entries(titles[name] || {}).sort((a, b) => a[1].localeCompare(b[1], 'it'));
+    // Per relazioni e liste fisse tutte le scelte; per i paesi solo quelli usati.
+    const options = (field.type === 'relation' ? Object.keys(titles[name] || {})
+      : field.type === 'select' ? optionsOf(field).map((o) => o.value)
+        : [...new Set(entries.map((e) => e.data[name]).filter(Boolean))])
+      .map((v) => [v, displayValue(field, v, titles)])
+      .sort((a, b) => String(a[1]).replace(/^\S+ /, '').localeCompare(String(b[1]).replace(/^\S+ /, ''), 'it'));
     return [name, h('select', { class: 'compact' },
       h('option', { value: '' }, `Ogni ${field.label.toLowerCase()}`),
       options.map(([slug, title]) => h('option', { value: slug, selected: saved[name] === slug }, title)))];

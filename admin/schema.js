@@ -1,6 +1,6 @@
 // Sezioni e campi del pannello. Per aggiungere un campo basta aggiungere una riga qui
 // (e poi usarlo nei layout del sito).
-// Tipi di campo: string, text, markdown, number, boolean, publish, select, image, relation,
+// Tipi di campo: string, text, markdown, number, boolean, publish, select, country, image, relation,
 // relationList, gallery, hidden.
 // Il campo "body" è il testo sotto le impostazioni del file (il contenuto della pagina).
 
@@ -62,11 +62,22 @@ window.CMS = {
       folder: '_clienti',
       sort: ['title'],
       thumb: 'logo',
-      subtitle: ['sito'],
+      filters: ['settore', 'paese'],
+      subtitle: ['settore', 'paese'],
       count: { collection: 'progetti', field: 'cliente' },
       fields: [
         { name: 'title', label: 'Nome', type: 'string', required: true },
         { name: 'logo', label: 'Logo', type: 'image' },
+        {
+          name: 'settore', label: 'Settore', type: 'select',
+          options: [
+            'Food & Beverage', 'Fashion & Luxury', 'Beauty & Cosmetics', 'Home & Interior Design', 'Retail & E-commerce',
+            'Tech & Digital', 'Media & Entertainment', 'Music', 'Publishing', 'Art & Culture', 'Travel & Hospitality',
+            'Sport & Wellness', 'Automotive', 'Healthcare & Pharma', 'Finance & Insurance', 'Education',
+            'Non-profit & Public Sector', 'Agency & Studio', 'Altro',
+          ],
+        },
+        { name: 'paese', label: 'Paese', type: 'country' },
         { name: 'sito', label: 'Sito web', type: 'string', placeholder: 'https://…' },
       ],
     },
