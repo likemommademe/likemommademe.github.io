@@ -40,6 +40,7 @@
   /* tipografia (scala fluida) */
   --f-sans: "Cabinet Grotesk", system-ui, -apple-system, sans-serif;
   --f-label: "Clash Display", "Cabinet Grotesk", system-ui, sans-serif;
+  --f-cat: "yink", "Cabinet Grotesk", sans-serif;   /* font delle categorie (Adobe Fonts) */
   --t-h1: clamp(2.75rem, 1.6rem + 4.6vw, 6rem);
   --t-h2: clamp(2.375rem, 1.55rem + 3.4vw, 5rem);
   --t-h3: clamp(1.5rem, 1.2rem + 1.1vw, 2.25rem);
@@ -184,7 +185,7 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 }
 .mondo::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--m)); background: var(--card); transform: scaleY(0); transform-origin: bottom; transition: transform .6s var(--ease); z-index: -1; }
 .mondo:hover::before { transform: scaleY(1); }
-.mondo__t { font-weight: 900; font-size: var(--t-h3); line-height: 1; letter-spacing: -.02em; transition: transform .6s var(--ease); }
+.mondo__t { font-family: var(--f-cat); font-weight: 400; font-size: calc(var(--t-h3) * 1.2); line-height: 1.05; letter-spacing: 0; transition: transform .6s var(--ease); }
 .mondo:hover .mondo__t { transform: translateX(14px); }
 .mondo__d { color: var(--muted); max-width: 46ch; }
 .mondo__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; }
@@ -277,7 +278,7 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 
 /* ---------- Pagine esistenti (categoria, progetto, about) ---------- */
 .pagina-head { padding-bottom: 40px; }
-.cat-t { font-weight: 900; font-size: clamp(3.5rem, 2rem + 8vw, 10rem); line-height: .86; letter-spacing: -.045em; }
+.cat-t { font-family: var(--f-cat); font-weight: 400; font-size: clamp(3.5rem, 2rem + 7vw, 9rem); line-height: 1; letter-spacing: 0; }
 .briciole { margin-bottom: 16px; color: var(--muted); font-size: var(--t-small); }
 .briciole a:hover { color: var(--fg); }
 .testo-breve { max-width: 48ch; margin-top: 16px; color: var(--muted); font-size: var(--t-lead); }
