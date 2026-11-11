@@ -16,10 +16,14 @@ reel: true
       var max = reel.offsetHeight - innerHeight;
       var p = max > 0 ? Math.min(1, Math.max(0, (scrollY - reel.offsetTop) / max)) : 0;
       if (frame.contentWindow) frame.contentWindow.postMessage({ reel: p }, location.origin);
+      // il menu nasce quando il nome si è ricomposto, alla fine dello showreel
+      document.body.classList.toggle('nav-born', reduced || p >= .965);
     }
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     addEventListener('scroll', send, { passive: true });
     addEventListener('resize', send);
     frame.addEventListener('load', send);
+    send();
   })();
 </script>
 

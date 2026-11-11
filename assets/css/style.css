@@ -85,8 +85,27 @@ body.no-reel main { padding-top: calc(var(--nav-h) + 32px); }
   .nav__cta { height: 44px; padding-left: 16px; gap: 10px; font-size: 15px; }
   .nav__arrow { width: 34px; height: 34px; }
 }
+/* Home: il menu non c'è durante lo showreel. Alla fine una pallina sale in cima e si allarga nella pillola */
+body.has-reel:not(.nav-born) .nav__bar::before { opacity: 0; clip-path: inset(6px calc(50% - 28px) round 999px); transition: none; }
+body.has-reel:not(.nav-born) :is(.nav__logo, .nav__right) { opacity: 0; pointer-events: none; transition: opacity .2s; }
+body.has-reel.nav-born .nav__bar::before { transition: opacity .01s .52s, clip-path .75s var(--ease) .52s; }
+body.has-reel.nav-born :is(.nav__logo, .nav__right) { transition: transform .8s var(--ease), opacity .45s .8s; }
+.nav-ball {
+  position: fixed; left: 50%; top: 0; z-index: 61; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%;
+  background: #FF3D8B; pointer-events: none; opacity: 0; transform: translateY(50vh) scale(0);
+}
+body.nav-born .nav-ball { animation: nav-ball .95s var(--ease) both; }
+@keyframes nav-ball {
+  0%   { opacity: 1; transform: translateY(50vh) scale(0); }
+  14%  { opacity: 1; transform: translateY(50vh) scale(1); animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+  58%  { opacity: 1; transform: translateY(39px) scale(1); }
+  72%  { opacity: 1; background: #1C1C1C; transform: translateY(39px) scale(2.3); }
+  100% { opacity: 0; background: #1C1C1C; transform: translateY(39px) scale(2.3); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .nav__bar, .nav__bar::before, .nav__logo, .nav__right, .nav__arrow { transition: none; }
+  .nav__bar, .nav__bar::before, .nav__logo, .nav__right, .nav__arrow { transition: none !important; }
+  .nav-ball { display: none; }
 }
 
 /* Footer */

@@ -222,6 +222,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Istruzioni di GitHub spostate in `riassunto-github.md` |
 | 11/11/2026 | Prima bozza dello showreel in `lab/showreel.html` (HTML, CSS e JavaScript, senza librerie) |
 | 11/11/2026 | Showreel più spinto (camera, titoli giganti, generatore AI con cursore, MOTION cinetico) e messo come header della home |
+| 11/11/2026 | Showreel v4: Web Design al posto di UI/UX, lettere che cadono intere, menu che nasce da una pallina alla fine dello showreel |
 | 11/11/2026 | Showreel v3: intro LIKE · MOM · MADE · ME, Brand con i blocchi 3D, titoli a sinistra che non coprono gli elementi, cinque mondi (via Digital & Social) |
 
 ---
