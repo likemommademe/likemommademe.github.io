@@ -95,10 +95,10 @@
       var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
           logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
       function layout() {
-        // nella pillola il logo sparisce: restano link, giorno/notte e Contatti, centrati
-        var small = innerWidth < 720, pad = small ? 16 : 28;
-        var W = bar.clientWidth, rw = right.offsetWidth,
-            pill = pad + rw + 6, clip = Math.max(0, (W - pill) / 2);
+        // come bitwip: nella pillola stanno il logo a sinistra e link, giorno/notte e Contatti a destra
+        var small = innerWidth < 720, pad = small ? 18 : 30, gap = small ? 14 : 44;
+        var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth,
+            pill = pad + lw + gap + rw + 6, clip = Math.max(0, (W - pill) / 2);
         bar.style.setProperty('--clip', clip + 'px');
         bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
         bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
