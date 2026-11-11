@@ -182,14 +182,13 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | **GitHub** | Contenuti e pubblicazione del sito (GitHub Pages) | Repo `likemommademe/likemommademe.github.io`, pubblica |
 | **Cloudflare**: Worker `portfolio-login` | Server del pannello: accesso, ponte verso GitHub, statistiche | https://portfolio-login.calfa63.workers.dev |
 | **Cloudflare**: database D1 `statistiche` | Visite al sito | Collegato al Worker con il nome `DB` |
-| **Cloudflare**: KV `login` | Non serve più | Resto della prima versione del magic link |
 | **Resend** | Spedisce la mail del magic link | Piano gratuito: manda mail solo all'email dell'account |
 | **Google Cloud**: progetto `portfolio` | Pulsante "Accedi con Google" | App pubblicata |
 | **DecapBridge** | Non serve più | Resto della prova con Decap |
 
 ### Impostazioni del Worker su Cloudflare
 - **Variables and Secrets**: `EMAIL` (email autorizzate, separate da virgola), `GITHUB_TOKEN` (chiave GitHub del pannello), `RESEND_API_KEY` (chiave di Resend).
-- **Bindings**: `DB` → D1 **statistiche**. `LOGIN` → KV **login**, non più usato.
+- **Bindings**: `DB` → D1 **statistiche**. (Il KV `login` della prima versione è stato cancellato l'11/11/2026.)
 
 ### Chiavi GitHub (token)
 - **pannello**: la usa il CMS, è salvata su Cloudflare. **Non cancellarla.**
@@ -245,7 +244,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ## 10. Prossimi passi
 
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
-2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub, il sito su DecapBridge e il KV **login** su Cloudflare.
+2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub e il sito su DecapBridge. (KV **login** su Cloudflare: già cancellato.)
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
 4. **Rigenerare la chiave GitHub che usa Claude dal Mac**: la prima era stata incollata in chat. Dopo averla rigenerata va salvata di nuovo nel Portachiavi del Mac, e Claude ti dà il comando da lanciare nel terminale.
 5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
