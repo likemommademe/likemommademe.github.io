@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LIKEMOMMADEME Showreel</title>
 <meta name="robots" content="noindex">
-<meta name="description" content="Showreel di LIKEMOMMADEME, Creative Designer: sei mondi in quindici secondi.">
+<meta name="description" content="Showreel di LIKEMOMMADEME, Creative Designer: cinque mondi in quindici secondi.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233D5AFF'/%3E%3Cpath d='M10 7h4v14h8v4H10z' fill='%23F5F5F2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,900&display=swap">
@@ -27,6 +27,7 @@
   .abs { position: absolute; }
   .mask { display: inline-block; overflow: hidden; vertical-align: top; }
   .mask > span { display: inline-block; }
+  #cam { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
 
   /* Nome */
   #name { position: absolute; left: 0; right: 0; top: 372px; text-align: center; white-space: nowrap;
@@ -34,38 +35,43 @@
   #name .mask { padding: .1em 0 .04em; margin: -.1em 0 -.04em; }
   #role { position: absolute; left: 0; right: 0; top: 560px; text-align: center;
           font-weight: 500; font-size: 44px; line-height: 1.15; }
-  .sq { width: 80px; height: 80px; border-radius: 14px; }
+  .sq { width: 64px; height: 64px; border-radius: 12px; }
 
   /* Cornice: marchio e mondi */
-  #mark { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; }
-  .w { position: absolute; top: 980px; width: 272px; margin-left: -136px; text-align: center;
-       font-weight: 500; font-size: 24px; line-height: 1.3; }
+  #mark { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; z-index: 9; }
+  .w { position: absolute; top: 980px; width: 288px; margin-left: -144px; text-align: center;
+       font-weight: 500; font-size: 26px; line-height: 1.3; z-index: 9; }
   .w .mask { padding-bottom: 2px; }
   .w i { position: absolute; left: 50%; bottom: -12px; width: 64px; height: 4px; margin-left: -32px;
          border-radius: 2px; transform: scaleX(0); }
 
+  /* Titoli dei mondi: a sinistra, in uno spazio loro, mentre la camera sposta il mondo a destra */
+  #big { left: 64px; top: 0; width: 780px; height: 1080px; z-index: 8; pointer-events: none; }
+  #big .word { position: absolute; left: 0; white-space: nowrap; font-weight: 900; line-height: .8; letter-spacing: -.03em; }
+  #big .word .mask { padding-top: .08em; margin-top: -.08em; }
+  #big .cap { position: absolute; left: 4px; font-weight: 500; font-size: 30px; line-height: 1.2; color: var(--paper); white-space: nowrap; }
+
   svg#fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; z-index: 4; }
 
-  /* Brand Identity */
-  #card { left: 1060px; top: 250px; width: 520px; height: 300px; border-radius: 18px;
-          background: var(--paper); color: var(--ink); padding: 36px; }
-  #card .mono { width: 64px; height: 64px; border-radius: 12px; background: var(--blue); color: var(--paper);
-                font-weight: 900; font-size: 48px; line-height: 64px; text-align: center; }
-  #card .n { margin-top: 28px; font-weight: 900; font-size: 34px; letter-spacing: -.01em; }
-  #card .r { margin-top: 6px; font-weight: 500; font-size: 20px; color: #5E5E5E; }
-  #card .bar { position: absolute; right: 36px; top: 36px; width: 120px; height: 10px; border-radius: 5px; background: #DADAD5; }
-  #card .bar + .bar { top: 56px; width: 80px; }
-  #palette { left: 1060px; top: 600px; display: flex; gap: 22px; }
-  #palette span { width: 96px; height: 96px; border-radius: 50%; }
-
   /* Generative AI */
-  #prompt { left: 0; right: 0; top: 98px; text-align: center; font-weight: 500; font-size: 34px; line-height: 1.2; }
-  #prompt .caret { display: inline-block; width: 4px; height: 34px; margin-left: 6px; vertical-align: -5px; background: var(--pink); }
-  .cell { width: 260px; height: 200px; border-radius: 14px; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
-  .cell .scan { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--pink); }
+  #ai { left: 410px; top: 190px; width: 1100px; height: 640px; border-radius: 24px; background: #141414;
+        box-shadow: inset 0 0 0 2px var(--line); }
+  #ai .dots { position: absolute; left: 28px; top: 30px; display: flex; gap: 10px; }
+  #ai .dots i { width: 14px; height: 14px; border-radius: 50%; background: #2E2E2E; }
+  #ai .ttl { position: absolute; left: 104px; top: 24px; font-weight: 500; font-size: 20px; color: var(--muted); }
+  #field { left: 40px; top: 80px; width: 1020px; height: 84px; border-radius: 42px; background: var(--ink); box-shadow: inset 0 0 0 2px var(--line); overflow: hidden; }
+  #ftext { left: 90px; top: 24px; font-weight: 500; font-size: 30px; line-height: 36px; white-space: nowrap; }
+  #ftext .caret { display: inline-block; width: 3px; height: 32px; margin-left: 4px; vertical-align: -5px; background: var(--pink); }
+  #fbar { left: 0; bottom: 0; width: 1020px; height: 4px; background: var(--pink); transform-origin: 0 50%; transform: scaleX(0); }
+  #gen { left: 880px; top: 94px; width: 160px; height: 56px; border-radius: 28px; background: var(--pink); color: var(--ink);
+         font-weight: 900; font-size: 24px; display: flex; align-items: center; justify-content: center; }
+  .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
+  #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
 
   /* Motion Design */
-  #bez { left: 510px; top: 168px; font-weight: 500; font-size: 26px; color: var(--muted); }
+  #kin { left: 0; right: 0; top: 330px; text-align: center; white-space: nowrap;
+         font-weight: 900; font-size: 250px; line-height: .8; letter-spacing: -.02em; }
+  #kin span { display: inline-block; }
 
   /* UI/UX */
   #phone { overflow: hidden; z-index: 3; }
@@ -84,50 +90,6 @@
   #btn { position: absolute; inset: 0; border-radius: 42px; background: var(--blue); color: var(--paper);
          font-weight: 500; font-size: 28px; display: flex; align-items: center; justify-content: center; }
 
-  /* Digital & Social: muro curvo in 3D */
-  #scene3d { left: 0; top: 0; width: 1920px; height: 1080px; perspective: 1400px; perspective-origin: 960px 500px;
-             transform-origin: 960px 500px; z-index: 2; }
-  #ring { left: 960px; top: 500px; width: 0; height: 0; transform-style: preserve-3d; }
-  .pc { position: absolute; left: -110px; top: -137.5px; width: 220px; height: 275px; border-radius: 18px;
-        background: var(--paper); overflow: hidden; backface-visibility: hidden; }
-  .pc .pimg { position: absolute; left: 10px; top: 10px; width: 200px; height: 200px; border-radius: 12px; overflow: hidden; }
-  .pc .pimg svg { display: block; }
-  .pc .pcap { position: absolute; left: 14px; right: 14px; bottom: 20px; height: 26px; }
-  .pc .pcap svg { position: absolute; left: 0; top: 1px; }
-  .pc .pcap i { position: absolute; left: 36px; top: 4px; width: 110px; height: 7px; border-radius: 4px; background: #CFCFCA; }
-  .pc .pcap i + i { top: 16px; width: 70px; }
-  .pc .plight { position: absolute; inset: 0; background: var(--green); opacity: 0; }
-
-  /* Camera e titoli giganti */
-  #cam { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
-  #big { left: 0; right: 0; top: 96px; height: 260px; text-align: center; z-index: 8; pointer-events: none; }
-  #big .word { position: absolute; left: 0; right: 0; top: 0; white-space: nowrap; font-weight: 900; line-height: .8; letter-spacing: -.03em; }
-  #big .mask { padding-top: .08em; margin-top: -.08em; }
-
-  /* Generative AI: interfaccia del generatore */
-  #ai { left: 410px; top: 190px; width: 1100px; height: 640px; border-radius: 24px; background: #141414;
-        box-shadow: inset 0 0 0 2px var(--line); }
-  #ai .dots { position: absolute; left: 28px; top: 30px; display: flex; gap: 10px; }
-  #ai .dots i { width: 14px; height: 14px; border-radius: 50%; background: #2E2E2E; }
-  #ai .ttl { position: absolute; left: 104px; top: 24px; font-weight: 500; font-size: 20px; color: var(--muted); }
-  #field { left: 40px; top: 80px; width: 1020px; height: 84px; border-radius: 42px; background: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
-  #ftext { left: 90px; top: 24px; font-weight: 500; font-size: 30px; line-height: 36px; white-space: nowrap; }
-  #ftext .caret { display: inline-block; width: 3px; height: 32px; margin-left: 4px; vertical-align: -5px; background: var(--pink); }
-  #gen { left: 880px; top: 94px; width: 160px; height: 56px; border-radius: 28px; background: var(--pink); color: var(--ink);
-         font-weight: 900; font-size: 24px; display: flex; align-items: center; justify-content: center; }
-  .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
-  .res .scan { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--pink); }
-  #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
-
-  /* Motion Design: tipografia cinetica */
-  #kin { left: 0; right: 0; top: 330px; text-align: center; white-space: nowrap;
-         font-weight: 900; font-size: 250px; line-height: .8; letter-spacing: -.02em; }
-  #kin span { display: inline-block; }
-
-  /* Riepilogo: sei tessere */
-  .tile { top: 380px; width: 240px; height: 240px; border-radius: 24px; box-shadow: inset 0 0 0 2px var(--line);
-          display: grid; place-items: center; }
-
   /* Comandi */
   #ui { position: fixed; left: 0; right: 0; bottom: 0; height: 56px; display: flex; align-items: center; justify-content: center;
         gap: 14px; font: 14px/1 system-ui, sans-serif; color: #bbb; }
@@ -137,91 +99,93 @@
   #tc { width: 92px; font-variant-numeric: tabular-nums; }
   body.clean #ui { display: none; }
 
-  /* Modalità scroll: la pagina è lunga, lo stage resta fermo e il tempo segue lo scroll */
+  /* Modalità scroll ed embed */
   html.scroll, html.scroll body { overflow-x: hidden; overflow-y: visible; height: auto; }
   body.scroll #stage { position: fixed; }
-  body.scroll #ui { display: none; }
+  body.scroll #ui, body.embed #ui { display: none; }
   #scroller { display: none; }
   body.scroll #scroller { display: block; height: 850vh; }
   #hint { position: fixed; left: 0; right: 0; bottom: 28px; text-align: center; display: none;
           font: 500 15px/1 "Cabinet Grotesk", system-ui, sans-serif; color: #8A8A8A; transition: opacity .25s; }
   body.scroll #hint, body.embed #hint { display: block; }
-  body.embed #ui { display: none; }
-  body.embed, html:has(body.embed) { background: var(--ink); }
+  body.embed { background: var(--ink); }
 </style>
 </head>
 <body>
-<div id="stage" role="img" aria-label="Showreel di LIKEMOMMADEME, Creative Designer: Brand Identity, Illustration, Generative AI, Motion Design, UI/UX Design, Digital & Social.">
+<div id="stage" role="img" aria-label="Showreel di LIKEMOMMADEME, Creative Designer: Brand Identity, Illustration, Generative AI, Motion Design, UI/UX Design.">
 
   <div id="cam" class="abs">
-  <div id="scene3d" class="abs"><div id="ring" class="abs"></div></div>
-
-  <div id="tiles"></div>
-
-  <div id="card" class="abs"><div class="mono">L</div><div class="n">LIKEMOMMADEME</div><div class="r">Creative Designer</div><span class="bar abs"></span><span class="bar abs"></span></div>
-  <div id="palette" class="abs"><span style="background:var(--blue)"></span><span style="background:var(--ink);box-shadow:inset 0 0 0 3px var(--paper)"></span><span style="background:var(--paper)"></span></div>
-
-  <div id="ai" class="abs">
-    <div class="dots"><i></i><i></i><i></i></div>
-    <div class="ttl">Generatore</div>
-    <div id="field" class="abs"><div id="ftext" class="abs"><span id="ptext"></span><span class="caret"></span></div></div>
-    <div id="gen" class="abs">Genera</div>
-    <div id="results"></div>
-  </div>
-
-  <div id="kin" class="abs"></div>
-
-  <div id="phone" class="abs">
-    <div id="pfill"></div>
-    <div id="pcontent">
-      <div id="ptitle" class="abs"><span class="mask"><span>Ciao, mamma!</span></span></div>
-      <div id="track" class="abs"></div>
-      <div id="chart" class="abs"></div>
-      <div id="slab" class="abs">Ironia</div>
-      <div id="sval" class="abs">15%</div>
-      <div id="strack" class="abs"><div id="sfill" class="abs"></div><div id="sknob" class="abs"></div></div>
-      <div id="btnm" class="abs"><div id="btn">Avanti</div></div>
+    <div id="ai" class="abs">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="ttl">Generatore</div>
+      <div id="field" class="abs"><div id="ftext" class="abs"><span id="ptext"></span><span class="caret"></span></div><div id="fbar" class="abs"></div></div>
+      <div id="gen" class="abs">Genera</div>
+      <div id="results"></div>
     </div>
+
+    <div id="kin" class="abs"></div>
+
+    <div id="phone" class="abs">
+      <div id="pfill"></div>
+      <div id="pcontent">
+        <div id="ptitle" class="abs"><span class="mask"><span>Ciao, mamma!</span></span></div>
+        <div id="track" class="abs"></div>
+        <div id="chart" class="abs"></div>
+        <div id="slab" class="abs">Ironia</div>
+        <div id="sval" class="abs">15%</div>
+        <div id="strack" class="abs"><div id="sfill" class="abs"></div><div id="sknob" class="abs"></div></div>
+        <div id="btnm" class="abs"><div id="btn">Avanti</div></div>
+      </div>
+    </div>
+
+    <svg id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
+      <g id="grid" fill="none" stroke="#8A8A8A" stroke-width="2">
+        <rect x="-260" y="-260" width="520" height="520" pathLength="1"/>
+        <circle r="260" pathLength="1"/>
+        <circle r="130" pathLength="1"/>
+        <path d="M-360 0H360" pathLength="1"/>
+        <path d="M0 -360V360" pathLength="1"/>
+        <path d="M-260 -260L260 260" pathLength="1"/>
+        <path d="M260 -260L-260 260" pathLength="1"/>
+      </g>
+      <g id="boxes"></g>
+      <g id="sqs"></g>
+      <g id="graph" fill="none">
+        <path id="tl" d="M510 830H1410" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round" pathLength="1"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+      </g>
+      <path id="blob"/>
+      <path id="contour" fill="none" stroke="#F5F5F2" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <g id="face">
+        <circle id="eyeL" r="16" fill="#0A0A0A"/>
+        <circle id="eyeR" r="16" fill="#0A0A0A"/>
+        <path id="smile" d="M-84 40Q0 128 84 40" fill="none" stroke="#0A0A0A" stroke-width="14" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g id="pen">
+        <path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/>
+        <path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/>
+        <path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/>
+        <path d="M0 0L4 -12L12 -4Z" fill="#0A0A0A"/>
+      </g>
+    </svg>
+    <svg id="cursor" class="abs" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z" fill="#F5F5F2" stroke="#0A0A0A" stroke-width="2.5" stroke-linejoin="round"/></svg>
+
+    <div id="name" aria-hidden="true"></div>
+    <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
+    <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
+    <div id="sq2" class="abs sq" style="background:var(--green)"></div>
+    <div id="sq3" class="abs sq" style="background:var(--pink)"></div>
   </div>
 
-  <svg id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
-    <g id="grid" fill="none" stroke="#8A8A8A" stroke-width="2">
-      <rect x="-260" y="-260" width="520" height="520" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <circle r="260" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <circle r="130" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <path d="M-360 0H360" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <path d="M0 -360V360" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <path d="M-260 -260L260 260" pathLength="1" vector-effect="non-scaling-stroke"/>
-      <path d="M260 -260L-260 260" pathLength="1" vector-effect="non-scaling-stroke"/>
-    </g>
-    <g id="graph" fill="none">
-      <path id="tl" d="M510 830H1410" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round" pathLength="1"/>
-      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#F5F5F2"/>
-      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#F5F5F2"/>
-      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#F5F5F2"/>
-    </g>
-    <path id="blob"/>
-    <path id="contour" fill="none" stroke="#F5F5F2" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
-    <g id="face">
-      <circle id="eyeL" r="16" fill="#0A0A0A"/>
-      <circle id="eyeR" r="16" fill="#0A0A0A"/>
-      <path id="smile" d="M-84 40Q0 128 84 40" fill="none" stroke="#0A0A0A" stroke-width="14" stroke-linecap="round" pathLength="1"/>
-    </g>
-  </svg>
-  <svg id="cursor" class="abs" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z" fill="#F5F5F2" stroke="#0A0A0A" stroke-width="2.5" stroke-linejoin="round"/></svg>
-
-  <div id="name" aria-hidden="true"></div>
-  <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
-  <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
-  <div id="sq2" class="abs sq" style="background:var(--pink)"></div>
-  </div>
   <div id="big" class="abs" aria-hidden="true"></div>
   <div id="mark" class="abs"><span class="mask"><span>LIKEMOMMADEME</span></span></div>
   <div id="worlds" aria-hidden="true"></div>
 </div>
 
 <div id="scroller"></div>
-<div id="hint">Scorri: sei mondi ti aspettano</div>
+<div id="hint">Scorri: cinque mondi ti aspettano</div>
 <div id="ui">
   <button id="pp" type="button">Pausa</button>
   <input id="scrub" type="range" min="0" max="15" step="0.01" value="0" aria-label="Posizione nel tempo">
@@ -234,17 +198,20 @@
   /* ---------- Costanti ---------- */
   const DUR = 15, BEAT = .5, TAU = Math.PI * 2;
   const INK = '#0A0A0A', PAPER = '#F5F5F2', BLUE = '#3D5AFF', GREEN = '#12C08E', PINK = '#FF3D8B', TRACK = '#CFCFCA', LINE = '#262626';
-  const G = 95;                                  // apertura del nome
-  const WORLDS = [['Brand Identity', BLUE], ['Illustration', GREEN], ['Generative AI', PINK],
-                  ['Motion Design', PINK], ['UI/UX Design', BLUE], ['Digital & Social', GREEN]];
-  const TILE_X = [280, 552, 824, 1096, 1368, 1640], TILE_Y = 500;
-  const SELX = 1102, SELY = 500;                 // cella scelta nella griglia AI
+  const G = 80;                                  // apertura del nome: LIKE · MOM · MADE · ME
+  const GOFF = [-1.5, -.5, .5, 1.5];             // spostamento di ogni parola, in multipli di G
+  // I cinque mondi: inizio e fine nel tempo. Brand ha due battute (il cubo), gli altri una.
+  const WORLDS = [
+    { label: 'Brand Identity', col: BLUE,  t0: 2,  t1: 6,  big: 'BRAND',        cap: 'Identità che stanno in piedi da sole.' },
+    { label: 'Illustration',   col: GREEN, t0: 6,  t1: 8,  big: 'ILLUSTRATION', cap: 'Disegnate a mano. Sì, davvero.' },
+    { label: 'Generative AI',  col: PINK,  t0: 8,  t1: 10, big: 'GEN AI',       cap: 'Il prompt lo scrivo io.', bigEnd: 8.42, maxW: 560 },
+    { label: 'Motion Design',  col: PINK,  t0: 10, t1: 12, big: null },
+    { label: 'UI/UX Design',   col: BLUE,  t0: 12, t1: 14, big: 'UI/UX',        cap: 'Interfacce che si usano davvero.' }
+  ];
+  const ROW_X = [384, 672, 960, 1248, 1536];
+  const SHIFT = 300;                             // la camera sposta il mondo a destra per lasciare spazio al titolo
   const P = { x: 750, y: 120, w: 420, h: 800 };  // schermo del telefono
-  const POST = { x: 720, y: 200, w: 480, h: 600 };
   const KY = P.y + 66, KOFF = P.x + 322, KON = P.x + 362;
-  const RING_R = 1400, PERSP = 1400, CARD_H = 275;
-  const DZ0 = PERSP - PERSP * CARD_H / POST.h;   // dolly iniziale: la card centrale coincide col post
-  const BZ = [[510, 730], [654, 230], [780, 230], [1410, 230]];
 
   /* ---------- Funzioni del tempo ---------- */
   const clamp = (x, a = 0, b = 1) => x < a ? a : x > b ? b : x;
@@ -255,18 +222,15 @@
   const eIO = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
   const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);   // smorzamento critico: niente rimbalzo
   const bump = x => Math.sin(Math.PI * clamp(x));
-  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-  const mix = (a, b, k) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(',')})`; };
+  const rgb = h => h.startsWith('rgb') ? h.match(/\d+/g).map(Number) : [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, k) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], clamp(k)))).join(',')})`; };
   const maskY = (t, a, d, b, e, dir = 1) => {
     if (t < a) return 110;
     let y = 110 * (1 - eOut(p(t, a, a + d)));
     if (b != null && t >= b) y = 110 * dir * eIn(p(t, b, b + e));
     return y;
   };
-  const bez = s => {
-    const u = 1 - s;
-    return [0, 1].map(i => u * u * u * BZ[0][i] + 3 * u * u * s * BZ[1][i] + 3 * u * s * s * BZ[2][i] + s * s * s * BZ[3][i]);
-  };
+  const f1 = v => v.toFixed(1);
 
   /* ---------- Forme ---------- */
   const SQ = a => Math.pow(Math.pow(Math.abs(Math.cos(a)), 6) + Math.pow(Math.abs(Math.sin(a)), 6), -1 / 6);
@@ -274,21 +238,20 @@
   const FL = a => 1 + .13 * Math.sin(6 * a);
   const BL = a => 1 + .09 * Math.sin(3 * a + 1) + .05 * Math.sin(5 * a + 2.2);
   const N = 180;
+  const rAt = (a, R, A, B, k, rot, hand) => { let r = R * lerp(A(a + rot), B(a + rot), k); if (hand) r = r * 1.1 + Math.sin(11 * a) * 5 + Math.sin(23 * a + 1) * 3; return r; };
   function shape(cx, cy, R, A, B, k, rot = 0, hand = false) {
     if (R < .5) return 'M0 0';
     let d = '';
     for (let j = 0; j < N; j++) {
-      const a = j / N * TAU;
-      let r = R * lerp(A(a + rot), B(a + rot), k);
-      if (hand) r = r * 1.1 + Math.sin(11 * a) * 5 + Math.sin(23 * a + 1) * 3;
-      d += (j ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(1) + ' ' + (cy + r * Math.sin(a)).toFixed(1);
+      const a = j / N * TAU, r = rAt(a, R, A, B, k, rot, hand);
+      d += (j ? 'L' : 'M') + f1(cx + r * Math.cos(a)) + ' ' + f1(cy + r * Math.sin(a));
     }
     return d + 'Z';
   }
   const svgEl = (w, h, inner) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${inner}</svg>`;
 
   /* ---------- Costruzione del DOM ---------- */
-  const $ = s => document.querySelector(s);
+  const $ = s => document.querySelector(s), E = id => document.getElementById(id);
   const stage = $('#stage');
   const nameEl = $('#name');
   'LIKEMOMMADEME'.split('').forEach(ch => {
@@ -297,108 +260,79 @@
     m.appendChild(c); nameEl.appendChild(m);
   });
   const masks = [...nameEl.children], letters = masks.map(m => m.firstChild);
-  const group = i => i < 4 ? 0 : i < 9 ? 1 : 2;
+  const group = i => i < 4 ? 0 : i < 7 ? 1 : i < 11 ? 2 : 3;   // LIKE | MOM | MADE | ME
 
   const worldsEl = $('#worlds');
-  WORLDS.forEach(([label, col], i) => {
-    const w = document.createElement('div'); w.className = 'w'; w.style.left = TILE_X[i] + 'px';
-    w.innerHTML = `<span class="mask"><span>${label}</span></span><i style="background:${col}"></i>`;
-    worldsEl.appendChild(w);
+  WORLDS.forEach((w, i) => {
+    const d = document.createElement('div'); d.className = 'w'; d.style.left = ROW_X[i] + 'px';
+    d.innerHTML = `<span class="mask"><span>${w.label}</span></span><i style="background:${w.col}"></i>`;
+    worldsEl.appendChild(d);
   });
   const worldEls = [...worldsEl.children];
 
-  const shapes = [FL, SQ, BL, CI];
+  // Titoli dei mondi, lettera per lettera, con una riga sotto
+  const bigEl = E('big');
+  WORLDS.forEach(w => {
+    if (!w.big) return;
+    const d = document.createElement('div'); d.className = 'word'; d.style.color = w.col;
+    w.big.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask'; const c = document.createElement('span'); c.textContent = ch === ' ' ? ' ' : ch; m.appendChild(c); d.appendChild(m); });
+    const cap = document.createElement('div'); cap.className = 'cap'; cap.innerHTML = `<span class="mask"><span>${w.cap}</span></span>`;
+    bigEl.appendChild(d); bigEl.appendChild(cap);
+    w.el = d; w.letters = [...d.querySelectorAll('.mask > span')]; w.capEl = cap; w.capIn = cap.querySelector('.mask > span');
+  });
 
-  // Generatore AI: quattro risultati (il secondo è la forma che prosegue nel mondo successivo)
+  // Brand Identity: nove quadrati 2D, poi gli stessi come blocchi 3D
+  const NS = 'http://www.w3.org/2000/svg', sqsEl = E('sqs'), sqs = [];
+  for (let k = 0; k < 9; k++) {
+    const r = document.createElementNS(NS, 'rect'); sqsEl.appendChild(r);
+    sqs.push({ el: r, i: (k % 3) - 1, j: Math.floor(k / 3) - 1, k });
+  }
+  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .7);
+  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .7);
+  const RISE = [4, 1, 3, 5, 0, 7, 2, 6, 8];       // ordine in cui si alzano
+
+  // Generatore AI: quattro risultati (il secondo è la forma che prosegue)
   const AI = { x: 410, y: 190 }, SEL = { x: AI.x + 40 + 261 + 118.5, y: AI.y + 200 + 200, R: 70, rot: 1.35 };
   const CHIP = { x: AI.x + 40 + 42, y: AI.y + 80 + 42 };
   const resArt = [
     [BLUE, `<text x="118.5" y="250" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="230" fill="${PAPER}">L</text>`],
-    [INK, ''],
+    [INK, `<path d="${shape(118.5, 200, SEL.R, BL, BL, 0, SEL.rot)}" fill="${PINK}"/>`],
     [GREEN, `<circle cx="94" cy="180" r="11" fill="${INK}"/><circle cx="144" cy="180" r="11" fill="${INK}"/><path d="M84 222Q119 266 154 222" fill="none" stroke="${INK}" stroke-width="12" stroke-linecap="round"/>`],
     [PAPER, [0, 1, 2, 3, 4, 5, 6, 7, 8].map(k => `<rect x="${44 + (k % 3) * 52}" y="${126 + Math.floor(k / 3) * 52}" width="44" height="44" rx="10" ${k % 2 ? `fill="${PINK}"` : `fill="none" stroke="${PINK}" stroke-width="4"`}/>`).join('')]
   ];
-  const resultsEl = $('#results');
+  const resultsEl = E('results');
   resArt.forEach(([bg, art], i) => {
     const r = document.createElement('div'); r.className = 'abs res';
     r.style.left = (40 + 261 * i) + 'px'; r.style.background = bg;
-    if (i === 1) art = `<path d="${shape(118.5, 200, SEL.R, BL, BL, 0, SEL.rot)}" fill="${PINK}"/>`;
-    r.innerHTML = svgEl(237, 400, art) + '<div class="scan"></div>';
+    r.innerHTML = svgEl(237, 400, art);
     resultsEl.appendChild(r);
   });
   const results = [...resultsEl.children];
+  // tempi del generatore, espressi nel tempo "locale" del mondo (u = t - 2)
   const CURSOR_KEYS = [[6.25, 1580, 1000], [6.5, 760, 318], [6.95, 1372, 318], [7.02, 1372, 318], [7.42, SEL.x, SEL.y + 40], [7.52, SEL.x, SEL.y + 40], [7.85, 1100, 1160]];
   const CLICKS = [6.5, 7.02, 7.52];
 
-  // Parola cinetica del Motion Design
-  const kinEl = $('#kin');
+  // Motion Design: parola cinetica
+  const kinEl = E('kin');
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
 
-  // Titoli giganti all'inizio di ogni mondo (Motion usa la sua parola cinetica)
-  const BIG = ['BRAND', 'ILLUSTRATION', 'GEN AI', null, 'UI/UX', 'SOCIAL'];
-  const bigEl = $('#big'), bigWords = [];
-  BIG.forEach((w, i) => {
-    if (!w) { bigWords.push(null); return; }
-    const d = document.createElement('div'); d.className = 'word'; d.style.color = WORLDS[i][1];
-    w.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask'; const c = document.createElement('span'); c.textContent = ch === ' ' ? ' ' : ch; m.appendChild(c); d.appendChild(m); });
-    bigEl.appendChild(d); bigWords.push({ el: d, letters: [...d.querySelectorAll('.mask > span')] });
-  });
-
   // Grafico a barre del telefono
-  const chart = $('#chart'), BARS = [110, 170, 80, 200, 140];
+  const chart = E('chart'), BARS = [110, 170, 80, 200, 140];
   BARS.forEach((h, i) => {
     const b = document.createElement('b'); b.style.left = (i * 70) + 'px'; b.style.height = h + 'px';
     b.style.background = i === 3 ? BLUE : INK; chart.appendChild(b);
   });
   const bars = [...chart.children];
 
-  // Muro di post: 7 colonne x 3 righe su un cilindro
-  const ring = $('#ring'), posts = [];
-  const heart = c => svgEl(24, 24, `<path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="${c}"/>`);
-  for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) {
-    const i = r * 7 + c, center = r === 1 && c === 3;
-    const bg = center ? PINK : [BLUE, INK, GREEN, PINK, INK, BLUE, GREEN][(i * 3) % 7];
-    const fg = bg === INK ? [PINK, GREEN, PAPER][i % 3] : (bg === PINK ? INK : PAPER);
-    let art;
-    if (center) art = `<path d="${shape(100, 100, 62, BL, BL, 0, .6)}" fill="${INK}"/>`;
-    else if (i % 4 === 0) art = `<text x="100" y="138" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="120" fill="${fg}">L</text>`;
-    else if (i % 4 === 1) art = `<path d="${shape(100, 100, 58, shapes[i % 4], FL, .5, i)}" fill="${fg}"/>`;
-    else if (i % 4 === 2) art = `<path d="M40 160C70 50 95 50 160 50" fill="none" stroke="${fg}" stroke-width="10" stroke-linecap="round"/>`;
-    else art = `<rect x="55" y="40" width="90" height="120" rx="14" fill="${fg}"/><rect x="70" y="128" width="60" height="16" rx="8" fill="${bg}"/>`;
-    const el = document.createElement('div'); el.className = 'pc';
-    el.innerHTML = `<div class="pimg" style="background:${bg}">${svgEl(200, 200, art)}</div>
-      <div class="pcap">${heart(center ? PINK : INK)}<i></i><i></i></div><div class="plight"></div>`;
-    ring.appendChild(el);
-    posts.push({ el, img: el.querySelector('.pimg'), light: el.querySelector('.plight'), r, c, center,
-                 ang: (c - 3) * 9.8, y: (r - 1) * 300, d: Math.abs(c - 3) + Math.abs(r - 1) });
-  }
-
-  // Sei tessere del riepilogo
-  const tilesEl = $('#tiles');
-  const tileArt = [
-    `<div style="width:150px;height:150px;border-radius:20px;background:${BLUE};color:${PAPER};font-weight:900;font-size:118px;line-height:150px;text-align:center">L</div>`,
-    svgEl(240, 240, `<circle cx="120" cy="120" r="72" fill="${GREEN}"/><circle cx="96" cy="108" r="7" fill="${INK}"/><circle cx="144" cy="108" r="7" fill="${INK}"/><path d="M90 132Q120 164 150 132" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`),
-    svgEl(240, 240, [0, 1, 2, 3, 4, 5, 6, 7, 8].map(k => `<rect x="${54 + (k % 3) * 46}" y="${54 + Math.floor(k / 3) * 46}" width="38" height="38" rx="9" ${k === 4 ? `fill="${PINK}"` : `fill="none" stroke="${k % 2 ? '#5E5E5E' : PINK}" stroke-width="3"`}/>`).join('')),
-    svgEl(240, 240, `<path d="M50 50V190H190" fill="none" stroke="#5E5E5E" stroke-width="3"/><path d="M50 190C72 60 92 60 190 60" fill="none" stroke="${PINK}" stroke-width="7" stroke-linecap="round"/><circle cx="150" cy="61" r="11" fill="${PINK}"/>`),
-    `<div style="position:relative;width:100px;height:180px;border-radius:18px;background:${PAPER}"><i style="position:absolute;left:14px;bottom:62px;width:12px;height:40px;background:${INK}"></i><i style="position:absolute;left:32px;bottom:62px;width:12px;height:60px;background:${INK}"></i><i style="position:absolute;left:50px;bottom:62px;width:12px;height:30px;background:${BLUE}"></i><i style="position:absolute;left:14px;right:14px;bottom:16px;height:24px;border-radius:12px;background:${BLUE}"></i></div>`,
-    ''
-  ];
-  tileArt.forEach((art, i) => {
-    const el = document.createElement('div'); el.className = 'abs tile'; el.style.left = (TILE_X[i] - 120) + 'px';
-    el.innerHTML = art; tilesEl.appendChild(el);
-  });
-  const tiles = [...tilesEl.children];
-
-  const E = id => document.getElementById(id);
   const el = {
-    blob: E('blob'), contour: E('contour'), face: E('face'), eyeL: E('eyeL'), eyeR: E('eyeR'), smile: E('smile'),
-    grid: E('grid'), gridParts: [...E('grid').children], graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
+    blob: E('blob'), contour: E('contour'), face: E('face'), eyeL: E('eyeL'), eyeR: E('eyeR'), smile: E('smile'), pen: E('pen'),
+    grid: E('grid'), gridParts: [...E('grid').children], boxes: E('boxes'), sqs: sqsEl,
+    graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
     role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
-    card: E('card'), palette: [...E('palette').children], ptext: E('ptext'), caret: $('#ftext .caret'),
-    ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl, phone: E('phone'), pfill: E('pfill'), pcontent: E('pcontent'),
-    ptitle: $('#ptitle .mask > span'), track: E('track'), sfill: E('sfill'), sknob: E('sknob'), sval: E('sval'),
-    btn: E('btn'), scene: E('scene3d'), ring
+    ptext: E('ptext'), caret: $('#ftext .caret'), fbar: E('fbar'), ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl,
+    phone: E('phone'), pfill: E('pfill'), pcontent: E('pcontent'), ptitle: $('#ptitle .mask > span'),
+    track: E('track'), sfill: E('sfill'), sknob: E('sknob'), sval: E('sval'), btn: E('btn')
   };
   const PROMPT = 'un poster per la mamma, stile pop, 4 varianti';
   let M = null;   // misure prese una volta, a riposo
@@ -406,26 +340,35 @@
   function measure() {
     const s0 = stage.getBoundingClientRect(), S = s0.width / 1920;
     const box = n => { const b = n.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; };
-    const r = letters.map(box);
-    const cy = (r[0].t + r[0].b) / 2;
-    const k = kin.map(box);
-    M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy,
-          g1: ((r[3].r - G) + r[4].l) / 2, g2: (r[8].r + (r[9].l + G)) / 2,
+    const r = letters.map(box), k = kin.map(box), cy = (r[0].t + r[0].b) / 2;
+    M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0],
+          gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
           kx: k.map(b => (b.l + b.r) / 2), ky: (k[0].t + k[0].b) / 2 };
-    // I titoli giganti si adattano alla larghezza
-    bigWords.forEach(w => { if (!w) return; w.el.style.fontSize = '100px'; const wd = w.el.scrollWidth || 1;
-      const inner = w.el.getBoundingClientRect().width / S; const width = [...w.el.children].reduce((a, c) => a + c.getBoundingClientRect().width / S, 0);
-      w.el.style.fontSize = Math.min(240, 1760 / Math.max(1, width) * 100) + 'px'; });
+    // titoli: larghi al massimo 760 px, centrati in verticale nello spazio a sinistra
+    WORLDS.forEach(w => {
+      if (!w.el) return;
+      w.el.style.fontSize = '100px';
+      const width = w.letters.reduce((a, c) => a + c.getBoundingClientRect().width / S, 0);
+      const size = Math.min(230, (w.maxW || 760) / Math.max(1, width) * 100);
+      w.el.style.fontSize = size + 'px';
+      const top = 470 - size * .8 / 2 - 30;
+      w.el.style.top = top + 'px'; w.capEl.style.top = (top + size * .8 + 34) + 'px';
+    });
   }
 
-  /* ---------- Camera: spinta lenta dentro ogni mondo, colpo a ogni battito, zoom sul generatore ---------- */
+  const vis = (node, on) => { node.style.visibility = on ? 'visible' : 'hidden'; };
+  const dash = (node, k) => { node.style.strokeDasharray = '1 1'; node.style.strokeDashoffset = String(1 - clamp(k)); };
+
+  /* ---------- Camera ---------- */
   function camAt(t) {
-    let z = 1, fx = 960, fy = 540;
-    if (t >= 6.4 && t < 8) {
-      const zin = eIO(p(t, 6.42, 6.72)), zout = eIO(p(t, 6.98, 7.3)), k = zin * (1 - zout);
-      z = 1 + .38 * k + .05 * p(t, 6.72, 6.98) * (1 - zout);
-      fx = lerp(960, 820, k); fy = lerp(540, CHIP.y, k);
-      const k2 = eIO(p(t, 7.38, 7.55)) * (1 - eIO(p(t, 7.6, 7.95)));
+    const u = t - 2;
+    const shift = SHIFT * (eIO(p(t, 1.9, 2.3)) - eIO(p(t, 9.9, 10.2)) + eIO(p(t, 11.8, 12.1)) - eIO(p(t, 13.9, 14.2)));
+    let z = 1, fx = 960 - shift, fy = 540;
+    if (u >= 6.4 && u < 8) {                     // zoom alla Screen Studio sul generatore
+      const zin = eIO(p(u, 6.42, 6.72)), zout = eIO(p(u, 6.98, 7.3)), k = zin * (1 - zout);
+      z = 1 + .38 * k + .05 * p(u, 6.72, 6.98) * (1 - zout);
+      fx = lerp(fx, 820, k); fy = lerp(540, CHIP.y, k);
+      const k2 = eIO(p(u, 7.38, 7.55)) * (1 - eIO(p(u, 7.6, 7.95)));
       z += .14 * k2; fx = lerp(fx, SEL.x, k2); fy = lerp(fy, SEL.y, k2);
     }
     const push = t >= 2 && t < 14 ? .025 * Math.pow(Math.sin(Math.PI * t / 2), 2) : 0;
@@ -433,65 +376,89 @@
     return { z, fx, fy };
   }
 
-  const vis = (node, on) => { node.style.visibility = on ? 'visible' : 'hidden'; };
-  const dash = (node, k) => { node.style.strokeDasharray = '1 1'; node.style.strokeDashoffset = String(1 - clamp(k)); };
-
   /* ---------- La forma che attraversa i mondi ---------- */
   function blobAt(t) {
     const s = { cx: 960, cy: 500, R: 0, A: SQ, B: SQ, k: 0, col: BLUE, rot: 0 };
     if (t < 2) return s;
-    if (t < 3) { s.R = 260 * spring(p(t, 2, 2.45)); return s; }
-    if (t < 3.5) { const m = eOut(p(t, 3, 3.4)); s.cx = lerp(960, 560, m); s.R = lerp(260, 190, m); return s; }
-    if (t < 4) { const m = eIO(p(t, 3.5, 4)); s.cx = lerp(560, 960, m); s.R = lerp(190, 240, m); s.B = CI; s.k = m; s.col = mix(BLUE, GREEN, m); return s; }
+    if (t < 3) { s.R = 260 * spring(p(t, 2, 2.45)); return s; }           // il monogramma
+    if (t < 5.85) return s;                                                  // diviso nei quadrati e nei blocchi
+    if (t < 6.15) { const m = eIO(p(t, 5.85, 6.15)); s.R = lerp(75, 240, m); s.B = CI; s.k = m; s.col = mix(PINK, GREEN, m); return s; }
+    const u = t - 2;                                                         // da qui i tempi dei mondi successivi
     s.col = GREEN; s.R = 240; s.A = s.B = CI;
-    if (t < 5) return s;
-    if (t < 5.5) { s.B = FL; s.k = spring(p(t, 5, 5.4)); s.rot = (t - 5) * .6; return s; }
-    if (t < 6) { s.A = FL; s.B = BL; s.k = spring(p(t, 5.5, 5.9)); s.rot = .3 + (t - 5.5) * .6; return s; }
+    if (u < 5) return s;
+    if (u < 5.5) { s.B = FL; s.k = spring(p(u, 5, 5.4)); s.rot = (u - 5) * .6; return s; }
+    if (u < 6) { s.A = FL; s.B = BL; s.k = spring(p(u, 5.5, 5.9)); s.rot = .3 + (u - 5.5) * .6; return s; }
     s.A = s.B = BL;
-    // Generative AI: la forma diventa l'immagine di riferimento nel campo del prompt, poi rinasce dal risultato scelto
-    if (t < 7.5) { const m = eIO(p(t, 6, 6.35)); s.cx = lerp(960, CHIP.x, m); s.cy = lerp(500, CHIP.y, m); s.R = lerp(240, 26, m) * (1 - eIn(p(t, 7.02, 7.16))); s.rot = lerp(.6, SEL.rot, m); return s; }
+    if (u < 7.5) { const m = eIO(p(u, 6, 6.35)); s.cx = lerp(960, CHIP.x, m); s.cy = lerp(500, CHIP.y, m); s.R = lerp(240, 26, m) * (1 - eIn(p(u, 7.02, 7.16))); s.rot = lerp(.6, SEL.rot, m); return s; }
     s.col = PINK; s.rot = SEL.rot;
-    if (t < 8) { const m = eIO(p(t, 7.6, 8)); s.cx = lerp(SEL.x, 960, m); s.cy = lerp(SEL.y, 500, m); s.R = lerp(SEL.R, 200, m); return s; }
-    // Motion Design: la forma diventa la testina della timeline
-    if (t < 8.5) { const m = eIO(p(t, 8, 8.4)); s.cx = lerp(960, 510, m); s.cy = lerp(500, 830, m); s.R = lerp(200, 24, m); s.B = CI; s.k = m; return s; }
+    if (u < 8) { const m = eIO(p(u, 7.6, 8)); s.cx = lerp(SEL.x, 960, m); s.cy = lerp(SEL.y, 500, m); s.R = lerp(SEL.R, 200, m); return s; }
+    if (u < 8.5) { const m = eIO(p(u, 8, 8.4)); s.cx = lerp(960, 510, m); s.cy = lerp(500, 830, m); s.R = lerp(200, 24, m); s.B = CI; s.k = m; return s; }
     s.A = s.B = CI; s.R = 24; s.cy = 830;
-    if (t < 9.95) { s.cx = 510 + 900 * p(t, 8.5, 9.5); return s; }
-    if (t < 12) {
-      const m = eIO(p(t, 9.95, 10.35)), on = spring(p(t, 10.5, 10.85));
+    if (u < 9.95) { s.cx = 510 + 900 * p(u, 8.5, 9.5); return s; }
+    if (u < 12) {
+      const m = eIO(p(u, 9.95, 10.35)), on = spring(p(u, 10.5, 10.85));
       s.cx = lerp(1410, lerp(KOFF, KON, on), m); s.cy = lerp(830, KY, m); s.R = lerp(24, 16, m);
-      s.col = t < 10.5 ? mix(PINK, INK, m) : mix(INK, PAPER, eOut(p(t, 10.5, 10.75)));
+      s.col = u < 10.5 ? mix(PINK, INK, m) : mix(INK, PAPER, eOut(p(u, 10.5, 10.75)));
       return s;
     }
-    s.cx = KON; s.cy = KY; s.col = PAPER; s.R = 16 * (1 - eIn(p(t, 12, 12.25)));
+    s.cx = KON; s.cy = KY; s.col = PAPER; s.R = 16 * (1 - eIn(p(u, 12, 12.2)));
     return s;
+  }
+
+  /* ---------- Brand: i blocchi 3D (proiezione prospettica, ordinamento del pittore) ---------- */
+  function drawBoxes(t) {
+    const th = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const yaw = (32 * eIO(p(t, 4.5, 4.95)) - 60 * eIO(p(t, 5, 5.45)) + 28 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const D = 2200, F = 2200, cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw);
+    const cam = [-D * cT * sY, D * sT, -D * cT * cY];
+    const proj = ([x, y, z]) => {
+      const xr = x * cY - z * sY, zr = x * sY + z * cY;
+      const d = zr * cT - y * sT, u = y * cT + zr * sT, s = F / (D + d);
+      return [960 + xr * s, 500 - u * s, d];
+    };
+    const sink = 1 - eIO(p(t, 5.5, 5.8));
+    const boxes = sqs.map(q => {
+      const o = RISE.indexOf(q.k);
+      const h = lerp(H1[q.k], H2[q.k], eIO(p(t, 5 + .02 * o, 5.35 + .02 * o))) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
+      const b = { x: q.i * 168, z: -q.j * 168, w: 150, h, col: q.k === 4 ? PINK : BLUE };
+      b.depth = proj([b.x, h / 2, b.z])[2];
+      return b;
+    }).sort((a, b) => b.depth - a.depth);
+    let out = '';
+    boxes.forEach(b => {
+      const x0 = b.x - 75, x1 = b.x + 75, z0 = b.z - 75, z1 = b.z + 75, y1 = Math.max(0, b.h);
+      const fs = [{ v: [[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], n: [0, 1, 0], c: [b.x, y1, b.z], col: mix(b.col, PAPER, .22 * clamp(b.h / 60)) }];
+      if (y1 > .5) fs.push(
+        { v: [[x0, 0, z0], [x1, 0, z0], [x1, y1, z0], [x0, y1, z0]], n: [0, 0, -1], c: [b.x, y1 / 2, z0], col: b.col },
+        { v: [[x0, 0, z1], [x1, 0, z1], [x1, y1, z1], [x0, y1, z1]], n: [0, 0, 1], c: [b.x, y1 / 2, z1], col: mix(b.col, INK, .5) },
+        { v: [[x0, 0, z0], [x0, 0, z1], [x0, y1, z1], [x0, y1, z0]], n: [-1, 0, 0], c: [x0, y1 / 2, b.z], col: mix(b.col, INK, .32) },
+        { v: [[x1, 0, z0], [x1, 0, z1], [x1, y1, z1], [x1, y1, z0]], n: [1, 0, 0], c: [x1, y1 / 2, b.z], col: mix(b.col, INK, .32) });
+      fs.forEach(fc => {
+        if (fc.n[0] * (cam[0] - fc.c[0]) + fc.n[1] * (cam[1] - fc.c[1]) + fc.n[2] * (cam[2] - fc.c[2]) <= 0) return;
+        out += `<polygon points="${fc.v.map(proj).map(q => f1(q[0]) + ',' + f1(q[1])).join(' ')}" fill="${fc.col}" stroke="${fc.col}" stroke-width=".8" stroke-linejoin="round"/>`;
+      });
+    });
+    el.boxes.innerHTML = out;
   }
 
   /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
   function seek(t) {
     if (!M) return;
+    const u = t - 2;   // tempo dei mondi dopo il Brand (scritti sulla timeline originale)
 
-    /* Camera e titoli giganti */
     const cm = camAt(t);
     el.cam.style.transform = `translate(960px, 540px) scale(${cm.z}) translate(${-cm.fx}px, ${-cm.fy}px)`;
-    bigWords.forEach((w, i) => {
-      if (!w) return;
-      const b0 = 2 + 2 * i, on = t >= b0 && t < b0 + .62; vis(w.el, on);
-      if (!on) return;
-      w.letters.forEach((c, j) => { c.style.transform = `translateY(${maskY(t, b0 + .025 * j, .22, b0 + .36 + .015 * j, .16, -1)}%)`; });
-    });
 
-    /* Nome, ruolo, quadrati (battuta 1 e chiusura) */
+    /* Nome, ruolo, quadratini (battuta 1 e chiusura) */
     for (let i = 0; i < 13; i++) {
       const m = masks[i], c = letters[i];
       if (i === 0 && t >= 1.5 && t < 14) {
-        m.style.overflow = 'visible'; vis(c, t < 4);
-        if (t >= 4) continue;
-        const b = blobAt(t), mv = eIO(p(t, 1.5, 2.1));
-        let s = 2.3 * (t >= 3 ? b.R / 260 : 1);
-        s = lerp(1, s, mv) * (1 - eIn(p(t, 3.55, 3.95)));
-        const tx = lerp(-G, b.cx - M.Lcx, mv), ty = lerp(0, b.cy - M.Lcy, mv);
+        m.style.overflow = 'visible'; vis(c, t < 3.05);
+        if (t >= 3.05) continue;
+        const mv = eIO(p(t, 1.5, 2.1));
+        const s = lerp(1, 2.3, mv) * (1 - eIn(p(t, 2.9, 3.05)));
         c.style.transformOrigin = '50% 50%';
-        c.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
+        c.style.transform = `translate(${lerp(GOFF[0] * G, 960 - M.Lcx, mv)}px, ${lerp(0, 500 - M.Lcy, mv)}px) scale(${s})`;
         continue;
       }
       m.style.overflow = t < 1.45 ? 'visible' : 'hidden';
@@ -499,7 +466,7 @@
       if (t < 2) {
         sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
         jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
-        x = [-G, 0, G][group(i)] * eOut(p(t, 1, 1.4));
+        x = GOFF[group(i)] * G * eOut(p(t, 1, 1.4));
         if (i > 0) y = 115 * eIn(p(t, 1.5 + .02 * i, 1.85 + .02 * i));
       } else if (t < 14) { y = 115; }
       else { y = 115 * (1 - eOut(p(t, 14.3 + .02 * i, 14.75 + .02 * i))); }
@@ -511,21 +478,26 @@
     if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
     else if (t >= 14) ry = 115 * (1 - eOut(p(t, 14.45, 14.9)));
     el.role.style.transform = `translateY(${ry}%)`;
-    [[el.sq1, M.g1, -6], [el.sq2, M.g2, 6]].forEach(([q, gx, rot]) => {
+    [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
       const on = t >= 1 && t < 2; vis(q, on); if (!on) return;
-      const s = spring(p(t, 1, 1.35)), dy = 420 * eIn(p(t, 1.5, 1.85));
-      q.style.transform = `translate(${gx - 40}px, ${M.cy - 40 + dy}px) rotate(${rot}deg) scale(${s})`;
+      const s = spring(p(t, 1.02 + .06 * n, 1.36 + .06 * n)), dy = 420 * eIn(p(t, 1.5 + .03 * n, 1.85 + .03 * n));
+      q.style.transform = `translate(${M.gaps[n] - 32}px, ${M.cy - 32 + dy}px) rotate(${[-6, 4, -3][n]}deg) scale(${s})`;
     });
 
-    /* Cornice */
+    /* Cornice: marchio, riga dei mondi, titoli */
     el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
-    const active = t >= 13 ? -1 : Math.floor((t - 2) / 2);
-    worldEls.forEach((w, i) => {
-      w.firstChild.firstChild.style.transform = `translateY(${maskY(t, 2.1 + .04 * i, .4, 14 + .03 * i, .3)}%)`;
-      const lit = t >= 2 && t < 14 && (active === -1 || active === i);
-      w.style.color = lit ? PAPER : '#5E5E5E';
-      const u = active === i ? eOut(p(t, 2 + 2 * i, 2.3 + 2 * i)) : (active === -1 && t < 14 ? eOut(p(t, 13, 13.3)) : 0);
-      w.lastChild.style.transform = `scaleX(${u})`;
+    const active = WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
+    worldEls.forEach((d, i) => {
+      d.firstChild.firstChild.style.transform = `translateY(${maskY(t, 2.1 + .04 * i, .4, 14 + .03 * i, .3)}%)`;
+      d.style.color = active === i ? PAPER : '#5E5E5E';
+      d.lastChild.style.transform = `scaleX(${active === i ? eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3)) : 0})`;
+    });
+    WORLDS.forEach(w => {
+      if (!w.el) return;
+      const end = w.bigEnd || w.t1, on = t >= w.t0 && t < end + .2; vis(w.el, on); vis(w.capEl, on);
+      if (!on) return;
+      w.letters.forEach((c, j) => { c.style.transform = `translateY(${maskY(t, w.t0 + .025 * j, .32, end - .22 + .012 * j, .16, -1)}%)`; });
+      w.capIn.style.transform = `translateY(${maskY(t, w.t0 + .2, .35, end - .22, .16, -1)}%)`;
     });
 
     /* La forma */
@@ -533,151 +505,148 @@
     el.blob.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot));
     el.blob.setAttribute('fill', b.col);
 
-    /* Brand Identity */
-    const gOn = t >= 2.5 && t < 3.8; vis(el.grid, gOn);
+    /* Brand Identity: monogramma, griglia di costruzione, quattro quarti, nove quadrati, blocchi 3D */
+    const gOn = t >= 2.4 && t < 3.15; vis(el.grid, gOn);
     if (gOn) {
-      el.grid.setAttribute('transform', `translate(${b.cx} ${b.cy}) scale(${b.R / 260})`);
-      el.gridParts.forEach((g, j) => dash(g, eOut(p(t, 2.5 + .06 * j, 2.9 + .06 * j)) * (1 - eIn(p(t, 3.45 + .03 * j, 3.75 + .03 * j)))));
+      el.grid.setAttribute('transform', 'translate(960 500)');
+      el.gridParts.forEach((g, j) => dash(g, eOut(p(t, 2.4 + .05 * j, 2.75 + .05 * j)) * (1 - eIn(p(t, 2.88 + .02 * j, 3.1 + .02 * j)))));
     }
-    const cOn = t >= 3 && t < 3.9; vis(el.card, cOn);
-    if (cOn) {
-      const k = eOut(p(t, 3, 3.45));
-      el.card.style.transform = `translate(${1300 * eIn(p(t, 3.5, 3.9))}px, ${700 * (1 - k)}px) rotate(${lerp(-10, -3, k)}deg)`;
-    }
-    el.palette.forEach((d, i) => {
-      const s = spring(p(t, 3.2 + .08 * i, 3.55 + .08 * i)) * (1 - eIn(p(t, 3.5 + .04 * i, 3.8 + .04 * i)));
-      d.style.transform = `scale(${s})`; vis(d, s > .001);
+    const qOn = (t >= 3 && t < 4.02) || (t >= 5.85 && t < 6.1); vis(el.sqs, qOn);
+    if (qOn) sqs.forEach(q => {
+      const corner = q.i !== 0 && q.j !== 0, center = q.i === 0 && q.j === 0;
+      let s = 0, off = 168, rot = 0, col = center ? PINK : BLUE;
+      if (t < 3.25) {                                       // quattro quarti che si staccano e ruotano
+        if (corner) { const k = spring(p(t, 3, 3.25)); off = lerp(130, 150, k); s = lerp(260, 232, k); rot = 90 * eIO(p(t, 3, 3.25)); }
+      } else if (t < 4.02) {                                // diventano una griglia 3 x 3
+        if (corner) { const k = spring(p(t, 3.25, 3.55)); off = lerp(150, 168, k); s = lerp(232, 150, k); }
+        else if (center) s = 150 * spring(p(t, 3.5, 3.78));
+        else { const o = [1, 3, 5, 7].indexOf(q.k); s = 150 * spring(p(t, 3.3 + .04 * o, 3.58 + .04 * o)); }
+      } else {                                              // tornano piatti e rientrano: il rosa diventa la forma
+        const c = eIn(p(t, 5.85 + .012 * q.k, 6.05 + .012 * q.k)); s = center ? 0 : 150 * (1 - c); off = 168 * (1 - c);
+      }
+      if (center) off = 0;
+      const x = 960 + q.i * off, y = 500 + q.j * off;
+      q.el.setAttribute('x', f1(x - s / 2)); q.el.setAttribute('y', f1(y - s / 2));
+      q.el.setAttribute('width', f1(Math.max(0, s))); q.el.setAttribute('height', f1(Math.max(0, s)));
+      q.el.setAttribute('fill', col);
+      q.el.setAttribute('transform', `rotate(${rot.toFixed(2)} ${f1(x)} ${f1(y)})`);
     });
+    const bxOn = t >= 4 && t < 5.85; vis(el.boxes, bxOn);
+    if (bxOn) drawBoxes(t);
 
-    /* Illustration */
-    const iOn = t >= 4 && t < 6; vis(el.contour, iOn);
+    /* Illustration: una matita disegna il contorno e il sorriso */
+    const iOn = u >= 4.1 && u < 6; vis(el.contour, iOn);
+    const draw = eOut(p(u, 4.15, 4.6));
     if (iOn) {
       el.contour.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot, true));
-      dash(el.contour, eOut(p(t, 4, 4.55)) * (1 - eIn(p(t, 5.6, 5.95))));
+      dash(el.contour, draw * (1 - eIn(p(u, 5.6, 5.95))));
     }
-    const fs = spring(p(t, 4.5, 4.8)) * (1 - eIn(p(t, 5.45, 5.75)));
+    const fs = spring(p(u, 4.55, 4.85)) * (1 - eIn(p(u, 5.45, 5.75)));
     vis(el.face, fs > .001);
     if (fs > .001) {
       el.face.setAttribute('transform', `translate(${b.cx} ${b.cy}) scale(${fs})`);
       el.eyeL.setAttribute('transform', 'translate(-72 -40)');
-      el.eyeR.setAttribute('transform', `translate(72 -40) scale(1 ${1 - .9 * bump(p(t, 5, 5.22))})`);
-      dash(el.smile, eOut(p(t, 4.6, 5)));
+      el.eyeR.setAttribute('transform', `translate(72 -40) scale(1 ${1 - .9 * bump(p(u, 5, 5.22))})`);
+      dash(el.smile, eOut(p(u, 4.62, 4.98)));
+    }
+    const penOn = u >= 4.1 && u < 5.3; vis(el.pen, penOn);
+    if (penOn) {
+      let px, py;
+      if (u < 4.6) { const a = draw * TAU, r = rAt(a, b.R, b.A, b.B, b.k, b.rot, true); px = b.cx + r * Math.cos(a); py = b.cy + r * Math.sin(a); }
+      else if (u < 5) {
+        const s = eOut(p(u, 4.62, 4.98)), qx = (1 - s) * (1 - s) * -84 + 2 * (1 - s) * s * 0 + s * s * 84, qy = (1 - s) * (1 - s) * 40 + 2 * (1 - s) * s * 128 + s * s * 40;
+        const k = eIO(p(u, 4.58, 4.66)), [ax, ay] = [b.cx + b.R * 1.1, b.cy];
+        px = lerp(ax, b.cx + qx, k); py = lerp(ay, b.cy + qy, k);
+      } else { const k = eIn(p(u, 5, 5.3)); px = b.cx + 84 + 600 * k; py = b.cy + 40 + 500 * k; }
+      if (u < 4.2) { const k = eOut(p(u, 4.1, 4.2)); px = lerp(px + 500, px, k); py = lerp(py + 400, py, k); }
+      el.pen.setAttribute('transform', `translate(${f1(px)} ${f1(py)})`);
     }
 
-    /* Generative AI: il cursore guida il generatore */
-    const aOn = t >= 6 && t < 7.95; vis(el.ai, aOn);
+    /* Generative AI: il cursore guida il generatore, i risultati emergono dalla sfocatura */
+    const aOn = u >= 6 && u < 7.95; vis(el.ai, aOn);
     if (aOn) {
-      const k = eOut(p(t, 6, 6.35)), out = eIn(p(t, 7.6, 7.92)), ins = 50 * (1 - k) + 50 * out;
+      const k = eOut(p(u, 6, 6.35)), out = eIn(p(u, 7.6, 7.92)), ins = 50 * (1 - k) + 50 * out;
       el.ai.style.clipPath = `inset(${ins}% 0 ${ins}% 0 round 24px)`;
-      el.ptext.textContent = PROMPT.slice(0, Math.round(PROMPT.length * p(t, 6.52, 6.95)));
-      vis(el.caret, t >= 6.5 && t < 7.02 && (t < 6.95 || (t * 4 | 0) % 2 === 0));
-      el.gen.style.transform = `scale(${1 - .1 * bump(p(t, 7.02, 7.18))})`;
-      el.gen.style.background = t >= 7.02 && t < 7.4 ? PAPER : PINK;
-      el.gen.textContent = t >= 7.02 && t < 7.4 ? 'Genero…' : 'Genera';
+      el.ptext.textContent = PROMPT.slice(0, Math.round(PROMPT.length * p(u, 6.52, 6.95)));
+      vis(el.caret, u >= 6.5 && u < 7.02 && (u < 6.95 || (u * 4 | 0) % 2 === 0));
+      el.gen.style.transform = `scale(${1 - .1 * bump(p(u, 7.02, 7.18))})`;
+      el.gen.style.background = u >= 7.02 && u < 7.4 ? PAPER : PINK;
+      el.gen.textContent = u >= 7.02 && u < 7.4 ? 'Genero…' : 'Genera';
+      el.fbar.style.transform = `scaleX(${u >= 7.02 && u < 7.42 ? eOut(p(u, 7.02, 7.4)) : 0})`;
       results.forEach((r, i) => {
-        const a = 7.06 + .08 * i, kk = eOut(p(t, a, a + .3)), on = t >= a; vis(r, on);
+        const a = 7.06 + .07 * i, kk = eOut(p(u, a, a + .34)), on = u >= a; vis(r, on);
         if (!on) return;
-        r.style.clipPath = `inset(0 0 ${(1 - kk) * 100}% 0 round 16px)`;
-        r.style.boxShadow = i === 1 ? `inset 0 0 0 ${4 * eOut(p(t, 7.52, 7.6))}px ${PINK}` : 'none';
-        vis(r.firstChild, !(i === 1 && t >= 7.52));
-        const scan = r.lastChild; vis(scan, kk > 0 && kk < .99); scan.style.transform = `translateY(${kk * 397}px)`;
+        r.style.transform = `scale(${lerp(.86, 1, kk)})`;
+        r.style.filter = kk < .995 ? `blur(${f1(26 * (1 - kk))}px) saturate(${f1(kk)})` : 'none';
+        r.style.boxShadow = i === 1 ? `inset 0 0 0 ${4 * eOut(p(u, 7.52, 7.6))}px ${PINK}` : 'none';
+        vis(r.firstChild, !(i === 1 && u >= 7.52));
       });
     }
-    const cOn2 = t >= 6.25 && t < 7.85; vis(el.cursor, cOn2);
-    if (cOn2) {
-      let j = 0; while (j < CURSOR_KEYS.length - 2 && t >= CURSOR_KEYS[j + 1][0]) j++;
-      const [t0, x0, y0] = CURSOR_KEYS[j], [t1, x1, y1] = CURSOR_KEYS[j + 1], m = eIO(p(t, t0, t1));
-      const press = CLICKS.reduce((a, c) => a * (1 - .2 * bump(p(t, c - .02, c + .12))), 1);
+    const curOn = u >= 6.25 && u < 7.85; vis(el.cursor, curOn);
+    if (curOn) {
+      let j = 0; while (j < CURSOR_KEYS.length - 2 && u >= CURSOR_KEYS[j + 1][0]) j++;
+      const [t0, x0, y0] = CURSOR_KEYS[j], [t1, x1, y1] = CURSOR_KEYS[j + 1], m = eIO(p(u, t0, t1));
+      const press = CLICKS.reduce((a, c) => a * (1 - .2 * bump(p(u, c - .02, c + .12))), 1);
       el.cursor.style.transform = `translate(${lerp(x0, x1, m) - 6}px, ${lerp(y0, y1, m) - 4}px) scale(${press})`;
     }
 
-    /* Motion Design: timeline e parola cinetica che reagisce alla testina */
-    const mOn = t >= 8 && t < 10; vis(el.graph, mOn);
+    /* Motion Design: timeline e parola cinetica che reagisce alla testina, con la scia */
+    const mOn = u >= 8 && u < 10; vis(el.graph, mOn);
     if (mOn) {
-      const out = 1 - eIn(p(t, 9.6, 9.9));
-      dash(el.tl, eOut(p(t, 8, 8.4)) * out);
+      const out = 1 - eIn(p(u, 9.6, 9.9));
+      dash(el.tl, eOut(p(u, 8, 8.4)) * out);
       el.kfs.forEach((kf, i) => {
-        const s = spring(p(t, 8.5 + .5 * i, 8.75 + .5 * i)) * out;
+        const s = spring(p(u, 8.5 + .5 * i, 8.75 + .5 * i)) * out * (1 + .35 * bump(p(u, 8.5 + .5 * i, 8.7 + .5 * i)));
         kf.setAttribute('transform', `translate(${510 + 450 * i} 830) rotate(45) scale(${s})`);
+        kf.setAttribute('fill', b.cx >= 510 + 450 * i - 4 && u >= 8.5 ? PINK : PAPER);
       });
     }
-    const kOn = t >= 8.25 && t < 9.95; vis(el.kin, kOn);
+    const kOn = u >= 8.25 && u < 9.95; vis(el.kin, kOn);
     if (kOn) {
-      const head = b.cx;
       kin.forEach((L, j) => {
         const a = 8.28 + .05 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));
-        const x = pos(t), v = (pos(t - 1 / 60) - x) * 60;
-        const near = t >= 8.5 && t < 9.55 ? Math.max(0, 1 - Math.abs(head - M.kx[j]) / 130) : 0;
-        const ex = eIn(p(t, 9.5 + .04 * j, 9.82 + .04 * j));
+        const x = pos(u), v = (pos(u - 1 / 60) - x) * 60;
+        const near = u >= 8.5 && u < 9.55 ? Math.max(0, 1 - Math.abs(b.cx - M.kx[j]) / 130) : 0;
+        const ex = eIn(p(u, 9.5 + .04 * j, 9.82 + .04 * j));
         const tx = x + (1410 - M.kx[j]) * ex, ty = -70 * spring(near) + (830 - M.ky) * ex;
-        L.style.transform = `translate(${tx}px, ${ty}px) skewX(${-Math.min(18, v * .004)}deg) scale(${(1 - ex) * (1 + .12 * near)})`;
+        L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${-Math.min(18, v * .004)}deg) scale(${(1 - ex) * (1 + .12 * near)})`;
         const blur = Math.min(18, v * .005);
-        L.style.filter = blur > .4 ? `blur(${blur.toFixed(1)}px)` : 'none';
-        L.style.color = near > .02 ? mix(PAPER, PINK, Math.min(1, near * 1.6)) : PAPER;
+        L.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
+        const e1 = Math.min(120, v * .05), e2 = Math.min(240, v * .1);
+        L.style.textShadow = e1 > 2 ? `${f1(e1)}px 0 0 rgba(245,245,242,.28), ${f1(e2)}px 0 0 rgba(245,245,242,.12)` : 'none';
+        L.style.color = near > .02 ? mix(PAPER, PINK, near * 1.6) : PAPER;
       });
     }
 
-    /* UI/UX Design */
-    const phOn = t >= 9.75 && t < 12.4; vis(el.phone, phOn);
+    /* UI/UX Design: la timeline diventa lo schermo; alla fine lo schermo si stringe nella L del nome */
+    const phOn = u >= 9.75 && u < 12.36; vis(el.phone, phOn);
     if (phOn) {
-      let r, rad = 0;
-      if (t < 10.25) {
-        const m = eIO(p(t, 9.75, 10.25));   // la timeline si allarga e diventa lo schermo
+      let r, rad;
+      if (u < 10.25) {
+        const m = eIO(p(u, 9.75, 10.25));
         r = { x: lerp(510, P.x, m), y: lerp(826, P.y, m), w: lerp(900, P.w, m), h: lerp(8, P.h, m) }; rad = lerp(4, 48, m);
-      } else if (t < 12) { r = P; rad = 48; }
+      } else if (u < 12) { r = P; rad = 48; }
       else {
-        const m = eIO(p(t, 12, 12.4));
-        r = { x: lerp(P.x, POST.x, m), y: lerp(P.y, POST.y, m), w: lerp(P.w, POST.w, m), h: lerp(P.h, POST.h, m) };
-        rad = lerp(48, 18 * POST.w / 220, m);
+        const m = eIO(p(u, 12, 12.34)), L = M.L;
+        r = { x: lerp(P.x, L.l + 6, m), y: lerp(P.y, L.t + 20, m), w: lerp(P.w, 34, m), h: lerp(P.h, L.b - L.t - 40, m) }; rad = lerp(48, 4, m);
       }
       Object.assign(el.phone.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px', borderRadius: rad + 'px' });
       el.phone.style.boxShadow = `inset 0 0 0 3px ${PAPER}`;
-      el.pfill.style.transform = `scaleY(${eOut(p(t, 10, 10.35))})`;
-      el.pcontent.style.transform = `scale(${1 - eIn(p(t, 12, 12.25))})`;
-      vis(el.pcontent, t < 12.25);
-      el.ptitle.style.transform = `translateY(${maskY(t, 10.25, .35)}%)`;
-      const on = eOut(p(t, 10.5, 10.75));
-      el.track.style.background = t < 10.25 ? 'transparent' : mix(TRACK, BLUE, on);
-      bars.forEach((bar, i) => { bar.style.transform = `scaleY(${eOut(p(t, 10.5 + .07 * i, 10.9 + .07 * i))})`; });
-      const v = lerp(.15, .9, eOut(p(t, 11, 11.45)));
+      el.pfill.style.transform = `scaleY(${eOut(p(u, 10, 10.35))})`;
+      el.pcontent.style.transform = `scale(${1 - eIn(p(u, 12, 12.2))})`;
+      vis(el.pcontent, u < 12.2);
+      el.ptitle.style.transform = `translateY(${maskY(u, 10.25, .35)}%)`;
+      const on = eOut(p(u, 10.5, 10.75));
+      el.track.style.background = u < 10.25 ? 'transparent' : mix(TRACK, BLUE, on);
+      bars.forEach((bar, i) => { bar.style.transform = `scaleY(${eOut(p(u, 10.5 + .07 * i, 10.9 + .07 * i))})`; });
+      const v = lerp(.15, .9, eOut(p(u, 11, 11.45)));
       el.sfill.style.transform = `scaleX(${v})`;
       el.sknob.style.transform = `translateX(${v * 348}px)`;
       el.sval.textContent = Math.round(v * 100) + '%';
-      const press = 1 - .07 * bump(p(t, 11.5, 11.72));
-      el.btn.style.transform = `translateY(${110 * (1 - eOut(p(t, 10.75, 11.1)))}%) scale(${press})`;
-      el.btn.textContent = t >= 11.6 ? 'Fatto!' : 'Avanti';
+      const press = 1 - .07 * bump(p(u, 11.5, 11.72));
+      el.btn.style.transform = `translateY(${110 * (1 - eOut(p(u, 10.75, 11.1)))}%) scale(${press})`;
+      el.btn.textContent = u >= 11.6 ? 'Fatto!' : 'Avanti';
     }
-
-    /* Digital & Social: dolly, onda di luce, crane, ritorno alla tessera */
-    const wOn = t >= 12.4 && t < 14.6; vis(el.scene, wOn);
-    if (wOn) {
-      const dz = lerp(DZ0, 0, eIO(p(t, 12.45, 12.95)));
-      const crane = eIO(p(t, 12.95, 13.25));
-      el.ring.style.transform = `translateZ(${RING_R + dz}px) translateY(${-40 * crane}px) rotateX(${14 * crane}deg)`;
-      posts.forEach(o => {
-        const app = o.center ? 1 : spring(p(t, 12.5 + .05 * o.d, 12.85 + .05 * o.d));
-        const w = bump(p(t, 12.85 + .06 * o.c, 13.25 + .06 * o.c));
-        o.el.style.transform = `rotateY(${o.ang}deg) translateZ(${-RING_R}px) translateY(${o.y}px) rotateX(${-16 * w}deg) scale(${app})`;
-        vis(o.el, app > .001);
-        o.light.style.opacity = (.55 * w).toFixed(3);
-        if (o.center) o.img.style.transform = `scale(${spring(p(t, 12.4, 12.7))})`;
-      });
-      const k = eIO(p(t, 13.2, 13.5)), s = lerp(1, .14, k);
-      const dy = tileDy(t, 5);
-      el.scene.style.transform = `translate(${lerp(0, TILE_X[5] - 960, k)}px, ${dy}px) scale(${s})`;
-    }
-
-    /* Riepilogo: sei tessere */
-    tiles.forEach((tile, i) => {
-      const a = i === 5 ? 13.3 : 13.1 + .06 * i;
-      const inK = eOut(p(t, a, a + .4)), on = t >= a && t < 14.6; vis(tile, on);
-      if (!on) return;
-      const rise = i === 5 ? 0 : 500 * (1 - inK), s = i === 5 ? inK : 1;
-      tile.style.transform = `translateY(${rise + tileDy(t, i)}px) scale(${s})`;
-    });
-  }
-  function tileDy(t, i) {
-    return -28 * bump(p(t, 13.5 + .05 * i, 13.85 + .05 * i)) + 900 * eIn(p(t, 13.95 + .03 * i, 14.25 + .03 * i));
   }
 
   /* ---------- Orologio, comandi, suono ---------- */
@@ -731,11 +700,11 @@
     while (nextBeat < tu + .2) {
       const at = ref + (nextBeat - base);
       if (at >= ctx.currentTime - .01) {
-        const b = Math.round((((nextBeat % DUR) + DUR) % DUR) / BEAT) % 30;
-        kick(at, b % 4 === 0);
-        if (b % 4 === 0) hit(at);
-        if (b === 24) riser(at, 2);
-        if (b === 28) chime(at);
+        const bt = Math.round((((nextBeat % DUR) + DUR) % DUR) / BEAT) % 30;
+        kick(at, bt % 4 === 0);
+        if (bt % 4 === 0) hit(at);
+        if (bt === 6) riser(at, 1);              // verso i blocchi 3D
+        if (bt === 28) chime(at);
       }
       nextBeat += BEAT;
     }
@@ -780,7 +749,6 @@
     hint.style.opacity = st < .3 ? '1' : '0';
     requestAnimationFrame(scrollFrame);
   }
-
   function frame() {
     const tu = nowT();
     if (playing && sound) schedule(tu);
@@ -792,9 +760,11 @@
   }
 
   window.seek = t => { playing = false; rebase(t); seek(t); };
-  const start = () => { if (M) return; measure(); rebase(base); document.documentElement.dataset.ready = '1';
-    if (scrollMode && qs.has('at')) scrollTo(0, parseFloat(qs.get('at')) * (document.documentElement.scrollHeight - innerHeight));   // per i test
-    requestAnimationFrame(scrollMode ? scrollFrame : frame); };
+  const start = () => {
+    if (M) return;
+    measure(); rebase(base); document.documentElement.dataset.ready = '1';
+    requestAnimationFrame(scrollMode ? scrollFrame : frame);
+  };
   document.fonts.ready.then(start);
   setTimeout(start, 2500);
 })();
