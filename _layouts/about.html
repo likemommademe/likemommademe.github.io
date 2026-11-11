@@ -13,26 +13,31 @@ layout: default
   {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
 </section>
 
-{% comment %} 2. La timeline: a sinistra il testo e l'anno gigante, a destra le tappe con la linea che si riempie {% endcomment %}
-<section class="anni" data-anni>
-  <h2 class="anni__t rise"><span>{{ a.anni_titolo }}</span></h2>
+{% comment %} 2. La timeline (come bitwip "through the years"): a sinistra il testo e l'anno gigante che scorre
+   come un contatore, a destra le tappe; la linea si riempie fino alla tappa attiva e il segno ci si posa ruotando {% endcomment %}
+<section class="anni">
+  <h2 class="anni__t rise"><span>{{ a.anni_titolo }}<i class="segno" aria-hidden="true"></i></span></h2>
   <div class="anni__grid">
     <div class="anni__sx">
       <div class="anni__fermo">
         <p class="anni__lead">{{ a.anni_lead }}</p>
         <div class="anni__testo">{{ content }}</div>
-        <div class="anni__big" aria-hidden="true"><span class="anni__num" data-num>{{ tappe.first.anno }}</span><i class="anni__seg"></i></div>
+        <div class="anni__big" aria-hidden="true" data-anno-big>
+          <span class="anni__fen"><span class="anni__piste">{% for t in tappe %}<span>{{ t.anno }}</span>{% endfor %}</span></span><i class="anni__seg"></i>
+        </div>
       </div>
     </div>
-    <ol class="anni__lista" data-lista>
-      <li class="anni__linea" aria-hidden="true"><i data-prog></i><b data-segno></b></li>
-      {% for t in tappe %}
-        <li class="anni__tappa" data-tappa data-anno="{{ t.anno }}">
-          <span class="anni__anno">{{ t.anno }}</span>
-          <span class="anni__cosa">{{ t.testo }}</span>
-        </li>
-      {% endfor %}
-    </ol>
+    <div class="anni__frise" data-frise>
+      <i class="anni__stella" aria-hidden="true"></i>
+      <ol class="anni__lista">
+        {% for t in tappe %}
+          <li class="anni__tappa">
+            <span class="anni__anno">{{ t.anno }}</span>
+            <span class="anni__cosa">{{ t.testo }}</span>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -53,17 +58,21 @@ layout: default
 </section>
 {% endif %}
 
-{% comment %} 4. Valori: ogni parola si scrive quando entra nello schermo (contorno vuoto, poi l'inchiostro) {% endcomment %}
+{% comment %} 4. Valori (come bitwip "Three values guide us"): ogni parola si scrive seguendo lo scroll,
+   le lettere fantasma diventano piene e una penna corre davanti all'inchiostro {% endcomment %}
 <section class="sec">
-  <div class="sec-head"><h2 class="rise"><span>{{ a.valori_titolo }}</span></h2></div>
-  <ul class="valori">
-    {% for v in a.valori %}
-      <li class="valore" data-in>
-        <h3 class="valore__t"><span class="valore__vuoto" aria-hidden="true">{{ v.nome }}</span><span class="valore__pieno">{{ v.nome }}</span></h3>
-        <p class="valore__d">{{ v.testo }}</p>
-      </li>
-    {% endfor %}
-  </ul>
+  <div class="sec-head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
+  <div class="valori" data-scrittura>
+    <i class="valori__penna" aria-hidden="true"></i>
+    <ul>
+      {% for v in a.valori %}
+        <li class="valore">
+          <h3 class="valore__t"><span class="valore__mot"><span class="valore__fantasma">{{ v.nome }}</span><span class="valore__inchiostro" aria-hidden="true">{{ v.nome }}</span></span></h3>
+          <p class="valore__d">{{ v.testo }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 </section>
 
 {% comment %} 5. Clienti (dal pannello) {% endcomment %}
@@ -113,29 +122,68 @@ layout: default
   (function () {
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Timeline
-    var box = document.querySelector('[data-anni]');
-    if (box) {
-      var lista = box.querySelector('[data-lista]'), prog = box.querySelector('[data-prog]'), segno = box.querySelector('[data-segno]'),
-          num = box.querySelector('[data-num]'), tappe = Array.prototype.slice.call(box.querySelectorAll('[data-tappa]')), attiva = -1, timer;
-      var tick = function () {
-        var r = lista.getBoundingClientRect(), mezzo = innerHeight * .55;
-        var k = Math.min(1, Math.max(0, (mezzo - r.top) / r.height));
-        prog.style.transform = 'scaleY(' + k + ')';
-        segno.style.transform = 'translateY(' + (k * r.height) + 'px) rotate(' + (45 + k * 360) + 'deg)';
-        var i = 0;
-        tappe.forEach(function (t, j) { if (t.getBoundingClientRect().top < mezzo) i = j; });
-        if (i === attiva) return;
-        tappe.forEach(function (t, j) { t.classList.toggle('is-attiva', j === i); t.classList.toggle('is-passata', j < i); });
-        var su = i > attiva, primo = attiva < 0; attiva = i;
-        if (primo || reduce) { num.textContent = tappe[i].dataset.anno; return; }
-        clearTimeout(timer);
-        num.className = 'anni__num ' + (su ? 'esce-su' : 'esce-giu');
-        timer = setTimeout(function () { num.textContent = tappe[i].dataset.anno; num.className = 'anni__num ' + (su ? 'entra-su' : 'entra-giu'); }, 200);
+    var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+
+    // Timeline: la tappa attiva è l'ultima il cui centro ha superato il 58% dello schermo
+    var frise = document.querySelector('[data-frise]');
+    if (frise) {
+      var righe = Array.prototype.slice.call(frise.querySelectorAll('.anni__tappa')), big = document.querySelector('[data-anno-big]');
+      var centri = [], H = 1, cur = -2;
+      var regola = function (k) {
+        if (k === cur) return; cur = k;
+        righe.forEach(function (l, i) { l.classList.toggle('is-lu', i <= k); l.classList.toggle('is-cur', i === k); });
+        var y = k < 0 ? 0 : centri[k];
+        frise.style.setProperty('--y', y.toFixed(1) + 'px');
+        frise.style.setProperty('--p', (y / H).toFixed(4));
+        frise.style.setProperty('--k', Math.max(0, k));
+        frise.classList.toggle('is-parti', k >= 0);
+        if (big) big.style.setProperty('--k', Math.max(0, k));
       };
-      addEventListener('scroll', tick, { passive: true });
-      addEventListener('resize', tick);
-      tick();
+      var aggiorna = function () {
+        var rep = innerHeight * .58 - frise.getBoundingClientRect().top, k = -1;
+        centri.forEach(function (c, i) { if (c <= rep) k = i; });
+        regola(k);
+      };
+      var misura = function () {
+        var top = frise.getBoundingClientRect().top;
+        centri = righe.map(function (l) { var r = l.getBoundingClientRect(); return r.top - top + r.height / 2; });
+        H = Math.max(1, frise.offsetHeight); cur = -2;
+        if (reduce) { regola(righe.length - 1); return; }
+        frise.classList.add('is-vivo'); aggiorna();
+      };
+      var tic = false;
+      addEventListener('scroll', function () { if (!tic) { tic = true; requestAnimationFrame(function () { tic = false; if (!reduce) aggiorna(); }); } }, { passive: true });
+      addEventListener('resize', misura);
+      if (document.fonts) document.fonts.ready.then(misura);
+      addEventListener('load', misura);
+      misura();
+    }
+
+    // Valori: la parola si scrive seguendo lo scroll; la penna corre davanti all'inchiostro e salta alla parola dopo
+    var scr = document.querySelector('[data-scrittura]');
+    if (scr) {
+      var parole = Array.prototype.slice.call(scr.querySelectorAll('.valore__mot')),
+          inch = parole.map(function (p) { return p.querySelector('.valore__inchiostro'); }),
+          voci = parole.map(function (p) { return p.closest('li'); }), penna = scr.querySelector('.valori__penna');
+      var scrivi = function () {
+        var base = scr.getBoundingClientRect(), testa = null;
+        parole.forEach(function (p, i) {
+          var r = p.getBoundingClientRect(), h = Math.max(1, voci[i].offsetHeight);
+          var f = reduce ? 1 : clamp((innerHeight * .66 - r.top) / h, 0, 1);
+          inch[i].style.clipPath = 'inset(-.25em ' + ((1 - f) * 100).toFixed(2) + '% -.3em -.05em)';
+          voci[i].classList.toggle('is-on', f > 0);
+          if (f > 0) testa = { x: r.left - base.left + f * r.width, y: r.top - base.top + r.height * .18, giro: (i + f) * 360 };
+        });
+        if (testa && !reduce) {
+          penna.style.opacity = '1';
+          penna.style.transform = 'translate(' + testa.x.toFixed(1) + 'px,' + testa.y.toFixed(1) + 'px) rotate(' + testa.giro.toFixed(1) + 'deg)';
+        } else penna.style.opacity = '0';
+      };
+      var tic2 = false;
+      addEventListener('scroll', function () { if (!tic2) { tic2 = true; requestAnimationFrame(function () { tic2 = false; scrivi(); }); } }, { passive: true });
+      addEventListener('resize', scrivi);
+      if (document.fonts) document.fonts.ready.then(scrivi);
+      scrivi();
     }
 
     // Strisce di foto: scorrono in direzioni opposte seguendo lo scroll
@@ -160,12 +208,5 @@ layout: default
     };
     orologio(); setInterval(orologio, 20000);
 
-    // Valori: l'inchiostro riempie la parola quando entra nello schermo
-    var vals = document.querySelectorAll('[data-in]');
-    if (!('IntersectionObserver' in window) || reduce) vals.forEach(function (v) { v.classList.add('is-in'); });
-    else {
-      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -20% 0px' });
-      vals.forEach(function (v) { io.observe(v); });
-    }
   })();
 </script>

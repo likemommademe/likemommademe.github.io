@@ -73,6 +73,11 @@
           {% include contatti.html %}
         </div>
       </div>
+      {% comment %} La scritta gigante: le lettere arrivano sparse e si ricompongono mentre si arriva in fondo alla pagina {% endcomment %}
+      {% assign lettere = info.nome | upcase | split: "" %}
+      <div class="pied__logo" aria-hidden="true" data-compone>
+        <div class="pied__mot">{% for l in lettere %}<span class="pl">{{ l }}</span>{% endfor %}<span class="pl pl--segno" data-trottola></span></div>
+      </div>
       <div class="pied__fine">
         <span>© {{ 'now' | date: '%Y' }} {{ info.nome | upcase }}</span>
         <a href="{{ '/privacy/' | relative_url }}">{{ f.privacy }}</a>
@@ -121,6 +126,53 @@
         });
         t.finished.finally(function () { html.classList.remove('vt-tema'); });
       });
+
+      // Footer: la scritta gigante si ricompone. Ogni lettera parte spostata e ruotata (valori fissi, non casuali);
+      // --e va da 0 a 1 mentre la scritta sale dal fondo dello schermo
+      var logo = document.querySelector('[data-compone]');
+      if (logo) {
+        var mot = logo.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
+        pls.forEach(function (p, i) {
+          var h = Math.sin(i * 12.9898 + 4.1) * 43758.5453, r = h - Math.floor(h), r2 = Math.abs(Math.sin(i * 78.233) * 9999) % 1;
+          p.style.setProperty('--dx', ((i - (pls.length - 1) / 2) * 38 + (r - .5) * 160).toFixed(0) + 'px');
+          p.style.setProperty('--dy', ((r2 - .3) * 220).toFixed(0) + 'px');
+          p.style.setProperty('--dr', ((r - .5) * 80).toFixed(0) + 'deg');
+        });
+        var adatta = function () {
+          mot.style.fontSize = '100px';
+          var w = mot.scrollWidth || 1;
+          mot.style.fontSize = (logo.clientWidth / w * 100 * .995).toFixed(2) + 'px';
+        };
+        var componi = function () {
+          if (reduce.matches) { logo.style.setProperty('--e', 1); return; }
+          var r = logo.getBoundingClientRect(), resto = Math.max(0, r.bottom - innerHeight);
+          logo.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .55))).toFixed(3));
+        };
+        adatta(); componi();
+        if (document.fonts) document.fonts.ready.then(function () { adatta(); componi(); });
+        addEventListener('resize', function () { adatta(); componi(); });
+        addEventListener('scroll', componi, { passive: true });
+
+        // il segno finale gira come una trottola: si spinge passandoci sopra o trascinandolo
+        var tr = logo.querySelector('[data-trottola]'), ang = 0, vel = 0, raf = 0, last = 0, presa = null;
+        var gira = function () { tr.style.rotate = ang.toFixed(1) + 'deg'; };
+        var corri = function (t) {
+          var dt = Math.min(48, t - (last || t)); last = t;
+          ang += vel * dt; vel *= Math.pow(.965, dt / 16.7); gira();
+          if (Math.abs(vel) > .02 && !presa) raf = requestAnimationFrame(corri); else { raf = 0; last = 0; }
+        };
+        var spingi = function (v) { vel = Math.max(-3, Math.min(3, vel + v)); if (!raf) raf = requestAnimationFrame(corri); };
+        var angolo = function (e) { var b = tr.getBoundingClientRect(); return Math.atan2(e.clientY - b.top - b.height / 2, e.clientX - b.left - b.width / 2) * 180 / Math.PI; };
+        tr.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !presa && !reduce.matches) spingi(vel < 0 ? -.5 : .5); });
+        tr.addEventListener('pointerdown', function (e) { e.preventDefault(); tr.setPointerCapture(e.pointerId); cancelAnimationFrame(raf); raf = 0; presa = { a: angolo(e), t: e.timeStamp, v: 0 }; });
+        tr.addEventListener('pointermove', function (e) {
+          if (!presa) return;
+          var a = angolo(e), d = a - presa.a; if (d > 180) d -= 360; if (d < -180) d += 360;
+          ang += d; presa.v = d / Math.max(8, e.timeStamp - presa.t); presa.a = a; presa.t = e.timeStamp; gira();
+        });
+        var lascia = function () { if (!presa) return; var v = presa.v; presa = null; spingi(v); };
+        tr.addEventListener('pointerup', lascia); tr.addEventListener('pointercancel', lascia);
+      }
 
       // Titoli che salgono dentro una maschera quando entrano nello schermo
       var rises = document.querySelectorAll('.rise');
