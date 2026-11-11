@@ -132,9 +132,9 @@
 
       // Footer: la scritta gigante si ricompone. Ogni lettera parte spostata e ruotata (valori fissi, non casuali);
       // --e va da 0 a 1 mentre la scritta sale dal fondo dello schermo
-      var logo = document.querySelector('[data-compone]');
-      if (logo) {
-        var mot = logo.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
+      var wm = document.querySelector('[data-compone]');
+      if (wm) {
+        var mot = wm.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
         pls.forEach(function (p, i) {
           var h = Math.sin(i * 12.9898 + 4.1) * 43758.5453, r = h - Math.floor(h), r2 = Math.abs(Math.sin(i * 78.233) * 9999) % 1;
           // come bitwip: lettere piene, appena spostate e inclinate, che si raddrizzano al loro posto
@@ -145,12 +145,12 @@
         var adatta = function () {
           mot.style.fontSize = '100px';
           var w = mot.scrollWidth || 1;
-          mot.style.fontSize = (logo.clientWidth / w * 100 * .995).toFixed(2) + 'px';
+          mot.style.fontSize = (wm.clientWidth / w * 100 * .995).toFixed(2) + 'px';
         };
         var componi = function () {
-          if (reduce.matches) { logo.style.setProperty('--e', 1); return; }
-          var r = logo.getBoundingClientRect(), resto = Math.max(0, r.bottom - innerHeight);
-          logo.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .55))).toFixed(3));
+          if (reduce.matches) { wm.style.setProperty('--e', 1); return; }
+          var r = wm.getBoundingClientRect(), resto = Math.max(0, r.bottom - innerHeight);
+          wm.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .55))).toFixed(3));
         };
         adatta(); componi();
         if (document.fonts) document.fonts.ready.then(function () { adatta(); componi(); });
@@ -158,7 +158,7 @@
         addEventListener('scroll', componi, { passive: true });
 
         // il segno finale gira come una trottola: si spinge passandoci sopra o trascinandolo
-        var tr = logo.querySelector('[data-trottola]'), ang = 0, vel = 0, raf = 0, last = 0, presa = null;
+        var tr = wm.querySelector('[data-trottola]'), ang = 0, vel = 0, raf = 0, last = 0, presa = null;
         var gira = function () { tr.style.rotate = ang.toFixed(1) + 'deg'; };
         var corri = function (t) {
           var dt = Math.min(48, t - (last || t)); last = t;

@@ -174,6 +174,18 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 .reel-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
 
+/* Pulsante della musica (home) */
+.suono { position: fixed; left: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px;
+  border: 1.5px solid var(--line-2); border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); color: var(--fg);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font: 700 13px/1 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.suono:hover { border-color: var(--fg); }
+.suono__eq { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+.suono__eq i { width: 3px; height: 4px; border-radius: 1px; background: currentColor; }
+.suono.is-on { border-color: var(--accent-3); }
+.suono.is-on .suono__eq i { background: var(--accent-3); animation: eq .9s ease-in-out infinite alternate; }
+.suono.is-on .suono__eq i:nth-child(2) { animation-delay: -.3s; } .suono.is-on .suono__eq i:nth-child(3) { animation-delay: -.6s; } .suono.is-on .suono__eq i:nth-child(4) { animation-delay: -.15s; }
+@keyframes eq { from { height: 3px; } to { height: 14px; } }
+
 /* ---------- Sezioni ---------- */
 .sec { padding-top: var(--sec); }
 .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--gap); margin-bottom: clamp(32px, 4vw, 64px); }

@@ -6,6 +6,9 @@ reel: true
 {% assign t = site.data.testi.home %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
 
+<button class="suono" type="button" data-suono aria-pressed="false" aria-label="Musica di sottofondo"><span class="suono__eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="suono__t">Suono</span></button>
+<script src="{{ '/assets/js/musica.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+
 <section class="reel" id="reel" aria-label="Showreel: Brand Identity, Illustration, Generative AI, Motion Design, Web Design">
   <div class="reel-sticky">
     <iframe src="{{ '/lab/showreel.html' | relative_url }}?embed&v={{ site.time | date: '%s' }}" title="Showreel di LIKEMOMMADEME" tabindex="-1"></iframe>
