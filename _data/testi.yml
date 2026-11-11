@@ -8,7 +8,7 @@ home:
   lavori_link: Tutti i progetti
 
 lavori:
-  titolo: Progetti
+  titolo: Works
   intro: Cinque mondi, un solo metodo. Dal concept alla consegna, seguo tutto io.
   filtro_categoria: Categoria
   filtro_settore: Settore
@@ -30,8 +30,8 @@ footer:
   mondi: Mondi
   contatti: Contatti
   home: Home
-  progetti: Progetti
-  chi_sono: Chi sono
+  progetti: Works
+  chi_sono: About me
   privacy: Privacy
 
 # Testi provvisori della pagina About: li riscriviamo insieme

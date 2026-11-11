@@ -827,6 +827,8 @@
   }
 
   window.seek = t => { playing = false; rebase(t); seek(t); };
+  // la pagina che contiene lo showreel lo chiama nello stesso istante in cui cambia tema, così il cerchio lo rivela già nel colore nuovo
+  window.lmmTheme = name => { setTheme(name); if (M) { seek(scrollMode ? st : nowT()); lastDrawn = -1; } };
   const start = () => {
     if (M) return;
     measure(); rebase(base); document.documentElement.dataset.ready = '1';

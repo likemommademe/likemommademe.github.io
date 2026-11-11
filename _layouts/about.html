@@ -22,7 +22,7 @@ layout: default
   <div class="vita__striscia" data-striscia="{{ striscia }}">
     <ul class="vita__pista">
       {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
-        <li class="vita__ph{% cycle 'v1', ' v2', ' v3', ' v4', ' v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
+        <li class="vita__ph {% cycle 'v1', 'v2', 'v3', 'v4', 'v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
       {% endfor %}{% endfor %}
     </ul>
   </div>

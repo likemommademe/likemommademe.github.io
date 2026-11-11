@@ -1,7 +1,7 @@
 ---
 layout: about
 permalink: /about/
-title: About
+title: About me
 foto: ""
 mostra_clienti: true
 ---

@@ -21,7 +21,10 @@ reel: true
     }
     addEventListener('scroll', send, { passive: true });
     addEventListener('resize', send);
-    addEventListener('themechange', send);
+    addEventListener('themechange', function () {
+      try { frame.contentWindow.lmmTheme(document.documentElement.dataset.theme); } catch (e) {}
+      send();
+    });
     frame.addEventListener('load', send);
     send();
   })();
