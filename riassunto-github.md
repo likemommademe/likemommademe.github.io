@@ -31,8 +31,9 @@ Il pannello (CMS), il server su Cloudflare e il resto del sito sono descritti in
 ## 3. GitHub Pages
 
 - Si è attivato da solo grazie al nome `likemommademe.github.io`: non c'è niente da impostare.
-- **Impostazioni attuali**: pubblica dal branch `main`, cartella principale (`/`), modalità classica "Deploy from a branch". **HTTPS obbligatorio** già attivo.
-- A ogni modifica su `main`, GitHub ricostruisce il sito con **Jekyll** in 1–2 minuti. Lo fa il processo automatico `pages-build-deployment`, visibile nella scheda **Actions** della repo: se una pubblicazione fallisce, l'errore compare lì.
+- **Impostazioni attuali**: Settings → Pages → Source = **GitHub Actions**. **HTTPS obbligatorio** già attivo.
+- A ogni modifica su `main` (anche quelle del pannello), il workflow `.github/workflows/pages.yml` ("Pubblica il sito") ricostruisce il sito con **Jekyll** e lo pubblica, in 1–2 minuti. Si vede nella scheda **Actions** della repo: se una pubblicazione fallisce, l'errore compare lì. Si può rilanciare a mano da Actions → Pubblica il sito → Run workflow.
+- Prima dell'11/11/2026 si usava la modalità classica "Deploy from a branch" (processo automatico `pages-build-deployment`). Per tornarci: Settings → Pages → Source = Deploy from a branch, `main`, `/`.
 - Il file `admin/stato.json` dice quale versione è online. Il pannello lo usa per mostrare "Sito aggiornato" oppure "In pubblicazione…".
 - **Dominio**: per ora nessuno. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 
@@ -117,6 +118,7 @@ Per controllare il collegamento: `~/.local/bin/gh auth status` deve dire "Logged
 | 11/11/2026 | Verificato che la chiave decapbridge non esiste più. Collegamento del Mac ricontrollato: funziona |
 | 11/11/2026 | Istruzioni di GitHub spostate in questo file |
 | 11/11/2026 | Tutto ricontrollato su GitHub: impostazioni di Pages, permessi di GitHub CLI, firma solo nella cartella del portfolio, Dieta pubblica, README superato |
+| 11/11/2026 | Pubblicazioni bloccate dalle 20:35 per un guasto di GitHub (incidente ufficiale su Actions e Pages). Pages passato al workflow `pages.yml` nella repo |
 
 ---
 
