@@ -1,6 +1,6 @@
-# Portfolio LIKEMOMMADEME: riassunto di sito e CMS
+# Portfolio LIKEMOMMADEME: riassunto di sito, CMS e GitHub
 
-Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio e il suo pannello (CMS): struttura, file, servizi usati e prossimi passi.
+Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, il suo pannello (CMS) e l'impostazione di GitHub: struttura, file, servizi usati e prossimi passi.
 
 ---
 
@@ -14,7 +14,35 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio e
 
 ---
 
-## 2. Decisioni prese (e strade scartate)
+## 2. Impostazione di GitHub e del Mac
+
+### La repository
+- **Account GitHub**: `likemommademe`.
+- **Repo**: creata come `PORTFOLIO`, poi **rinominata `likemommademe.github.io`**. Con questo nome speciale GitHub pubblica il sito all'indirizzo principale https://likemommademe.github.io, senza niente dopo.
+- **Visibilità**: **pubblica**, necessaria per GitHub Pages con l'account gratuito.
+- **Branch**: `main`. Tutto quello che finisce su `main` va online.
+- Sul tuo account c'è anche la repo **Dieta**, separata e non toccata.
+
+### GitHub Pages
+- Si è attivato da solo grazie al nome `likemommademe.github.io`: non c'è niente da impostare.
+- A ogni modifica su `main`, GitHub ricostruisce il sito con **Jekyll** in 1–2 minuti.
+- Niente dominio per ora. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
+
+### Il collegamento del Mac (per Claude)
+- **Cartella del progetto**: `~/Desktop/portfolio`, collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git).
+- **Sul Mac non è installato niente di extra**: c'è solo git, che era già presente. Niente Homebrew, Node o GitHub CLI.
+- **Accesso a GitHub**: tramite una **chiave GitHub (token)** con permesso *Contents: Read and write* sulla sola repo del portfolio, senza scadenza. È salvata nel **Portachiavi del Mac**, e git la usa da solo a ogni pubblicazione.
+- **Firma delle modifiche**: nome `likemommademe`, con l'email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare.
+- **Come si pubblica**: Claude salva le modifiche (commit) e le invia a GitHub (push). Su tua richiesta, **ogni modifica viene pubblicata subito**.
+- Per controllare e provare il sito prima di pubblicarlo, Claude usa una copia temporanea di Jekyll, che non resta installata sul Mac.
+
+### Le due strade per modificare i contenuti
+- **Dal pannello** (`/admin`): ogni salvataggio diventa una modifica su GitHub, fatta dal server su Cloudflare.
+- **Da Claude, sul Mac**: per codice, grafica e struttura. Prima di lavorare Claude scarica le modifiche fatte dal pannello, così le due strade non si pestano i piedi.
+
+---
+
+## 3. Decisioni prese (e strade scartate)
 
 - **Solo GitHub per sito e contenuti**: niente Vercel, Sanity o altri servizi complicati.
 - **Login col token GitHub**: scartato, troppo complicato da usare ogni volta.
@@ -33,7 +61,7 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio e
 
 ---
 
-## 3. Struttura del sito
+## 4. Struttura del sito
 
 | Pagina | Indirizzo | Contenuto |
 |---|---|---|
@@ -48,7 +76,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 4. Il pannello (CMS)
+## 5. Il pannello (CMS)
 
 ### Accesso
 - **Accedi con Google**, oppure **magic link**: scrivi l'email e ricevi un link valido 15 minuti. La mail spesso finisce nello **spam**, perché parte da un indirizzo di prova di Resend: conviene segnarla come "Non è spam".
@@ -95,7 +123,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 5. File del progetto
+## 6. File del progetto
 
 ### Sito (Jekyll)
 | File | A cosa serve |
@@ -147,7 +175,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 6. Servizi e account usati
+## 7. Servizi e account usati
 
 | Servizio | A cosa serve | Note |
 |---|---|---|
@@ -170,7 +198,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 7. Come si fa…
+## 8. Come si fa…
 
 **…aggiungere o togliere chi può entrare nel pannello**
 1. Apri https://dash.cloudflare.com/?to=/:account/workers/services/view/portfolio-login/production/settings
@@ -187,12 +215,20 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. Su Cloudflare sostituisci `GITHUB_TOKEN` e clicca **Deploy**.
 3. Rientra nel pannello: dopo il cambio della chiave te lo chiede, è normale.
 
+**…ricollegare il Mac a GitHub** (dopo aver rigenerato la chiave che usa Claude, o se la pubblicazione dal Mac smette di funzionare)
+1. Crea o rigenera la chiave: https://github.com/settings/personal-access-tokens. Solo la repo **likemommademe.github.io**, permesso **Contents: Read and write**, scadenza **No expiration**.
+2. In VS Code apri il terminale (**Terminale → Nuovo terminale**) e lancia:
+   ```bash
+   read -s "T?Incolla il token e premi Invio: " && printf "protocol=https\nhost=github.com\nusername=likemommademe\npassword=%s\n" "$T" | git credential approve && unset T && echo "✓ Collegato a GitHub"
+   ```
+3. Incolla la chiave (non vedrai nulla scritto, è normale) e premi Invio. **Non incollarla in chat.**
+
 **…vedere la versione nuova del pannello subito**
 - Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=10, oppure premi **Cmd + Shift + R**.
 
 ---
 
-## 8. Cronologia
+## 9. Cronologia
 
 | Data | Cosa |
 |---|---|
@@ -206,7 +242,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 9. Prossimi passi
+## 10. Prossimi passi
 
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub, il sito su DecapBridge e il KV **login** su Cloudflare.
@@ -218,11 +254,12 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ---
 
-## 10. Link utili
+## 11. Link utili
 
 - Sito: https://likemommademe.github.io
 - Pannello: https://likemommademe.github.io/admin/
 - Repo GitHub: https://github.com/likemommademe/likemommademe.github.io
+- Impostazioni di GitHub Pages: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 - Worker (impostazioni): https://dash.cloudflare.com/?to=/:account/workers/services/view/portfolio-login/production/settings
 - Worker (codice): https://dash.cloudflare.com/?to=/:account/workers/services/edit/portfolio-login/production
 - Database D1: https://dash.cloudflare.com/?to=/:account/workers/d1
