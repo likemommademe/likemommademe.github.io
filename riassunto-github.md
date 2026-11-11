@@ -23,14 +23,16 @@ Il pannello (CMS), il server su Cloudflare e il resto del sito sono descritti in
 - Creata come `PORTFOLIO`, poi **rinominata `likemommademe.github.io`**. Con questo nome speciale GitHub pubblica il sito all'indirizzo principale https://likemommademe.github.io, senza niente dopo.
 - **Pubblica** perché GitHub Pages con l'account gratuito lo richiede. Di conseguenza, nella repo e nel pannello vanno solo informazioni da mostrare sul sito. I dati privati dei clienti (contatti, preventivi, contratti) vanno tenuti altrove.
 - I file della repo sono anche il database dei contenuti: ogni modifica, dal pannello o dal Mac, resta nella cronologia di GitHub.
-- Sull'account c'è anche la repo **Dieta**, separata: non va toccata.
+- Sull'account c'è anche la repo **Dieta**, separata: non va toccata. Anche lei è **pubblica**, quindi chiunque può leggerne i file.
+- Il branch `main` **non è protetto**: va bene così, perché ci scrivono sia il pannello sia il Mac.
 
 ---
 
 ## 3. GitHub Pages
 
 - Si è attivato da solo grazie al nome `likemommademe.github.io`: non c'è niente da impostare.
-- A ogni modifica su `main`, GitHub ricostruisce il sito con **Jekyll** in 1–2 minuti.
+- **Impostazioni attuali**: pubblica dal branch `main`, cartella principale (`/`), modalità classica "Deploy from a branch". **HTTPS obbligatorio** già attivo.
+- A ogni modifica su `main`, GitHub ricostruisce il sito con **Jekyll** in 1–2 minuti. Lo fa il processo automatico `pages-build-deployment`, visibile nella scheda **Actions** della repo: se una pubblicazione fallisce, l'errore compare lì.
 - Il file `admin/stato.json` dice quale versione è online. Il pannello lo usa per mostrare "Sito aggiornato" oppure "In pubblicazione…".
 - **Dominio**: per ora nessuno. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 
@@ -39,10 +41,10 @@ Il pannello (CMS), il server su Cloudflare e il resto del sito sono descritti in
 ## 4. Il collegamento del Mac
 
 - **Cartella**: `~/Desktop/Claude/portfolio`, collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git). Il branch `main` segue `origin/main`.
-- **Installati sul Mac**: git, che era già presente, e **GitHub CLI** (`~/.local/bin/gh`). Niente Homebrew né Node.
-- **Accesso**: in `~/.gitconfig` git è impostato per usare GitHub CLI come chiave a ogni pubblicazione. Vale per tutte le repo dell'account.
-- **Firma delle modifiche**: nome `likemommademe`, email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare.
-- **Ultima verifica**: 11/11/2026. GitHub CLI collegato, cartella allineata con GitHub, pubblicazione di prova riuscita.
+- **Installati sul Mac**: git 2.50 (quello di Apple, già presente) e **GitHub CLI** 2.103 (`~/.local/bin/gh`). Niente Homebrew né Node.
+- **Accesso**: in `~/.gitconfig` git è impostato per usare GitHub CLI come chiave a ogni pubblicazione. Vale per tutte le repo dell'account. GitHub CLI ha i permessi `repo`, `workflow`, `gist` e `read:org`: può quindi scrivere su **tutte** le repo dell'account, anche Dieta.
+- **Firma delle modifiche**: nome `likemommademe`, email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare. La firma è impostata **solo in questa cartella** (`.git/config`), non in generale: un'altra repo sul Mac non l'avrebbe.
+- **Ultima verifica**: 11/11/2026. GitHub CLI collegato, cartella allineata con GitHub, ultima pubblicazione di Pages riuscita.
 
 ### Come si pubblica
 1. `git pull` per scaricare le modifiche fatte dal pannello.
@@ -100,6 +102,7 @@ Per controllare il collegamento: `~/.local/bin/gh auth status` deve dire "Logged
 
 - **Portachiavi del Mac**: togliere la copia della chiave cancellata. Apri **Accesso Portachiavi**, cerca `github.com` ed elimina la voce con utente `likemommademe`. Non dà problemi se resta. Attenzione a non toccare GitHub CLI, che usa una voce sua.
 - **DecapBridge**: eliminare il sito del portfolio su https://decapbridge.com. Su GitHub non c'è più niente collegato.
+- **README.md da riscrivere**: è la prima cosa che si vede aprendo la repo su GitHub, ma descrive ancora il vecchio pannello Sveltia con l'accesso tramite token.
 - **Skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito, richiesti "alla fine di tutto".
 
 ---
@@ -113,6 +116,7 @@ Per controllare il collegamento: `~/.local/bin/gh auth status` deve dire "Logged
 | 11/11/2026 | Progetto spostato in `~/Desktop/Claude/portfolio`. Pubblicazione dal Mac tramite GitHub CLI, chiave "Portfolio likemommademe" cancellata |
 | 11/11/2026 | Verificato che la chiave decapbridge non esiste più. Collegamento del Mac ricontrollato: funziona |
 | 11/11/2026 | Istruzioni di GitHub spostate in questo file |
+| 11/11/2026 | Tutto ricontrollato su GitHub: impostazioni di Pages, permessi di GitHub CLI, firma solo nella cartella del portfolio, Dieta pubblica, README superato |
 
 ---
 
@@ -122,4 +126,5 @@ Per controllare il collegamento: `~/.local/bin/gh auth status` deve dire "Logged
 - Impostazioni di GitHub Pages: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 - Chiavi (fine-grained tokens): https://github.com/settings/personal-access-tokens
 - App autorizzate: https://github.com/settings/applications
+- Pubblicazioni del sito (Actions): https://github.com/likemommademe/likemommademe.github.io/actions
 - Sito: https://likemommademe.github.io
