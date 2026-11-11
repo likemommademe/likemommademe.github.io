@@ -265,9 +265,9 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 /* la scritta gigante del footer che si ricompone */
 .pied__logo { margin-top: clamp(64px, 7vw, 112px); --e: 1; overflow: visible; }
 .pied__mot { display: flex; align-items: flex-end; white-space: nowrap; width: max-content; font-weight: 900; font-size: 100px; line-height: .8; letter-spacing: -.04em; color: #F5F5F2; user-select: none; }
-.pl { display: inline-block; transform-origin: 50% 50%; will-change: transform;
+.pl { display: inline-block; transform-origin: 50% 100%; will-change: transform;
   transform: translate(calc((1 - var(--e)) * var(--dx, 0px)), calc((1 - var(--e)) * var(--dy, 0px))) rotate(calc((1 - var(--e)) * var(--dr, 0deg)));
-  opacity: calc(.12 + var(--e) * .88); }
+  opacity: calc(.82 + var(--e) * .18); }
 .pl--segno { width: .17em; height: .17em; margin: 0 0 .02em .05em; border-radius: .035em; background: var(--accent-3); opacity: 1; cursor: grab; touch-action: none;
   transform: scale(calc(1 + (1 - var(--e)) * 3.6)) rotate(calc(45deg + (1 - var(--e)) * -200deg)); }
 .pl--segno:active { cursor: grabbing; }

@@ -135,9 +135,10 @@
         var mot = logo.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
         pls.forEach(function (p, i) {
           var h = Math.sin(i * 12.9898 + 4.1) * 43758.5453, r = h - Math.floor(h), r2 = Math.abs(Math.sin(i * 78.233) * 9999) % 1;
-          p.style.setProperty('--dx', ((i - (pls.length - 1) / 2) * 38 + (r - .5) * 160).toFixed(0) + 'px');
-          p.style.setProperty('--dy', ((r2 - .3) * 220).toFixed(0) + 'px');
-          p.style.setProperty('--dr', ((r - .5) * 80).toFixed(0) + 'deg');
+          // come bitwip: lettere piene, appena spostate e inclinate, che si raddrizzano al loro posto
+          p.style.setProperty('--dx', ((r - .5) * .5).toFixed(3) + 'em');
+          p.style.setProperty('--dy', ((r2 - .25) * .35).toFixed(3) + 'em');
+          p.style.setProperty('--dr', ((r - .5) * 9).toFixed(1) + 'deg');
         });
         var adatta = function () {
           mot.style.fontSize = '100px';
