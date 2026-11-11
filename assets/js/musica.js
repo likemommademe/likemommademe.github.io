@@ -1,4 +1,4 @@
-// Musica della home: house a 120 BPM generata dal codice (nessun file audio), nello stile del video di riferimento.
+// Musica della home: lo stesso suono del video di riferimento, generato dal codice (nessun file audio).
 // I browser non permettono di far partire l'audio senza un gesto: parte dal pulsante "Suono"
 // (o al primo tocco/tasto, se nella visita precedente era stata accesa). Si abbassa quando non si scorre,
 // si ferma fuori dallo showreel o quando la scheda è nascosta.
@@ -7,70 +7,75 @@
   const btn = document.querySelector('[data-suono]');
   const reel = document.getElementById('reel');
   if (!btn || !reel || !window.AudioContext) return;
-  const KEY = 'lmm-suono', BPM = 120, BEAT = 60 / BPM, STEP = BEAT / 4;
-  let ctx = null, master = null, bus = null, noise = null, on = false, timer = 0, step = 0, nextT = 0, lastScroll = 0;
+  const KEY = 'lmm-suono';
+  let ctx = null, master = null, bus = null, noise = null, on = false, timer = 0, lastScroll = 0;
 
-  // Am – F – C – G, una battuta per accordo
-  const ACC = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
-  const BASSO = [45, 41, 36, 43];
-  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
+  // Il suono del video di riferimento (_materiali/Showreel/index.html), ricetta identica:
+  // cassa con click a ogni battito, charleston in levare, colpi con accordo in La minore e sub, riser.
+  // Lo schema dura 10 secondi (20 battiti a 120 BPM) e va in loop.
+  const LOOP = 10;
+  let loopAt = 0;
 
   function init() {
     ctx = new AudioContext();
-    const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 4;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -14; comp.ratio.value = 4; comp.attack.value = .003; comp.release.value = .12;
     master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
-    comp.connect(master); bus = comp;
-    noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const out = ctx.createGain(); out.gain.value = .85; comp.connect(out); out.connect(master); bus = comp;
+    noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
     const d = noise.getChannelData(0); let s = 12345;
     for (let i = 0; i < d.length; i++) { s = (s * 1103515245 + 12345) & 0x7fffffff; d[i] = s / 0x3fffffff - 1; }
   }
-  const env = (g, t, peak, dec) => { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + .003); g.gain.exponentialRampToValueAtTime(.0008, t + dec); };
   const rumore = (t, dur) => { const n = ctx.createBufferSource(); n.buffer = noise; n.start(t); n.stop(t + dur); return n; };
+  const env = (g, t, a, peak, dec) => { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0008, t + a + dec); };
 
   function cassa(t) {
     const o = ctx.createOscillator(), g = ctx.createGain();
-    o.frequency.setValueAtTime(160, t); o.frequency.exponentialRampToValueAtTime(45, t + .11);
-    env(g, t, .95, .32); o.connect(g).connect(bus); o.start(t); o.stop(t + .4);
+    o.frequency.setValueAtTime(165, t); o.frequency.exponentialRampToValueAtTime(44, t + .11);
+    env(g, t, .002, 1, .32); o.connect(g); g.connect(bus); o.start(t); o.stop(t + .4);
+    const n = rumore(t, .02), hp = ctx.createBiquadFilter(), g2 = ctx.createGain();
+    hp.type = 'highpass'; hp.frequency.value = 3000; env(g2, t, .0005, .25, .012); n.connect(hp); hp.connect(g2); g2.connect(bus);
   }
   function hat(t, v) {
-    const n = rumore(t, .08), f = ctx.createBiquadFilter(), g = ctx.createGain();
-    f.type = 'highpass'; f.frequency.value = 8000; env(g, t, v, .06); n.connect(f).connect(g).connect(bus);
+    const n = rumore(t, .08), hp = ctx.createBiquadFilter(), g = ctx.createGain();
+    hp.type = 'highpass'; hp.frequency.value = 8500; env(g, t, .001, v, .045); n.connect(hp); hp.connect(g); g.connect(bus);
   }
-  function clap(t) {
-    const n = rumore(t, .2), f = ctx.createBiquadFilter(), g = ctx.createGain();
-    f.type = 'bandpass'; f.frequency.value = 1500; f.Q.value = .8; env(g, t, .32, .16); n.connect(f).connect(g).connect(bus);
-  }
-  function basso(t, nota) {
-    const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
-    o.type = 'sawtooth'; o.frequency.value = hz(nota);
-    f.type = 'lowpass'; f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(180, t + .18);
-    env(g, t, .22, .22); o.connect(f).connect(g).connect(bus); o.start(t); o.stop(t + .25);
-  }
-  function accordo(t, note) {
-    note.forEach((n, i) => {
-      const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
-      o.type = 'triangle'; o.frequency.value = hz(n + 12) * (1 + (i - 1) * .002);
-      f.type = 'lowpass'; f.frequency.setValueAtTime(2600, t); f.frequency.exponentialRampToValueAtTime(500, t + .5);
-      env(g, t, .05, .55); o.connect(f).connect(g).connect(bus); o.start(t); o.stop(t + .6);
+  function colpo(t, v) {
+    const n = rumore(t, .6), lp = ctx.createBiquadFilter(), g = ctx.createGain();
+    lp.type = 'lowpass'; lp.frequency.setValueAtTime(5000, t); lp.frequency.exponentialRampToValueAtTime(300, t + .4);
+    env(g, t, .001, .42 * v, .38); n.connect(lp); lp.connect(g); g.connect(bus);
+    [110, 164.81, 220, 261.63, 329.63].forEach((f, i) => {
+      const o = ctx.createOscillator(), og = ctx.createGain(), f2 = ctx.createBiquadFilter();
+      o.type = 'sawtooth'; o.frequency.value = f * (1 + (i % 2 ? .004 : -.004));
+      f2.type = 'lowpass'; f2.frequency.setValueAtTime(3200, t); f2.frequency.exponentialRampToValueAtTime(260, t + .32);
+      env(og, t, .003, .07 * v, .34); o.connect(f2); f2.connect(og); og.connect(bus); o.start(t); o.stop(t + .4);
     });
+    const sub = ctx.createOscillator(), sg = ctx.createGain();
+    sub.frequency.setValueAtTime(70, t); sub.frequency.exponentialRampToValueAtTime(48, t + .3);
+    env(sg, t, .002, .6 * v, .45); sub.connect(sg); sg.connect(bus); sub.start(t); sub.stop(t + .5);
   }
-
-  // un passo = una semicroma; 16 passi = una battuta
-  function suona(s, t) {
-    const b = Math.floor(s / 16) % 4, p = s % 16;
-    if (p % 4 === 0) cassa(t);
-    if (p % 4 === 2) hat(t, .14);
-    if (p % 2 === 1) hat(t, .05);
-    if (p === 4 || p === 12) clap(t);
-    if (p % 4 === 2 || p === 15) basso(t, BASSO[b] + (p === 15 ? 12 : 0));
-    if (p === 0 || p === 10) accordo(t, ACC[b]);
+  function riser(t0, t1) {
+    const n = rumore(t0, t1 - t0), bp = ctx.createBiquadFilter(), g = ctx.createGain();
+    bp.type = 'bandpass'; bp.Q.value = 2.5; bp.frequency.setValueAtTime(300, t0); bp.frequency.exponentialRampToValueAtTime(7000, t1);
+    g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(.5, t1 - .01); g.gain.linearRampToValueAtTime(0, t1);
+    n.connect(bp); bp.connect(g); g.connect(bus);
+    const o = ctx.createOscillator(), og = ctx.createGain(), lp = ctx.createBiquadFilter();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(110, t0); o.frequency.exponentialRampToValueAtTime(880, t1);
+    lp.type = 'lowpass'; lp.frequency.setValueAtTime(400, t0); lp.frequency.exponentialRampToValueAtTime(5000, t1);
+    og.gain.setValueAtTime(.0001, t0); og.gain.exponentialRampToValueAtTime(.12, t1 - .01); og.gain.linearRampToValueAtTime(0, t1);
+    o.connect(lp); lp.connect(og); og.connect(bus); o.start(t0); o.stop(t1);
+  }
+  function giro(L) {   // uno schema intero di 10 secondi a partire da L
+    for (let k = 0; k < 20; k++) { cassa(L + k * .5); hat(L + k * .5 + .25, .13); }
+    riser(L + 4, L + 6);
+    [2, 4, 6, 8].forEach(x => colpo(L + x, 1)); colpo(L + 7.5, .8); colpo(L + 9, .55);
   }
   function scheduler() {
-    while (nextT < ctx.currentTime + .12) { suona(step, nextT); step++; nextT += STEP; }
+    if (ctx.currentTime > loopAt - 1) { giro(loopAt); loopAt += LOOP; }
     // volume: pieno mentre si scorre dentro lo showreel, più basso da fermi, spento fuori
     const r = reel.getBoundingClientRect(), dentro = r.bottom > innerHeight * .3 && r.top < innerHeight * .7;
     const fermo = performance.now() - lastScroll > 1200;
-    const vol = !dentro || document.hidden ? 0 : fermo ? .22 : .6;
+    const vol = !dentro || document.hidden ? 0 : fermo ? .25 : .7;
     master.gain.setTargetAtTime(vol, ctx.currentTime, .35);
   }
 
@@ -78,7 +83,7 @@
     if (!ctx) init();
     ctx.resume().then(() => {
       if (on) return;
-      on = true; step = 0; nextT = ctx.currentTime + .05; lastScroll = performance.now();
+      on = true; loopAt = ctx.currentTime + .05; lastScroll = performance.now();
       timer = setInterval(scheduler, 25);
       btn.setAttribute('aria-pressed', 'true'); btn.classList.add('is-on');
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
@@ -86,7 +91,7 @@
   }
   function spegni(ricorda) {
     on = false; clearInterval(timer);
-    if (master) master.gain.setTargetAtTime(0, ctx.currentTime, .08);
+    if (ctx) { const c = ctx; master.gain.setTargetAtTime(0, c.currentTime, .06); setTimeout(() => c.close(), 250); ctx = null; }   // niente suoni già programmati alla riaccensione
     btn.setAttribute('aria-pressed', 'false'); btn.classList.remove('is-on');
     if (ricorda) { try { localStorage.setItem(KEY, '0'); } catch (e) {} }
   }

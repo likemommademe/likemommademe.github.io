@@ -899,12 +899,18 @@
     const sopra = ptr.in && !reduced && st < .02 && sy > M.lr[0].t - 60 && sy < M.lr[0].b + 60 && sx > M.lr[0].l - 60 && sx < M.lr[12].r + 60;
     amp += ((sopra ? 1 : 0) - amp) * (1 - Math.exp(-dt * (sopra ? 10 : 8)));
     if (st < .02 && (amp > .002 || hv.some(v => v > .002))) {
+      // morbido: la lettera sotto il mouse cresce poco e lentamente; le vicine si scostano quanto serve per non toccarsi
       letters.forEach((c, i) => {
         const L = M.lr[i], cx = (L.l + L.r) / 2, d = Math.abs(sx - cx) / Math.max(1, L.r - L.l);
-        const goal = sopra ? clamp(1.2 - d * .7) : 0;
-        hv[i] += (goal - hv[i]) * (1 - Math.exp(-dt * 12));
+        const goal = sopra ? clamp(1 - d * .9) : 0;
+        hv[i] += (goal - hv[i]) * (1 - Math.exp(-dt * 5));
+      });
+      const GROW = .12;
+      letters.forEach((c, i) => {
+        let dx = 0;
+        for (let j = 0; j < 13; j++) if (j !== i) dx += Math.sign(i - j) * hv[j] * GROW * (M.lr[j].r - M.lr[j].l) * .55;
         c.style.transformOrigin = '50% 100%';
-        c.style.transform = `translateY(${f1(-6 * hv[i])}%) scale(${(1 + .2 * hv[i]).toFixed(3)}) rotate(${f1((i % 2 ? -3 : 3) * hv[i])}deg)`;
+        c.style.transform = `translate(${f1(dx)}px, ${f1(-4 * hv[i])}%) scale(${(1 + GROW * hv[i]).toFixed(3)}) rotate(${f1((i % 2 ? -2 : 2) * hv[i])}deg)`;
       });
       lastDrawn = -1;
     }
