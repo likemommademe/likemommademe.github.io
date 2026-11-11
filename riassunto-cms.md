@@ -199,7 +199,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ### Chiavi GitHub (token)
 - **pannello**: la usa il CMS, è salvata su Cloudflare. **Non cancellarla.**
-- **decapbridge**: non serve più, **si può cancellare**.
+- **decapbridge**: non esiste più su GitHub (verificato l'11/11/2026). Niente da fare.
 - **Portfolio likemommademe**: cancellata l'11/11/2026. Dal Mac ora si pubblica con GitHub CLI.
 - **GitHub CLI**: non è una chiave che crei tu. Compare in https://github.com/settings/applications come app autorizzata "GitHub CLI". La usa Claude dal Mac per pubblicare. **Non revocarla.**
 
@@ -254,7 +254,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ## 10. Prossimi passi
 
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
-2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub e il sito su DecapBridge. (KV **login** su Cloudflare: già cancellato.)
+2. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
 4. **Facoltativo**: togliere dal Portachiavi del Mac la copia della chiave cancellata. Apri **Accesso Portachiavi**, cerca `github.com` ed elimina la voce con utente `likemommademe`. Non dà problemi se resta. (La chiave "Portfolio likemommademe" finita in chat è già stata cancellata su GitHub.)
 5. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
