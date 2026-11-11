@@ -45,7 +45,7 @@ layout: default
 {% capture foto %}{% for p in site.progetti %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% for g in p.galleria %}{% if g.immagine %}{{ g.immagine }}|{{ g.didascalia | default: p.title }};{% endif %}{% endfor %}{% endfor %}{% endcapture %}
 {% assign foto = foto | split: ";" %}
 {% if foto.size > 0 %}
-<section class="vita" aria-label="{{ a.foto_titolo }}" data-vita>
+<section class="fascia inv vita" aria-label="{{ a.foto_titolo }}" data-vita>
   {% for striscia in (1..2) %}
   <div class="vita__striscia" data-striscia="{{ striscia }}">
     <ul class="vita__pista">
@@ -60,7 +60,7 @@ layout: default
 
 {% comment %} 4. Valori (come bitwip "Three values guide us"): ogni parola si scrive seguendo lo scroll,
    le lettere fantasma diventano piene e una penna corre davanti all'inchiostro {% endcomment %}
-<section class="sec">
+<section class="fascia">
   <div class="sec-head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
   <div class="valori" data-scrittura>
     <i class="valori__penna" aria-hidden="true"></i>
@@ -77,7 +77,7 @@ layout: default
 
 {% comment %} 5. Clienti (dal pannello) {% endcomment %}
 {% if page.mostra_clienti and site.clienti.size > 0 %}
-<section class="sec">
+<section class="fascia inv">
   <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
   <ul class="clienti">
     {% for c in site.clienti %}
@@ -88,7 +88,7 @@ layout: default
 {% endif %}
 
 {% comment %} 6. Dove lavoro, con l'ora in tempo reale {% endcomment %}
-<section class="sec">
+<section class="fascia">
   <div class="sec-head">
     <h2 class="rise"><span>{{ a.dove_titolo }}</span></h2>
   </div>
@@ -106,7 +106,7 @@ layout: default
 </section>
 
 {% comment %} 7. Domande frequenti: se ne apri una, le altre si chiudono {% endcomment %}
-<section class="sec">
+<section class="fascia inv">
   <div class="sec-head"><h2 class="rise"><span>{{ a.faq_titolo }}</span></h2></div>
   <div class="faq">
     {% for q in a.faq %}

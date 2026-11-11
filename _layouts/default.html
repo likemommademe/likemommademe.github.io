@@ -178,6 +178,13 @@
         tr.addEventListener('pointerup', lascia); tr.addEventListener('pointercancel', lascia);
       }
 
+      // Footer: sempre del colore opposto all'ultima sezione della pagina
+      var ultima = document.querySelector('main') && document.querySelector('main').lastElementChild;
+      while (ultima && ultima.tagName === 'SCRIPT') ultima = ultima.previousElementSibling;
+      var piede = document.querySelector('.pied');
+      if (piede) piede.classList.toggle('inv', !(ultima && ultima.classList.contains('inv')));
+      if (ultima && ultima.classList.contains('fascia')) document.querySelector('main').classList.add('finisce-fascia');
+
       // Titoli che salgono dentro una maschera quando entrano nello schermo
       var rises = document.querySelectorAll('.rise');
       if (!('IntersectionObserver' in window) || reduce.matches) { rises.forEach(function (e) { e.classList.add('is-in'); }); }
