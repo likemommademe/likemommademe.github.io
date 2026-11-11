@@ -342,8 +342,10 @@
     const r = document.createElementNS(NS, 'rect'); sqsEl.appendChild(r);
     sqs.push({ el: r, i: (k % 3) - 1, j: Math.floor(k / 3) - 1, k });
   }
-  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .42);   // bassi abbastanza da non finire sotto il menu
-  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .42);
+  // tre configurazioni di altezze, una per battito: i blocchi si alzano e si rimescolano
+  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .8);
+  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .8);
+  const H3 = [260, 480, 200, 520, 420, 240, 500, 180, 380].map(h => h * .8);
   const RISE = [4, 1, 3, 5, 0, 7, 2, 6, 8];       // ordine in cui si alzano
 
   // Generatore AI: quattro risultati (il secondo è la forma che prosegue)
@@ -483,19 +485,22 @@
 
   /* ---------- Brand: i blocchi 3D (proiezione prospettica, ordinamento del pittore) ---------- */
   function drawBoxes(t) {
-    const th = (90 - 38 * eIO(p(t, 4, 4.45)) + 38 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const th = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    // mentre la vista si inclina il blocco scende, così resta al centro della pagina (da piatto combacia con la griglia 2D)
+    const dy = 175 * eIO(p(t, 4, 4.45)) * (1 - eIO(p(t, 5.5, 5.85)));
     const yaw = (32 * eIO(p(t, 4.5, 4.95)) - 60 * eIO(p(t, 5, 5.45)) + 28 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
     const D = 2200, F = 2200, cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw);
     const cam = [-D * cT * sY, D * sT, -D * cT * cY];
     const proj = ([x, y, z]) => {
       const xr = x * cY - z * sY, zr = x * sY + z * cY;
       const d = zr * cT - y * sT, u = y * cT + zr * sT, s = F / (D + d);
-      return [960 + xr * s, 500 - u * s, d];
+      return [960 + xr * s, 500 + dy - u * s, d];
     };
     const sink = 1 - eIO(p(t, 5.5, 5.8));
     const boxes = sqs.map(q => {
       const o = RISE.indexOf(q.k);
-      const h = lerp(H1[q.k], H2[q.k], eIO(p(t, 5 + .02 * o, 5.35 + .02 * o))) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
+      const k2 = eIO(p(t, 4.6 + .02 * o, 4.92 + .02 * o)), k3 = eIO(p(t, 5.05 + .02 * o, 5.38 + .02 * o));
+      const h = lerp(lerp(H1[q.k], H2[q.k], k2), H3[q.k], k3) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
       const b = { x: q.i * 168, z: -q.j * 168, w: 150, h, col: q.k === 4 ? PINK : BLUE };
       b.depth = proj([b.x, h / 2, b.z])[2];
       return b;
