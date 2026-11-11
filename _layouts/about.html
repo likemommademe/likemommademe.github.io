@@ -4,12 +4,33 @@ layout: default
 {% assign a = site.data.testi.about %}
 {% assign tappe = a.tappe %}
 
+{% comment %} 1. Apertura: titolo gigante e una riga {% endcomment %}
 <section class="ahero">
-  <h1 class="rise"><span>{{ page.title }}</span></h1>
+  <div>
+    <h1 class="rise"><span>{{ page.title }}<i class="segno" aria-hidden="true"></i></span></h1>
+    <p class="lead">{{ a.sottotitolo }}</p>
+  </div>
   {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
 </section>
 
-{% comment %} La timeline: a sinistra il testo e l'anno gigante che cambia, a destra le tappe con la linea che si riempie scorrendo {% endcomment %}
+{% comment %} 2. Due strisce di foto che scorrono in direzioni opposte (per ora: copertine e gallerie dei progetti) {% endcomment %}
+{% capture foto %}{% for p in site.progetti %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% for g in p.galleria %}{% if g.immagine %}{{ g.immagine }}|{{ g.didascalia | default: p.title }};{% endif %}{% endfor %}{% endfor %}{% endcapture %}
+{% assign foto = foto | split: ";" %}
+{% if foto.size > 0 %}
+<section class="vita" aria-label="{{ a.foto_titolo }}" data-vita>
+  {% for striscia in (1..2) %}
+  <div class="vita__striscia" data-striscia="{{ striscia }}">
+    <ul class="vita__pista">
+      {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
+        <li class="vita__ph{% cycle 'v1', ' v2', ' v3', ' v4', ' v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
+      {% endfor %}{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% comment %} 3. La timeline: a sinistra il testo e l'anno gigante, a destra le tappe con la linea che si riempie {% endcomment %}
 <section class="anni" data-anni>
   <h2 class="anni__t rise"><span>{{ a.anni_titolo }}</span></h2>
   <div class="anni__grid">
@@ -32,6 +53,20 @@ layout: default
   </div>
 </section>
 
+{% comment %} 4. Valori: ogni parola si scrive quando entra nello schermo (contorno vuoto, poi l'inchiostro) {% endcomment %}
+<section class="sec">
+  <div class="sec-head"><h2 class="rise"><span>{{ a.valori_titolo }}</span></h2></div>
+  <ul class="valori">
+    {% for v in a.valori %}
+      <li class="valore" data-in>
+        <h3 class="valore__t"><span class="valore__vuoto" aria-hidden="true">{{ v.nome }}</span><span class="valore__pieno">{{ v.nome }}</span></h3>
+        <p class="valore__d">{{ v.testo }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% comment %} 5. Clienti (dal pannello) {% endcomment %}
 {% if page.mostra_clienti and site.clienti.size > 0 %}
 <section class="sec">
   <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
@@ -43,33 +78,94 @@ layout: default
 </section>
 {% endif %}
 
+{% comment %} 6. Dove lavoro, con l'ora in tempo reale {% endcomment %}
+<section class="sec">
+  <div class="sec-head">
+    <h2 class="rise"><span>{{ a.dove_titolo }}</span></h2>
+  </div>
+  <p class="lead dove__p">{{ a.dove_testo }}</p>
+  <ul class="dove">
+    {% for d in a.dove %}
+      <li class="dove__c">
+        <span class="dove__sigla">{{ d.sigla }}</span>
+        <span class="dove__ora" {% if d.fuso != "" %}data-fuso="{{ d.fuso }}"{% endif %}>{% if d.fuso != "" %}--:--{% else %}24/7{% endif %}</span>
+        <span class="dove__citta">{{ d.citta }}</span>
+        <span class="dove__det">{{ d.dettaglio }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% comment %} 7. Domande frequenti: se ne apri una, le altre si chiudono {% endcomment %}
+<section class="sec">
+  <div class="sec-head"><h2 class="rise"><span>{{ a.faq_titolo }}</span></h2></div>
+  <div class="faq">
+    {% for q in a.faq %}
+      <details class="qa" name="faq-about"{% if forloop.first %} open{% endif %}>
+        <summary>{{ q.d }}<span class="qa__ico" aria-hidden="true"></span></summary>
+        <div class="qa__a"><p>{{ q.r }}</p></div>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+
 <script>
   (function () {
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Timeline
     var box = document.querySelector('[data-anni]');
-    if (!box) return;
-    var lista = box.querySelector('[data-lista]'), prog = box.querySelector('[data-prog]'), segno = box.querySelector('[data-segno]'),
-        num = box.querySelector('[data-num]'), tappe = Array.prototype.slice.call(box.querySelectorAll('[data-tappa]')), attiva = -1, timer;
-    function tick() {
-      var r = lista.getBoundingClientRect(), mezzo = innerHeight * .5;
-      var k = Math.min(1, Math.max(0, (mezzo - r.top) / r.height));
-      prog.style.transform = 'scaleY(' + k + ')';
-      segno.style.transform = 'translateY(' + (k * r.height) + 'px) rotate(' + (45 + k * 360) + 'deg)';
-      var i = 0;
-      tappe.forEach(function (t, j) { if (t.getBoundingClientRect().top < mezzo) i = j; });
-      if (i === attiva) return;
-      tappe.forEach(function (t, j) { t.classList.toggle('is-attiva', j === i); t.classList.toggle('is-passata', j < i); });
-      // l'anno gigante cambia facendo scorrere le cifre: il vecchio esce, il nuovo entra dalla parte opposta
-      var su = i > attiva, primo = attiva < 0; attiva = i;
-      if (primo) { num.textContent = tappe[i].dataset.anno; return; }
-      clearTimeout(timer);
-      num.className = 'anni__num ' + (su ? 'esce-su' : 'esce-giu');
-      timer = setTimeout(function () {
-        num.textContent = tappe[i].dataset.anno;
-        num.className = 'anni__num ' + (su ? 'entra-su' : 'entra-giu');
-      }, 200);
+    if (box) {
+      var lista = box.querySelector('[data-lista]'), prog = box.querySelector('[data-prog]'), segno = box.querySelector('[data-segno]'),
+          num = box.querySelector('[data-num]'), tappe = Array.prototype.slice.call(box.querySelectorAll('[data-tappa]')), attiva = -1, timer;
+      var tick = function () {
+        var r = lista.getBoundingClientRect(), mezzo = innerHeight * .55;
+        var k = Math.min(1, Math.max(0, (mezzo - r.top) / r.height));
+        prog.style.transform = 'scaleY(' + k + ')';
+        segno.style.transform = 'translateY(' + (k * r.height) + 'px) rotate(' + (45 + k * 360) + 'deg)';
+        var i = 0;
+        tappe.forEach(function (t, j) { if (t.getBoundingClientRect().top < mezzo) i = j; });
+        if (i === attiva) return;
+        tappe.forEach(function (t, j) { t.classList.toggle('is-attiva', j === i); t.classList.toggle('is-passata', j < i); });
+        var su = i > attiva, primo = attiva < 0; attiva = i;
+        if (primo || reduce) { num.textContent = tappe[i].dataset.anno; return; }
+        clearTimeout(timer);
+        num.className = 'anni__num ' + (su ? 'esce-su' : 'esce-giu');
+        timer = setTimeout(function () { num.textContent = tappe[i].dataset.anno; num.className = 'anni__num ' + (su ? 'entra-su' : 'entra-giu'); }, 200);
+      };
+      addEventListener('scroll', tick, { passive: true });
+      addEventListener('resize', tick);
+      tick();
     }
-    addEventListener('scroll', tick, { passive: true });
-    addEventListener('resize', tick);
-    tick();
+
+    // Strisce di foto: scorrono in direzioni opposte seguendo lo scroll
+    var vita = document.querySelector('[data-vita]');
+    if (vita && !reduce) {
+      var strisce = vita.querySelectorAll('.vita__pista');
+      var muovi = function () {
+        var r = vita.getBoundingClientRect(), k = (innerHeight - r.top) / (innerHeight + r.height);
+        if (k < -.1 || k > 1.1) return;
+        strisce.forEach(function (s, i) { s.style.transform = 'translateX(' + ((i ? -1 : 1) * (k - .5) * 30 - (i ? 30 : 10)) + '%)'; });
+      };
+      addEventListener('scroll', muovi, { passive: true });
+      muovi();
+    }
+
+    // Ora in tempo reale
+    var ore = document.querySelectorAll('[data-fuso]');
+    var orologio = function () {
+      ore.forEach(function (o) {
+        try { o.textContent = new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: o.dataset.fuso }).format(new Date()); } catch (e) {}
+      });
+    };
+    orologio(); setInterval(orologio, 20000);
+
+    // Valori: l'inchiostro riempie la parola quando entra nello schermo
+    var vals = document.querySelectorAll('[data-in]');
+    if (!('IntersectionObserver' in window) || reduce) vals.forEach(function (v) { v.classList.add('is-in'); });
+    else {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -20% 0px' });
+      vals.forEach(function (v) { io.observe(v); });
+    }
   })();
 </script>

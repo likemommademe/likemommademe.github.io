@@ -34,11 +34,12 @@ footer:
   chi_sono: Chi sono
   privacy: Privacy
 
-# Testi provvisori: li riscriviamo insieme
+# Testi provvisori della pagina About: li riscriviamo insieme
 about:
+  sottotitolo: Creative designer. Identità, illustrazioni, motion, AI e siti, dal concept alla consegna.
+  foto_titolo: Dietro le quinte
   anni_titolo: Come mamma mi ha fatto, anno per anno
   anni_lead: Credo nelle idee che si vedono finite.
-  clienti_titolo: Clienti
   tappe:
     - anno: 2016
       testo: Primo logo, per il bar sotto casa. Pagato in cappuccini.
@@ -50,3 +51,35 @@ about:
       testo: Arriva la creative AI. I prompt li scrivo io, la direzione pure.
     - anno: 2026
       testo: Nasce LIKEMOMMADEME, con un sito e un pannello fatti su misura.
+  valori_titolo: Tre valori mi guidano
+  valori:
+    - nome: Curiosità
+      testo: Guardo tutto, provo tutto. Poi tengo solo quello che serve al progetto.
+    - nome: Cura
+      testo: Il dettaglio che nessuno nota è quello che fa sembrare tutto giusto.
+    - nome: Ironia
+      testo: Il lavoro si prende sul serio. Io un po' meno, e si vede.
+  clienti_titolo: Clienti
+  dove_titolo: Dove lavoro
+  dove_testo: Lavoro con brand e agenzie in Italia e all'estero, in presenza o da remoto.
+  dove:
+    - citta: Italia
+      dettaglio: Studio
+      fuso: Europe/Rome
+      sigla: ITA
+    - citta: Ovunque
+      dettaglio: Da remoto
+      fuso: ""
+      sigla: WEB
+  faq_titolo: Domande?
+  faq:
+    - d: Chi c'è dietro LIKEMOMMADEME?
+      r: Una persona sola, io. Seguo ogni progetto dal concept alla consegna, e quando serve coinvolgo fotografi, sviluppatori e stampatori di fiducia.
+    - d: Che lavori fai?
+      r: Cinque mondi. Branding, illustrazione, motion design, generative AI e web design. Spesso insieme, nello stesso progetto.
+    - d: Lavori anche con le agenzie?
+      r: Sì. Posso entrare in un team esistente come creative designer, oppure prendere in mano un progetto intero.
+    - d: Quanto costa un progetto?
+      r: Dipende da cosa serve davvero. Scrivimi due righe sul progetto e ti mando una proposta chiara, con tempi e costi.
+    - d: In quanto tempo rispondi?
+      r: Di solito in giornata. Se non rispondo, sto disegnando: riprova il giorno dopo.
