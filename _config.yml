@@ -27,3 +27,4 @@ exclude:
   - README.md
   - cms-server
   - riassunto-cms.md
+  - riassunto-github.md

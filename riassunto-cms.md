@@ -1,6 +1,6 @@
 # Portfolio LIKEMOMMADEME: riassunto di sito, CMS e GitHub
 
-Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, il suo pannello (CMS) e l'impostazione di GitHub: struttura, file, servizi usati e prossimi passi.
+Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio e il suo pannello (CMS): struttura, file, servizi usati e prossimi passi. GitHub e il collegamento del Mac sono in `riassunto-github.md`.
 
 ---
 
@@ -14,27 +14,9 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, 
 
 ---
 
-## 2. Impostazione di GitHub e del Mac
+## 2. GitHub e collegamento del Mac
 
-### La repository
-- **Account GitHub**: `likemommademe`.
-- **Repo**: creata come `PORTFOLIO`, poi **rinominata `likemommademe.github.io`**. Con questo nome speciale GitHub pubblica il sito all'indirizzo principale https://likemommademe.github.io, senza niente dopo.
-- **Visibilità**: **pubblica**, necessaria per GitHub Pages con l'account gratuito.
-- **Branch**: `main`. Tutto quello che finisce su `main` va online.
-- Sul tuo account c'è anche la repo **Dieta**, separata e non toccata.
-
-### GitHub Pages
-- Si è attivato da solo grazie al nome `likemommademe.github.io`: non c'è niente da impostare.
-- A ogni modifica su `main`, GitHub ricostruisce il sito con **Jekyll** in 1–2 minuti.
-- Niente dominio per ora. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
-
-### Il collegamento del Mac (per Claude)
-- **Cartella del progetto**: `~/Desktop/Claude/portfolio` (prima era `~/Desktop/Claude/portfolio`), collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git). Il branch `main` segue `origin/main`.
-- **Cosa è installato sul Mac**: git, che era già presente, e **GitHub CLI** (`~/.local/bin/gh`), collegato all'account `likemommademe`. Niente Homebrew né Node.
-- **Accesso a GitHub**: git usa la chiave di **GitHub CLI** a ogni pubblicazione, come previsto in `~/.gitconfig`. Vale per tutte le repo dell'account. La vecchia chiave "Portfolio likemommademe" è stata cancellata l'11/11/2026, perché era finita in chat e non serviva più.
-- **Firma delle modifiche**: nome `likemommademe`, con l'email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare.
-- **Come si pubblica**: Claude salva le modifiche (commit) e le invia a GitHub (push). Su tua richiesta, **ogni modifica viene pubblicata subito**.
-- Per controllare e provare il sito prima di pubblicarlo, Claude usa una copia temporanea di Jekyll, che non resta installata sul Mac.
+Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un file a parte: **`riassunto-github.md`**, nella stessa cartella.
 
 ### Le due strade per modificare i contenuti
 - **Dal pannello** (`/admin`): ogni salvataggio diventa una modifica su GitHub, fatta dal server su Cloudflare.
@@ -178,6 +160,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | File | A cosa serve |
 |---|---|
 | `README.md`, `.gitignore` | File di servizio della repo |
+| `riassunto-github.md` | Riassunto di GitHub e del collegamento del Mac. Escluso dal sito |
 | `riassunto-cms.md` | Questo riassunto. È escluso dal sito, ma la repo è pubblica: per questo qui non ci sono chiavi né password |
 
 ---
@@ -197,12 +180,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Variables and Secrets**: `EMAIL` (email autorizzate, separate da virgola), `GITHUB_TOKEN` (chiave GitHub del pannello), `RESEND_API_KEY` (chiave di Resend).
 - **Bindings**: `DB` → D1 **statistiche**. (Il KV `login` della prima versione è stato cancellato l'11/11/2026.)
 
-### Chiavi GitHub (token)
-- **CMS** (in Fine-grained tokens): la usa il pannello, è salvata su Cloudflare come `GITHUB_TOKEN`. **Non cancellarla.** È l'unica chiave creata a mano: in Tokens (classic) non ce ne sono.
-- **decapbridge**: non esiste più su GitHub (verificato l'11/11/2026). Niente da fare.
-- **Portfolio likemommademe**: cancellata l'11/11/2026. Dal Mac ora si pubblica con GitHub CLI.
-- **GitHub CLI**: non è una chiave che crei tu. Compare in https://github.com/settings/applications come app autorizzata "GitHub CLI". La usa Claude dal Mac per pubblicare. **Non revocarla.**
-- **Visual Studio Code**: anche questa compare tra le app autorizzate (Authorized OAuth Apps). È il collegamento di VS Code a GitHub e si può lasciare.
+### Chiavi GitHub
+- Vedi `riassunto-github.md`. In breve: la chiave **CMS** è quella del pannello, salvata su Cloudflare come `GITHUB_TOKEN`. **Non cancellarla.**
 
 ---
 
@@ -218,18 +197,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. Apri https://dash.cloudflare.com/?to=/:account/workers/services/edit/portfolio-login/production
 3. Clicca dentro il codice, poi **Cmd + A**, **Cmd + V** e **Deploy**.
 
-**…sostituire la chiave GitHub** (se il pannello dice "La chiave GitHub salvata su Cloudflare non funziona più")
-1. Crea una chiave nuova: https://github.com/settings/personal-access-tokens/new. Nome `CMS`, scadenza **No expiration**, solo la repo **likemommademe.github.io**, permesso **Contents: Read and write**.
-2. Su Cloudflare sostituisci `GITHUB_TOKEN` e clicca **Deploy**.
-3. Rientra nel pannello: dopo il cambio della chiave te lo chiede, è normale.
-
-**…ricollegare il Mac a GitHub** (se la pubblicazione dal Mac smette di funzionare)
-1. In VS Code apri il terminale (**Terminale → Nuovo terminale**) e lancia:
-   ```bash
-   ~/.local/bin/gh auth login --hostname github.com --git-protocol https --web
-   ```
-2. Copia il codice che compare, premi Invio, incollalo nella pagina di GitHub che si apre nel browser e autorizza.
-3. Non serve creare chiavi a mano né incollare niente in chat.
+**…sostituire la chiave GitHub** o **ricollegare il Mac a GitHub**
+- Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
 - Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=10, oppure premi **Cmd + Shift + R**.
@@ -249,6 +218,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Questo riassunto. Cartella spostata in `~/Desktop/Claude/portfolio`, KV login cancellato |
 | 11/11/2026 | Pannello: testi in italiano e inglese, case study a sezioni, strumenti da spuntare |
 | 11/11/2026 | Progetto spostato in `~/Desktop/Claude/portfolio`. Pubblicazione dal Mac tramite GitHub CLI, chiave "Portfolio likemommademe" cancellata |
+| 11/11/2026 | Istruzioni di GitHub spostate in `riassunto-github.md` |
 
 ---
 
@@ -257,11 +227,10 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 2. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
-4. **Facoltativo**: togliere dal Portachiavi del Mac la copia della chiave cancellata. Apri **Accesso Portachiavi**, cerca `github.com` ed elimina la voce con utente `likemommademe`. Non dà problemi se resta. (La chiave "Portfolio likemommademe" finita in chat è già stata cancellata su GitHub.)
-5. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
-6. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
-7. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
-8. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
+4. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
+5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
+6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
+7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 
 ---
 
