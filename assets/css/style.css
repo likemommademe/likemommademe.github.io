@@ -118,7 +118,8 @@ html.js .rise.is-in > span { transform: none; }
 .nav.is-pill .nav__bar { transform: translateY(14px); color: #F5F5F2; }
 .nav.is-pill .nav__bar::before { opacity: 1; }
 .nav__logo, .nav__right { position: relative; transition: transform .8s var(--ease); }
-.nav.is-pill .nav__logo { transform: translateX(var(--dl, 0px)); }
+.nav__logo { transition: transform .8s var(--ease), opacity .35s; }
+.nav.is-pill .nav__logo { transform: translateX(var(--dl, 0px)) scale(.9); opacity: 0; pointer-events: none; }
 .nav.is-pill .nav__right { transform: translateX(var(--dr, 0px)); }
 .nav__logo { display: flex; align-items: flex-end; gap: 3px; font-weight: 900; font-size: 22px; line-height: 1; letter-spacing: -.01em; }
 .nav__logo i { width: 8px; height: 8px; margin-bottom: 1px; border-radius: 2px; background: var(--accent-3); }
