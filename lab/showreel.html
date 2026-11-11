@@ -138,9 +138,17 @@
   body.scroll #ui, body.embed #ui { display: none; }
   #scroller { display: none; }
   body.scroll #scroller { display: block; height: 1600vh; }
-  #hint { position: fixed; left: 0; right: 0; bottom: 28px; text-align: center; display: none;
-          font: 500 15px/1 "Cabinet Grotesk", system-ui, sans-serif; color: var(--muted); opacity: 0; transition: opacity .25s; }
-  body.scroll #hint, body.embed #hint { display: block; }
+  /* a pagina ferma: la pillola che invita a scorrere */
+  #hint { position: fixed; left: 0; right: 0; bottom: 14vh; display: none; justify-content: center; pointer-events: none; opacity: 0; }
+  .pillola { display: inline-flex; align-items: center; gap: 12px; height: 46px; padding: 0 18px 0 16px; border-radius: 999px;
+    background: var(--fg); color: var(--bg); font: 700 14px/1 "Cabinet Grotesk", system-ui, sans-serif; letter-spacing: .14em; }
+  .pillola__sq { width: 12px; height: 12px; border-radius: 3px; background: var(--pink); animation: gira 3s linear infinite; }
+  .pillola__mq { width: 150px; overflow: hidden; white-space: nowrap; -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+  .pillola__mq > span { display: inline-block; animation: scorre 6s linear infinite; }
+  @keyframes scorre { to { transform: translateX(-50%); } }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .pillola__sq, .pillola__mq > span { animation: none; } }
+  body.scroll #hint, body.embed #hint { display: flex; }
   body.embed { background: var(--bg); }
 </style>
 </head>
@@ -229,7 +237,7 @@
 </div>
 
 <div id="scroller"></div>
-<div id="hint">Scorri: cinque mondi ti aspettano</div>
+<div id="hint" aria-hidden="true"><span class="pillola"><i class="pillola__sq"></i><span class="pillola__mq"><span>SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ </span></span></span></div>
 <div id="ui">
   <button id="pp" type="button">Pausa</button>
   <input id="scrub" type="range" min="0" max="15" step="0.01" value="0" aria-label="Posizione nel tempo">
@@ -885,7 +893,7 @@
   addEventListener('resize', fit); fit();
 
   // Scroll: il tempo insegue la posizione con una molla a smorzamento critico (accelera e frena, senza scatti né rimbalzi)
-  let st = 0, sv = 0, lastNow = 0, lastDrawn = -1;
+  let st = 0, sv = 0, lastNow = 0, lastDrawn = -1, ferma = 0, amp = 0;
   const hint = E('hint'), W0 = 7;
   function scrollFrame(now) {
     const max = document.documentElement.scrollHeight - innerHeight;
@@ -896,7 +904,21 @@
     if (Math.abs(target - st) < .0005 && Math.abs(sv) < .002) { st = target; sv = 0; }
     st = clamp(st, 0, DUR);
     if (st !== lastDrawn) { seek(st); lastDrawn = st; }
-    hint.style.opacity = st < .3 ? '1' : '0';
+    // a pagina ferma, in cima: un'onda attraversa il nome e ogni lettera si ingrandisce a turno; compare la pillola SCROLL
+    const quieta = !reduced && target < .0005 && st < .005;
+    ferma = quieta ? ferma + dt : 0;
+    amp += ((quieta && ferma > .5 ? 1 : 0) - amp) * (1 - Math.exp(-dt * (quieta ? 3 : 14)));
+    if (amp > .002 && st < .02) {
+      const tt = now / 1000;
+      letters.forEach((c, i) => {
+        const w = Math.pow(Math.max(0, Math.sin(tt * 2.3 - i * .48)), 3) * amp;
+        c.style.transformOrigin = '50% 100%';
+        c.style.transform = `translateY(${f1(-5 * w)}%) scale(${(1 + .17 * w).toFixed(3)}) rotate(${f1((i % 2 ? -3 : 3) * w)}deg)`;
+      });
+      lastDrawn = -1;
+    }
+    hint.style.opacity = amp.toFixed(3);
+    hint.style.transform = `translateY(${f1(16 * (1 - amp))}px) scale(${(.92 + .08 * amp).toFixed(3)})`;
     requestAnimationFrame(scrollFrame);
   }
   function frame() {
