@@ -3,6 +3,25 @@ layout: default
 ---
 {% assign home = site.data.home %}
 
+<section class="reel" id="reel" aria-label="Showreel: Brand Identity, Illustration, Generative AI, Motion Design, UI/UX Design, Digital & Social">
+  <div class="reel-sticky">
+    <iframe src="{{ '/lab/showreel.html?embed' | relative_url }}" title="Showreel di LIKEMOMMADEME" tabindex="-1"></iframe>
+  </div>
+</section>
+<script>
+  (function () {
+    var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
+    function send() {
+      var max = reel.offsetHeight - innerHeight;
+      var p = max > 0 ? Math.min(1, Math.max(0, (scrollY - reel.offsetTop) / max)) : 0;
+      if (frame.contentWindow) frame.contentWindow.postMessage({ reel: p }, location.origin);
+    }
+    addEventListener('scroll', send, { passive: true });
+    addEventListener('resize', send);
+    frame.addEventListener('load', send);
+  })();
+</script>
+
 <section class="intro">
   <p>{{ home.intro }}</p>
 </section>

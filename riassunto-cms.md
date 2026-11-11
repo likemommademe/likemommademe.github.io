@@ -47,13 +47,13 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 
 | Pagina | Indirizzo | Contenuto |
 |---|---|---|
-| Home | `/` | Frase di apertura e progetti scelti, nell'ordine deciso nel pannello |
+| Home | `/` | Header animato (lo showreel, che avanza con lo scroll), poi frase di apertura e progetti scelti, nell'ordine deciso nel pannello |
 | Work | `/work/` | Elenco delle categorie |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
 | Progetto | `/progetti/<progetto>/` | Copertina, descrizione, galleria di foto e video, crediti |
 | About | `/about/` | Testo, foto, loghi dei clienti, contatti |
 | Privacy | `/privacy/` | Richiesta da Google per l'accesso con Google |
-| Showreel (bozza) | `/lab/showreel.html` | Animazione di 15 secondi sui sei mondi, guidata dallo scroll. Non collegata dal menu e non indicizzata. `?play` la fa partire da sola |
+| Showreel | `/lab/showreel.html` | L'animazione dell'header, anche da sola: guidata dallo scroll, `?play` la fa partire da sola. La home la carica con `?embed` e le passa la posizione dello scroll |
 
 I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
@@ -221,6 +221,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Progetto spostato in `~/Desktop/Claude/portfolio`. Pubblicazione dal Mac tramite GitHub CLI, chiave "Portfolio likemommademe" cancellata |
 | 11/11/2026 | Istruzioni di GitHub spostate in `riassunto-github.md` |
 | 11/11/2026 | Prima bozza dello showreel in `lab/showreel.html` (HTML, CSS e JavaScript, senza librerie) |
+| 11/11/2026 | Showreel più spinto (camera, titoli giganti, generatore AI con cursore, MOTION cinetico) e messo come header della home |
 
 ---
 
