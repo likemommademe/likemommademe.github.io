@@ -19,13 +19,13 @@
   color-scheme: dark;
 }
 :root[data-theme="light"] {
-  --bg: #FAFAF7;
+  --bg: #F4EFE7;          /* color carta, come bitwip */
   --fg: #0A0A0A;
-  --muted: #5E5E5E;
-  --line: #E2E2DD;
-  --line-2: #CFCFCA;
-  --placeholder: #EFEFEA;
-  --card: #FFFFFF;
+  --muted: #5E5A54;
+  --line: #E2DBCF;
+  --line-2: #CFC6B8;
+  --placeholder: #EAE3D8;
+  --card: #FBF8F3;
   --accent-1: #1F3BFF;
   --accent-2: #00936B;
   --accent-3: #E0266F;
@@ -33,7 +33,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme]) { --bg: #FAFAF7; --fg: #0A0A0A; --muted: #5E5E5E; --line: #E2E2DD; --line-2: #CFCFCA; --placeholder: #EFEFEA; --card: #FFFFFF; }
+  :root:not([data-theme]) { --bg: #F4EFE7; --fg: #0A0A0A; --muted: #5E5A54; --line: #E2DBCF; --line-2: #CFC6B8; --placeholder: #EAE3D8; --card: #FBF8F3; }
 }
 
 :root {

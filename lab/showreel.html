@@ -18,7 +18,7 @@
     /* notte (predefinita) */
     --bg: #0A0A0A; --fg: #F5F5F2; --panel: #141414; --field: #0A0A0A; --dot: #2E2E2E;
   }
-  :root.light { --bg: #FAFAF7; --fg: #0A0A0A; --muted: #6B6B68; --line: #E2E2DD; --panel: #FFFFFF; --field: #F2F3F5; --dot: #D9D9D4; }
+  :root.light { --bg: #F4EFE7; --fg: #0A0A0A; --muted: #6B665E; --line: #E2DBCF; --panel: #FBF8F3; --field: #EFE9DF; --dot: #D8D0C3; }   /* color carta, come bitwip */
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
 
@@ -271,7 +271,7 @@
   ];
   const ROW_X = [384, 672, 960, 1248, 1536];
   // Giorno e notte: i colori di testo e linee seguono il tema (gli accenti restano uguali)
-  const THEMES = { dark: { fg: '#F5F5F2', dim: '#5E5E5E', line2: '#3A3A3A', win: '#FCFDFF' }, light: { fg: '#0A0A0A', dim: '#A3A3A0', line2: '#D5D5D0', win: '#FFFFFF' } };
+  const THEMES = { dark: { fg: '#F5F5F2', dim: '#5E5E5E', line2: '#3A3A3A', win: '#FCFDFF' }, light: { fg: '#0A0A0A', dim: '#A39C91', line2: '#D5CCBE', win: '#FFFFFF' } };
   let TH = THEMES.dark;
   function setTheme(name) {
     const light = name === 'light'; TH = light ? THEMES.light : THEMES.dark;
