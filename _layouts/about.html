@@ -13,24 +13,7 @@ layout: default
   {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
 </section>
 
-{% comment %} 2. Due strisce di foto che scorrono in direzioni opposte (per ora: copertine e gallerie dei progetti) {% endcomment %}
-{% capture foto %}{% for p in site.progetti %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% for g in p.galleria %}{% if g.immagine %}{{ g.immagine }}|{{ g.didascalia | default: p.title }};{% endif %}{% endfor %}{% endfor %}{% endcapture %}
-{% assign foto = foto | split: ";" %}
-{% if foto.size > 0 %}
-<section class="vita" aria-label="{{ a.foto_titolo }}" data-vita>
-  {% for striscia in (1..2) %}
-  <div class="vita__striscia" data-striscia="{{ striscia }}">
-    <ul class="vita__pista">
-      {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
-        <li class="vita__ph {% cycle 'v1', 'v2', 'v3', 'v4', 'v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
-      {% endfor %}{% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
-</section>
-{% endif %}
-
-{% comment %} 3. La timeline: a sinistra il testo e l'anno gigante, a destra le tappe con la linea che si riempie {% endcomment %}
+{% comment %} 2. La timeline: a sinistra il testo e l'anno gigante, a destra le tappe con la linea che si riempie {% endcomment %}
 <section class="anni" data-anni>
   <h2 class="anni__t rise"><span>{{ a.anni_titolo }}</span></h2>
   <div class="anni__grid">
@@ -52,6 +35,23 @@ layout: default
     </ol>
   </div>
 </section>
+
+{% comment %} 3. Due strisce di foto che scorrono in direzioni opposte (per ora: copertine e gallerie dei progetti) {% endcomment %}
+{% capture foto %}{% for p in site.progetti %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% for g in p.galleria %}{% if g.immagine %}{{ g.immagine }}|{{ g.didascalia | default: p.title }};{% endif %}{% endfor %}{% endfor %}{% endcapture %}
+{% assign foto = foto | split: ";" %}
+{% if foto.size > 0 %}
+<section class="vita" aria-label="{{ a.foto_titolo }}" data-vita>
+  {% for striscia in (1..2) %}
+  <div class="vita__striscia" data-striscia="{{ striscia }}">
+    <ul class="vita__pista">
+      {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
+        <li class="vita__ph {% cycle 'v1', 'v2', 'v3', 'v4', 'v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
+      {% endfor %}{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
 
 {% comment %} 4. Valori: ogni parola si scrive quando entra nello schermo (contorno vuoto, poi l'inchiostro) {% endcomment %}
 <section class="sec">

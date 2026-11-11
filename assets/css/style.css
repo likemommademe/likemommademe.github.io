@@ -307,7 +307,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .ahero { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: var(--gap); }
 .ahero h1 { font-size: clamp(3.5rem, 2rem + 8vw, 10rem); font-weight: 900; letter-spacing: -.045em; line-height: .86; }
 .about-foto { width: 100%; border-radius: var(--r); }
-.anni { padding-top: var(--sec); }
+.anni { padding-top: clamp(64px, 7vw, 120px); }
 .anni__t { font-size: var(--t-h2); max-width: 20ch; margin-bottom: clamp(48px, 6vw, 96px); }
 .anni__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 96px); }
 .anni__fermo { position: sticky; top: calc(var(--nav-h) + 48px); }
@@ -353,7 +353,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .ahero .lead { margin-top: 28px; }
 
 /* About: due strisce di foto che scorrono in direzioni opposte */
-.vita { width: 100vw; margin-left: calc(50% - 50vw); padding-top: var(--sec); overflow: hidden; display: grid; gap: var(--gap); }
+.vita { width: 100vw; margin-left: calc(50% - 50vw); padding-top: var(--sec); padding-bottom: 0; overflow: hidden; display: grid; gap: var(--gap); }
 .vita__pista { display: flex; gap: var(--gap); margin: 0; padding: 0; list-style: none; width: max-content; will-change: transform; }
 .vita__ph { flex: none; height: clamp(160px, 18vw, 300px); border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
 .vita__ph img { height: 100%; width: auto; aspect-ratio: 4 / 3; object-fit: cover; }
