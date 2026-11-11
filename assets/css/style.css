@@ -356,7 +356,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .ahero { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: var(--gap); }
 .ahero h1 { font-size: clamp(3.5rem, 2rem + 8vw, 10rem); font-weight: 900; letter-spacing: -.045em; line-height: .86; }
 .about-foto { width: 100%; border-radius: var(--r); }
-.anni { padding-top: clamp(64px, 7vw, 120px); }
+.anni { padding-top: clamp(64px, 7vw, 120px); padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 .anni__t { font-size: clamp(2.75rem, 1.4rem + 5vw, 7rem); font-weight: 500; line-height: .98; letter-spacing: -.04em; max-width: 18ch; margin-bottom: clamp(48px, 6vw, 104px); }
 .anni__grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 120px); }
 .anni__fermo { position: sticky; top: calc(var(--nav-h) + 48px); }
