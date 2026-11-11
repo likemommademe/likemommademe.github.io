@@ -1,8 +1,10 @@
 // Sezioni e campi del pannello. Per aggiungere un campo basta aggiungere una riga qui
 // (e poi usarlo nei layout del sito).
 // Tipi di campo: string, text, markdown, number, boolean, publish, select, country, image, relation,
-// relationList, gallery, hidden.
+// relationList, gallery, checklist, hidden.
 // Il campo "body" è il testo sotto le impostazioni del file (il contenuto della pagina).
+// "i18n: true" = il campo ha anche la versione inglese, salvata con "_en" in fondo al nome (title_en, body_en…).
+// "group" = titoletto che separa i campi nel modulo (es. Case study, SEO).
 
 window.CMS = {
   collections: [
@@ -21,17 +23,30 @@ window.CMS = {
       subtitle: ['categoria', 'cliente', 'anno'],
       home: { file: '_data/home.yml', field: 'progetti' },
       fields: [
-        { name: 'title', label: 'Titolo', type: 'string', required: true },
+        { name: 'title', label: 'Titolo', type: 'string', required: true, i18n: true },
         { name: 'published', label: 'Pubblicato sul sito', type: 'publish', default: false, hint: 'Spento = bozza: resta qui nel pannello ma non compare sul sito.' },
         { name: 'categoria', label: 'Categoria', type: 'relation', collection: 'categorie', required: true },
         { name: 'cliente', label: 'Cliente', type: 'relation', collection: 'clienti' },
         { name: 'anno', label: 'Anno', type: 'number' },
         { name: 'copertina', label: 'Immagine di copertina', type: 'image', required: true },
-        { name: 'sottotitolo', label: 'Descrizione breve', type: 'string', hint: 'Una riga, compare sotto la copertina negli elenchi.' },
-        { name: 'body', label: 'Descrizione', type: 'markdown' },
-        { name: 'galleria', label: 'Galleria', type: 'gallery', hint: 'Trascina qui le foto dal Finder. Riordina con la maniglia ⋮⋮ a sinistra.' },
-        { name: 'crediti', label: 'Crediti', type: 'markdown', rows: 4 },
-        { name: 'seo_descrizione', label: 'Descrizione per Google', type: 'text', group: 'SEO', hint: 'Circa 150 caratteri. Se vuota si usa la descrizione breve.' },
+        { name: 'sottotitolo', label: 'Descrizione breve', type: 'string', i18n: true, hint: 'Una riga, compare sotto la copertina negli elenchi.' },
+        // Il case study: ogni sezione compare sul sito solo se è compilata.
+        { name: 'body', label: 'Brief e obiettivo', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Cosa chiedeva il cliente e qual era l’obiettivo.' },
+        { name: 'concept', label: 'Concept', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'L’idea e perché funziona.' },
+        { name: 'execution', label: 'Execution', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Come l’hai realizzato. Immagini e video vanno nella Galleria qui sotto.' },
+        { name: 'galleria', label: 'Galleria', type: 'gallery', group: 'Case study', hint: 'Trascina qui le foto dal Finder. Riordina con la maniglia ⋮⋮ a sinistra.' },
+        { name: 'coordinamento', label: 'Coordinamento e processo', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Chi era coinvolto, tempi, fornitori, fasi.' },
+        { name: 'risultato', label: 'Risultato', type: 'markdown', rows: 4, i18n: true, group: 'Case study', hint: 'Cosa è cambiato per il cliente: numeri, riscontri, uscite.' },
+        {
+          name: 'strumenti', label: 'Strumenti usati', type: 'checklist', other: true, group: 'Case study',
+          options: [
+            { group: 'Adobe', items: ['Photoshop', 'Illustrator', 'InDesign', 'Premiere Pro', 'After Effects', 'Firefly'] },
+            { group: 'Creative AI', items: ['ChatGPT', 'Claude', 'Midjourney'] },
+            { group: 'UI/UX', items: ['Figma', 'Sketch', 'Adobe XD', 'Framer'] },
+          ],
+        },
+        { name: 'crediti', label: 'Crediti', type: 'markdown', rows: 4, i18n: true, group: 'Case study' },
+        { name: 'seo_descrizione', label: 'Descrizione per Google', type: 'text', i18n: true, group: 'SEO', hint: 'Circa 150 caratteri. Se vuota si usa la descrizione breve.' },
         { name: 'seo_immagine', label: 'Immagine di anteprima', type: 'image', group: 'SEO', hint: 'Compare quando condividi il link (WhatsApp, social…). Se vuota si usa la copertina.' },
         { name: 'ordine', type: 'hidden' },
       ],
@@ -48,9 +63,9 @@ window.CMS = {
       thumb: 'copertina',
       count: { collection: 'progetti', field: 'categoria' },
       fields: [
-        { name: 'title', label: 'Nome', type: 'string', required: true },
+        { name: 'title', label: 'Nome', type: 'string', required: true, i18n: true },
         { name: 'copertina', label: 'Immagine', type: 'image', hint: 'Compare nella pagina Work.' },
-        { name: 'body', label: 'Descrizione', type: 'markdown', rows: 4 },
+        { name: 'body', label: 'Descrizione', type: 'markdown', rows: 4, i18n: true },
         { name: 'ordine', type: 'hidden' },
       ],
     },
@@ -92,8 +107,8 @@ window.CMS = {
       format: 'yaml',
       url: '/',
       fields: [
-        { name: 'intro', label: 'Frase di apertura', type: 'text' },
-        { name: 'titolo_progetti', label: 'Titolo sezione progetti', type: 'string', default: 'Lavori selezionati' },
+        { name: 'intro', label: 'Frase di apertura', type: 'text', i18n: true },
+        { name: 'titolo_progetti', label: 'Titolo sezione progetti', type: 'string', default: 'Lavori selezionati', i18n: true },
         { name: 'progetti', label: 'Progetti in home', type: 'relationList', collection: 'progetti', hint: 'Scegli quali progetti mostrare in home e trascinali nell’ordine che vuoi.' },
       ],
     },
@@ -106,9 +121,9 @@ window.CMS = {
       fields: [
         { name: 'layout', type: 'hidden', default: 'about' },
         { name: 'permalink', type: 'hidden', default: '/about/' },
-        { name: 'title', label: 'Titolo', type: 'string', required: true },
+        { name: 'title', label: 'Titolo', type: 'string', required: true, i18n: true },
         { name: 'foto', label: 'Foto', type: 'image' },
-        { name: 'body', label: 'Testo', type: 'markdown' },
+        { name: 'body', label: 'Testo', type: 'markdown', i18n: true },
         { name: 'mostra_clienti', label: 'Mostra i loghi dei clienti', type: 'boolean', default: true },
       ],
     },

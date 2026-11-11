@@ -146,6 +146,15 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: 14px; }
 }
 .crediti h2 { font-size: 14px; font-weight: 500; color: var(--fg); }
 
+/* Sezioni del case study (brief, concept, execution…) */
+.sezione { max-width: 680px; margin: 56px 0; }
+.sezione h2 { margin: 0 0 12px; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.sezione .testo { margin: 0; }
+.strumenti { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.strumenti li { padding: 6px 12px; border: 1px solid currentColor; border-radius: 999px; font-size: 14px; }
+.successivo { display: block; margin-top: 80px; font-size: clamp(20px, 3vw, 32px); font-weight: 500; }
+.successivo:hover { color: var(--muted); }
+
 .indietro { display: inline-block; margin-top: 64px; color: var(--muted); }
 .indietro:hover { color: var(--fg); }
 

@@ -473,7 +473,7 @@ async function widget(field, value) {
       return { el, get: () => el.value.trim() };
     }
     case 'text': {
-      const el = h('textarea', { rows: field.rows || 3, value: value ?? '' });
+      const el = h('textarea', { rows: field.rows || 3, value: value ?? '', placeholder: field.placeholder || '' });
       return { el, get: () => el.value.replace(/\s+$/, '') };
     }
     case 'markdown':
@@ -521,6 +521,8 @@ async function widget(field, value) {
       return imageWidget(value);
     case 'gallery':
       return galleryWidget(value);
+    case 'checklist':
+      return checklistWidget(field, value);
     default:
       throw new Error(`Tipo di campo sconosciuto: ${field.type}`);
   }
@@ -639,7 +641,11 @@ function galleryWidget(value) {
     } else {
       entry.link = h('input', { type: 'url', value: item.link || '', placeholder: 'Link YouTube o Vimeo' });
     }
-    entry.caption = h('input', { type: 'text', value: item.didascalia || '', placeholder: 'Didascalia (facoltativa)' });
+    entry.caption = h('input', { type: 'text', class: 'lang-it', value: item.didascalia || '', placeholder: 'Didascalia (facoltativa)' });
+    entry.captionEn = h('input', {
+      type: 'text', class: 'lang-en', value: item.didascalia_en || '',
+      placeholder: item.didascalia ? `In italiano: ${item.didascalia}` : 'Caption in English (optional)',
+    });
     entry.format = h('select', { class: 'compact', title: 'Larghezza sul sito' },
       h('option', { value: 'intera', selected: item.formato !== 'meta' }, 'Tutta larghezza'),
       h('option', { value: 'meta', selected: item.formato === 'meta' }, 'Metà'));
@@ -652,7 +658,8 @@ function galleryWidget(value) {
         entry.format,
         h('button', { type: 'button', class: 'icon-btn danger', title: 'Elimina', onclick: () => { items.delete(el); el.remove(); markDirty(); } }, icon('trash'))),
       entry.image ? entry.image.el : entry.link,
-      entry.caption);
+      entry.caption,
+      entry.captionEn);
     items.set(el, entry);
     list.append(el);
   }
@@ -684,10 +691,37 @@ function galleryWidget(value) {
         immagine: i.image?.get(),
         link: i.link?.value.trim(),
         didascalia: i.caption.value.trim(),
+        didascalia_en: i.captionEn.value.trim(),
         formato: i.format.value === 'meta' ? 'meta' : undefined,
       }))
       .filter((i) => i.immagine || i.link),
     files: async () => (await Promise.all(ordered().filter((i) => i.image).map((i) => i.image.files()))).flat(),
+  };
+}
+
+// Caselle da spuntare divise in gruppi (es. gli strumenti usati), più un campo libero per quelli non in elenco.
+// Nel file diventa un elenco: [Photoshop, Figma, …].
+function checklistWidget(field, value) {
+  const chosen = new Set(value || []);
+  const known = new Set(field.options.flatMap((g) => g.items));
+  const boxes = [];
+  const groups = field.options.map((g) => h('div', { class: 'check-group' },
+    h('span', { class: 'check-title' }, g.group),
+    h('div', { class: 'check-items' }, g.items.map((item) => {
+      const input = h('input', { type: 'checkbox', value: item, checked: chosen.has(item) });
+      boxes.push(input);
+      return h('label', { class: 'check' }, input, h('span', {}, item));
+    }))));
+  const other = h('input', {
+    type: 'text', placeholder: 'Altri, separati da virgola',
+    value: [...chosen].filter((v) => !known.has(v)).join(', '),
+  });
+  return {
+    el: h('div', { class: 'checklist' }, groups, field.other && h('div', { class: 'check-group' }, h('span', { class: 'check-title' }, 'Altri'), other)),
+    get: () => [
+      ...boxes.filter((b) => b.checked).map((b) => b.value),
+      ...other.value.split(',').map((s) => s.trim()).filter(Boolean),
+    ],
   };
 }
 
@@ -723,11 +757,53 @@ async function relationListWidget(field, value) {
   return { el: h('div', {}, list, select), get: () => [...list.children].map((el) => el.dataset.slug) };
 }
 
+// I campi con "i18n: true" hanno due versioni: italiano (nome normale, es. "title" o il testo della pagina)
+// e inglese (stesso nome con "_en", es. "title_en" o "body_en"). L'interruttore in alto mostra una lingua alla volta.
+function expandLanguages(fields, entry) {
+  return fields.flatMap((f) => {
+    if (!f.i18n) return [f];
+    const itValue = f.name === 'body' ? entry.body : entry.data[f.name];
+    return [
+      { ...f, lang: 'it' },
+      {
+        ...f, lang: 'en', name: `${f.name}_en`, required: false, default: undefined, it: f.name,
+        placeholder: typeof itValue === 'string' && itValue && !itValue.includes('\n') ? `In italiano: ${itValue}` : f.placeholder,
+      },
+    ];
+  });
+}
+
+function languageSwitch(form, widgets) {
+  const LANGS = [['it', '🇮🇹', 'Italiano'], ['en', '🇬🇧', 'English']];
+  const missing = h('span', { class: 'lang-missing' });
+  const buttons = LANGS.map(([code, flagIcon, label]) => h('button', {
+    type: 'button', class: 'lang-btn', 'data-lang': code,
+    onclick: () => { write('cms.lang', code); set(code); },
+  }, `${flagIcon} ${label}`));
+  function set(code) {
+    form.dataset.lang = code;
+    for (const b of buttons) b.classList.toggle('active', b.dataset.lang === code);
+  }
+  // Conta i testi scritti in italiano che non hanno ancora la versione inglese.
+  function count() {
+    const byName = Object.fromEntries(widgets.map(([f, w]) => [f.name, w]));
+    const n = widgets.filter(([f, w]) => f.lang === 'en' && isEmpty(w.get()) && !isEmpty(byName[f.it]?.get())).length;
+    missing.textContent = n ? `${n} da tradurre` : '';
+    buttons[1].append(missing);
+  }
+  set(read('cms.lang') === 'en' ? 'en' : 'it');
+  count();
+  form.addEventListener('input', count);
+  form.addEventListener('change', count);
+  return h('div', { class: 'lang-bar' }, h('span', { class: 'lang-label' }, 'Lingua dei testi'), h('div', { class: 'lang-seg' }, buttons));
+}
+
 async function buildForm(fields, entry, extra = []) {
   const widgets = [];
   const el = h('div', { class: 'form', oninput: markDirty, onchange: markDirty });
+  const all = expandLanguages([...fields, ...extra], entry);
   let group = null;
-  for (const field of [...fields, ...extra]) {
+  for (const field of all) {
     const value = field.name === 'body' ? entry.body : entry.data[field.name];
     const w = await widget(field, value);
     widgets.push([field, w]);
@@ -736,13 +812,16 @@ async function buildForm(fields, entry, extra = []) {
       group = field.group;
       el.append(h('h3', { class: 'form-group' }, group));
     }
+    const cls = `field${field.lang ? ` lang-${field.lang}` : ''}`;
+    const badge = field.lang && h('span', { class: 'lang-tag' }, field.lang.toUpperCase());
     el.append(w.inline
-      ? h('div', { class: 'field' }, w.el, field.hint && h('p', { class: 'hint' }, field.hint))
-      : h('div', { class: 'field' },
-        h('label', { class: 'label' }, field.label, field.required && h('span', { class: 'req' }, ' *')),
+      ? h('div', { class: cls }, w.el, field.hint && h('p', { class: 'hint' }, field.hint))
+      : h('div', { class: cls },
+        h('label', { class: 'label' }, field.label, field.required && h('span', { class: 'req' }, ' *'), badge),
         w.el,
         field.hint && h('p', { class: 'hint' }, field.hint)));
   }
+  if (all.some((f) => f.lang)) el.prepend(languageSwitch(el, widgets));
 
   // Raccoglie i valori, controlla i campi obbligatori e prepara le immagini nuove da caricare.
   async function collect() {
@@ -757,7 +836,7 @@ async function buildForm(fields, entry, extra = []) {
       else if (!isEmpty(v)) data[field.name] = v;
     }
     for (const [k, v] of Object.entries(entry.data)) {
-      if (![...fields, ...extra].some((f) => f.name === k)) data[k] = v;
+      if (!all.some((f) => f.name === k)) data[k] = v;
     }
     const uploads = (await Promise.all(widgets.filter(([, w]) => w.files).map(([, w]) => w.files()))).flat();
     return { data, body, uploads, virtual };

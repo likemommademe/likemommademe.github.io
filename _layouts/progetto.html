@@ -24,7 +24,27 @@ layout: default
     <img class="cover" src="{{ page.copertina | relative_url }}" alt="{{ page.title }}">
   {% endif %}
 
-  {% if content != "" %}<div class="testo">{{ content }}</div>{% endif %}
+  {% comment %} Case study: ogni sezione compare solo se è compilata nel pannello. {% endcomment %}
+  {% if content != "" %}
+  <section class="sezione">
+    <h2>Brief e obiettivo</h2>
+    <div class="testo">{{ content }}</div>
+  </section>
+  {% endif %}
+
+  {% if page.concept %}
+  <section class="sezione">
+    <h2>Concept</h2>
+    <div class="testo">{{ page.concept | markdownify }}</div>
+  </section>
+  {% endif %}
+
+  {% if page.execution %}
+  <section class="sezione">
+    <h2>Execution</h2>
+    <div class="testo">{{ page.execution | markdownify }}</div>
+  </section>
+  {% endif %}
 
   {% if page.galleria %}
   <div class="galleria">
@@ -41,11 +61,44 @@ layout: default
   </div>
   {% endif %}
 
+  {% if page.coordinamento %}
+  <section class="sezione">
+    <h2>Coordinamento e processo</h2>
+    <div class="testo">{{ page.coordinamento | markdownify }}</div>
+  </section>
+  {% endif %}
+
+  {% if page.risultato %}
+  <section class="sezione">
+    <h2>Risultato</h2>
+    <div class="testo">{{ page.risultato | markdownify }}</div>
+  </section>
+  {% endif %}
+
+  {% if page.strumenti and page.strumenti.size > 0 %}
+  <section class="sezione">
+    <h2>Strumenti</h2>
+    <ul class="strumenti">
+      {% for s in page.strumenti %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
   {% if page.crediti %}
   <section class="crediti">
     <h2>Crediti</h2>
     {{ page.crediti | markdownify }}
   </section>
+  {% endif %}
+
+  {% comment %} Progetto successivo nella stessa categoria, nell'ordine deciso nel pannello. {% endcomment %}
+  {% assign stessi = site.progetti | where: "categoria", page.categoria | sort: "ordine", "last" %}
+  {% assign successivo = nil %}
+  {% for p in stessi %}
+    {% if p.url == page.url %}{% assign i = forloop.index0 | plus: 1 %}{% assign successivo = stessi[i] %}{% endif %}
+  {% endfor %}
+  {% if successivo %}
+    <a class="successivo" href="{{ successivo.url | relative_url }}">Progetto successivo: {{ successivo.title }} →</a>
   {% endif %}
 
   {% if cat %}

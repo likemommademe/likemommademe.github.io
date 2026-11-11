@@ -29,7 +29,7 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, 
 - Niente dominio per ora. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 
 ### Il collegamento del Mac (per Claude)
-- **Cartella del progetto**: `~/Desktop/Claude/portfolio` (prima era `~/Desktop/portfolio`), collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git). Il branch `main` segue `origin/main`.
+- **Cartella del progetto**: `~/Desktop/Claude/portfolio` (prima era `~/Desktop/Claude/portfolio`), collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git). Il branch `main` segue `origin/main`.
 - **Cosa è installato sul Mac**: git, che era già presente, e **GitHub CLI** (`~/.local/bin/gh`), collegato all'account `likemommademe`. Niente Homebrew né Node.
 - **Accesso a GitHub**: git usa la chiave di **GitHub CLI** a ogni pubblicazione, come previsto in `~/.gitconfig`. Vale per tutte le repo dell'account. La vecchia chiave "Portfolio likemommademe" è stata cancellata l'11/11/2026, perché era finita in chat e non serviva più.
 - **Firma delle modifiche**: nome `likemommademe`, con l'email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare.
@@ -96,13 +96,20 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Stato del sito**: "Sito aggiornato" oppure "In pubblicazione…". Ogni salvataggio va online in 1–2 minuti.
 
 ### Progetti
-- Campi: titolo, **Pubblicato sul sito** (spento = bozza), categoria, cliente, anno, copertina, descrizione breve, descrizione, galleria, crediti, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
+- Campi: titolo, **Pubblicato sul sito** (spento = bozza), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
+- **Case study**, sezioni fisse: **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
 - I progetti nuovi partono come bozza.
 - **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
 - **Testo con pulsanti**: grassetto, corsivo, titolo, elenco, link.
 - Pulsanti **Duplica**, **Vedi sul sito**, **Elimina**.
 - **Ordine dentro ogni categoria**: nella lista scegli la categoria nel filtro e trascini le righe.
 - **Ricerca e filtri** per categoria, cliente e stato.
+
+### Lingue (italiano e inglese)
+- In cima a ogni modulo con testi c'è l'interruttore **🇮🇹 Italiano / 🇬🇧 English**: mostra i campi di una lingua alla volta. Accanto a English compare quanti testi italiani non hanno ancora la traduzione.
+- Hanno la versione inglese: titoli, descrizioni, sezioni del case study, crediti, didascalie della galleria, SEO, nomi e descrizioni delle categorie, Home e About. Nomi dei clienti, immagini, anni e strumenti valgono per tutte e due le lingue.
+- Nei file la versione inglese ha lo stesso nome con `_en` in fondo (`title_en`, `body_en`, `didascalia_en`…).
+- **Per ora il sito pubblico è solo in italiano**: i testi inglesi restano salvati e compariranno quando faremo le pagine `/en/`.
 
 ### Home
 - In **Pagine → Home** scegli quali progetti mostrare e li trascini nell'ordine che vuoi.
@@ -156,7 +163,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=9`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=10`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -238,7 +245,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 21/10/2026 | Pagina privacy, più email autorizzate, nome LIKEMOMMADEME · CMS |
 | 21–22/10/2026 | Bozze, riordino, progetti in home, libreria immagini, WebP, SEO, statistiche delle visite, nuove categorie |
 | 22/10/2026 | Clienti con settore e paese |
-| 11/11/2026 | Questo riassunto |
+| 11/11/2026 | Questo riassunto. Cartella spostata in `~/Desktop/Claude/portfolio`, KV login cancellato |
+| 11/11/2026 | Pannello: testi in italiano e inglese, case study a sezioni, strumenti da spuntare |
 | 11/11/2026 | Progetto spostato in `~/Desktop/Claude/portfolio`. Pubblicazione dal Mac tramite GitHub CLI, chiave "Portfolio likemommademe" cancellata |
 
 ---
@@ -249,9 +257,10 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub e il sito su DecapBridge. (KV **login** su Cloudflare: già cancellato.)
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
 4. **Facoltativo**: togliere dal Portachiavi del Mac la copia della chiave cancellata. Apri **Accesso Portachiavi**, cerca `github.com` ed elimina la voce con utente `likemommademe`. Non dà problemi se resta. (La chiave "Portfolio likemommademe" finita in chat è già stata cancellata su GitHub.)
-5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
-6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
-7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
+5. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
+6. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
+7. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
+8. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 
 ---
 
