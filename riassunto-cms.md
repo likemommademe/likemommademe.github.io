@@ -198,10 +198,11 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Bindings**: `DB` → D1 **statistiche**. (Il KV `login` della prima versione è stato cancellato l'11/11/2026.)
 
 ### Chiavi GitHub (token)
-- **pannello**: la usa il CMS, è salvata su Cloudflare. **Non cancellarla.**
+- **CMS** (in Fine-grained tokens): la usa il pannello, è salvata su Cloudflare come `GITHUB_TOKEN`. **Non cancellarla.** È l'unica chiave creata a mano: in Tokens (classic) non ce ne sono.
 - **decapbridge**: non esiste più su GitHub (verificato l'11/11/2026). Niente da fare.
 - **Portfolio likemommademe**: cancellata l'11/11/2026. Dal Mac ora si pubblica con GitHub CLI.
 - **GitHub CLI**: non è una chiave che crei tu. Compare in https://github.com/settings/applications come app autorizzata "GitHub CLI". La usa Claude dal Mac per pubblicare. **Non revocarla.**
+- **Visual Studio Code**: anche questa compare tra le app autorizzate (Authorized OAuth Apps). È il collegamento di VS Code a GitHub e si può lasciare.
 
 ---
 
@@ -218,7 +219,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 3. Clicca dentro il codice, poi **Cmd + A**, **Cmd + V** e **Deploy**.
 
 **…sostituire la chiave GitHub** (se il pannello dice "La chiave GitHub salvata su Cloudflare non funziona più")
-1. Crea una chiave nuova: https://github.com/settings/personal-access-tokens/new. Nome `pannello`, scadenza **No expiration**, solo la repo **likemommademe.github.io**, permesso **Contents: Read and write**.
+1. Crea una chiave nuova: https://github.com/settings/personal-access-tokens/new. Nome `CMS`, scadenza **No expiration**, solo la repo **likemommademe.github.io**, permesso **Contents: Read and write**.
 2. Su Cloudflare sostituisci `GITHUB_TOKEN` e clicca **Deploy**.
 3. Rientra nel pannello: dopo il cambio della chiave te lo chiede, è normale.
 
