@@ -2,7 +2,7 @@
 # Le frasi dei progetti, della home e delle categorie restano nel pannello.
 
 home:
-  mondi_titolo: Cosa faccio
+  mondi_titolo: "Cosa <em>faccio</em>"
   mondi_progetti_uno: progetto
   mondi_progetti_piu: progetti
   lavori_link: Tutti i progetti
@@ -23,7 +23,7 @@ lavori:
   conta_piu: progetti
 
 footer:
-  cta_titolo: Hai un progetto in testa?
+  cta_titolo: "Hai un progetto in <em>testa</em>?"
   cta_testo: Raccontamelo. Rispondo io, di persona, e di solito in giornata.
   cta_bottone: Scrivimi
   menu: Menu
@@ -38,7 +38,7 @@ footer:
 about:
   sottotitolo: Creative designer. Identità, illustrazioni, motion, AI e siti, dal concept alla consegna.
   foto_titolo: Dietro le quinte
-  anni_titolo: Come mamma mi ha fatto, anno per anno
+  anni_titolo: "Come mamma mi ha fatto, anno per <em>anno</em>"
   anni_lead: Credo nelle idee che si vedono finite.
   tappe:
     - anno: 2016
@@ -51,7 +51,7 @@ about:
       testo: Arriva la creative AI. I prompt li scrivo io, la direzione pure.
     - anno: 2026
       testo: Nasce LIKEMOMMADEME, con un sito e un pannello fatti su misura.
-  valori_titolo: Tre valori mi guidano
+  valori_titolo: "Tre valori mi <em>guidano</em>"
   valori:
     - nome: Curiosità
       testo: Guardo tutto, provo tutto. Poi tengo solo quello che serve al progetto.
@@ -60,7 +60,7 @@ about:
     - nome: Ironia
       testo: Il lavoro si prende sul serio. Io un po' meno, e si vede.
   clienti_titolo: Clienti
-  dove_titolo: Dove lavoro
+  dove_titolo: "Da dove <em>lavoro</em>"
   dove_testo: Lavoro con brand e agenzie in Italia e all'estero, in presenza o da remoto.
   dove:
     - citta: Italia
@@ -71,7 +71,7 @@ about:
       dettaglio: Da remoto
       fuso: ""
       sigla: WEB
-  faq_titolo: Domande?
+  faq_titolo: "Domande<em class=\"p\">?</em>"
   faq:
     - d: Chi c'è dietro LIKEMOMMADEME?
       r: Una persona sola, io. Seguo ogni progetto dal concept alla consegna, e quando serve coinvolgo fotografi, sviluppatori e stampatori di fiducia.

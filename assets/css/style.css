@@ -86,6 +86,11 @@ body.no-reel main { padding-top: calc(var(--nav-h) + 40px); }
 html.js .rise > span { transform: translateY(105%); transition: transform 1s var(--ease); }
 html.js .rise.is-in > span { transform: none; }
 
+/* Il font creativo: yink solo su UNA parola (o sulla punteggiatura) dentro un titolo, come bitwip con Baila */
+:is(h1, h2, h3, .manifesto) em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: lowercase; font-size: 1em; line-height: 0; }
+:is(h1, h2, h3) em.p { color: var(--accent-3); font-size: 1.15em; }
+.rise { padding-top: .12em; margin-top: -.12em; }
+
 /* Link e pulsanti */
 .lnk { position: relative; padding: 4px 0; background: none; border: 0; color: inherit; font: inherit; font-weight: 500; cursor: pointer; }
 .lnk::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: currentColor; transform-origin: right; transition: transform .6s var(--ease); }

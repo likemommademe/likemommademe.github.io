@@ -44,7 +44,7 @@
           font-weight: 500; font-size: 44px; line-height: 1.15; }
   #role .mask { padding: .1em .3em .1em; margin: -.1em -.3em -.1em; }
   #role .motto { display: block; font-weight: 900; font-size: 60px; line-height: 1.1; letter-spacing: -.02em; }
-  #role .motto em { font-family: "yink", "Cabinet Grotesk", sans-serif; font-style: normal; font-weight: 400; font-size: 1.2em; letter-spacing: 0; text-transform: lowercase; }   /* yink solo su una parola */
+  #role .motto em { font-family: "yink", "Cabinet Grotesk", sans-serif; font-style: normal; font-weight: 400; font-size: 1em; letter-spacing: 0; text-transform: lowercase; }   /* yink solo su una parola, stessa grandezza del resto */
   #role .ruolo { display: block; margin-top: 10px; font-size: 26px; color: var(--muted); }
   .sq { width: 64px; height: 64px; border-radius: 12px; }
 
@@ -375,11 +375,10 @@
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
   const CT = [
-    // la prima parte in Cabinet maiuscolo, la seconda (dopo |) in yink minuscolo
-    { world: 0, word: 'BRAND|ing',      col: BLUE,  tin: 2.2,  tout: 3.3 },
-    { world: 1, word: 'ILLUS|tration',  col: GREEN, tin: 6.1,  tout: 6.98 },
-    { world: 2, word: 'GEN |ai',        col: PINK,  tin: 8.05, tout: 8.85 },
-    { world: 4, word: 'WEB |design',    col: BLUE,  tin: 12.15, tout: 12.92 }
+    { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 3.3 },
+    { world: 1, word: 'ILLUSTRATION', col: GREEN, tin: 6.1,  tout: 6.98 },
+    { world: 2, word: 'GEN AI',       col: PINK,  tin: 8.05, tout: 8.85 },
+    { world: 4, word: 'WEB DESIGN',   col: BLUE,  tin: 12.15, tout: 12.92 }
   ];
   CT.forEach(c => {
     const d = document.createElement('div'); d.className = 'abs ct'; d.setAttribute('aria-hidden', 'true'); d.style.color = c.col;
