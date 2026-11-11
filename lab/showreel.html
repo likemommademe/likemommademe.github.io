@@ -104,7 +104,7 @@
   body.scroll #stage { position: fixed; }
   body.scroll #ui, body.embed #ui { display: none; }
   #scroller { display: none; }
-  body.scroll #scroller { display: block; height: 850vh; }
+  body.scroll #scroller { display: block; height: 1600vh; }
   #hint { position: fixed; left: 0; right: 0; bottom: 28px; text-align: center; display: none;
           font: 500 15px/1 "Cabinet Grotesk", system-ui, sans-serif; color: #8A8A8A; transition: opacity .25s; }
   body.scroll #hint, body.embed #hint { display: block; }
@@ -202,7 +202,7 @@
   const GOFF = [-1.5, -.5, .5, 1.5];             // spostamento di ogni parola, in multipli di G
   // I cinque mondi: inizio e fine nel tempo. Brand ha due battute (il cubo), gli altri una.
   const WORLDS = [
-    { label: 'Brand Identity', col: BLUE,  t0: 2,  t1: 6,  big: 'BRAND',        cap: 'Identità che stanno in piedi da sole.' },
+    { label: 'Brand Identity', col: BLUE,  t0: 2,  t1: 6,  big: 'BRANDING',     cap: 'Identità che stanno in piedi da sole.' },
     { label: 'Illustration',   col: GREEN, t0: 6,  t1: 8,  big: 'ILLUSTRATION', cap: 'Disegnate a mano. Sì, davvero.' },
     { label: 'Generative AI',  col: PINK,  t0: 8,  t1: 10, big: 'GEN AI',       cap: 'Il prompt lo scrivo io.', bigEnd: 8.42, maxW: 560 },
     { label: 'Motion Design',  col: PINK,  t0: 10, t1: 12, big: null },
@@ -466,8 +466,8 @@
       if (t < 2) {
         sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
         jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
-        x = GOFF[group(i)] * G * eOut(p(t, 1, 1.4));
-        if (i > 0) y = 115 * eIn(p(t, 1.5 + .02 * i, 1.85 + .02 * i));
+        x = GOFF[group(i)] * G * eIO(p(t, .95, 1.45));
+        if (i > 0) y = 115 * eIO(p(t, 1.5 + .02 * i, 1.9 + .02 * i));
       } else if (t < 14) { y = 115; }
       else { y = 115 * (1 - eOut(p(t, 14.3 + .02 * i, 14.75 + .02 * i))); }
       vis(c, y < 114);
@@ -480,7 +480,8 @@
     el.role.style.transform = `translateY(${ry}%)`;
     [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
       const on = t >= 1 && t < 2; vis(q, on); if (!on) return;
-      const s = spring(p(t, 1.02 + .06 * n, 1.36 + .06 * n)), dy = 420 * eIn(p(t, 1.5 + .03 * n, 1.85 + .03 * n));
+      const room = clamp((eIO(p(t, .95, 1.45)) - .55) / .45);   // il quadratino entra solo quando lo spazio tra le parole c'è
+      const s = spring(p(t, 1.15 + .05 * n, 1.5 + .05 * n)) * room, dy = 420 * eIO(p(t, 1.55 + .03 * n, 1.95 + .03 * n));
       q.style.transform = `translate(${M.gaps[n] - 32}px, ${M.cy - 32 + dy}px) rotate(${[-6, 4, -3][n]}deg) scale(${s})`;
     });
 
@@ -736,16 +737,17 @@
   }
   addEventListener('resize', fit); fit();
 
-  // Scroll: il tempo insegue la posizione con uno smorzamento esponenziale, così lo scrub è morbido
-  let st = 0, lastNow = 0;
-  const hint = E('hint');
+  // Scroll: il tempo insegue la posizione con una molla a smorzamento critico (accelera e frena, senza scatti né rimbalzi)
+  let st = 0, sv = 0, lastNow = 0, lastDrawn = -1;
+  const hint = E('hint'), W0 = 7;
   function scrollFrame(now) {
     const max = document.documentElement.scrollHeight - innerHeight;
     const target = embed ? embedTarget : max > 0 ? clamp(scrollY / max) * DUR : 0;
     const dt = lastNow ? Math.min(.05, (now - lastNow) / 1000) : .016; lastNow = now;
-    st += (target - st) * (1 - Math.exp(-dt * 9));
-    if (Math.abs(target - st) < .001) st = target;
-    seek(st);
+    for (let i = 0, h = dt / 4; i < 4; i++) { sv += (W0 * W0 * (target - st) - 2 * W0 * sv) * h; st += sv * h; }
+    if (Math.abs(target - st) < .0005 && Math.abs(sv) < .002) { st = target; sv = 0; }
+    st = clamp(st, 0, DUR);
+    if (st !== lastDrawn) { seek(st); lastDrawn = st; }
     hint.style.opacity = st < .3 ? '1' : '0';
     requestAnimationFrame(scrollFrame);
   }

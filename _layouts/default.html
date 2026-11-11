@@ -13,25 +13,49 @@
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   {% if anteprima %}<meta property="og:image" content="{{ anteprima | absolute_url }}">{% endif %}
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,900&f[]=clash-display@600&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
-<body>
-  <header class="site-header">
-    <a class="logo" href="{{ '/' | relative_url }}">{{ info.nome }}</a>
-    <nav>
-      <a href="{{ '/work/' | relative_url }}">Work</a>
-      <a href="{{ '/about/' | relative_url }}">About</a>
-    </nav>
+<body class="{% if page.reel %}has-reel{% else %}no-reel{% endif %}">
+  <header class="nav{% if page.reel %} nav--reel{% endif %}" data-nav>
+    <div class="nav__bar">
+      <a class="nav__logo" href="{{ '/' | relative_url }}" aria-label="{{ info.nome | upcase }}, home">{{ info.nome | upcase }}<i aria-hidden="true"></i></a>
+      <div class="nav__right">
+        <nav class="nav__links" aria-label="Menu principale">
+          <a href="{{ '/work/' | relative_url }}">Progetti</a>
+          <a href="{{ '/about/' | relative_url }}">Chi sono</a>
+        </nav>
+        <a class="nav__cta" href="#contatti">Contatti<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
   </header>
+  <script>
+    // Menu: largo in cima, si stringe in una pillola quando si scorre (come bitwip)
+    (function () {
+      var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
+          logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
+      function layout() {
+        var small = innerWidth < 720, pad = small ? 18 : 30, gap = small ? 14 : 44;
+        var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth,
+            pill = pad + lw + gap + rw + 6, clip = Math.max(0, (W - pill) / 2);
+        bar.style.setProperty('--clip', clip + 'px');
+        bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
+        bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
+      }
+      function onScroll() { nav.classList.toggle('is-pill', scrollY > 24); }
+      layout(); onScroll();
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', layout);
+      if (document.fonts) document.fonts.ready.then(layout);
+    })();
+  </script>
 
   <main>
     {{ content }}
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" id="contatti">
     <span>© {{ 'now' | date: '%Y' }} {{ info.nome }}</span>
     {% include contatti.html %}
   </footer>
