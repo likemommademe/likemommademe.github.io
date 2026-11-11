@@ -1,22 +1,75 @@
 ---
 layout: default
 ---
-<article class="about">
+{% assign a = site.data.testi.about %}
+{% assign tappe = a.tappe %}
+
+<section class="ahero">
+  <h1 class="rise"><span>{{ page.title }}</span></h1>
   {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
-  <div>
-    <h1>{{ page.title }}</h1>
-    <div class="testo">{{ content }}</div>
+</section>
 
-    {% if page.mostra_clienti and site.clienti.size > 0 %}
-      <h2>Clienti</h2>
-      <ul class="clienti">
-        {% for c in site.clienti %}
-          <li>{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
-    <h2>Contatti</h2>
-    {% include contatti.html %}
+{% comment %} La timeline: a sinistra il testo e l'anno gigante che cambia, a destra le tappe con la linea che si riempie scorrendo {% endcomment %}
+<section class="anni" data-anni>
+  <h2 class="anni__t rise"><span>{{ a.anni_titolo }}</span></h2>
+  <div class="anni__grid">
+    <div class="anni__sx">
+      <div class="anni__fermo">
+        <p class="anni__lead">{{ a.anni_lead }}</p>
+        <div class="anni__testo">{{ content }}</div>
+        <div class="anni__big" aria-hidden="true"><span class="anni__num" data-num>{{ tappe.first.anno }}</span><i class="anni__seg"></i></div>
+      </div>
+    </div>
+    <ol class="anni__lista" data-lista>
+      <li class="anni__linea" aria-hidden="true"><i data-prog></i><b data-segno></b></li>
+      {% for t in tappe %}
+        <li class="anni__tappa" data-tappa data-anno="{{ t.anno }}">
+          <span class="anni__anno">{{ t.anno }}</span>
+          <span class="anni__cosa">{{ t.testo }}</span>
+        </li>
+      {% endfor %}
+    </ol>
   </div>
-</article>
+</section>
+
+{% if page.mostra_clienti and site.clienti.size > 0 %}
+<section class="sec">
+  <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
+  <ul class="clienti">
+    {% for c in site.clienti %}
+      <li>{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<script>
+  (function () {
+    var box = document.querySelector('[data-anni]');
+    if (!box) return;
+    var lista = box.querySelector('[data-lista]'), prog = box.querySelector('[data-prog]'), segno = box.querySelector('[data-segno]'),
+        num = box.querySelector('[data-num]'), tappe = Array.prototype.slice.call(box.querySelectorAll('[data-tappa]')), attiva = -1, timer;
+    function tick() {
+      var r = lista.getBoundingClientRect(), mezzo = innerHeight * .5;
+      var k = Math.min(1, Math.max(0, (mezzo - r.top) / r.height));
+      prog.style.transform = 'scaleY(' + k + ')';
+      segno.style.transform = 'translateY(' + (k * r.height) + 'px) rotate(' + (45 + k * 360) + 'deg)';
+      var i = 0;
+      tappe.forEach(function (t, j) { if (t.getBoundingClientRect().top < mezzo) i = j; });
+      if (i === attiva) return;
+      tappe.forEach(function (t, j) { t.classList.toggle('is-attiva', j === i); t.classList.toggle('is-passata', j < i); });
+      // l'anno gigante cambia facendo scorrere le cifre: il vecchio esce, il nuovo entra dalla parte opposta
+      var su = i > attiva, primo = attiva < 0; attiva = i;
+      if (primo) { num.textContent = tappe[i].dataset.anno; return; }
+      clearTimeout(timer);
+      num.className = 'anni__num ' + (su ? 'esce-su' : 'esce-giu');
+      timer = setTimeout(function () {
+        num.textContent = tappe[i].dataset.anno;
+        num.className = 'anni__num ' + (su ? 'entra-su' : 'entra-giu');
+      }, 200);
+    }
+    addEventListener('scroll', tick, { passive: true });
+    addEventListener('resize', tick);
+    tick();
+  })();
+</script>

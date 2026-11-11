@@ -33,3 +33,20 @@ footer:
   progetti: Progetti
   chi_sono: Chi sono
   privacy: Privacy
+
+# Testi provvisori: li riscriviamo insieme
+about:
+  anni_titolo: Come mamma mi ha fatto, anno per anno
+  anni_lead: Credo nelle idee che si vedono finite.
+  clienti_titolo: Clienti
+  tappe:
+    - anno: 2016
+      testo: Primo logo, per il bar sotto casa. Pagato in cappuccini.
+    - anno: 2018
+      testo: Prima agenzia. Imparo a tenere insieme clienti, fornitori e scadenze.
+    - anno: 2020
+      testo: Motion design e video entrano nel lavoro di ogni giorno.
+    - anno: 2023
+      testo: Arriva la creative AI. I prompt li scrivo io, la direzione pure.
+    - anno: 2026
+      testo: Nasce LIKEMOMMADEME, con un sito e un pannello fatti su misura.

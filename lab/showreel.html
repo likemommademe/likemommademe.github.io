@@ -233,7 +233,7 @@
     { label: 'Illustration',   col: GREEN, t0: 6,  t1: 8,  big: 'ILLUSTRATION', cap: 'Disegnate a mano. Sì, davvero.' },
     { label: 'Generative AI',  col: PINK,  t0: 8,  t1: 10, big: 'GEN AI',       cap: 'Il prompt lo scrivo io.', bigEnd: 8.42, maxW: 560 },
     { label: 'Motion Design',  col: PINK,  t0: 10, t1: 12, big: null },
-    { label: 'Web Design',     col: BLUE,  t0: 12, t1: 14, big: 'WEB DESIGN',   cap: 'Siti su misura, CMS compreso.' }
+    { label: 'Web Design',     col: BLUE,  t0: 12, t1: 14, big: 'WEB\nDESIGN',  cap: 'Siti su misura, CMS compreso.' }
   ];
   const ROW_X = [384, 672, 960, 1248, 1536];
   // Giorno e notte: i colori di testo e linee seguono il tema (gli accenti restano uguali)
@@ -309,7 +309,11 @@
   WORLDS.forEach(w => {
     if (!w.big) return;
     const d = document.createElement('div'); d.className = 'word'; d.style.color = w.col;
-    w.big.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask'; const c = document.createElement('span'); c.textContent = ch === ' ' ? ' ' : ch; m.appendChild(c); d.appendChild(m); });
+    w.lines = w.big.split('\n').map(line => {   // un titolo può andare su più righe (WEB / DESIGN)
+      const row = document.createElement('div');
+      line.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask'; const c = document.createElement('span'); c.textContent = ch === ' ' ? '\u00a0' : ch; m.appendChild(c); row.appendChild(m); });
+      d.appendChild(row); return row;
+    });
     const cap = document.createElement('div'); cap.className = 'cap'; cap.innerHTML = `<span class="mask"><span>${w.cap}</span></span>`;
     bigEl.appendChild(d); bigEl.appendChild(cap);
     w.el = d; w.letters = [...d.querySelectorAll('.mask > span')]; w.capEl = cap; w.capIn = cap.querySelector('.mask > span');
@@ -377,11 +381,11 @@
     WORLDS.forEach(w => {
       if (!w.el) return;
       w.el.style.fontSize = '100px';
-      const width = w.letters.reduce((a, c) => a + c.getBoundingClientRect().width / S, 0);
-      const size = Math.min(230, (w.maxW || 760) / Math.max(1, width) * 100);
+      const width = Math.max(...w.lines.map(r => [...r.children].reduce((a, c) => a + c.getBoundingClientRect().width / S, 0)));
+      const size = Math.min(230, (w.maxW || 760) / Math.max(1, width) * 100), h = size * .8 * w.lines.length;
       w.el.style.fontSize = size + 'px';
-      const top = 470 - size * .8 / 2 - 30;
-      w.el.style.top = top + 'px'; w.capEl.style.top = (top + size * .8 + 34) + 'px';
+      const top = 470 - h / 2 - 30;
+      w.el.style.top = top + 'px'; w.capEl.style.top = (top + h + 34) + 'px';
     });
   }
 
