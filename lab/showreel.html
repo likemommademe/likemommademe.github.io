@@ -40,8 +40,11 @@
   #name { position: absolute; left: 0; right: 0; top: 372px; text-align: center; white-space: nowrap;
           font-weight: 900; font-size: 190px; line-height: .8; letter-spacing: -.02em; z-index: 5; }
   #name .mask { padding: .1em 0 .04em; margin: -.1em 0 -.04em; }
-  #role { position: absolute; left: 0; right: 0; top: 560px; text-align: center;
+  #role { position: absolute; left: 0; right: 0; top: 548px; text-align: center;
           font-weight: 500; font-size: 44px; line-height: 1.15; }
+  #role .mask { padding: .1em .3em .1em; margin: -.1em -.3em -.1em; }
+  #role .motto { display: block; font-family: "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; font-size: 72px; line-height: 1.1; text-transform: lowercase; }
+  #role .ruolo { display: block; margin-top: 10px; font-size: 26px; color: var(--muted); }
   .sq { width: 64px; height: 64px; border-radius: 12px; }
 
   /* Cornice: marchio e mondi */
@@ -77,8 +80,10 @@
   #kin { top: 330px; text-align: center; white-space: nowrap;
          font-weight: 900; font-size: 250px; line-height: .8; letter-spacing: -.02em; }
   #kin span, .kt span { display: inline-block; }
-  .ct { left: 0; right: 0; text-align: center; white-space: nowrap; font-family: "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; font-style: normal; line-height: .9; letter-spacing: 0; }
-  .ct .mask { padding: .14em 0 .12em; margin: -.14em 0 -.12em; }
+  .ct { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; line-height: .9; letter-spacing: -.02em; }
+  .ct .mask { padding: .16em 0 .14em; margin: -.16em 0 -.14em; }
+  .ct .mask.y { padding-left: .1em; padding-right: .16em; margin-left: -.1em; margin-right: -.16em; }   /* yink esce dai bordi: più spazio, niente lettere tagliate */
+  .ct .y { font-family: "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; font-style: normal; letter-spacing: 0; text-transform: lowercase; color: var(--fg); }
   .kt { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; line-height: .8; letter-spacing: -.02em; }
 
   /* Web Design: finestra del browser chiara e vetrosa */
@@ -216,7 +221,7 @@
     </div>
 
     <div id="name" aria-hidden="true"></div>
-    <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
+    <div id="role" aria-hidden="true"><span class="mask"><span><span class="motto">more than meets the eye</span><span class="ruolo">Creative Designer</span></span></span></div>
     <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
     <div id="sq2" class="abs sq" style="background:var(--green)"></div>
     <div id="sq3" class="abs sq" style="background:var(--pink)"></div>
@@ -337,8 +342,8 @@
     const r = document.createElementNS(NS, 'rect'); sqsEl.appendChild(r);
     sqs.push({ el: r, i: (k % 3) - 1, j: Math.floor(k / 3) - 1, k });
   }
-  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .7);
-  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .7);
+  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .42);   // bassi abbastanza da non finire sotto il menu
+  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .42);
   const RISE = [4, 1, 3, 5, 0, 7, 2, 6, 8];       // ordine in cui si alzano
 
   // Generatore AI: quattro risultati (il secondo è la forma che prosegue)
@@ -367,14 +372,15 @@
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
   const CT = [
-    { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 3.3 },
-    { world: 1, word: 'ILLUSTRATION', col: GREEN, tin: 6.1,  tout: 6.98 },
-    { world: 2, word: 'GEN AI',       col: PINK,  tin: 8.05, tout: 8.85 },
-    { world: 4, word: 'WEB DESIGN',   col: BLUE,  tin: 12.15, tout: 12.92 }
+    // la prima parte in Cabinet maiuscolo, la seconda (dopo |) in yink minuscolo
+    { world: 0, word: 'BRAND|ing',      col: BLUE,  tin: 2.2,  tout: 3.3 },
+    { world: 1, word: 'ILLUS|tration',  col: GREEN, tin: 6.1,  tout: 6.98 },
+    { world: 2, word: 'GEN |ai',        col: PINK,  tin: 8.05, tout: 8.85 },
+    { world: 4, word: 'WEB |design',    col: BLUE,  tin: 12.15, tout: 12.92 }
   ];
   CT.forEach(c => {
     const d = document.createElement('div'); d.className = 'abs ct'; d.setAttribute('aria-hidden', 'true'); d.style.color = c.col;
-    c.word.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask'; const x = document.createElement('span'); x.textContent = ch === ' ' ? '\u00a0' : ch; m.appendChild(x); d.appendChild(m); });
+    c.word.split('|').forEach((part, k) => part.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask' + (k ? ' y' : ''); const x = document.createElement('span'); x.textContent = ch === ' ' ? '\u00a0' : ch; m.appendChild(x); d.appendChild(m); }));
     E('mark').before(d); c.el = d; c.letters = [...d.querySelectorAll('.mask > span')];   // fuori dalla camera: lo zoom non li tocca
   });
   TITLES.forEach(g => {
@@ -477,7 +483,7 @@
 
   /* ---------- Brand: i blocchi 3D (proiezione prospettica, ordinamento del pittore) ---------- */
   function drawBoxes(t) {
-    const th = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const th = (90 - 38 * eIO(p(t, 4, 4.45)) + 38 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
     const yaw = (32 * eIO(p(t, 4.5, 4.95)) - 60 * eIO(p(t, 5, 5.45)) + 28 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
     const D = 2200, F = 2200, cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw);
     const cam = [-D * cT * sY, D * sT, -D * cT * cY];

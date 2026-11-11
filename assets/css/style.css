@@ -185,7 +185,7 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 }
 .mondo::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--m)); background: var(--card); transform: scaleY(0); transform-origin: bottom; transition: transform .6s var(--ease); z-index: -1; }
 .mondo:hover::before { transform: scaleY(1); }
-.mondo__t { font-family: var(--f-cat); font-weight: 400; font-size: calc(var(--t-h3) * 1.2); line-height: 1.05; letter-spacing: 0; transition: transform .6s var(--ease); }
+.mondo__t { font-family: var(--f-cat); font-weight: 400; font-size: calc(var(--t-h3) * 1.2); line-height: 1.05; letter-spacing: 0; text-transform: lowercase; transition: transform .6s var(--ease); }
 .mondo:hover .mondo__t { transform: translateX(14px); }
 .mondo__d { color: var(--muted); max-width: 46ch; }
 .mondo__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; }
@@ -278,7 +278,7 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 
 /* ---------- Pagine esistenti (categoria, progetto, about) ---------- */
 .pagina-head { padding-bottom: 40px; }
-.cat-t { font-family: var(--f-cat); font-weight: 400; font-size: clamp(3.5rem, 2rem + 7vw, 9rem); line-height: 1; letter-spacing: 0; }
+.cat-t { font-family: var(--f-cat); font-weight: 400; font-size: clamp(3.5rem, 2rem + 7vw, 9rem); line-height: 1; letter-spacing: 0; text-transform: lowercase; }
 .briciole { margin-bottom: 16px; color: var(--muted); font-size: var(--t-small); }
 .briciole a:hover { color: var(--fg); }
 .testo-breve { max-width: 48ch; margin-top: 16px; color: var(--muted); font-size: var(--t-lead); }
