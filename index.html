@@ -19,6 +19,13 @@ reel: true
       var p = max > 0 ? Math.min(1, Math.max(0, (scrollY - reel.offsetTop) / max)) : 0;
       if (frame.contentWindow) frame.contentWindow.postMessage({ reel: p, theme: document.documentElement.dataset.theme }, location.origin);
     }
+    // passo allo showreel la posizione del mouse (il riquadro non riceve il mouse, così lo scroll resta libero)
+    function mouse(e, dentro) {
+      var r = frame.getBoundingClientRect();
+      if (frame.contentWindow) frame.contentWindow.postMessage({ mx: e.clientX - r.left, my: e.clientY - r.top, dentro: dentro && e.clientY >= r.top && e.clientY <= r.bottom }, location.origin);
+    }
+    addEventListener('pointermove', function (e) { mouse(e, true); }, { passive: true });
+    document.addEventListener('pointerleave', function (e) { mouse(e, false); });
     addEventListener('scroll', send, { passive: true });
     addEventListener('resize', send);
     addEventListener('themechange', function () {

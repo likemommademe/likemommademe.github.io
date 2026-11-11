@@ -224,6 +224,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Istruzioni di GitHub spostate in `riassunto-github.md` |
 | 11/11/2026 | Prima bozza dello showreel in `lab/showreel.html` (HTML, CSS e JavaScript, senza librerie) |
 | 11/11/2026 | Showreel più spinto (camera, titoli giganti, generatore AI con cursore, MOTION cinetico) e messo come header della home |
+| 11/11/2026 | Showreel: titoli delle categorie al centro (Cabinet, lettere che salgono dalla maschera, come all'inizio) con l'animazione rimpicciolita sotto, come MOTION. In home le lettere del nome si ingrandiscono al passaggio del mouse e accanto alla freccia compare la pillola SCROLL. Tolto Shrikhand |
 | 11/11/2026 | Showreel di nuovo 15 s: ogni titolo entra ed esce con la sua scena (Branding disegnato sotto il monogramma, Illustration scritto dalla matita, Gen AI che si genera, Web Design che si carica come una pagina; MOTION resta cinetico). Font delle categorie: Shrikhand, provvisorio al posto di Baila |
 | 11/11/2026 | Showreel 19 s: dopo ogni mondo tutto si raccoglie in un punto e il titolo (BRANDING, ILLUSTRATION, GEN AI, WEB DESIGN) entra al centro come MOTION, poi viene risucchiato. File CSS, JS e showreel con ?v= per evitare la cache |
 | 11/11/2026 | Scheletro del sito come bitwip: menu a pillola, giorno/notte con il cerchio, passaggio animato tra le pagine, footer scuro con invito, home con "Cosa faccio", pagina Progetti con filtri e Mosaico/Griglia. Intro dello showreel automatica, poi si continua scorrendo |
