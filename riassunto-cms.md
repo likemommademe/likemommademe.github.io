@@ -128,7 +128,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=9`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -202,6 +202,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 21/10/2026 | Pagina privacy, più email autorizzate, nome LIKEMOMMADEME · CMS |
 | 21–22/10/2026 | Bozze, riordino, progetti in home, libreria immagini, WebP, SEO, statistiche delle visite, nuove categorie |
 | 22/10/2026 | Clienti con settore e paese |
+| 11/11/2026 | Questo riassunto |
 
 ---
 
@@ -210,9 +211,10 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub, il sito su DecapBridge e il KV **login** su Cloudflare.
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
-4. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
-5. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
-6. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
+4. **Rigenerare la chiave GitHub che usa Claude dal Mac**: la prima era stata incollata in chat. Dopo averla rigenerata va salvata di nuovo nel Portachiavi del Mac, e Claude ti dà il comando da lanciare nel terminale.
+5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
+6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
+7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 
 ---
 
