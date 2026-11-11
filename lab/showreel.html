@@ -9,6 +9,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233D5AFF'/%3E%3Cpath d='M10 7h4v14h8v4H10z' fill='%23F5F5F2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://api.fontshare.com">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,900&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap">
 <style>
   :root {
     --ink: #0A0A0A; --paper: #F5F5F2; --muted: #8A8A8A; --line: #262626;
@@ -67,6 +69,20 @@
   .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
   #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
 
+  /* Titoli dentro le scene (font Shrikhand): ognuno entra ed esce con la sua animazione */
+  .wt { left: 0; right: 0; text-align: center; white-space: nowrap; font-family: "Shrikhand", "Cabinet Grotesk", serif; font-weight: 400; line-height: 1.05; }
+  .wt__box { position: relative; display: inline-block; }
+  .wt__box > span { display: inline-block; }
+  .wt__fill { position: absolute; left: 0; top: 0; }
+  #tBrand { top: 792px; font-size: 104px; }
+  #tBrand .wt__out { color: transparent; -webkit-text-stroke: 2px var(--fg); }
+  #tIllus { top: 792px; font-size: 100px; }
+  #tGen { top: 62px; font-size: 104px; }
+  #tGen .ch { display: inline-block; }
+  #tWeb { top: 70px; font-size: 104px; }
+  #tWeb .wd { position: relative; display: inline-block; margin: 0 .12em; }
+  #tWeb .sk { position: absolute; left: 0; right: 0; top: 22%; bottom: 18%; border-radius: 18px; background: var(--line); transform-origin: 0 50%; }
+
   /* Motion Design */
   #kin, .kt { left: 0; right: 0; }
   #kin { top: 330px; text-align: center; white-space: nowrap;
@@ -121,7 +137,7 @@
   body.scroll #stage { position: fixed; }
   body.scroll #ui, body.embed #ui { display: none; }
   #scroller { display: none; }
-  body.scroll #scroller { display: block; height: 2000vh; }
+  body.scroll #scroller { display: block; height: 1600vh; }
   #hint { position: fixed; left: 0; right: 0; bottom: 28px; text-align: center; display: none;
           font: 500 15px/1 "Cabinet Grotesk", system-ui, sans-serif; color: var(--muted); opacity: 0; transition: opacity .25s; }
   body.scroll #hint, body.embed #hint { display: block; }
@@ -141,6 +157,10 @@
     </div>
 
     <div id="kin" class="abs"></div>
+    <div id="tBrand" class="abs wt" aria-hidden="true"><span class="wt__box"><span class="wt__out">Branding</span><span class="wt__fill">Branding</span></span></div>
+    <div id="tIllus" class="abs wt" aria-hidden="true"><span class="wt__box"><span class="wt__fill" style="position:static">Illustration</span></span></div>
+    <div id="tGen" class="abs wt" aria-hidden="true"><span class="wt__box"></span></div>
+    <div id="tWeb" class="abs wt" aria-hidden="true"><span class="wt__box"><span class="wd"><i class="sk"></i><span class="tx">Web</span></span><span class="wd"><i class="sk"></i><span class="tx">Design</span></span></span></div>
 
     <div id="win" class="abs">
       <div id="wfill"></div>
@@ -212,23 +232,18 @@
 <div id="hint">Scorri: cinque mondi ti aspettano</div>
 <div id="ui">
   <button id="pp" type="button">Pausa</button>
-  <input id="scrub" type="range" min="0" max="19" step="0.01" value="0" aria-label="Posizione nel tempo">
-  <span id="tc">00.00 / 19</span>
+  <input id="scrub" type="range" min="0" max="15" step="0.01" value="0" aria-label="Posizione nel tempo">
+  <span id="tc">00.00 / 15</span>
   <button id="snd" type="button" aria-pressed="false">Suono: no</button>
 </div>
 
 <script>
 (() => {
   /* ---------- Costanti ---------- */
-  const DUR = 19, BEAT = .5, TAU = Math.PI * 2;
+  const DUR = 15, BEAT = .5, TAU = Math.PI * 2;
   // Dopo ogni mondo tutto si raccoglie in un punto e il suo titolo entra al centro, come MOTION.
   // Durante il titolo la scena resta ferma su quel punto (la camera invece continua a respirare).
-  const TITLES = [
-    { at: 6,  dur: 1, word: 'BRANDING',     col: '#3D5AFF', world: 0 },
-    { at: 8,  dur: 1, word: 'ILLUSTRATION', col: '#12C08E', world: 1 },
-    { at: 10, dur: 1, word: 'GEN AI',       col: '#FF3D8B', world: 2 },
-    { at: 14, dur: 1, word: 'WEB DESIGN',   col: '#3D5AFF', world: 4 }
-  ];
+  const TITLES = [];   // (i titoli a pausa sono stati sostituiti da titoli dentro le scene)
   function remap(T) {
     let shift = 0;
     for (const g of TITLES) {
@@ -353,6 +368,10 @@
   const kinEl = E('kin');
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
+  const T_GEN = 'Gen AI', GLIFI = '#%&@*+=?/<>[]{}01';
+  E('tGen').firstChild.innerHTML = T_GEN.split('').map(ch => `<span class="ch">${ch === ' ' ? '\u00a0' : ch}</span>`).join('');
+  const genCh = [...E('tGen').querySelectorAll('.ch')];
+  const webWords = [...E('tWeb').querySelectorAll('.wd')].map(w => ({ sk: w.querySelector('.sk'), tx: w.querySelector('.tx') }));
   TITLES.forEach(g => {
     const d = document.createElement('div'); d.className = 'abs kin kt'; d.setAttribute('aria-hidden', 'true');
     g.word.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch === ' ' ? '\u00a0' : ch; d.appendChild(s); });
@@ -381,6 +400,7 @@
     M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0],
           gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
           kx: k.map(b => (b.l + b.r) / 2), ky: (k[0].t + k[0].b) / 2 };
+    const ib = box(E('tIllus').firstChild); M.illus = { l: ib.l, r: ib.r, t: ib.t, b: ib.b };
     // titoli al centro: stessa grandezza di MOTION, rimpiccioliti se la parola è troppo lunga
     TITLES.forEach(g => {
       g.el.style.fontSize = '250px';
@@ -491,6 +511,50 @@
     });
   }
 
+  /* ---------- Titoli dentro le scene ---------- */
+  const wipe = (node, k) => { node.style.clipPath = `inset(-20% ${f1((1 - clamp(k)) * 100)}% -20% -2%)`; };
+  function drawSceneTitles(t, u) {
+    // Branding: sotto il monogramma come un logotipo; prima il contorno (con la griglia), poi il pieno; esce cancellandosi
+    const tb = E('tBrand'), bOn = t >= 2.4 && t < 6; vis(tb, bOn);
+    if (bOn) {
+      const er = eIn(p(t, 5.68, 5.95));
+      wipe(tb.querySelector('.wt__out'), eOut(p(t, 2.42, 2.9)) * (1 - er));
+      wipe(tb.querySelector('.wt__fill'), eOut(p(t, 2.82, 3.2)) * (1 - er));
+    }
+    // Illustration: la matita lo scrive sotto la forma; esce cancellandosi mentre la forma si stringe
+    const ti = E('tIllus'), iOn = u >= 5 && u < 6; vis(ti, iOn);
+    if (iOn) wipe(ti.firstChild, eIO(p(u, 5.04, 5.42)) * (1 - eIn(p(u, 5.72, 5.97))));
+    // Gen AI: compare al click su Genera, le lettere si rimescolano e si fissano una alla volta mentre la sfocatura si scioglie
+    const tg = E('tGen'), gOn2 = u >= 7.0 && u < 7.95; vis(tg, gOn2);
+    if (gOn2) {
+      const inK = p(u, 7.02, 7.45), outK = p(u, 7.6, 7.88), n = genCh.length, tick = Math.floor(u * 30);
+      genCh.forEach((c, j) => {
+        const fermo = inK > (j + 1) / (n + 1) && outK < (n - j) / (n + 1);
+        const ch = T_GEN[j];
+        c.textContent = ch === ' ' ? '\u00a0' : fermo ? ch : GLIFI[(tick * 7 + j * 13) % GLIFI.length];
+        c.style.color = fermo ? TH.fg : PINK;
+      });
+      const bl = 14 * (1 - eOut(inK)) + 14 * eIn(outK);
+      tg.style.filter = bl > .3 ? `blur(${f1(bl)}px)` : 'none';
+      tg.style.transform = `scale(${(1.06 - .06 * eOut(inK) - .08 * eIn(outK)).toFixed(3)}, ${(1 - eIn(outK)).toFixed(3)})`;
+    }
+    // Web Design: si carica come una pagina (blocchi grigi, poi il testo); esce scorrendo in alto con la sfocatura
+    const tw = E('tWeb'), wOn2 = u >= 10.08 && u < 11.95; vis(tw, wOn2);
+    if (wOn2) {
+      webWords.forEach((w, j) => {
+        const sk = eOut(p(u, 10.1 + .06 * j, 10.3 + .06 * j)) * (1 - eIn(p(u, 10.36 + .08 * j, 10.5 + .08 * j)));
+        w.sk.style.transform = `scaleX(${sk.toFixed(3)})`;
+        const tk = eOut(p(u, 10.38 + .08 * j, 10.66 + .08 * j));
+        w.tx.style.transform = `translateY(${f1(26 * (1 - tk))}px)`;
+        w.tx.style.clipPath = `inset(${f1((1 - tk) * 100)}% 0 -10% 0)`;
+      });
+      const ex = eIn(p(u, 11.55, 11.88));
+      tw.style.transform = `translateY(${f1(-90 * ex)}px)`;
+      tw.style.filter = ex > .01 ? `blur(${f1(10 * ex)}px)` : 'none';
+      tw.style.clipPath = `inset(-20% 0 ${f1(ex * 100)}% 0)`;
+    }
+  }
+
   /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
   function seek(T) {
     if (!M) return;
@@ -499,6 +563,7 @@
 
     const cm = camAt(t, T);
     drawTitles(R);
+    drawSceneTitles(t, u);
     el.cam.style.transform = `translate(960px, 540px) scale(${cm.z}) translate(${-cm.fx}px, ${-cm.fy}px)`;
 
     /* Nome, ruolo, quadratini (battuta 1 e chiusura) */
@@ -605,7 +670,7 @@
       el.eyeR.setAttribute('transform', `translate(72 -40) scale(1 ${1 - .9 * bump(p(u, 5, 5.22))})`);
       dash(el.smile, eOut(p(u, 4.62, 4.98)));
     }
-    const penOn = u >= 4.1 && u < 5.3; vis(el.pen, penOn);
+    const penOn = u >= 4.1 && u < 5.72; vis(el.pen, penOn);
     if (penOn) {
       let px, py;
       if (u < 4.6) { const a = draw * TAU, r = rAt(a, b.R, b.A, b.B, b.k, b.rot, true); px = b.cx + r * Math.cos(a); py = b.cy + r * Math.sin(a); }
@@ -613,7 +678,11 @@
         const s = eOut(p(u, 4.62, 4.98)), qx = (1 - s) * (1 - s) * -84 + 2 * (1 - s) * s * 0 + s * s * 84, qy = (1 - s) * (1 - s) * 40 + 2 * (1 - s) * s * 128 + s * s * 40;
         const k = eIO(p(u, 4.58, 4.66)), [ax, ay] = [b.cx + b.R * 1.1, b.cy];
         px = lerp(ax, b.cx + qx, k); py = lerp(ay, b.cy + qy, k);
-      } else { const k = eIn(p(u, 5, 5.3)); px = b.cx + 84 + 600 * k; py = b.cy + 40 + 500 * k; }
+      } else if (u < 5.44) {
+        const I = M.illus, go = eIO(p(u, 4.98, 5.06)), w = eIO(p(u, 5.04, 5.42));
+        const sx = lerp(b.cx + 84, I.l, go), sy = lerp(b.cy + 40, I.b - 22, go);
+        px = lerp(sx, I.r, w) + Math.sin(w * 40) * 6 * (1 - Math.abs(2 * w - 1)); py = sy - Math.abs(Math.sin(w * 22)) * 18;
+      } else { const k = eIn(p(u, 5.44, 5.72)), I = M.illus; px = I.r + 500 * k; py = I.b - 22 + 300 * k; }
       if (u < 4.2) { const k = eOut(p(u, 4.1, 4.2)); px = lerp(px + 500, px, k); py = lerp(py + 400, py, k); }
       el.pen.setAttribute('transform', `translate(${f1(px)} ${f1(py)})`);
     }
@@ -836,7 +905,7 @@
     const t = playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
     seek(t);
     if (!dragging) scrub.value = t.toFixed(2);
-    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / 19';
+    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / 15';
     requestAnimationFrame(frame);
   }
 
