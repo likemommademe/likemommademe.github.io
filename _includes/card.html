@@ -1,11 +1,19 @@
 {% assign p = include.progetto %}
 {% assign cat = site.categorie | where: "slug", p.categoria | first %}
-<a class="card" href="{{ p.url | relative_url }}">
+{% assign cliente = site.clienti | where: "slug", p.cliente | first %}
+{% assign vedi = site.data.testi.lavori.vedi %}
+<a class="card" href="{{ p.url | relative_url }}" data-card data-cat="{{ p.categoria }}" data-sett="{{ cliente.settore | slugify }}" data-paese="{{ cliente.paese }}">
   <div class="card-img">
     {% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}
   </div>
   <div class="card-meta">
+    <ul class="card-tag">
+      {% if cliente %}<li>{{ cliente.title }}</li>{% endif %}
+      {% if cat %}<li>{{ cat.title }}</li>{% endif %}
+      {% if p.anno %}<li>{{ p.anno }}</li>{% endif %}
+    </ul>
     <h3>{{ p.title }}</h3>
-    <p>{% if include.mostra_categoria and cat %}{{ cat.title }} · {% endif %}{{ p.sottotitolo | default: p.anno }}</p>
+    {% if p.sottotitolo %}<p>{{ p.sottotitolo }}</p>{% endif %}
+    <span class="card-go">{{ vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
   </div>
 </a>

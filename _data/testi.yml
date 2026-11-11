@@ -1,0 +1,35 @@
+# Testi fissi delle pagine (non ancora modificabili dal pannello).
+# Le frasi dei progetti, della home e delle categorie restano nel pannello.
+
+home:
+  mondi_titolo: Cosa faccio
+  mondi_progetti_uno: progetto
+  mondi_progetti_piu: progetti
+  lavori_link: Tutti i progetti
+
+lavori:
+  titolo: Progetti
+  intro: Cinque mondi, un solo metodo. Dal concept alla consegna, seguo tutto io.
+  filtro_categoria: Categoria
+  filtro_settore: Settore
+  filtro_paese: Paese
+  vista: Vista
+  vista_mosaico: Mosaico
+  vista_griglia: Griglia
+  azzera: Azzera
+  vuoto: Nessun progetto con questi filtri. Prova a toglierne uno.
+  vedi: Vedi il progetto
+  conta_uno: progetto
+  conta_piu: progetti
+
+footer:
+  cta_titolo: Hai un progetto in testa?
+  cta_testo: Raccontamelo. Rispondo io, di persona, e di solito in giornata.
+  cta_bottone: Scrivimi
+  menu: Menu
+  mondi: Mondi
+  contatti: Contatti
+  home: Home
+  progetti: Progetti
+  chi_sono: Chi sono
+  privacy: Privacy

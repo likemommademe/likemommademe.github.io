@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% assign info = site.data.impostazioni %}
+  {% assign f = site.data.testi.footer %}
   <title>{% if page.title %}{{ page.title }} — {% endif %}{{ info.nome }}</title>
   {% assign descrizione = page.seo_descrizione | default: page.sottotitolo | default: site.data.home.intro | strip_html | strip_newlines %}
   {% assign anteprima = page.seo_immagine | default: page.copertina %}
@@ -13,27 +14,77 @@
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   {% if anteprima %}<meta property="og:image" content="{{ anteprima | absolute_url }}">{% endif %}
   <meta name="twitter:card" content="summary_large_image">
+  <script>
+    // Giorno o notte: la scelta salvata, altrimenti quella del sistema. Prima del CSS, così non c'è il lampo.
+    (function () {
+      var t; try { t = localStorage.getItem('lmm-tema'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+      document.documentElement.classList.add('js');
+    })();
+  </script>
   <link rel="preconnect" href="https://api.fontshare.com">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,900&f[]=clash-display@600&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body class="{% if page.reel %}has-reel{% else %}no-reel{% endif %}">
-  <header class="nav{% if page.reel %} nav--reel{% endif %}" data-nav>
+  <a class="salta" href="#contenuto">Vai al contenuto</a>
+  <header class="nav" data-nav>
     <div class="nav__bar">
       <a class="nav__logo" href="{{ '/' | relative_url }}" aria-label="{{ info.nome | upcase }}, home">{{ info.nome | upcase }}<i aria-hidden="true"></i></a>
       <div class="nav__right">
         <nav class="nav__links" aria-label="Menu principale">
-          <a href="{{ '/work/' | relative_url }}">Progetti</a>
-          <a href="{{ '/about/' | relative_url }}">Chi sono</a>
+          <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}</a>
+          <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>{{ f.chi_sono }}</a>
         </nav>
-        <a class="nav__cta" href="#contatti">Contatti<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+        <a class="nav__cta" href="#contatti">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
   </header>
-  {% if page.reel %}<i class="nav-ball" aria-hidden="true"></i>{% endif %}
+
+  <main id="contenuto">
+    {{ content }}
+  </main>
+
+  {% assign categorie = site.categorie | sort: "ordine", "last" %}
+  <footer class="pied" id="contatti">
+    <div class="pied__in">
+      <div class="pied__cta">
+        <h2 class="rise"><span>{{ f.cta_titolo }}</span></h2>
+        <p>{{ f.cta_testo }}</p>
+        <a class="btn" href="{% if info.email and info.email != '' %}mailto:{{ info.email }}{% else %}{{ '/about/' | relative_url }}{% endif %}">{{ f.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="pied__cols">
+        <div>
+          <h3>{{ f.menu }}</h3>
+          <ul>
+            <li><a href="{{ '/' | relative_url }}">{{ f.home }}</a></li>
+            <li><a href="{{ '/work/' | relative_url }}">{{ f.progetti }}</a></li>
+            <li><a href="{{ '/about/' | relative_url }}">{{ f.chi_sono }}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>{{ f.mondi }}</h3>
+          <ul>{% for c in categorie %}<li><a href="{{ c.url | relative_url }}">{{ c.title }}</a></li>{% endfor %}</ul>
+        </div>
+        <div>
+          <h3>{{ f.contatti }}</h3>
+          {% include contatti.html %}
+        </div>
+      </div>
+      <div class="pied__fine">
+        <span>© {{ 'now' | date: '%Y' }} {{ info.nome | upcase }}</span>
+        <a href="{{ '/privacy/' | relative_url }}">{{ f.privacy }}</a>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    // Menu: largo in cima, si stringe in una pillola quando si scorre (come bitwip)
     (function () {
+      var html = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+      // Menu: largo in cima, si stringe in una pillola quando si scorre (come bitwip)
       var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
           logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
       function layout() {
@@ -49,17 +100,37 @@
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', layout);
       if (document.fonts) document.fonts.ready.then(layout);
+
+      // Giorno / notte: un cerchio si allarga dal pulsante e cambia colore alla pagina
+      var btn = document.querySelector('[data-tema]');
+      btn.addEventListener('click', function () {
+        var next = html.dataset.theme === 'light' ? 'dark' : 'light';
+        function apply() {
+          html.dataset.theme = next;
+          try { localStorage.setItem('lmm-tema', next); } catch (e) {}
+          dispatchEvent(new Event('themechange'));
+        }
+        if (!document.startViewTransition || reduce.matches) { apply(); return; }
+        var r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+        var R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        html.classList.add('vt-tema');
+        var t = document.startViewTransition(apply);
+        t.ready.then(function () {
+          html.animate({ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + R + 'px at ' + x + 'px ' + y + 'px)'] },
+                       { duration: 700, easing: 'cubic-bezier(.16, 1, .3, 1)', pseudoElement: '::view-transition-new(root)' });
+        });
+        t.finished.finally(function () { html.classList.remove('vt-tema'); });
+      });
+
+      // Titoli che salgono dentro una maschera quando entrano nello schermo
+      var rises = document.querySelectorAll('.rise');
+      if (!('IntersectionObserver' in window) || reduce.matches) { rises.forEach(function (e) { e.classList.add('is-in'); }); }
+      else {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
+        rises.forEach(function (e) { io.observe(e); });
+      }
     })();
   </script>
-
-  <main>
-    {{ content }}
-  </main>
-
-  <footer class="site-footer" id="contatti">
-    <span>© {{ 'now' | date: '%Y' }} {{ info.nome }}</span>
-    {% include contatti.html %}
-  </footer>
   <script>
     if (location.hostname === 'likemommademe.github.io' && navigator.sendBeacon) {
       navigator.sendBeacon('https://portfolio-login.calfa63.workers.dev/hit', JSON.stringify({ p: location.pathname, r: document.referrer }));

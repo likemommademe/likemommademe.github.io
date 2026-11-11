@@ -48,7 +48,7 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 | Pagina | Indirizzo | Contenuto |
 |---|---|---|
 | Home | `/` | Header animato (lo showreel, che avanza con lo scroll), poi frase di apertura e progetti scelti, nell'ordine deciso nel pannello |
-| Work | `/work/` | Elenco delle categorie |
+| Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia, card animate (come bitwip.fr/en/work) |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
 | Progetto | `/progetti/<progetto>/` | Copertina, descrizione, galleria di foto e video, crediti |
 | About | `/about/` | Testo, foto, loghi dei clienti, contatti |
@@ -120,7 +120,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 |---|---|
 | `_config.yml` | Impostazioni tecniche: indirizzi delle pagine, sezioni, file esclusi |
 | `index.html` | Home |
-| `work.html` | Pagina Work (elenco categorie) |
+| `work.html` | Pagina Progetti: filtri, vista Mosaico/Griglia |
+| `assets/js/work.js` | Filtri e cambio vista della pagina Progetti |
+| `_data/testi.yml` | Testi fissi delle pagine (menu, footer, pagina Progetti, home). Non ancora nel pannello |
 | `about.md` | Pagina About (testo modificabile dal pannello) |
 | `privacy.md` | Pagina privacy |
 | `_layouts/default.html` | Struttura comune: intestazione, piè di pagina, tag SEO e contatore visite |
@@ -222,6 +224,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Istruzioni di GitHub spostate in `riassunto-github.md` |
 | 11/11/2026 | Prima bozza dello showreel in `lab/showreel.html` (HTML, CSS e JavaScript, senza librerie) |
 | 11/11/2026 | Showreel più spinto (camera, titoli giganti, generatore AI con cursore, MOTION cinetico) e messo come header della home |
+| 11/11/2026 | Scheletro del sito come bitwip: menu a pillola, giorno/notte con il cerchio, passaggio animato tra le pagine, footer scuro con invito, home con "Cosa faccio", pagina Progetti con filtri e Mosaico/Griglia. Intro dello showreel automatica, poi si continua scorrendo |
 | 11/11/2026 | Showreel v4: Web Design al posto di UI/UX, lettere che cadono intere, menu che nasce da una pallina alla fine dello showreel |
 | 11/11/2026 | Showreel v3: intro LIKE · MOM · MADE · ME, Brand con i blocchi 3D, titoli a sinistra che non coprono gli elementi, cinque mondi (via Digital & Social) |
 

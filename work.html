@@ -1,25 +1,57 @@
 ---
 layout: default
-title: Work
+title: Progetti
 permalink: /work/
 ---
+{% assign t = site.data.testi.lavori %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
+{% assign progetti = site.progetti | sort: "anno" | reverse %}
+{% assign settori = site.clienti | map: "settore" | compact | uniq | sort %}
+{% assign paesi = site.clienti | map: "paese" | compact | uniq | sort %}
 
-<header class="pagina-head">
-  <h1>Work</h1>
-</header>
+<section class="phero">
+  <h1 class="rise"><span>{{ t.titolo }}</span></h1>
+  <p class="lead">{{ t.intro }}</p>
+</section>
 
-<div class="griglia griglia-categorie">
-  {% for c in categorie %}
-    {% assign n = site.progetti | where: "categoria", c.slug | size %}
-    <a class="card" href="{{ c.url | relative_url }}">
-      <div class="card-img">
-        {% if c.copertina %}<img src="{{ c.copertina | relative_url }}" alt="{{ c.title }}" loading="lazy">{% endif %}
+<div class="rea" data-rea>
+  <div class="rea-bar">
+    <div class="rea-filtri">
+      <div class="dd" data-dd="cat">
+        <button class="dd__b" type="button" aria-expanded="false" aria-controls="dd-cat">{{ t.filtro_categoria }}<span class="dd__n"></span><svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <div class="dd__p" id="dd-cat" role="group" aria-label="{{ t.filtro_categoria }}">
+          {% for c in categorie %}<label class="chk"><input type="checkbox" value="{{ c.slug }}"><span>{{ c.title }}</span></label>{% endfor %}
+        </div>
       </div>
-      <div class="card-meta">
-        <h3>{{ c.title }}</h3>
-        <p>{{ n }} {% if n == 1 %}progetto{% else %}progetti{% endif %}</p>
+      {% if settori.size > 0 %}
+      <div class="dd" data-dd="sett">
+        <button class="dd__b" type="button" aria-expanded="false" aria-controls="dd-sett">{{ t.filtro_settore }}<span class="dd__n"></span><svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <div class="dd__p" id="dd-sett" role="group" aria-label="{{ t.filtro_settore }}">
+          {% for s in settori %}<label class="chk"><input type="checkbox" value="{{ s | slugify }}"><span>{{ s }}</span></label>{% endfor %}
+        </div>
       </div>
-    </a>
-  {% endfor %}
+      {% endif %}
+      {% if paesi.size > 0 %}
+      <div class="dd" data-dd="paese">
+        <button class="dd__b" type="button" aria-expanded="false" aria-controls="dd-paese">{{ t.filtro_paese }}<span class="dd__n"></span><svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <div class="dd__p" id="dd-paese" role="group" aria-label="{{ t.filtro_paese }}">
+          {% for s in paesi %}<label class="chk"><input type="checkbox" value="{{ s }}"><span data-paese="{{ s }}">{{ s }}</span></label>{% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      <button class="lnk" type="button" data-raz hidden>{{ t.azzera }}</button>
+    </div>
+    <div class="vista" role="group" aria-label="{{ t.vista }}">
+      <button type="button" data-vista="mosaico" aria-pressed="true">{{ t.vista_mosaico }}</button>
+      <button type="button" data-vista="griglia" aria-pressed="false">{{ t.vista_griglia }}</button>
+    </div>
+  </div>
+
+  <div class="rea-list" data-list data-vista="mosaico">
+    {% for p in progetti %}{% include card.html progetto=p %}{% endfor %}
+  </div>
+  <p class="vuoto" data-vuoto hidden>{{ t.vuoto }}</p>
+  <p class="sr-only" aria-live="polite" data-stato data-uno="{{ t.conta_uno }}" data-piu="{{ t.conta_piu }}"></p>
 </div>
+
+<script src="{{ '/assets/js/work.js' | relative_url }}" defer></script>
