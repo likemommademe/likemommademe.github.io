@@ -365,10 +365,10 @@
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
   const CT = [
-    { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 5.62 },
-    { world: 1, word: 'ILLUSTRATION', col: GREEN, tin: 6.1,  tout: 7.72 },
-    { world: 2, word: 'GEN AI',       col: PINK,  tin: 8.05, tout: 9.72 },
-    { world: 4, word: 'WEB DESIGN',   col: BLUE,  tin: 12.15, tout: 13.72 }
+    { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 3.3 },
+    { world: 1, word: 'ILLUSTRATION', col: GREEN, tin: 6.1,  tout: 6.98 },
+    { world: 2, word: 'GEN AI',       col: PINK,  tin: 8.05, tout: 8.85 },
+    { world: 4, word: 'WEB DESIGN',   col: BLUE,  tin: 12.15, tout: 12.92 }
   ];
   CT.forEach(c => {
     const d = document.createElement('div'); d.className = 'abs ct'; d.setAttribute('aria-hidden', 'true'); d.style.color = c.col;
@@ -422,7 +422,9 @@
   // La scena (forma, quadrati, generatore, browser, cursore) si rimpicciolisce sotto il titolo centrale.
   // Durante MOTION torna a piena grandezza, perché lì la parola e la timeline sono già composte insieme.
   const SC = { k: .58, cy: 772 };
-  const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 9.9, 10.2)) + eIO(p(t, 11.75, 12.2)) - eIO(p(t, 14.15, 14.3));
+  // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
+  const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.3, 3.75)) + eIO(p(t, 5.8, 6.05)) - eIO(p(t, 6.98, 7.42))
+                   + eIO(p(t, 7.85, 8.1)) - eIO(p(t, 8.85, 9.28)) + eIO(p(t, 11.75, 12.2)) - eIO(p(t, 12.92, 13.36));
   const sceneS = t => { const a = sceneA(t); return { k: lerp(1, SC.k, a), cy: lerp(500, SC.cy, a) }; };
   const mapS = (S, x, y) => [960 + (x - 960) * S.k, S.cy + (y - 500) * S.k];
   const scene = [...document.querySelectorAll('.scena')];
@@ -437,10 +439,11 @@
     if (u >= 6.4 && u < 8) {                     // zoom alla Screen Studio sul generatore
       const zin = eIO(p(u, 6.42, 6.72)), zout = eIO(p(u, 6.98, 7.3)), k = zin * (1 - zout);
       const S = sceneS(t), F = mapS(S, 820, CHIP.y), Q = mapS(S, SEL.x, SEL.y);
-      z = 1 + .55 * k + .05 * p(u, 6.72, 6.98) * (1 - zout);
-      fx = lerp(fx, F[0], k); fy = lerp(540, F[1], k); ax = fx; ay = fy;   // cresce sul posto, senza venire al centro
+      const a = sceneA(t);
+      z = 1 + lerp(.38, .55, a) * k + .05 * p(u, 6.72, 6.98) * (1 - zout);
+      fx = lerp(fx, F[0], k); fy = lerp(540, F[1], k); ax = lerp(960, fx, a); ay = lerp(540, fy, a);   // con il titolo cresce sul posto, senza venire al centro
       const k2 = eIO(p(u, 7.38, 7.55)) * (1 - eIO(p(u, 7.6, 7.95)));
-      z += .25 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = fx; ay = fy;
+      z += .2 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = lerp(960, fx, sceneA(t)); ay = lerp(540, fy, sceneA(t));
     }
     const push = T >= 2 && T < DUR - 1 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
     z *= 1 + push + .014 * Math.exp(-12 * (T % BEAT));
