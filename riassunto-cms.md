@@ -9,7 +9,7 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, 
 - **Sito**: https://likemommademe.github.io, costruito con Jekyll e pubblicato da GitHub Pages.
 - **Pannello (CMS)**: https://likemommademe.github.io/admin/, fatto su misura da zero.
 - **Accesso al pannello**: con **Accedi con Google** oppure con il **magic link** via email. Entrano solo le email autorizzate.
-- **Dove stanno i contenuti**: nella repo GitHub `likemommademe/likemommademe.github.io`. Una copia è sul Mac, in `~/Desktop/portfolio`.
+- **Dove stanno i contenuti**: nella repo GitHub `likemommademe/likemommademe.github.io`. Una copia è sul Mac, in `~/Desktop/Claude/portfolio`.
 - **Server del pannello**: il Worker **portfolio-login** su Cloudflare (gratis). Custodisce la chiave GitHub, gestisce l'accesso e conta le visite.
 
 ---
@@ -29,9 +29,9 @@ Riassunto di tutto quello che abbiamo deciso e costruito per il sito portfolio, 
 - Niente dominio per ora. Se un giorno lo vorrai (per esempio da SiteGround), si collega da **Settings → Pages → Custom domain**: https://github.com/likemommademe/likemommademe.github.io/settings/pages
 
 ### Il collegamento del Mac (per Claude)
-- **Cartella del progetto**: `~/Desktop/portfolio`, collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git).
-- **Sul Mac non è installato niente di extra**: c'è solo git, che era già presente. Niente Homebrew, Node o GitHub CLI.
-- **Accesso a GitHub**: tramite una **chiave GitHub (token)** con permesso *Contents: Read and write* sulla sola repo del portfolio, senza scadenza. È salvata nel **Portachiavi del Mac**, e git la usa da solo a ogni pubblicazione.
+- **Cartella del progetto**: `~/Desktop/Claude/portfolio` (prima era `~/Desktop/portfolio`), collegata alla repo (`origin` → https://github.com/likemommademe/likemommademe.github.io.git). Il branch `main` segue `origin/main`.
+- **Cosa è installato sul Mac**: git, che era già presente, e **GitHub CLI** (`~/.local/bin/gh`), collegato all'account `likemommademe`. Niente Homebrew né Node.
+- **Accesso a GitHub**: git usa la chiave di **GitHub CLI** a ogni pubblicazione, come previsto in `~/.gitconfig`. Vale per tutte le repo dell'account. La vecchia chiave "Portfolio likemommademe" è stata cancellata l'11/11/2026, perché era finita in chat e non serviva più.
 - **Firma delle modifiche**: nome `likemommademe`, con l'email privata di GitHub `332392784+likemommademe@users.noreply.github.com`. La tua email personale non compare.
 - **Come si pubblica**: Claude salva le modifiche (commit) e le invia a GitHub (push). Su tua richiesta, **ogni modifica viene pubblicata subito**.
 - Per controllare e provare il sito prima di pubblicarlo, Claude usa una copia temporanea di Jekyll, che non resta installata sul Mac.
@@ -192,8 +192,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ### Chiavi GitHub (token)
 - **pannello**: la usa il CMS, è salvata su Cloudflare. **Non cancellarla.**
-- **Portfolio likemommademe**: la usa Claude dal Mac per pubblicare. **Non cancellarla.**
 - **decapbridge**: non serve più, **si può cancellare**.
+- **Portfolio likemommademe**: cancellata l'11/11/2026. Dal Mac ora si pubblica con GitHub CLI.
+- **GitHub CLI**: non è una chiave che crei tu. Compare in https://github.com/settings/applications come app autorizzata "GitHub CLI". La usa Claude dal Mac per pubblicare. **Non revocarla.**
 
 ---
 
@@ -214,13 +215,13 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. Su Cloudflare sostituisci `GITHUB_TOKEN` e clicca **Deploy**.
 3. Rientra nel pannello: dopo il cambio della chiave te lo chiede, è normale.
 
-**…ricollegare il Mac a GitHub** (dopo aver rigenerato la chiave che usa Claude, o se la pubblicazione dal Mac smette di funzionare)
-1. Crea o rigenera la chiave: https://github.com/settings/personal-access-tokens. Solo la repo **likemommademe.github.io**, permesso **Contents: Read and write**, scadenza **No expiration**.
-2. In VS Code apri il terminale (**Terminale → Nuovo terminale**) e lancia:
+**…ricollegare il Mac a GitHub** (se la pubblicazione dal Mac smette di funzionare)
+1. In VS Code apri il terminale (**Terminale → Nuovo terminale**) e lancia:
    ```bash
-   read -s "T?Incolla il token e premi Invio: " && printf "protocol=https\nhost=github.com\nusername=likemommademe\npassword=%s\n" "$T" | git credential approve && unset T && echo "✓ Collegato a GitHub"
+   ~/.local/bin/gh auth login --hostname github.com --git-protocol https --web
    ```
-3. Incolla la chiave (non vedrai nulla scritto, è normale) e premi Invio. **Non incollarla in chat.**
+2. Copia il codice che compare, premi Invio, incollalo nella pagina di GitHub che si apre nel browser e autorizza.
+3. Non serve creare chiavi a mano né incollare niente in chat.
 
 **…vedere la versione nuova del pannello subito**
 - Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=10, oppure premi **Cmd + Shift + R**.
@@ -238,6 +239,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 21–22/10/2026 | Bozze, riordino, progetti in home, libreria immagini, WebP, SEO, statistiche delle visite, nuove categorie |
 | 22/10/2026 | Clienti con settore e paese |
 | 11/11/2026 | Questo riassunto |
+| 11/11/2026 | Progetto spostato in `~/Desktop/Claude/portfolio`. Pubblicazione dal Mac tramite GitHub CLI, chiave "Portfolio likemommademe" cancellata |
 
 ---
 
@@ -246,7 +248,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 2. **Fare pulizia**: cancellare il token **decapbridge** su GitHub e il sito su DecapBridge. (KV **login** su Cloudflare: già cancellato.)
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
-4. **Rigenerare la chiave GitHub che usa Claude dal Mac**: la prima era stata incollata in chat. Dopo averla rigenerata va salvata di nuovo nel Portachiavi del Mac, e Claude ti dà il comando da lanciare nel terminale.
+4. **Facoltativo**: togliere dal Portachiavi del Mac la copia della chiave cancellata. Apri **Accesso Portachiavi**, cerca `github.com` ed elimina la voce con utente `likemommademe`. Non dà problemi se resta. (La chiave "Portfolio likemommademe" finita in chat è già stata cancellata su GitHub.)
 5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
 6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
 7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
