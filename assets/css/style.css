@@ -654,6 +654,9 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 .vita:hover .vita__pista { animation-play-state: paused; }
 @keyframes vita-scorre { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-25% - var(--gap) / 4), 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .vita__pista { animation: none; } }
+/* About: link ai progetti dentro la timeline */
+.anni__link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px; text-decoration-color: var(--accent-3); transition: color .3s; }
+.anni__link:hover { color: var(--accent-3); }
 /* About: strumenti */
 .strum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(32px, 4vw, 64px) var(--gap); }
 .strum__g { padding-top: 20px; border-top: 1px solid var(--line-2); }

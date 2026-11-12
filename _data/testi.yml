@@ -60,19 +60,21 @@ about:
     - anno: 2015
       testo: Diploma in Grafica al Liceo Artistico Pinturicchio. Da qui non ho più smesso di disegnare.
     - anno: 2019
-      testo: Primo stage da designer grafico, alla Gps Srl Group. Scopro che i file vanno anche consegnati.
+      testo: Primi lavori da designer grafico, alla Gps Srl Group. Scopro che i file vanno anche consegnati.
     - anno: 2020
-      testo: Laurea in Grafica editoriale all'Accademia di Belle Arti di Roma, 110 e lode. E la mia tesi diventa l'identità dell'Accademia dei Romani, dove lavoro da freelance.
+      testo: "Laurea in Grafica editoriale all'Accademia di Belle Arti di Roma, 110 e lode. E la mia tesi diventa l'identità dell'<a class=\"anni__link\" href=\"/progetti/accademia-dei-romani/\">Accademia dei Romani</a>."
     - anno: 2021
-      testo: Master in Digital Art Direction allo IED di Roma, 108. La tesi è SITUATION, un'app per allenatori di pallavolo.
+      testo: "Master in Digital Art Direction allo IED di Roma, 108. La tesi è <a class=\"anni__link\" href=\"/progetti/situation/\">SITUATION</a>, un'app per allenatori di pallavolo."
     - anno: 2022
-      testo: Graphic e UX designer da Pixell, prima in stage e poi a contratto. Brand, siti e comunicazione per DCD, Etic.a e altri clienti.
+      testo: "Graphic e UX designer da Pixell. Brand, siti e comunicazione per <a class=\"anni__link\" href=\"/progetti/dcd-studi-estetici/\">DCD Studi Estetici</a>, <a class=\"anni__link\" href=\"/progetti/etica/\">Etic.a</a> e altri clienti."
     - anno: 2023
       testo: Entro in Ficacci Olive Company come Digital Marketing Specialist. Layout, campagne e video, ogni giorno.
     - anno: 2025
       testo: Divento Marketing & Creative designer in Ficacci. Identità, campagne, packaging e materiali per web e stampa.
     - anno: 2026
       testo: Masterclass AI x Fashion Futures alla Futura AI Academy. E nasce LIKEMOMMADEME, con un sito fatto su misura.
+    - anno: "∞"
+      testo: Non smetterò di stupirmi.
   valori_titolo: "Tre parole mi <em>descrivono</em>"
   valori:
     - nome: Visione
