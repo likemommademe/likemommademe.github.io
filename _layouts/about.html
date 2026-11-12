@@ -23,7 +23,7 @@ layout: default
         <p class="anni__lead">{{ a.anni_lead }}</p>
         <div class="anni__testo">{{ content }}</div>
         <div class="anni__big" aria-hidden="true" data-anno-big>
-          <span class="anni__fen"><span class="anni__piste">{% for t in tappe %}<span>{{ t.anno }}</span>{% endfor %}</span></span><i class="anni__seg"></i>
+          <span class="anni__fen"><span class="anni__piste">{% for t in tappe %}<span>{% if t.anno == "∞" %}<b class="anni__inf">∞</b>{% else %}{{ t.anno }}{% endif %}</span>{% endfor %}</span></span><i class="anni__seg"></i>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@ layout: default
       <ol class="anni__lista">
         {% for t in tappe %}
           <li class="anni__tappa">
-            <span class="anni__anno">{{ t.anno }}</span>
+            <span class="anni__anno">{% if t.anno == "∞" %}<b class="anni__inf">∞</b>{% else %}{{ t.anno }}{% endif %}</span>
             <span class="anni__cosa">{{ t.testo }}</span>
           </li>
         {% endfor %}
