@@ -11,7 +11,7 @@ layout: default
 {% endcomment %}
 {% assign t = site.data.testi.progetto %}
 {% assign cat = site.categorie | where: "slug", page.categoria | first %}
-{% assign cliente = site.clienti | where: "slug", page.cliente | first %}
+{% assign cliente = nil %}{% if page.cliente %}{% assign cliente = site.clienti | where: "slug", page.cliente | first %}{% endif %}
 
 <section class="cs-hero">
   <div class="cs-hero__txt">

@@ -250,6 +250,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | About me: foto con lo sfondo tutto rosso (`06_…_ok.jpg`). IKEA: copertina con la foto su FRAKTA; le foto su FRAKTA e su BLÅHAJ a tutta larghezza nella sezione Visual Display |
 | 12/11/2026 | Gallerie dei progetti divise in sezioni, ognuna in una banda con titolo e due righe su cosa ho fatto, a colori alternati (es. SITUATION: L'identità, L'app, I social, In palestra e fuori). Fatto per tutti i 12 progetti. La banda finale con precedente/successivo prende sempre il colore opposto all'ultima |
 | 12/11/2026 | Ogni foto delle gallerie ha titolo e una riga di spiegazione (italiano e inglese), in overlay al passaggio del mouse su computer e sotto la foto su telefono. Nuovi campi nel pannello per ogni foto |
+| 12/11/2026 | Mosaico (Works e home): la card piccola ha il testo sopra e la foto sotto, allineata in basso con la foto grande accanto. Corretta la card che mostrava il cliente della card precedente (BeYOU con "Accademia dei Romani"). IKEA: nuova copertina su FRAKTA (`01_Cover_…_ok.jpg`) |
 ---
 
 ## 10. Prossimi passi

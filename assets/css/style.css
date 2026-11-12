@@ -320,6 +320,21 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .rea-list[data-vista="griglia"] > .card { grid-column: span 4; margin-top: 0; }
 .rea-list > .card[hidden] { display: none; }
 @media (max-width: 860px) { .rea-list > .card, .rea-list[data-vista] > .card[data-m] { grid-column: 1 / -1 !important; margin-top: 0 !important; } }
+/* Mosaico: la card piccola ha il testo sopra e la foto sotto, e la sua foto finisce alla stessa altezza
+   della foto grande accanto. L'altezza della foto grande (7 colonne, 4:3) si calcola dalla larghezza della griglia. */
+@media (min-width: 861px) {
+  .rea-list[data-vista="mosaico"] { container-type: inline-size; --col: calc((100cqi - 11 * var(--gap)) / 12); }
+  :is(.rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"],
+      .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+2), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+3)) {
+    margin-top: 0; align-self: start; display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: calc((7 * var(--col) + 6 * var(--gap)) * .75);
+  }
+  :is(.rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"],
+      .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+2), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+3)) .card-meta {
+    order: -1; padding-top: 0; padding-bottom: 24px;
+  }
+}
+
 ::view-transition-group(*) { animation-duration: .6s; animation-timing-function: var(--ease); }
 .vuoto { padding: 40px 0; color: var(--muted); font-size: var(--t-lead); }
 

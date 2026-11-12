@@ -1,7 +1,7 @@
 {% comment %} Progetto precedente o successivo, in fondo alla pagina di un progetto. {% endcomment %}
 {% assign p = include.p %}
-{% assign c = site.categorie | where: "slug", p.categoria | first %}
-{% assign cl = site.clienti | where: "slug", p.cliente | first %}
+{% assign c = nil %}{% if p.categoria %}{% assign c = site.categorie | where: "slug", p.categoria | first %}{% endif %}
+{% assign cl = nil %}{% if p.cliente %}{% assign cl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
 <a class="cs-pn__a cs-pn__a--{{ include.verso }}" href="{{ p.url | relative_url }}" rel="{% if include.verso == 'prec' %}prev{% else %}next{% endif %}">
   <span class="cs-pn__freccia" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   <span class="cs-pn__txt">
