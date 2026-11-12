@@ -79,8 +79,6 @@ galleria:
     testo: "Ho tradotto nove parole chiave in composizioni di prodotto, dal lusso della luce giusta alla fika svedese. E sì, su FRAKTA e su BLÅHAJ ci sono salito io."
     testo_en: "I turned nine keywords into product compositions, from the luxury of the right light to Swedish fika. And yes, that's me sitting on FRAKTA and BLÅHAJ."
   - type: "foto"
-    immagine: "/assets/uploads/ikea-voglia-di-casa-28.webp"
-  - type: "foto"
     immagine: "/assets/uploads/ikea-voglia-di-casa-19.webp"
     formato: "meta"
   - type: "foto"
@@ -105,9 +103,9 @@ galleria:
     immagine: "/assets/uploads/ikea-voglia-di-casa-26.webp"
     formato: "meta"
   - type: "foto"
-    immagine: "/assets/uploads/ikea-voglia-di-casa-29.webp"
-  - type: "foto"
     immagine: "/assets/uploads/ikea-voglia-di-casa-27.webp"
+  - type: "foto"
+    immagine: "/assets/uploads/ikea-voglia-di-casa-29.webp"
 strumenti:
   - Firefly
 crediti: |
