@@ -155,15 +155,26 @@ layout: default
 <script>
   // Righe di due foto: ogni foto prende una larghezza proporzionale alla sua forma, così le due sono alte uguali.
   (function () {
-    document.querySelectorAll('[data-riga] img').forEach(function (img) {
-      function fissa() { if (img.naturalWidth) img.closest('.cs-media').style.setProperty('--ar', img.naturalWidth / img.naturalHeight); }
-      if (img.complete) fissa(); else img.addEventListener('load', fissa);
+    // Forma comune di una coppia: la media delle proporzioni delle due foto (o video)
+    function formaRiga(r) {
+      var v = [].map.call(r.children, function (f) {
+        var m = f.querySelector('img, video'); if (!m) return 0;
+        var w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight;
+        return f.classList.contains('cs-media--zoom') ? 0 : (w && h ? w / h : 0);
+      }).filter(Boolean);
+      if (v.length) r.style.setProperty('--ar-riga', (v.reduce(function (a, b) { return a + b; }, 0) / v.length).toFixed(4));
+    }
+    window.lmmFormaRiga = formaRiga;
+    document.querySelectorAll('[data-riga]').forEach(function (r) {
+      r.querySelectorAll('img').forEach(function (i) { if (i.complete) formaRiga(r); else i.addEventListener('load', function () { formaRiga(r); }); });
+      r.querySelectorAll('video').forEach(function (v) { if (v.readyState >= 1) formaRiga(r); else v.addEventListener('loadedmetadata', function () { formaRiga(r); }); });
     });
     // Foto verticale o quadrata rimasta da sola: non resta mai sola. Si accoppia con la foto che la segue
     // (se è anche lei da sola) oppure, se non c'è, con un suo dettaglio ingrandito. Le due sono alte uguali.
     function riga(a, b) {
       var r = document.createElement('div'); r.className = 'cs-gal__riga'; r.setAttribute('data-riga', '');
       a.parentNode.insertBefore(r, a); r.appendChild(a); r.appendChild(b);
+      setTimeout(function () { formaRiga(r); }, 0); [a, b].forEach(function (f) { var i = f.querySelector('img'); if (i && !i.complete) i.addEventListener('load', function () { formaRiga(r); }); });
       [a, b].forEach(function (f) {
         var i = f.querySelector('img'); if (!i) return;
         function ar() { if (i.naturalWidth) f.style.setProperty('--ar', f.classList.contains('cs-media--zoom') ? a.style.getPropertyValue('--ar') || 1 : i.naturalWidth / i.naturalHeight); }
@@ -184,10 +195,18 @@ layout: default
       }
       if (img.complete) abbina(); else img.addEventListener('load', abbina);
     });
-    document.querySelectorAll('[data-riga] video').forEach(function (v) {
-      function fissa() { if (v.videoWidth) v.closest('.cs-media').style.setProperty('--ar', v.videoWidth / v.videoHeight); }
-      if (v.readyState >= 1) fissa(); else v.addEventListener('loadedmetadata', fissa);
-    });
+    // Parallasse: dentro la cornice l'immagine scorre di pochi pixel mentre la pagina si muove
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var medie = [].slice.call(document.querySelectorAll('.cs-media')), tick = 0;
+      function px() {
+        tick = 0; var vh = innerHeight;
+        medie.forEach(function (f) {
+          var r = f.getBoundingClientRect(); if (r.bottom < -100 || r.top > vh + 100) return;
+          var c = (r.top + r.height / 2 - vh / 2) / vh; f.style.setProperty('--py', (-c * r.height * .05).toFixed(1) + 'px');
+        });
+      }
+      addEventListener('scroll', function () { if (!tick) tick = requestAnimationFrame(px); }, { passive: true }); px();
+    }
     // I video caricati sul sito partono da soli, muti e in loop, solo quando sono sullo schermo (mai con "riduci movimento")
     var vids = document.querySelectorAll('video[data-auto]');
     if (vids.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

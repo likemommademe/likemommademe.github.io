@@ -504,16 +504,19 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 
 /* 3. La galleria */
 .cs-gal { display: grid; gap: var(--gap); align-items: start; }
-.cs-gal__riga { display: flex; gap: var(--gap); align-items: flex-start; }
-.cs-gal__riga > .cs-media { flex: var(--ar, 1) 1 0; min-width: 0; }
-.cs-gal__riga > .cs-media img { width: 100%; height: auto; }
+/* Coppie: divise sempre a metà, le due cornici hanno la stessa forma (media delle due foto) e la foto la riempie.
+   Così tutte le righe sono allineate tra loro e non restano buchi. */
+.cs-gal__riga { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+.cs-gal__riga > .cs-media { min-width: 0; }
+.cs-gal__riga > .cs-media > img, .cs-gal__riga > .cs-media .video--file video, .cs-gal__riga > .cs-media .cs-zoom { display: block; width: 100%; height: auto; aspect-ratio: var(--ar-riga, 4 / 3); object-fit: cover; max-height: none; }
+.cs-gal__riga > .cs-media .video--file { display: block; }
 .cs-media { margin: 0; }
 .cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }
 .cs-media figcaption { padding-top: 10px; }
 /* Una foto da sola non supera mai l'altezza dello schermo */
 .cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 80vh; margin: 0 auto; }
 /* Il dettaglio ingrandito che accompagna una foto verticale rimasta da sola */
-.cs-media--zoom .cs-zoom { display: block; aspect-ratio: var(--ar, 1); overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
+.cs-media--zoom .cs-zoom { display: block; overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
 .cs-media--zoom .cs-zoom img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.9); transform-origin: 50% 40%; border-radius: 0; }
 
 .cs-cap { display: grid; gap: 2px; padding-top: 14px; max-width: 60ch; }
@@ -569,6 +572,17 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 }
 @media (prefers-reduced-motion: reduce) { .cs-media .cs-cap { transition: none; transform: none !important; } }
 
+/* Foto e video dei progetti: entrano con una tendina che si apre dal basso mentre l'immagine si assesta (da 1.18 a 1),
+   la seconda di una coppia arriva un attimo dopo; scorrendo, l'immagine si sposta appena dentro la cornice (parallasse). */
+html.js .cs-media[data-rivela] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0 round var(--r)); transition: clip-path 1.1s var(--ease); }
+html.js .cs-media[data-rivela].is-in { clip-path: inset(0 0 0 0 round var(--r)); }
+html.js .cs-gal__riga > .cs-media[data-rivela]:nth-child(2) { transition-delay: .14s; }
+@media (min-width: 761px) {
+  html.js .cs-media[data-rivela] > img, html.js .cs-media[data-rivela] .video--file video { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); transition: transform 1.6s var(--ease); will-change: transform; }
+  html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in .video--file video { transform: translate3d(0, var(--py, 0px), 0) scale(1.06); }
+  .cs-media { overflow: hidden; border-radius: var(--r); }
+}
+
 /* Blocchi che salgono quando entrano nello schermo */
 html.js [data-rivela] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform 1s var(--ease); }
 html.js [data-rivela].is-in { opacity: 1; transform: none; }
@@ -584,7 +598,8 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
   .cs-hero__txt, .cs-hero__carre { grid-column: 1 / -1; }
   .cs-hero__carre { margin-bottom: -64px; }
   .cs-head > * { grid-column: 1 / -1; }
-  .cs-gal__riga { flex-direction: column; }
+  .cs-gal__riga { grid-template-columns: minmax(0, 1fr); }
+  .cs-gal__riga > .cs-media > img, .cs-gal__riga > .cs-media .video--file video { aspect-ratio: auto; }
   .cs-pn { grid-template-columns: minmax(0, 1fr); }
   .cs-pn__a, .cs-pn__a--succ { grid-template-areas: "freccia txt img"; padding: 20px 0; text-align: left; }
   .cs-pn__a--prec { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -594,6 +609,8 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html.js [data-rivela] { opacity: 1; transform: none; transition: none; }
+  html.js .cs-media[data-rivela] { clip-path: none; }
+  html.js .cs-media[data-rivela] :is(img, video) { transform: none !important; transition: none; }
   .cs-head__k::before { animation: none; }
 }
 
