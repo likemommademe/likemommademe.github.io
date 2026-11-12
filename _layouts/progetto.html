@@ -108,7 +108,15 @@ layout: default
       {% comment %} Le "Metà" consecutive vanno a coppie su righe piene; se ne resta una sola, va a tutta larghezza. {% endcomment %}
       {% assign fine = i %}
       {% for _k in (i..n) %}{% if fine < n and page.galleria[fine].formato == 'meta' and page.galleria[fine].type != 'sezione' %}{% assign fine = fine | plus: 1 %}{% endif %}{% endfor %}
+      {% assign quante = fine | minus: i %}
+      {% if quante == 3 %}
+        {% comment %} Tre "Metà" di fila: una riga da tre {% endcomment %}
+        {% assign e1 = page.galleria[i] %}{% assign i2 = i | plus: 1 %}{% assign e2 = page.galleria[i2] %}{% assign i3 = i | plus: 2 %}{% assign e3 = page.galleria[i3] %}
+    <div class="cs-gal__riga cs-gal__riga--tre" data-riga>{% include progetto-media.html el=e1 titolo=page.title %}{% include progetto-media.html el=e2 titolo=page.title %}{% include progetto-media.html el=e3 titolo=page.title %}</div>
+        {% assign j = fine %}
+      {% else %}
       {% assign j = i %}
+      {% endif %}
       {% for _m in (i..fine) %}
         {% if j >= fine %}{% break %}{% endif %}
         {% assign j2 = j | plus: 1 %}
