@@ -186,6 +186,7 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 /* Prima sezione: il motto composto dallo showreel, con l'occhio al posto della O */
 .motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.02em; text-transform: uppercase; transform-origin: 0 0; }
 @media (min-width: 720px) { .motto { white-space: nowrap; font-size: clamp(2.5rem, 6.4vw, 8rem); } }
+.motto em { text-transform: none; }   /* "meets" resta com'è scritta, come la parola speciale degli altri titoli */
 .motto--preso > span { transition: none !important; }   /* arriva dallo showreel: niente maschera */
 /* nella frase tre lettere sono disegni con la stessa forma: O = occhio, A = compasso, T = riga a T (alti come le maiuscole) */
 .occhio, .compasso, .squadra { display: inline-block; height: .66em; margin: 0 .03em; vertical-align: 0; }
@@ -201,6 +202,7 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
   font-family: var(--f-sans); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
   transform-origin: 0 0; will-change: transform; pointer-events: none; opacity: 0; }
 body.motto-vola .motto-volo { opacity: 1; }
+.motto-volo em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; font-size: .94em; line-height: 0; }
 .motto-volo .colore { visibility: hidden; }
 /* secondo livello, sopra: solo le parti colorate (iride, maniglie della S, testina della timeline), senza fusione */
 .motto-volo.motto-colori { z-index: 41; mix-blend-mode: normal; visibility: hidden; }
