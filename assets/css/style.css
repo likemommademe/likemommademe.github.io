@@ -4,6 +4,10 @@
    impostate come bitwip: titoli grandi a peso 500, tracking negativo, margini larghi.
    ========================================================= */
 
+/* TAN Nimbus (TanTypeCo): per ora solo con licenza personale, quindi NON si carica nessun file. Lo si vede solo sui
+   computer dove è installato (local); per gli altri resta Yink. Con la licenza web basterà aggiungere qui il file woff2. */
+@font-face { font-family: "TAN Nimbus"; src: local("TAN NIMBUS"), local("TAN-NIMBUS"); size-adjust: 105%; font-display: swap; }
+
 :root, :root[data-theme="dark"] {
   --bg: #121414;
   --fg: #F5F5F2;
@@ -40,7 +44,7 @@
   /* tipografia (scala fluida) */
   --f-sans: "Cabinet Grotesk", system-ui, -apple-system, sans-serif;
   --f-label: "Clash Display", "Cabinet Grotesk", system-ui, sans-serif;
-  --f-yink: "yink", "Cabinet Grotesk", sans-serif;   /* Adobe Fonts: solo per UNA parola dentro una frase, sempre minuscola */
+  --f-yink: "TAN Nimbus", "yink", "Cabinet Grotesk", sans-serif;   /* UNA parola per titolo, sempre minuscola: TAN Nimbus se c'è sul computer, altrimenti Yink */
   --t-h1: clamp(2.75rem, 1.6rem + 4.6vw, 6rem);
   --t-h2: clamp(2.375rem, 1.55rem + 3.4vw, 5rem);
   --t-h3: clamp(1.5rem, 1.2rem + 1.1vw, 2.25rem);
@@ -181,10 +185,10 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 .motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.02em; text-transform: uppercase; transform-origin: 0 0; }
 @media (min-width: 720px) { .motto { white-space: nowrap; font-size: clamp(2.5rem, 6.4vw, 8rem); } }
 .motto--preso > span { transition: none !important; }   /* arriva dallo showreel: niente maschera */
-/* nella frase: la O è un occhio, la S un tracciato della penna, l'ultima E una timeline (stessa altezza delle maiuscole) */
-.occhio, .esse, .linea { display: inline-block; height: .72em; margin: 0 .03em; vertical-align: 0; }
-.occhio { width: .8em; } .esse { width: .64em; } .linea { width: .6em; margin-right: 0; }
-.occhio svg, .esse svg, .linea svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* nella frase tre lettere sono disegni con la stessa forma: O = occhio, A = compasso, T = riga a T (alti come le maiuscole) */
+.occhio, .compasso, .squadra { display: inline-block; height: .66em; margin: 0 .03em; vertical-align: 0; }
+.occhio { height: .69em; width: .767em; vertical-align: -.015em; } .compasso { width: .66em; } .squadra { width: .587em; }
+.occhio svg, .compasso svg, .squadra svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .occhio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 .motto.is-in .occhio__palpebra { animation: occhiolino .5s 1.1s var(--ease) both; }
 .motto:hover .occhio__palpebra { animation: occhiolino-2 .45s var(--ease); }

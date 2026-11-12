@@ -2,9 +2,9 @@
 # Le frasi dei progetti, della home e delle categorie restano nel pannello.
 
 home:
-  # [occhio] = la O di MORE come occhio che fa l'occhiolino; [esse] = la S di MEETS come tracciato della penna;
-  # [timeline] = l'ultima E di EYE come timeline (testina + tre clip)
-  motto: "M[occhio]RE THAN MEET[esse] THE EY[timeline]"
+  # Al posto di tre lettere ci sono tre disegni con la stessa forma: [occhio] = la O di MORE (fa l'occhiolino),
+  # [compasso] = la A di THAN, [squadra] = la T di THE (riga a T)
+  motto: "M[occhio]RE TH[compasso]N MEETS [squadra]HE EYE"
   mondi_titolo: "Cosa <em>faccio</em>"
   mondi_progetti_uno: progetto
   mondi_progetti_piu: progetti

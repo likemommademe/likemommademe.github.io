@@ -72,14 +72,14 @@
   .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
   #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
 
-  /* La frase finale: MORE THAN MEETS THE EYE. La O è un occhio, la S un tracciato vettoriale, l'ultima E una timeline */
+  /* La frase finale: MORE THAN MEETS THE EYE. La O è un occhio, la A di THAN un compasso, la T di THE una riga a T */
   #frase { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; font-size: 130px; line-height: 1; letter-spacing: -.02em; z-index: 6; }
   #frase .fu { display: inline-block; }
-  .occhio, .esse, .linea { display: inline-block; height: .72em; vertical-align: 0; margin: 0 .03em; }
-  .occhio { width: .8em; } .esse { width: .64em; } .linea { width: .6em; margin-right: 0; }
-  .occhio svg, .esse svg, .linea svg { width: 100%; height: 100%; overflow: visible; display: block; }
-  .linea .clip { transform-box: fill-box; transform-origin: 0 50%; }
-  .esse .maniglie { transform-box: view-box; transform-origin: 33px 36px; }
+  .occhio, .compasso, .squadra { display: inline-block; height: .66em; vertical-align: 0; margin: 0 .03em; }
+  .occhio { height: .69em; width: .767em; vertical-align: -.015em; } .compasso { width: .66em; } .squadra { width: .587em; }
+  .occhio svg, .compasso svg, .squadra svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  .compasso .gamba { transform-box: view-box; transform-origin: 36px 10px; }
+  .squadra .lama { transform-box: fill-box; transform-origin: 50% 0; }
   .occhio .palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 
   /* Motion Design */
@@ -299,7 +299,7 @@
     const light = name === 'light'; TH = light ? THEMES.light : THEMES.dark;
     document.documentElement.classList.toggle('light', light);
   }
-  const WIN = { x: 560, y: 220, w: 1000, h: 660 };   // finestra del browser (Web Design)
+  const WIN = { x: 460, y: 220, w: 1000, h: 660 };   // finestra del browser (Web Design), centrata come la timeline da cui nasce
   const CTA = { x: WIN.x + 40 + 90, y: WIN.y + 56 + 360 + 29 };
 
   /* ---------- Funzioni del tempo ---------- */
@@ -397,17 +397,17 @@
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
   // MORE THAN meets THE EYE: ogni pezzo parte sparso e ruotato (valori fissi) e si compone; la O di MORE è un occhio
-  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/><circle class="iride" cx="50" cy="45" r="22" fill="#FF3D8B"/><circle class="pupilla" cx="50" cy="45" r="10" fill="#121414"/></g></svg></span>';
-  const ESSE = '<span class="fu esse"><svg viewBox="0 0 64 72" aria-hidden="true"><path class="tratto" d="M54 17C49 10 41 8 33 8C21 8 13 14 13 22C13 32 23 34 33 36C44 38 53 41 53 51C53 60 45 64 32 64C22 64 13 60 9 54" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" pathLength="1"/><g class="maniglie colore" fill="#FF3D8B"><path d="M9.4 31.5L56.6 40.5" stroke="#FF3D8B" stroke-width="3.5"/><circle cx="9.4" cy="31.5" r="5"/><circle cx="56.6" cy="40.5" r="5"/><rect x="26" y="29" width="14" height="14" rx="1.5"/><rect x="48.5" y="11.5" width="11" height="11" rx="1.5"/><rect x="3.5" y="48.5" width="11" height="11" rx="1.5"/></g></svg></span>';
-  const LINEA = '<span class="fu linea"><svg viewBox="0 0 60 72" aria-hidden="true"><g fill="currentColor"><rect class="clip" x="15" y="0" width="45" height="17" rx="8.5"/><rect class="clip" x="15" y="27.5" width="33" height="17" rx="8.5"/><rect class="clip" x="15" y="55" width="45" height="17" rx="8.5"/></g><g class="testina colore" fill="#FF3D8B"><rect x="1" y="-2" width="10" height="76" rx="3"/><path d="M-4 -13H16V-4L6 5L-4 -4Z"/></g></svg></span>';
+  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/><circle class="iride" cx="50" cy="45" r="22" fill="#FF3D8B"/><circle class="pupilla" cx="50" cy="45" r="10" fill="#121414"/></g></svg></span>';
+  const COMPASSO = '<span class="fu compasso"><svg viewBox="0 0 72 72" aria-hidden="true"><path class="arco" d="M18 47Q36 39 54 47" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><g class="gamba gamba-s"><path d="M36 10L9 64" fill="none" stroke="currentColor" stroke-width="19"/><path d="M9 64L4.6 73.6" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g><g class="gamba gamba-d"><path d="M36 10L63 64" fill="none" stroke="currentColor" stroke-width="19"/><path class="colore" d="M71.6 60L54.4 68L68 75.5Z" fill="#FF3D8B"/></g><circle cx="36" cy="10" r="11" fill="currentColor"/><rect x="31" y="-8" width="10" height="10" rx="2" fill="currentColor"/></svg></span>';
+  const SQUADRA = '<span class="fu squadra"><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M3 0H61Q64 0 64 3V17Q64 20 61 20H3Q0 20 0 17V3Q0 0 3 0ZM8 6.8A3.2 3.2 0 1 0 8 13.2A3.2 3.2 0 1 0 8 6.8Z" fill="currentColor" fill-rule="evenodd"/><path class="lama" d="M22 20H42V72H22ZM35.5 28h6.5v3h-6.5ZM38 34h4v3h-4ZM35.5 40h6.5v3h-6.5ZM38 46h4v3h-4ZM35.5 52h6.5v3h-6.5ZM38 58h4v3h-4ZM35.5 64h6.5v3h-6.5Z" fill="currentColor" fill-rule="evenodd"/><g class="colore" fill="#FF3D8B"><circle cx="26.5" cy="14" r="2.8"/><circle cx="37.5" cy="14" r="2.8"/></g></svg></span>';
   const fraseEl = E('frase');
-  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', 'M', 'E', 'E', 'T', ESSE, ' ', 'T', 'H', 'E', ' ', 'E', 'Y', LINEA]
+  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', COMPASSO, 'N', ' ', 'M', 'E', 'E', 'T', 'S', ' ', SQUADRA, 'H', 'E', ' ', 'E', 'Y', 'E']
     .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
   const pezzi = [...fraseEl.children].map((n, i) => {
     const r = Math.abs(Math.sin(i * 12.9898 + 1.7) * 43758.5453) % 1, r2 = Math.abs(Math.sin(i * 78.233 + .3) * 9999) % 1;
     return { n, occhio: n.classList.contains('occhio'), dx: (r - .5) * 640, dy: (r2 - .5) * 420, rot: (r - .5) * 90 };
   });
-  const occhio = fraseEl.querySelector('.occhio'), esseEl = fraseEl.querySelector('.esse'), lineaEl = fraseEl.querySelector('.linea');
+  const occhio = fraseEl.querySelector('.occhio'), compEl = fraseEl.querySelector('.compasso'), squaEl = fraseEl.querySelector('.squadra');
   const traccia = (n, k) => { if (k >= 1) n.style.strokeDasharray = 'none'; else dash(n, k); };   // finito il disegno, niente tratteggio: il contorno resta chiuso
   const CT = [
     { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 3.3 },
@@ -613,12 +613,12 @@
       traccia(occhio.querySelector('.contorno'), eOut(p(t, 14.32, 14.8)));
       occhio.querySelector('.iride').setAttribute('r', f1(22 * spring(p(t, 14.55, 14.85))));
       occhio.querySelector('.pupilla').setAttribute('r', f1(10 * spring(p(t, 14.6, 14.9))));
-      // la S si disegna come un tracciato della penna, poi compaiono le maniglie; la timeline allunga le sue clip
-      traccia(esseEl.querySelector('.tratto'), eOut(p(t, 14.62, 15.05)));
-      const mn = esseEl.querySelector('.maniglie'), km = spring(p(t, 14.95, 15.3));
-      mn.style.opacity = Math.min(1, km * 2).toFixed(3); mn.style.transform = `rotate(${f1(-25 * (1 - km))}deg)`;
-      lineaEl.querySelector('.testina').style.transform = `translateY(${f1(-90 * (1 - eOut(p(t, 14.7, 15.05))))}px)`;
-      lineaEl.querySelectorAll('.clip').forEach((c, j) => { c.style.transform = `scaleX(${eOut(p(t, 14.8 + .08 * j, 15.15 + .08 * j)).toFixed(3)})`; });
+      // il compasso si apre (le gambe partono chiuse), poi compare l'arco; la lama della riga a T scende dalla testa
+      const ka = spring(p(t, 14.7, 15.15));
+      compEl.querySelector('.gamba-s').style.transform = `rotate(${f1(22 * (1 - ka))}deg)`;
+      compEl.querySelector('.gamba-d').style.transform = `rotate(${f1(-22 * (1 - ka))}deg)`;
+      compEl.querySelector('.arco').style.opacity = eOut(p(t, 15.0, 15.2)).toFixed(3);
+      squaEl.querySelector('.lama').style.transform = `scaleY(${eOut(p(t, 14.8, 15.2)).toFixed(3)})`;
       // l'occhiolino: la palpebra si chiude e si riapre
       occhio.querySelector('.palpebra').style.transform = `scaleY(${(1 - .92 * bump(p(t, 15.3, 15.58))).toFixed(3)})`;
       // la frase scende sotto il nome, che sale grande come all'inizio
