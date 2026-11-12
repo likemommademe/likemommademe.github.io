@@ -138,9 +138,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (per ora: `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (esempi: `materia-viva`, `progetto-di-esempio`; da Behance, in bozza: `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `sagra-dei-stringozzi`, `situation`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
-| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`) |
+| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
 | `_data/impostazioni.yml` | Nome e contatti |
 | `_data/cms.yml` | Impostazioni delle immagini. Viene creato la prima volta che salvi Sistema → Immagini |
@@ -242,6 +242,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Motto: tolti il compasso (A) e la riga a T (T). Restano l'occhio al posto della O e MEETS in TAN Nimbus fucsia |
 | 12/11/2026 | Motto: un 7 al posto della T di THE ("7HE"), nero, che si nota al secondo sguardo. Per gli screen reader il titolo si legge "More than meets the eye" (`home.motto_leggibile` in `_data/testi.yml`) |
 
+| 12/11/2026 | Progetti da Behance (behance.net/calfa639164) nel pannello, **in bozza**: Audible (Branding), Audible video animation (Motion Design), Blue Origin (Web Design), Sagra dei Stringozzi (Branding), SITUATION (Web Design), con le copertine originali in WebP. Nuovo cliente **IED** per i progetti di scuola (Audible e Blue Origin non sono clienti veri). Escluso il progetto PORTFOLIO. Behance blocca la lettura automatica delle pagine dei progetti: foto interne e testi vanno ancora aggiunti |
 ---
 
 ## 10. Prossimi passi
