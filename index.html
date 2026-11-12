@@ -17,11 +17,36 @@ reel: true
 <script>
   (function () {
     var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
-    function send() {
-      var max = reel.offsetHeight - innerHeight;
-      var p = max > 0 ? Math.min(1, Math.max(0, (scrollY - reel.offsetTop) / max)) : 0;
-      if (frame.contentWindow) frame.contentWindow.postMessage({ reel: p, theme: document.documentElement.dataset.theme }, location.origin);
+    var KEY = 'lmm-intro-fatta', fatta = false;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // L'intro gira una volta sola. Riparte solo ricaricando la pagina o cliccando HOME / il logo (che riaprono la home);
+    // tornando indietro da un'altra pagina la si ritrova già finita, dove la si era lasciata.
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var ritorno = nav && nav.type === 'back_forward';
+    var giaFatta = false; try { giaFatta = ritorno && sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (!giaFatta) {
+      try { sessionStorage.removeItem(KEY); } catch (e) {}
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      scrollTo(0, 0);
     }
+    // a fine intro lo showreel si chiude a un solo schermo e resta fermo dietro: è l'header, le fasce ci scorrono sopra
+    function chiudi(subito) {
+      if (fatta) return; fatta = true;
+      var tolto = reel.offsetHeight - innerHeight;
+      document.body.classList.add('reel-fatto');
+      if (!subito) scrollTo({ top: Math.max(0, scrollY - tolto), behavior: 'instant' });
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      post({ done: true });
+    }
+    function vede() { var a = document.getElementById('apertura'); return !a || a.getBoundingClientRect().top > 0; }   // l'header si vede ancora?
+    function post(m) { if (frame.contentWindow) frame.contentWindow.postMessage(m, location.origin); }
+    function send() {
+      var r = reel.getBoundingClientRect(), max = r.height - innerHeight;
+      var p = fatta ? 1 : max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
+      post({ reel: p, theme: document.documentElement.dataset.theme, vede: vede(), done: fatta });
+      if (!fatta && p >= .999) chiudi(false);
+    }
+    if (giaFatta || reduce) chiudi(true);
     // passo allo showreel la posizione del mouse (il riquadro non riceve il mouse, così lo scroll resta libero)
     function mouse(e, dentro) {
       var r = frame.getBoundingClientRect();
@@ -40,8 +65,10 @@ reel: true
   })();
 </script>
 
-<section class="fascia inv">
-  <p class="manifesto rise"><span>{{ home.intro }}</span></p>
+{% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="occhio__palpebra"><path d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round"/><circle cx="60" cy="42" r="19" class="occhio__iride"/><circle cx="60" cy="42" r="8" fill="currentColor"/></g></svg></span>{% endcapture %}
+<section class="fascia inv apertura" id="apertura">
+  <h2 class="motto rise"><span>{{ t.motto | replace: '{occhio}', occhio }}</span></h2>
+  <p class="manifesto">{{ home.intro }}</p>
 </section>
 
 <section class="fascia">

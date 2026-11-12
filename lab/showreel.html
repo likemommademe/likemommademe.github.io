@@ -40,18 +40,14 @@
   #name { position: absolute; left: 0; right: 0; top: 372px; text-align: center; white-space: nowrap;
           font-weight: 900; font-size: 190px; line-height: .8; letter-spacing: -.02em; z-index: 5; }
   #name .mask { padding: .1em 0 .04em; margin: -.1em 0 -.04em; }
-  #role { position: absolute; left: 0; right: 0; top: 548px; text-align: center;
+  #role { position: absolute; left: 0; right: 0; top: 560px; text-align: center;
           font-weight: 500; font-size: 44px; line-height: 1.15; }
-  #role .mask { padding: .1em .3em .1em; margin: -.1em -.3em -.1em; }
-  #role .motto { display: block; font-weight: 900; font-size: 60px; line-height: 1.1; letter-spacing: -.02em; }
-  #role .motto em { font-family: "yink", "Cabinet Grotesk", sans-serif; font-style: normal; font-weight: 400; font-size: 1em; letter-spacing: 0; text-transform: lowercase; }   /* yink solo su una parola, stessa grandezza del resto */
-  #role .ruolo { display: block; margin-top: 10px; font-size: 26px; color: var(--muted); }
   .sq { width: 64px; height: 64px; border-radius: 12px; }
 
   /* Cornice: marchio e mondi */
-  #mark { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; z-index: 9; }
-  #worlds { display: none; }   /* i titoli grandi al centro dicono già in che mondo siamo */
-  .w { position: absolute; top: 980px; width: 288px; margin-left: -144px; text-align: center;
+  #mark { display: none; }   /* il logo sta solo nel menu del sito */
+  #markx { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; z-index: 9; }
+  .w { position: absolute; top: 980px; width: 400px; margin-left: -200px; text-align: center; white-space: nowrap;
        font-weight: 500; font-size: 26px; line-height: 1.3; z-index: 9; }
   .w .mask { padding-bottom: 2px; }
   .w i { position: absolute; left: 50%; bottom: -12px; width: 64px; height: 4px; margin-left: -32px;
@@ -75,6 +71,14 @@
          font-weight: 900; font-size: 24px; display: flex; align-items: center; justify-content: center; }
   .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
   #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
+
+  /* La frase finale: MORE THAN meets THE EYE, con l'occhio al posto della O */
+  #frase { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; font-size: 130px; line-height: 1; letter-spacing: -.02em; z-index: 6; }
+  #frase .fu { display: inline-block; }
+  #frase .fy { font-family: "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; letter-spacing: 0; text-transform: lowercase; }
+  .occhio { display: inline-block; width: .9em; height: .64em; vertical-align: -.02em; margin: 0 .02em; }
+  .occhio svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  .occhio .palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 
   /* Motion Design */
   #kin, .kt { left: 0; right: 0; }
@@ -164,6 +168,7 @@
     </div>
 
     <div id="kin" class="abs"></div>
+    <div id="frase" class="abs" aria-hidden="true"></div>
     <div class="scena abs">
     <div id="win" class="abs">
       <div id="wfill"></div>
@@ -197,6 +202,8 @@
         <path d="M260 -260L-260 260" pathLength="1"/>
       </g>
       <g id="boxes"></g>
+      <g id="miniBox"></g>
+      <path id="miniBlob"/>
       <g id="sqs"></g>
       <g id="graph" fill="none">
         <path id="tl" d="M510 830H1410" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round" pathLength="1"/>
@@ -222,7 +229,7 @@
     </div>
 
     <div id="name" aria-hidden="true"></div>
-    <div id="role" aria-hidden="true"><span class="mask"><span><span class="motto">more than <em>meets</em> the eye</span><span class="ruolo">Creative Designer</span></span></span></div>
+    <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
     <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
     <div id="sq2" class="abs sq" style="background:var(--green)"></div>
     <div id="sq3" class="abs sq" style="background:var(--pink)"></div>
@@ -236,7 +243,7 @@
 <div id="hint" aria-hidden="true"><span class="pillola"><i class="pillola__sq"></i><span class="pillola__mq"><span>SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ </span></span></span></div>
 <div id="ui">
   <button id="pp" type="button">Pausa</button>
-  <input id="scrub" type="range" min="0" max="15" step="0.01" value="0" aria-label="Posizione nel tempo">
+  <input id="scrub" type="range" min="0" max="17.5" step="0.01" value="0" aria-label="Posizione nel tempo">
   <span id="tc">00.00 / 15</span>
   <button id="snd" type="button" aria-pressed="false">Suono: no</button>
 </div>
@@ -244,7 +251,7 @@
 <script>
 (() => {
   /* ---------- Costanti ---------- */
-  const DUR = 15, BEAT = .5, TAU = Math.PI * 2;
+  const DUR = 17.5, BEAT = .5, TAU = Math.PI * 2;
   // Dopo ogni mondo tutto si raccoglie in un punto e il suo titolo entra al centro, come MOTION.
   // Durante il titolo la scena resta ferma su quel punto (la camera invece continua a respirare).
   const TITLES = [];   // (i titoli a pausa sono stati sostituiti da titoli dentro le scene)
@@ -331,7 +338,7 @@
 
   const worldsEl = $('#worlds');
   WORLDS.forEach((w, i) => {
-    const d = document.createElement('div'); d.className = 'w'; d.style.left = ROW_X[i] + 'px';
+    const d = document.createElement('div'); d.className = 'w';
     d.innerHTML = `<span class="mask"><span>${w.label}</span></span><i style="background:${w.col}"></i>`;
     worldsEl.appendChild(d);
   });
@@ -374,6 +381,16 @@
   const kinEl = E('kin');
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
+  // MORE THAN meets THE EYE: ogni pezzo parte sparso e ruotato (valori fissi) e si compone; la O di MORE è un occhio
+  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" pathLength="1"/><circle class="iride" cx="60" cy="42" r="19" fill="#FF3D8B"/><circle class="pupilla" cx="60" cy="42" r="8" fill="currentColor"/></g></svg></span>';
+  const fraseEl = E('frase');
+  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', 'T', 'H', 'E', ' ', 'E', 'Y', 'E']
+    .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
+  const pezzi = [...fraseEl.children].map((n, i) => {
+    const r = Math.abs(Math.sin(i * 12.9898 + 1.7) * 43758.5453) % 1, r2 = Math.abs(Math.sin(i * 78.233 + .3) * 9999) % 1;
+    return { n, occhio: n.classList.contains('occhio'), dx: (r - .5) * 640, dy: (r2 - .5) * 420, rot: (r - .5) * 90 };
+  });
+  const occhio = fraseEl.querySelector('.occhio');
   const CT = [
     { world: 0, word: 'BRANDING',     col: BLUE,  tin: 2.2,  tout: 3.3 },
     { world: 1, word: 'ILLUSTRATION', col: GREEN, tin: 6.1,  tout: 6.98 },
@@ -401,7 +418,7 @@
     graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
     role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
     ptext: E('ptext'), caret: $('#ftext .caret'), fbar: E('fbar'), ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl,
-    win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
+    frase: fraseEl, nameEl: E('name'), miniBox: E('miniBox'), miniBlob: E('miniBlob'), win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
   };
   const PROMPT = 'un poster per la mamma, stile pop, 4 varianti';
   let M = null;   // misure prese una volta, a riposo
@@ -409,6 +426,7 @@
   function measure() {
     const s0 = stage.getBoundingClientRect(), S = s0.width / 1920;
     const box = n => { const b = n.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; };
+    nameEl.style.transform = 'none';
     const r = letters.map(box), k = kin.map(box), cy = (r[0].t + r[0].b) / 2;
     M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0], lr: r,
           gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
@@ -419,6 +437,26 @@
       const size = Math.min(250, 1720 / Math.max(1, w) * 250);
       c.el.style.fontSize = size + 'px'; c.el.style.top = (398 - size * .8 / 2) + 'px';
     });
+    fraseEl.style.fontSize = '130px';
+    const fw = [...fraseEl.children].reduce((a, n) => a + n.getBoundingClientRect().width / S, 0);
+    const fsz = Math.min(130, 1720 / Math.max(1, fw) * 130);
+    fraseEl.style.fontSize = fsz + 'px'; fraseEl.style.top = (470 - fsz / 2) + 'px';
+    const ob = box(occhio); M.eye = { x: (ob.l + ob.r) / 2, y: (ob.t + ob.b) / 2 };
+    // la riga delle categorie: compatta e centrata in basso, la stessa che poi si apre ai lati del logo
+    const lw = worldEls.map(d => box(d.firstChild.firstChild)).map(b => b.r - b.l), GAP = 56;
+    const tot = lw.reduce((a, w) => a + w, 0) + GAP * 4;
+    let x = 960 - tot / 2; M.RX = lw.map(w => { const c = x + w / 2; x += w + GAP; return c; });
+    worldEls.forEach((d, i) => { d.style.left = M.RX[i] + 'px'; });
+    // header finale: il nome al centro, rimpicciolito quanto serve perché le categorie ci stiano ai lati
+    const nw = r[12].r - r[0].l, SIDE = 64, MARG = 70;
+    const Lw = lw[0] + lw[1] + lw[2] + GAP * 2, Rw = lw[3] + lw[4] + GAP;
+    M.NK = Math.min(.5, 2 * (960 - MARG - SIDE - Math.max(Lw, Rw)) / nw);
+    const hw = nw * M.NK / 2;
+    x = 960 - hw - SIDE; M.FX = [];
+    for (let i = 2; i >= 0; i--) { M.FX[i] = x - lw[i] / 2; x -= lw[i] + GAP; }
+    x = 960 + hw + SIDE;
+    for (let i = 3; i < 5; i++) { M.FX[i] = x + lw[i] / 2; x += lw[i] + GAP; }
+    M.NX = [960 - hw, 960 + hw];
     // titoli al centro: stessa grandezza di MOTION, rimpiccioliti se la parola è troppo lunga
     TITLES.forEach(g => {
       g.el.style.fontSize = '250px';
@@ -455,8 +493,8 @@
       const k2 = eIO(p(u, 7.38, 7.55)) * (1 - eIO(p(u, 7.6, 7.95)));
       z += .2 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = lerp(960, fx, sceneA(t)); ay = lerp(540, fy, sceneA(t));
     }
-    const push = T >= 2 && T < DUR - 1 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
-    z *= 1 + push + .014 * Math.exp(-12 * (T % BEAT));
+    const push = T >= 2 && T < 14 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
+    z *= 1 + push + (T < 16.2 ? .014 * Math.exp(-12 * (T % BEAT)) : 0);
     return { z, fx, fy, ax, ay };
   }
 
@@ -485,22 +523,28 @@
 
   /* ---------- Brand: i blocchi 3D (proiezione prospettica, ordinamento del pittore) ---------- */
   function drawBoxes(t) {
-    const th = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const th0 = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
     // mentre la vista si inclina il blocco scende, così resta al centro della pagina (da piatto combacia con la griglia 2D)
     const dy = 175 * eIO(p(t, 4, 4.45)) * (1 - eIO(p(t, 5.5, 5.85)));
     const yaw = (32 * eIO(p(t, 4.5, 4.95)) - 60 * eIO(p(t, 5, 5.45)) + 28 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const sink = 1 - eIO(p(t, 5.5, 5.8));
+    const hs = sqs.map(q => {
+      const o = RISE.indexOf(q.k);
+      const k2 = eIO(p(t, 4.6 + .02 * o, 4.92 + .02 * o)), k3 = eIO(p(t, 5.05 + .02 * o, 5.38 + .02 * o));
+      return lerp(lerp(H1[q.k], H2[q.k], k2), H3[q.k], k3) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
+    });
+    renderBoxes({ th: th0, yaw, dy, hs, cx: 960, cy: 500, sc: 1, target: el.boxes });
+  }
+  function renderBoxes({ th, yaw, dy, hs, cx, cy, sc, target }) {
     const D = 2200, F = 2200, cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw);
     const cam = [-D * cT * sY, D * sT, -D * cT * cY];
     const proj = ([x, y, z]) => {
       const xr = x * cY - z * sY, zr = x * sY + z * cY;
       const d = zr * cT - y * sT, u = y * cT + zr * sT, s = F / (D + d);
-      return [960 + xr * s, 500 + dy - u * s, d];
+      return [cx + xr * s * sc, cy + dy - u * s * sc, d];
     };
-    const sink = 1 - eIO(p(t, 5.5, 5.8));
     const boxes = sqs.map(q => {
-      const o = RISE.indexOf(q.k);
-      const k2 = eIO(p(t, 4.6 + .02 * o, 4.92 + .02 * o)), k3 = eIO(p(t, 5.05 + .02 * o, 5.38 + .02 * o));
-      const h = lerp(lerp(H1[q.k], H2[q.k], k2), H3[q.k], k3) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
+      const h = hs[q.k];
       const b = { x: q.i * 168, z: -q.j * 168, w: 150, h, col: q.k === 4 ? PINK : BLUE };
       b.depth = proj([b.x, h / 2, b.z])[2];
       return b;
@@ -519,7 +563,7 @@
         out += `<polygon points="${fc.v.map(proj).map(q => f1(q[0]) + ',' + f1(q[1])).join(' ')}" fill="${fc.col}" stroke="${fc.col}" stroke-width=".8" stroke-linejoin="round"/>`;
       });
     });
-    el.boxes.innerHTML = out;
+    target.innerHTML = out;
   }
 
   /* ---------- Titoli al centro, con lo stesso movimento di MOTION ---------- */
@@ -544,6 +588,36 @@
     });
   }
 
+  /* ---------- Fine: MORE THAN meets THE EYE, poi l'header finale ---------- */
+  let IDLE = 0;   // tempo reale a intro finita: il cubo e la forma piccoli continuano a muoversi
+  function drawFinale(t) {
+    const fOn = t >= 14 && t < 16.4; vis(el.frase, fOn);
+    if (fOn) {
+      pezzi.forEach((q, i) => {
+        if (q.occhio) return;
+        const k = eOut(p(t, 14.2 + .028 * i, 14.85 + .028 * i));
+        q.n.style.transform = `translate(${f1((1 - k) * q.dx)}px, ${f1((1 - k) * q.dy)}px) rotate(${f1((1 - k) * q.rot)}deg) scale(${lerp(.5, 1, k).toFixed(3)})`;
+        q.n.style.opacity = k.toFixed(3);
+      });
+      dash(occhio.querySelector('.contorno'), eOut(p(t, 14.32, 14.8)));
+      occhio.querySelector('.iride').setAttribute('r', f1(19 * spring(p(t, 14.55, 14.85))));
+      occhio.querySelector('.pupilla').setAttribute('r', f1(8 * spring(p(t, 14.6, 14.9))));
+      // l'occhiolino: la palpebra si chiude e si riapre
+      occhio.querySelector('.palpebra').style.transform = `scaleY(${(1 - .92 * bump(p(t, 15.3, 15.58))).toFixed(3)})`;
+      // la frase scende verso la prima sezione della pagina
+      const giu = eIn(p(t, 15.8, 16.35));
+      el.frase.style.transform = `translateY(${f1(760 * giu)}px) scale(${(1 - .2 * giu).toFixed(3)})`;
+    }
+    // il cubo e la forma, piccoli, intorno al logo
+    const mk = spring(p(t, 16.45, 17.1)), mOn = t >= 16.4; vis(el.miniBox, mOn); vis(el.miniBlob, mOn);
+    if (mOn) {
+      const yaw = (25 + 18 * Math.sin(IDLE * .7)) * Math.PI / 180;
+      renderBoxes({ th: 50 * Math.PI / 180, yaw, dy: 0, hs: H1.map((h, k) => h * (.85 + .15 * Math.sin(IDLE * 1.3 + k))), cx: M.NX[0] - 40, cy: M.cy - 150, sc: .22 * mk, target: el.miniBox });
+      el.miniBlob.setAttribute('d', shape(M.NX[1] + 30, M.cy + 120, 46 * mk, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .4));
+      el.miniBlob.setAttribute('fill', GREEN);
+    }
+  }
+
   /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
   function seek(T) {
     if (!M) return;
@@ -554,6 +628,7 @@
     scene.forEach(n => { n.style.transform = `translate(960px, ${f1(S.cy)}px) scale(${S.k.toFixed(4)}) translate(-960px, -500px)`; });
     const cm = camAt(t, T);
     drawTitles(R);
+    drawFinale(t);
     CT.forEach(c => {
       const on = t >= c.tin && t < c.tout + .3; vis(c.el, on);
       if (on) c.letters.forEach((x, j) => { x.style.transform = `translateY(${f1(maskY(t, c.tin + .03 * j, .34, c.tout - .08 + .014 * j, .2, -1))}%)`; });
@@ -588,7 +663,7 @@
           blur = Math.min(10, v * .0016);
         }
       } else if (t < 14) { y = 115; }
-      else { y = 115 * (1 - eOut(p(t, 14.3 + .012 * i, 14.72 + .012 * i))); }
+      else { y = 115 * (1 - eOut(p(t, 16.2 + .02 * i, 16.65 + .02 * i))); }   // header finale
       vis(c, y < 114 && dy < 990);
       c.style.transformOrigin = '50% 100%';
       c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scaleY(${sy.toFixed(3)})`;
@@ -596,8 +671,9 @@
     }
     let ry = 0;
     if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
-    else if (t >= 14) ry = 115 * (1 - eOut(p(t, 14.45, 14.9)));
+    else if (t >= 14) ry = 115;
     el.role.style.transform = `translateY(${ry}%)`;
+    el.nameEl.style.transform = t >= 15 ? `scale(${M.NK.toFixed(3)})` : 'none';
     [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
       const on = t >= 1 && t < 1.99; vis(q, on); if (!on) return;
       const room = clamp((eIO(p(t, .9, 1.3)) - .55) / .45);   // il quadratino entra solo quando lo spazio tra le parole c'è
@@ -611,8 +687,9 @@
     el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
     const active = R.title ? R.title.world : WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
     worldEls.forEach((d, i) => {
-      d.firstChild.firstChild.style.transform = `translateY(${maskY(t, 2.1 + .04 * i, .4, 14 + .03 * i, .3)}%)`;
-      d.style.color = active === i ? TH.fg : TH.dim;
+      const fin = eIO(p(t, 16.3 + .04 * i, 16.95 + .04 * i));
+      d.style.transform = `translate(${f1((M.FX[i] - M.RX[i]) * fin)}px, ${f1((M.cy - 997) * fin)}px)`;
+      d.style.color = active === i || active === -1 ? TH.fg : TH.dim;
       d.lastChild.style.transform = `scaleX(${active === i ? (R.title ? 1 : eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3))) : 0})`;
     });
     /* La forma */
@@ -750,9 +827,9 @@
         const m = eIO(p(u, 9.75, 10.2));
         r = { x: lerp(510, WIN.x, m), y: lerp(826, WIN.y, m), w: lerp(900, WIN.w, m), h: lerp(8, WIN.h, m) }; rad = lerp(4, 28, m);
       } else if (u < 12) { r = WIN; rad = 28; }
-      else {   // la finestra si stringe nella L del nome
-        const m = eIO(p(u, 12, 12.34)), L = M.L;
-        r = { x: lerp(WIN.x, L.l + 6, m), y: lerp(WIN.y, L.t + 20, m), w: lerp(WIN.w, 34, m), h: lerp(WIN.h, L.b - L.t - 40, m) }; rad = lerp(28, 4, m);
+      else {   // la finestra si stringe nel punto in cui nasce l'occhio
+        const m = eIO(p(u, 12, 12.34));
+        r = { x: lerp(WIN.x, M.eye.x - 3, m), y: lerp(WIN.y, M.eye.y - 3, m), w: lerp(WIN.w, 6, m), h: lerp(WIN.h, 6, m) }; rad = lerp(28, 3, m);
       }
       Object.assign(el.win.style, { left: f1(r.x) + 'px', top: f1(r.y) + 'px', width: f1(r.w) + 'px', height: f1(r.h) + 'px', borderRadius: f1(rad) + 'px' });
       el.win.style.boxShadow = u < 10.1 ? `inset 0 0 0 3px ${mix(TH.fg, '#E3EAF5', p(u, 9.9, 10.1))}` : `inset 0 0 0 1px #E3EAF5, 0 30px 80px rgba(61, 90, 255, ${TH === THEMES.light ? .16 : .22})`;
@@ -793,11 +870,13 @@
   const scrollMode = embed || (!qs.has('play') && !qs.has('t') && !reduced);
   if (embed) document.body.classList.add('embed');
   else if (scrollMode) { document.body.classList.add('scroll'); document.documentElement.classList.add('scroll'); }
-  let embedTarget = 0;
+  let embedTarget = 0, done = false, vede = true;
   setTheme(qs.get('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
   if (embed) addEventListener('message', e => {
     if (e.origin !== location.origin || !e.data) return;
     if (e.data.theme && (e.data.theme === 'light') !== (TH === THEMES.light)) { setTheme(e.data.theme); lastDrawn = -1; }
+    if (e.data.done) done = true;
+    if (typeof e.data.vede === 'boolean') vede = e.data.vede;
     if (typeof e.data.reel === 'number') embedTarget = reduced ? 0 : clamp(e.data.reel) * DUR;
     if (typeof e.data.mx === 'number') { ptr.x = e.data.mx; ptr.y = e.data.my; ptr.in = !!e.data.dentro; }
   });
@@ -886,11 +965,13 @@
   function scrollFrame(now) {
     const max = document.documentElement.scrollHeight - innerHeight;
     const pr = embed ? embedTarget / DUR : max > 0 ? clamp(scrollY / max) : 0;
-    const target = reduced ? 0 : pr * DUR;
+    const target = done ? DUR : reduced ? 0 : pr * DUR;
+    if (done && reduced) { st = DUR; sv = 0; }
     const dt = lastNow ? Math.min(.05, (now - lastNow) / 1000) : .016; lastNow = now;
     for (let i = 0, h = dt / 4; i < 4; i++) { sv += (W0 * W0 * (target - st) - 2 * W0 * sv) * h; st += sv * h; }
     if (Math.abs(target - st) < .0005 && Math.abs(sv) < .002) { st = target; sv = 0; }
     st = clamp(st, 0, DUR);
+    if (st > DUR - .9 && vede) { IDLE += reduced ? 0 : dt; lastDrawn = -1; }   // a intro finita l'header resta vivo
     if (st !== lastDrawn) { seek(st); lastDrawn = st; }
     // in cima, a pagina ferma: la lettera sotto il mouse si ingrandisce (le vicine un po' meno);
     // accanto alla freccia compare la pillola SCROLL e la segue
@@ -924,7 +1005,7 @@
     const t = playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
     seek(t);
     if (!dragging) scrub.value = t.toFixed(2);
-    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / 15';
+    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / ' + DUR;
     requestAnimationFrame(frame);
   }
 

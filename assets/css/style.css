@@ -173,6 +173,21 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 .reel { position: relative; height: 1500vh; width: 100vw; margin-left: calc(50% - 50vw); background: var(--bg); }
 .reel-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
+/* intro finita: lo showreel resta un solo schermo, fermo dietro la pagina, e le fasce ci scorrono sopra */
+body.reel-fatto .reel { height: 100vh; }
+body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh; z-index: 0; }
+
+/* Prima sezione: il motto composto dallo showreel, con l'occhio al posto della O */
+.motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.03em; text-transform: uppercase; }
+.occhio { display: inline-block; width: .9em; height: .64em; margin: 0 .02em; vertical-align: -.02em; }
+.occhio svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.occhio__iride { fill: var(--accent-3); }
+.occhio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
+.motto.is-in .occhio__palpebra { animation: occhiolino .5s 1.1s var(--ease) both; }
+.motto:hover .occhio__palpebra { animation: occhiolino-2 .45s var(--ease); }
+@keyframes occhiolino { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
+@keyframes occhiolino-2 { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
+.apertura .manifesto { max-width: 26ch; font-size: clamp(1.4rem, 2.6vw, 2.6rem); line-height: 1.12; }
 
 /* Pulsante della musica (home) */
 .suono { position: fixed; left: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px;

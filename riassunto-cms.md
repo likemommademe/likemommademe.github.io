@@ -47,7 +47,7 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 
 | Pagina | Indirizzo | Contenuto |
 |---|---|---|
-| Home | `/` | Header animato (lo showreel, che avanza con lo scroll), poi frase di apertura e progetti scelti, nell'ordine deciso nel pannello |
+| Home | `/` | Header animato (lo showreel, che avanza con lo scroll e gira una volta sola, poi resta fisso dietro come header), poi il motto con l'occhio, la frase di apertura e i progetti scelti, nell'ordine deciso nel pannello |
 | Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia, card animate (come bitwip.fr/en/work) |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
 | Progetto | `/progetti/<progetto>/` | Copertina, descrizione, galleria di foto e video, crediti |
@@ -231,6 +231,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 11/11/2026 | Scheletro del sito come bitwip: menu a pillola, giorno/notte con il cerchio, passaggio animato tra le pagine, footer scuro con invito, home con "Cosa faccio", pagina Progetti con filtri e Mosaico/Griglia. Intro dello showreel automatica, poi si continua scorrendo |
 | 11/11/2026 | Showreel v4: Web Design al posto di UI/UX, lettere che cadono intere, menu che nasce da una pallina alla fine dello showreel |
 | 11/11/2026 | Showreel v3: intro LIKE · MOM · MADE · ME, Brand con i blocchi 3D, titoli a sinistra che non coprono gli elementi, cinque mondi (via Digital & Social) |
+| 12/11/2026 | Showreel 17,5 s: dopo Web Design il browser si stringe in un occhio e si compone MORE THAN *meets* THE EYE (la O è l'occhio che fa l'occhiolino); la frase scende e diventa il titolo della prima sezione della home (testo in `_data/testi.yml`, `home.motto`). Poi l'header finale: LIKEMOMMADEME al centro, le categorie ai lati, il cubo e la forma piccoli intorno. Le categorie stanno in basso per tutta l'intro. Tolto il logo in alto a sinistra dello showreel. L'intro gira una volta sola: a fine corsa lo showreel si chiude a un solo schermo e resta fermo dietro la pagina; riparte ricaricando o cliccando HOME / il logo |
 
 ---
 
