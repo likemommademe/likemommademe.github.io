@@ -138,7 +138,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `beyou`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
 | `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
@@ -246,6 +246,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Contenuti veri da Behance (pagine salvate in `_materiali/`): foto alla massima risoluzione, ritagliate senza titoli e grafiche delle presentazioni, in WebP; testi trascritti dalle slide e riscritti nelle sezioni del case study, in italiano e inglese. Online: Audible, Blue Origin (con il prototipo Figma), Sagra dei Stringozzi (con i video Vimeo), e dal vecchio PORTFOLIO solo Accademia dei Romani, Joker, Model sheet, Patch e Omaggio a Malika Favre (niente About, Social e branding personale). In bozza: Audible spot (manca il video), SITUATION (manca la pagina salvata), animazioni del PORTFOLIO (mancano i video). Esempi in bozza, home con i progetti veri. Nuova pagina progetto sul modello di bitwip, nuovo campo **Frase-titolo del progetto**, prototipi Figma incorporabili nella galleria |
 | 12/11/2026 | Aggiunti **IKEA, Voglia di casa** (Generative AI: Workspace, KOMPISHÄNG, Visual Display, dalla cartella `~/Desktop/Claude/IKEA Voglia di casa`; tolti tutti i riferimenti alla candidatura, la parte "Chi sono" e le foto personali) e **SITUATION** (Web Design). Audible spot online anche senza il video. Corrette le foto con parti trasparenti (righe e bande nere: la conversione ora le appoggia su bianco) e tolta da Blue Origin un'immagine troppo piccola |
 | 12/11/2026 | About me con la foto (seduto sulla propria testa). IKEA: gallerie divise in quattro sezioni (Workspace, KOMPISHÄNG, Visual Display) con due righe su cosa ho fatto, aggiunte le foto su FRAKTA e su BLÅHAJ. Nel pannello: nuovo elemento della galleria **Titolo di sezione**, e video `.mp4` riproducibili direttamente nella pagina |
+| 12/11/2026 | **BeYOU** tolto da IKEA e diventato un progetto a parte in Branding (logo e communication package per un hotel di lusso accessibile) |
 ---
 
 ## 10. Prossimi passi
