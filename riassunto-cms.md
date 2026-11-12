@@ -138,7 +138,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `dcd-studi-estetici`, `etica`, `north-face`, `juniors`, `fight-club`, `architecture`, `lettering-3d`, `scomodo`, `beyou`, `il-mio-marchio`, `animazioni`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `dcd-studi-estetici`, `etica`, `north-face`, `juniors`, `chrome-nails`, `fight-club`, `architecture`, `lettering-3d`, `scomodo`, `beyou`, `il-mio-marchio`, `animazioni`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
 | `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`, `dcd-studi-estetici`, `etica`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
@@ -262,6 +262,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | SITUATION: il video originale (`_Main_1.mp4`, compresso da 32 a 4,6 MB) al posto di quello YouTube. Animazioni: aggiunte le Icone mare (`__Icone Mare.mp4`) accanto al sushi, nella sezione Illustrazioni animate |
 | 12/11/2026 | Cinque progetti nuovi in Generative AI, dalle cartelle di `_materiali`: **The North Face, Tokyo** (campagna immaginata, 2026), **Fight Club, la saponetta** (still life in tanti materiali, 2024), **Architecture** (una scultura in sette materiali, 2024), **Lettering 3D** (Chaos, Topboy con il video tutorial, M Gradient, Come mamma mi ha fatto, Hardnails Art, Monkey) e **Scomodo** a parte. Tutti segnati come progetti personali; testi scritti nel mio tono. Non usata la cartella `Malika Favre` |
 | 12/11/2026 | Nuovo progetto **Juniors** (Generative AI, 2026, serie AI x Creatives): i volti di bambola generati con Firefly e 5 video da 8 secondi (uno in cui si sciolgono), compressi a 1280 px. Esclusa l'immagine di riferimento di un'altra artista |
+| 12/11/2026 | Nuovo progetto **Chrome Nails** (Generative AI, 2026, cartella `Unghie ragazza`): la foto e tre spezzoni dei video Firefly scelti dall'utente (lo zoom sulle unghie, le mani che si allungano, il terzo video intero) |
 ---
 
 ## 10. Prossimi passi
