@@ -2,7 +2,7 @@
 layout: about
 permalink: /about/
 title: About me
-foto: /assets/uploads/about-foto.webp
+foto: /assets/uploads/about-foto-testa.webp
 mostra_clienti: true
 ---
 Scrivi qui qualcosa su di te: chi sei, cosa fai, con chi hai lavorato.
