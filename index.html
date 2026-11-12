@@ -37,6 +37,7 @@ reel: true
       if (!subito) scrollTo({ top: Math.max(0, scrollY - tolto), behavior: 'instant' });
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
       post({ done: true });
+      document.dispatchEvent(new Event('reelfatto'));
     }
     function vede() { var a = document.getElementById('apertura'); return !a || a.getBoundingClientRect().top > 0; }   // l'header si vede ancora?
     function post(m) { if (frame.contentWindow) frame.contentWindow.postMessage(m, location.origin); }
@@ -66,12 +67,12 @@ reel: true
 </script>
 
 {% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="occhio__palpebra"><path d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round"/><circle cx="60" cy="42" r="19" class="occhio__iride"/><circle cx="60" cy="42" r="8" fill="currentColor"/></g></svg></span>{% endcapture %}
-<section class="fascia inv apertura" id="apertura">
+<section class="fascia apertura" id="apertura">
   <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
   <p class="manifesto">{{ home.intro }}</p>
 </section>
 
-<section class="fascia">
+<section class="fascia inv">
   <div class="sec-head">
     <h2 class="rise"><span>{{ t.mondi_titolo }}</span></h2>
   </div>
@@ -90,7 +91,7 @@ reel: true
   </ul>
 </section>
 
-<section class="fascia inv">
+<section class="fascia">
   <div class="sec-head">
     <h2 class="rise"><span>{{ home.titolo_progetti }}</span></h2>
     <a class="lnk" href="{{ '/work/' | relative_url }}">{{ t.lavori_link }}</a>
@@ -102,3 +103,46 @@ reel: true
     {% endfor %}
   </div>
 </section>
+
+<script>
+  // La frase MORE THAN meets THE EYE passa dallo showreel alla pagina: parte esattamente dove sta nell'header
+  // e, mentre si scorre, resta ferma, cresce e si sposta fino al suo posto; intanto la prima sezione le sale incontro.
+  (function () {
+    var ap = document.getElementById('apertura'), h = ap && ap.querySelector('.motto'), frame = document.querySelector('#reel iframe');
+    if (!h || !frame) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, H = null, N = null;
+    var eio = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    function pronto() { try { var w = frame.contentWindow; return w && w.lmmFrase && w.document.documentElement.dataset.ready === '1' ? w : null; } catch (e) { return null; } }
+    function misura() {
+      if (!document.body.classList.contains('reel-fatto')) return;
+      var w = pronto();
+      if (!w) { setTimeout(misura, 200); return; }
+      h.style.transform = '';
+      h.classList.add('is-in', 'motto--preso');   // prima di misurare: senza la maschera abbassata
+      h.style.transformOrigin = '0 ' + (h.firstElementChild.getBoundingClientRect().top - h.getBoundingClientRect().top).toFixed(1) + 'px';
+      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; w.lmmFraseVia(false); return; }
+      var r = w.lmmFrase(), fr = frame.getBoundingClientRect(), sp = h.firstElementChild.getBoundingClientRect();
+      H = { l: r.l + fr.left, cy: r.t + fr.top + r.h / 2, w: r.w };
+      N = { l: sp.left, w: sp.width, h: sp.height, top: sp.top + scrollY };
+      muovi(); aspetta();
+    }
+    // la pagina prende la frase solo quando nello showreel è arrivata al suo posto (se si scorre veloce, l'animazione è un po' indietro)
+    function aspetta() {
+      var w = pronto();
+      if (!H || !w) return;
+      if (!w.lmmFine()) { h.style.visibility = 'hidden'; setTimeout(aspetta, 60); return; }
+      h.style.visibility = ''; w.lmmFraseVia(true);
+    }
+    function muovi() {
+      if (!H) return;
+      var corsa = N.top + N.h / 2 - H.cy, k = corsa > 0 ? Math.min(1, Math.max(0, scrollY / corsa)) : 1, e = eio(k);
+      if (k >= 1) { h.style.transform = ''; return; }
+      var sc = H.w / N.w + (1 - H.w / N.w) * e, x = H.l + (N.l - H.l) * e, y = H.cy - N.h * sc / 2;
+      h.style.transform = 'translate(' + (x - N.l).toFixed(1) + 'px,' + (y - (N.top - scrollY)).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')';
+    }
+    addEventListener('scroll', muovi, { passive: true });
+    addEventListener('resize', function () { H = null; misura(); });
+    document.addEventListener('reelfatto', misura);
+    misura();
+  })();
+</script>

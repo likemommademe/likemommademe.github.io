@@ -178,7 +178,10 @@ body.reel-fatto .reel { height: 100vh; }
 body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh; z-index: 0; }
 
 /* Prima sezione: il motto composto dallo showreel, con l'occhio al posto della O */
-.motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.03em; text-transform: uppercase; }
+.motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.02em; text-transform: uppercase; transform-origin: 0 0; }
+@media (min-width: 720px) { .motto { white-space: nowrap; font-size: clamp(2.5rem, 6.4vw, 8rem); } }
+.motto--preso > span { transition: none !important; }   /* arriva dallo showreel: niente maschera */
+.apertura { box-shadow: 0 -1px 0 var(--line-2); }   /* stesso colore dell'header: il filo mostra il bordo che sale */
 .occhio { display: inline-block; width: .9em; height: .64em; margin: 0 .02em; vertical-align: -.02em; }
 .occhio svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .occhio__iride { fill: var(--accent-3); }

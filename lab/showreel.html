@@ -203,7 +203,20 @@
       </g>
       <g id="boxes"></g>
       <g id="miniBox"></g>
-      <path id="miniBlob"/>
+      <g id="orbita">
+        <g id="oIll"><path id="oIllB"/><circle cx="-30" cy="-12" r="10" fill="#0A0A0A"/><path class="oOcchio" d="M18 -12h22" stroke="#0A0A0A" stroke-width="10" stroke-linecap="round"/><path d="M-36 20Q0 54 36 20" fill="none" stroke="#0A0A0A" stroke-width="9" stroke-linecap="round"/></g>
+        <g id="oAi"><path id="oAiB" fill="#FF3D8B"/><path id="oAiS" d="M0 -26C3 -6 6 -3 26 0C6 3 3 6 0 26C-3 6 -6 3 -26 0C-6 -3 -3 -6 0 -26Z" fill="#FF3D8B"/></g>
+        <g id="oMot"><path d="M-160 0H160" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".35"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="translate(-110 0) rotate(45)" fill="#3D5AFF"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="rotate(45)" fill="#12C08E"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="translate(110 0) rotate(45)" fill="#FF3D8B"/>
+          <g id="oPh"><path d="M0 -46V46" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cy="-46" r="10" fill="currentColor"/></g></g>
+        <g id="oWeb"><rect x="-150" y="-100" width="300" height="200" rx="20" style="fill:var(--panel)" stroke="currentColor" stroke-width="5"/>
+          <circle cx="-120" cy="-72" r="7" fill="#FF3D8B"/><circle cx="-98" cy="-72" r="7" fill="#12C08E"/><circle cx="-76" cy="-72" r="7" fill="#3D5AFF"/>
+          <rect x="-120" y="-38" width="170" height="18" rx="9" fill="currentColor"/><rect x="-120" y="-8" width="230" height="10" rx="5" fill="currentColor" opacity=".3"/><rect x="-120" y="12" width="190" height="10" rx="5" fill="currentColor" opacity=".3"/>
+          <rect id="oBtn" x="-120" y="40" width="110" height="36" rx="18" fill="#3D5AFF"/>
+          <path id="oCur" d="M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z" fill="#F5F5F2" stroke="#0A0A0A" stroke-width="2.5" stroke-linejoin="round"/></g>
+      </g>
       <g id="sqs"></g>
       <g id="graph" fill="none">
         <path id="tl" d="M510 830H1410" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round" pathLength="1"/>
@@ -418,7 +431,7 @@
     graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
     role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
     ptext: E('ptext'), caret: $('#ftext .caret'), fbar: E('fbar'), ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl,
-    frase: fraseEl, nameEl: E('name'), miniBox: E('miniBox'), miniBlob: E('miniBlob'), win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
+    frase: fraseEl, nameEl: E('name'), miniBox: E('miniBox'), orbita: E('orbita'), win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
   };
   const PROMPT = 'un poster per la mamma, stile pop, 4 varianti';
   let M = null;   // misure prese una volta, a riposo
@@ -426,7 +439,6 @@
   function measure() {
     const s0 = stage.getBoundingClientRect(), S = s0.width / 1920;
     const box = n => { const b = n.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; };
-    nameEl.style.transform = 'none';
     const r = letters.map(box), k = kin.map(box), cy = (r[0].t + r[0].b) / 2;
     M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0], lr: r,
           gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
@@ -447,16 +459,6 @@
     const tot = lw.reduce((a, w) => a + w, 0) + GAP * 4;
     let x = 960 - tot / 2; M.RX = lw.map(w => { const c = x + w / 2; x += w + GAP; return c; });
     worldEls.forEach((d, i) => { d.style.left = M.RX[i] + 'px'; });
-    // header finale: il nome al centro, rimpicciolito quanto serve perché le categorie ci stiano ai lati
-    const nw = r[12].r - r[0].l, SIDE = 64, MARG = 70;
-    const Lw = lw[0] + lw[1] + lw[2] + GAP * 2, Rw = lw[3] + lw[4] + GAP;
-    M.NK = Math.min(.5, 2 * (960 - MARG - SIDE - Math.max(Lw, Rw)) / nw);
-    const hw = nw * M.NK / 2;
-    x = 960 - hw - SIDE; M.FX = [];
-    for (let i = 2; i >= 0; i--) { M.FX[i] = x - lw[i] / 2; x -= lw[i] + GAP; }
-    x = 960 + hw + SIDE;
-    for (let i = 3; i < 5; i++) { M.FX[i] = x + lw[i] / 2; x += lw[i] + GAP; }
-    M.NX = [960 - hw, 960 + hw];
     // titoli al centro: stessa grandezza di MOTION, rimpiccioliti se la parola è troppo lunga
     TITLES.forEach(g => {
       g.el.style.fontSize = '250px';
@@ -590,8 +592,12 @@
 
   /* ---------- Fine: MORE THAN meets THE EYE, poi l'header finale ---------- */
   let IDLE = 0;   // tempo reale a intro finita: il cubo e la forma piccoli continuano a muoversi
+  // posizioni degli elementi intorno al logo (spazio del palco 1920 x 1080), con l'ingresso scaglionato
+  const ORB = { box: [250, 245, 16.05], ill: [1665, 240, 16.15], ai: [640, 215, 16.25], mot: [260, 705, 16.35], web: [1660, 712, 16.45] };
+  const FR = { y: 152, k: .42 };   // la frase, a fine intro, sotto il nome (dove all'inizio c'era il ruolo)
+  let fraseVia = false;            // a intro finita la frase passa alla pagina, che la porta nella prima sezione
   function drawFinale(t) {
-    const fOn = t >= 14 && t < 16.4; vis(el.frase, fOn);
+    const fOn = t >= 14 && !fraseVia; vis(el.frase, fOn);
     if (fOn) {
       pezzi.forEach((q, i) => {
         if (q.occhio) return;
@@ -604,22 +610,49 @@
       occhio.querySelector('.pupilla').setAttribute('r', f1(8 * spring(p(t, 14.6, 14.9))));
       // l'occhiolino: la palpebra si chiude e si riapre
       occhio.querySelector('.palpebra').style.transform = `scaleY(${(1 - .92 * bump(p(t, 15.3, 15.58))).toFixed(3)})`;
-      // la frase scende verso la prima sezione della pagina
-      const giu = eIn(p(t, 15.8, 16.35));
-      el.frase.style.transform = `translateY(${f1(760 * giu)}px) scale(${(1 - .2 * giu).toFixed(3)})`;
+      // la frase scende sotto il nome, che sale grande come all'inizio
+      const giu = eIO(p(t, 15.65, 16.25));
+      el.frase.style.transform = `translateY(${f1(FR.y * giu)}px) scale(${lerp(1, FR.k, giu).toFixed(3)})`;
     }
-    // il cubo e la forma, piccoli, intorno al logo
-    const mk = spring(p(t, 16.45, 17.1)), mOn = t >= 16.4; vis(el.miniBox, mOn); vis(el.miniBlob, mOn);
-    if (mOn) {
-      const yaw = (25 + 18 * Math.sin(IDLE * .7)) * Math.PI / 180;
-      renderBoxes({ th: 50 * Math.PI / 180, yaw, dy: 0, hs: H1.map((h, k) => h * (.85 + .15 * Math.sin(IDLE * 1.3 + k))), cx: M.NX[0] - 40, cy: M.cy - 150, sc: .22 * mk, target: el.miniBox });
-      el.miniBlob.setAttribute('d', shape(M.NX[1] + 30, M.cy + 120, 46 * mk, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .4));
-      el.miniBlob.setAttribute('fill', GREEN);
-    }
+    // intorno al logo, gli elementi dei cinque mondi: entrano uno dopo l'altro e poi restano vivi
+    const oOn = t >= 16; vis(el.orbita, oOn); vis(el.miniBox, oOn);
+    if (!oOn) return;
+    const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
+    const kb = pop(ORB.box[2]);
+    renderBoxes({ th: 50 * Math.PI / 180, yaw: (25 + 20 * Math.sin(IDLE * .6)) * Math.PI / 180, dy: 0,
+      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0], cy: ORB.box[1] + fl(0), sc: .34 * kb, target: el.miniBox });
+    const place = (id, o, extra = '') => { const k = pop(o[2]); E(id).setAttribute('transform', `translate(${o[0]} ${f1(o[1] + fl(o[0]))}) scale(${k.toFixed(3)}) ${extra}`); return k; };
+    place('oIll', ORB.ill, `rotate(${f1(6 * Math.sin(IDLE * .8))})`);
+    E('oIllB').setAttribute('d', shape(0, 0, 92, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .3));
+    E('oIllB').setAttribute('fill', GREEN);
+    const wink = bump(((IDLE % 4) - 3.2) / .35);   // ogni tanto la faccina strizza l'occhio
+    E('oIll').querySelector('.oOcchio').setAttribute('transform', `translate(29 -12) scale(1 ${(1 + 1.6 * wink).toFixed(2)}) translate(-29 12)`);
+    place('oAi', ORB.ai);
+    E('oAiB').setAttribute('d', shape(0, 0, 54, BL, FL, .5 + .5 * Math.sin(IDLE * 1.2 + 1), -IDLE * .4));
+    E('oAiS').setAttribute('transform', `translate(62 -50) rotate(${f1(IDLE * 40)}) scale(${(.8 + .25 * Math.sin(IDLE * 2)).toFixed(3)})`);
+    place('oMot', ORB.mot);
+    E('oPh').setAttribute('transform', `translate(${f1(150 * Math.sin(IDLE * .9))} 0)`);
+    place('oWeb', ORB.web, `rotate(${f1(-3 + 2 * Math.sin(IDLE * .7))})`);
+    const ck = (IDLE % 3) / 3, cx = lerp(110, -70, eIO(p(ck, 0, .45))), cy = lerp(90, 52, eIO(p(ck, 0, .45)));
+    E('oCur').setAttribute('transform', `translate(${f1(cx)} ${f1(cy)}) scale(${(1 - .12 * bump(p(ck, .5, .62))).toFixed(3)})`);
+    E('oBtn').setAttribute('opacity', (1 - .35 * bump(p(ck, .5, .62))).toFixed(2));
   }
+  // la home chiede dove sta la frase a fine intro, per prenderla esattamente da lì
+  window.lmmFrase = () => {
+    const save = el.frase.style.transform; el.frase.style.transform = `translateY(${FR.y}px) scale(${FR.k})`;
+    const rs = pezzi.map(q => q.n.getBoundingClientRect());
+    el.frase.style.transform = save;
+    const l = Math.min(...rs.map(r => r.left)), r = Math.max(...rs.map(r => r.right)), tp = Math.min(...rs.map(r => r.top)), bt = Math.max(...rs.map(r => r.bottom));
+    return { l, t: tp, w: r - l, h: bt - tp };
+  };
+  window.lmmFraseVia = via => { fraseVia = via; lastDrawn = -1; };
+  window.lmmFine = () => !M || seekT >= 16.3;   // la frase è già al suo posto sotto il nome?
 
+
+  let seekT = 0;
   /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
   function seek(T) {
+    seekT = T;
     if (!M) return;
     const R = remap(T), t = R.t;
     const u = t - 2;   // tempo dei mondi dopo il Brand (scritti sulla timeline originale)
@@ -663,7 +696,7 @@
           blur = Math.min(10, v * .0016);
         }
       } else if (t < 14) { y = 115; }
-      else { y = 115 * (1 - eOut(p(t, 16.2 + .02 * i, 16.65 + .02 * i))); }   // header finale
+      else { y = 115 * (1 - eOut(p(t, 15.8 + .02 * i, 16.25 + .02 * i))); c.style.color = ''; }   // header finale: il nome grande, come all'inizio
       vis(c, y < 114 && dy < 990);
       c.style.transformOrigin = '50% 100%';
       c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scaleY(${sy.toFixed(3)})`;
@@ -673,7 +706,6 @@
     if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
     else if (t >= 14) ry = 115;
     el.role.style.transform = `translateY(${ry}%)`;
-    el.nameEl.style.transform = t >= 15 ? `scale(${M.NK.toFixed(3)})` : 'none';
     [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
       const on = t >= 1 && t < 1.99; vis(q, on); if (!on) return;
       const room = clamp((eIO(p(t, .9, 1.3)) - .55) / .45);   // il quadratino entra solo quando lo spazio tra le parole c'è
@@ -687,8 +719,6 @@
     el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
     const active = R.title ? R.title.world : WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
     worldEls.forEach((d, i) => {
-      const fin = eIO(p(t, 16.3 + .04 * i, 16.95 + .04 * i));
-      d.style.transform = `translate(${f1((M.FX[i] - M.RX[i]) * fin)}px, ${f1((M.cy - 997) * fin)}px)`;
       d.style.color = active === i || active === -1 ? TH.fg : TH.dim;
       d.lastChild.style.transform = `scaleX(${active === i ? (R.title ? 1 : eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3))) : 0})`;
     });
