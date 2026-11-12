@@ -3,7 +3,7 @@ title: "Lettering 3D"
 title_en: "3D lettering"
 categoria: "generative-ai"
 anno: 2024
-copertina: "/assets/uploads/lettering-chaos-01.webp"
+copertina: "/assets/uploads/lettering-chaos-03.webp"
 sottotitolo: "Le parole che mi piace toccare: cromo, gelatina, pelle, palloncino"
 sottotitolo_en: "Words I like to touch: chrome, jelly, leather, balloon"
 domanda: "Ogni parola ha la sua consistenza."

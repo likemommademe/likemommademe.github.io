@@ -3,7 +3,7 @@ title: "Architecture"
 title_en: "Architecture"
 categoria: "generative-ai"
 anno: 2024
-copertina: "/assets/uploads/architecture-03.webp"
+copertina: "/assets/uploads/architecture-06.webp"
 sottotitolo: "Una piccola scultura, sette materiali"
 sottotitolo_en: "One small sculpture, seven materials"
 domanda: "Stessa forma, materia diversa."

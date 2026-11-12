@@ -3,7 +3,7 @@ title: "The North Face, Tokyo"
 title_en: "The North Face, Tokyo"
 categoria: "generative-ai"
 anno: 2026
-copertina: "/assets/uploads/north-face-01.webp"
+copertina: "/assets/uploads/north-face-04.webp"
 sottotitolo: "Una campagna immaginata tra i vicoli di Tokyo, di notte"
 sottotitolo_en: "A campaign imagined in the back streets of Tokyo, at night"
 domanda: "Il freddo si sente meno, sotto il neon."

@@ -265,6 +265,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Nuovo progetto **Chrome Nails** (Generative AI, 2026, cartella `Unghie ragazza`): la foto e tre spezzoni dei video Firefly scelti dall'utente (lo zoom sulle unghie, le mani che si allungano, il terzo video intero) |
 | 12/11/2026 | Fight Club: aggiunto il video del processo (Illustrator 3D → Firefly), ritrovato dall'utente in bassa risoluzione (480×848) e migliorato: riduzione del rumore, ingrandimento a 1080 px, nitidezza. Affiancato alla saponetta di partenza nella sezione «Il processo» |
 | 12/11/2026 | Gallerie: una foto da sola non supera più l'altezza dello schermo; se è verticale o quadrata diventa un blocco editoriale (titolo e riga a sinistra, foto a destra). Malika Favre rifatto con i file originali in alta (`_materiali/Malika Favre`), più l'illustrazione «La luna» che mancava |
+| 12/11/2026 | Copertine nuove: The North Face (i due che si baciano nel vicolo), Lettering 3D (Chaos in argento liquido), Fight Club (la muffa rosa), Architecture (il vetro rotto). Fight Club più corto: da 17 a 10 foto, due per materiale; dove due foto erano uguali ora c'è la foto intera più un dettaglio zoomato; tolto il pon pon |
 ---
 
 ## 10. Prossimi passi
