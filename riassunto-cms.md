@@ -138,9 +138,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `beyou`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `dcd-studi-estetici`, `beyou`, `il-mio-marchio`, `animazioni`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
-| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`) |
+| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`, `dcd-studi-estetici`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
 | `_data/impostazioni.yml` | Nome e contatti |
 | `_data/cms.yml` | Impostazioni delle immagini. Viene creato la prima volta che salvi Sistema → Immagini |
@@ -256,6 +256,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Home: "Lavori selezionati" in scorrimento orizzontale come la home di bitwip. La sezione resta ferma, i progetti scorrono da destra a sinistra (0,7 px di scroll per ogni pixel di spostamento), il titolo a sinistra scivola via e svanisce, in fondo "Vedi tutti i progetti" e una barra di avanzamento. Ogni card: copertina, cliente, categoria, anno, titolo e la frase-titolo del progetto. Su telefono e con "riduci movimento" si scorre col dito. Testi in `_data/testi.yml` → `home.lavori_*` |
 | 12/11/2026 | SITUATION: è la tesi del Master in User Interface Design and AI (IED Roma). Aggiunti il video YouTube di IED in cima alla galleria e il pulsante "Il progetto sul sito IED" (ied.edu/projects/situation). Nuovo campo del pannello **Link esterno** |
 | 12/11/2026 | Video da `_materiali/video`: lo spot Audible nel progetto Audible, lo spot; nuovo progetto **Animazioni** (Motion Design: logo animation Adidas, Apple, Ichnusa e l'illustrazione animata del sushi); nuovo progetto **Il mio marchio** (Branding: il monogramma CE dalla griglia alla stationery, con il video del logo). Video caricati direttamente sul sito, muti e in loop quando sono sullo schermo |
+| 12/11/2026 | Nuovo progetto **DCD Studi Estetici** (Branding, 2022, fatto lavorando da Pixell): restyling del marchio e brand identity manual di 116 pagine realizzato interamente da me, più campagna, punti vendita e sito con Pixell. Immagini dal manuale (`~/Desktop/materiale x portfolio`) e dalla pagina Pixell, logo animato da `_materiali/video`, pulsante verso pixell.it. Nuovo cliente DCD Studi Estetici (Beauty & Cosmetics) |
 ---
 
 ## 10. Prossimi passi
