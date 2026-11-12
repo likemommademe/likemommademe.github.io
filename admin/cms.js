@@ -767,15 +767,15 @@ async function relationListWidget(field, value) {
       thumb(e?.data[coll.thumb]),
       h('span', { class: 'row-text' },
         h('strong', {}, e?.data.title || slug),
-        h('small', {}, !e ? 'Progetto non più esistente' : isDraft(e) ? 'Bozza: non compare finché non lo pubblichi' : '')),
-      h('button', { type: 'button', class: 'icon-btn danger', title: 'Togli dalla home', onclick: () => { el.remove(); refresh(); markDirty(); } }, icon('x')));
+        h('small', {}, !e ? 'Non esiste più' : isDraft(e) ? 'Bozza: non compare finché non lo pubblichi' : '')),
+      h('button', { type: 'button', class: 'icon-btn danger', title: field.removeTitle || 'Togli dalla home', onclick: () => { el.remove(); refresh(); markDirty(); } }, icon('x')));
     list.append(el);
     refresh();
   }
   function refresh() {
     const chosen = new Set([...list.children].map((el) => el.dataset.slug));
     select.replaceChildren(
-      h('option', { value: '' }, '+ Aggiungi un progetto…'),
+      h('option', { value: '' }, field.addLabel || '+ Aggiungi un progetto…'),
       entries.filter((e) => !chosen.has(e.slug)).map((e) => h('option', { value: e.slug }, e.data.title || e.slug)));
   }
   for (const slug of value || []) add(slug);

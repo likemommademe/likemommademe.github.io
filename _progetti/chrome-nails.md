@@ -2,6 +2,8 @@
 title: "Chrome Nails"
 title_en: "Chrome Nails"
 categoria: "generative-ai"
+altre_categorie:
+  - motion-design
 anno: 2026
 copertina: "/assets/uploads/unghie-01.webp"
 sottotitolo: "Un editoriale moda futurista, dove le unghie sono l'arma"

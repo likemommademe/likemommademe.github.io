@@ -2,6 +2,8 @@
 title: "DCD Studi Estetici"
 title_en: "DCD Studi Estetici"
 categoria: "branding"
+altre_categorie:
+  - motion-design
 cliente: "dcd-studi-estetici"
 anno: 2022
 link: "https://www.pixell.it/progetti/dcd-centri-estetici/"

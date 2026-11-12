@@ -2,6 +2,8 @@
 title: "Juniors"
 title_en: "Juniors"
 categoria: "generative-ai"
+altre_categorie:
+  - motion-design
 anno: 2026
 copertina: "/assets/uploads/juniors-02.webp"
 sottotitolo: "Cento facce di bambola, tutte uguali e tutte diverse, finché non si sciolgono"

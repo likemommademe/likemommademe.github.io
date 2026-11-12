@@ -26,6 +26,7 @@ window.CMS = {
         { name: 'title', label: 'Titolo', type: 'string', required: true, i18n: true },
         { name: 'published', label: 'Pubblicato sul sito', type: 'publish', default: false, hint: 'Spento = bozza: resta qui nel pannello ma non compare sul sito.' },
         { name: 'categoria', label: 'Categoria', type: 'relation', collection: 'categorie', required: true },
+        { name: 'altre_categorie', label: 'Anche in', type: 'relationList', collection: 'categorie', addLabel: '+ Aggiungi un\'altra categoria…', removeTitle: 'Togli', hint: 'Facoltativo: le altre categorie in cui deve comparire il progetto (es. un progetto di Web Design con un video anche in Motion Design).' },
         { name: 'cliente', label: 'Cliente', type: 'relation', collection: 'clienti' },
         { name: 'anno', label: 'Anno', type: 'number' },
         { name: 'copertina', label: 'Immagine di copertina', type: 'image', required: true },

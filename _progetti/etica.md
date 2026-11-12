@@ -2,6 +2,8 @@
 title: "Etic.a Labels"
 title_en: "Etic.a Labels"
 categoria: "web-design"
+altre_categorie:
+  - motion-design
 cliente: "etica"
 anno: 2022
 link: "https://www.eticasrl.net/"

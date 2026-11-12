@@ -2,6 +2,8 @@
 title: "Il mio vecchio logo"
 title_en: "My old logo"
 categoria: "branding"
+altre_categorie:
+  - motion-design
 anno: 2021
 copertina: "/assets/uploads/il-mio-marchio-03.webp"
 sottotitolo: "Il monogramma CE, dalla griglia alla stationery"

@@ -40,7 +40,7 @@
   function apply() {
     let n = 0;
     cards.forEach(c => {
-      const ok = dds.every(d => !sel[d.k].size || sel[d.k].has(c.dataset[d.k]));
+      const ok = dds.every(d => !sel[d.k].size || (c.dataset[d.k] || '').split(' ').some(v => sel[d.k].has(v)));
       c.hidden = !ok;
       if (ok) { c.dataset.m = (n % 3) + 1; n++; }
     });

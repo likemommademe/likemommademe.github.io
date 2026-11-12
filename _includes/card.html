@@ -2,7 +2,7 @@
 {% assign cat = site.categorie | where: "slug", p.categoria | first %}
 {% assign cliente = nil %}{% if p.cliente %}{% assign cliente = site.clienti | where: "slug", p.cliente | first %}{% endif %}
 {% assign vedi = site.data.testi.lavori.vedi %}
-<a class="card" href="{{ p.url | relative_url }}" data-card data-cat="{{ p.categoria }}" data-sett="{{ cliente.settore | slugify }}" data-paese="{{ cliente.paese }}">
+<a class="card" href="{{ p.url | relative_url }}" data-card data-cat="{{ p.categoria }}{% for c in p.altre_categorie %} {{ c }}{% endfor %}" data-sett="{{ cliente.settore | slugify }}" data-paese="{{ cliente.paese }}">
   <div class="card-img">
     {% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}
   </div>

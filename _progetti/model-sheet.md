@@ -1,6 +1,7 @@
 ---
 title: "Model sheet"
 title_en: "Model sheet"
+published: false
 categoria: "illustration"
 copertina: "/assets/uploads/model-sheet-foglio.webp"
 sottotitolo: "Un personaggio, tutte le sue pose"

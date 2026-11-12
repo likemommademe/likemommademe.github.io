@@ -1,7 +1,9 @@
 ---
 layout: default
 ---
-{% assign progetti = site.progetti | where: "categoria", page.slug | sort: "ordine", "last" %}
+{% assign progetti = "" | split: "" %}
+{% assign tutti_c = site.progetti | sort: "ordine", "last" %}
+{% for p in tutti_c %}{% if p.categoria == page.slug or p.altre_categorie contains page.slug %}{% assign progetti = progetti | push: p %}{% endif %}{% endfor %}
 
 <header class="pagina-head">
   <nav class="briciole"><a href="{{ '/work/' | relative_url }}">Work</a> /</nav>

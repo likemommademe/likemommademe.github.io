@@ -8,7 +8,7 @@ sottotitolo_en: "Portraits made of lines only"
 domanda: "Perché così serio? Bastano le linee."
 domanda_en: "Why so serious? Lines are all it takes."
 body_en: |
-  Five screen **Jokers**, from 1966 to 2019, each redrawn in lines only and set next to the film still it came from.
+  Six **Jokers** from film and cartoons, 1966 to 2019, each redrawn in lines only and set next to the film still it came from.
 concept: |
   Uno stile molto **semplice** e **pulito**: solo linee, nessun riempimento. Volevo dare alle illustrazioni un formato unico e personale.
 concept_en: |
@@ -56,6 +56,25 @@ galleria:
     titolo_en: "Jack Nicholson"
     didascalia: "Jack Nicholson in Batman. Foto di scena, usata come riferimento."
     didascalia_en: "Jack Nicholson in Batman. Film still, used as a reference."
+  - type: "sezione"
+    titolo: "Batman, la serie animata (1992)"
+    titolo_en: "Batman: The Animated Series (1992)"
+    testo: "Il Joker dei cartoni: mento lungo, ghigno pieno di denti e una carta da gioco sempre in mano."
+    testo_en: "The cartoon Joker: long chin, a grin full of teeth and a playing card always in hand."
+  - type: "foto"
+    immagine: "/assets/uploads/joker-carta.webp"
+    formato: "meta"
+    titolo: "Il mio ritratto"
+    titolo_en: "My portrait"
+    didascalia: "Il Joker che mostra il suo jack, disegnato solo con le linee."
+    didascalia_en: "The Joker showing his jack, drawn in lines only."
+  - type: "foto"
+    immagine: "/assets/uploads/joker-risata.webp"
+    formato: "meta"
+    titolo: "HAHAHA"
+    titolo_en: "HAHAHA"
+    didascalia: "La risata, scritta a mano e ammucchiata fino a diventare un'immagine."
+    didascalia_en: "The laugh, hand-lettered and piled up until it becomes an image."
   - type: "sezione"
     titolo: "Il cavaliere oscuro (2008)"
     titolo_en: "The Dark Knight (2008)"
@@ -113,17 +132,6 @@ galleria:
     titolo_en: "Joaquin Phoenix"
     didascalia: "Joaquin Phoenix in Joker. Foto di scena, usata come riferimento."
     didascalia_en: "Joaquin Phoenix in Joker. Film still, used as a reference."
-  - type: "sezione"
-    titolo: "La carta e la risata"
-    titolo_en: "The card and the laugh"
-    testo: "Il Joker come carta da gioco, e la sua risata scritta a mano."
-    testo_en: "The Joker as a playing card, and his laugh, hand-lettered."
-  - type: "foto"
-    immagine: "/assets/uploads/joker-04.webp"
-    titolo: "La carta e la risata"
-    titolo_en: "The card and the laugh"
-    didascalia: "Il Joker come carta da gioco e il suo «HAHAHA», scritto a mano."
-    didascalia_en: "The Joker as a playing card and his \"HAHAHA\", hand-lettered."
 strumenti:
   - Illustrator
   - Procreate
@@ -133,4 +141,4 @@ crediti_en: |
   Personal project. Film stills used only as references; all rights belong to their respective owners.
 ordine: 2
 ---
-Cinque **Joker** del cinema, dal 1966 al 2019, ognuno ridisegnato solo con le linee e messo accanto alla foto di scena da cui è nato.
+Sei **Joker** tra cinema e cartoni, dal 1966 al 2019, ognuno ridisegnato solo con le linee e messo accanto alla foto di scena da cui è nato.

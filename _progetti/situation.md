@@ -2,6 +2,8 @@
 title: "SITUATION"
 title_en: "SITUATION"
 categoria: "web-design"
+altre_categorie:
+  - motion-design
 cliente: "ied"
 anno: 2021
 link: "https://www.ied.edu/projects/situation"
