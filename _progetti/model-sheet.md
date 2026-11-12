@@ -1,0 +1,25 @@
+---
+title: "Model sheet"
+title_en: "Model sheet"
+categoria: "illustration"
+copertina: "/assets/uploads/model-sheet-01.webp"
+sottotitolo: "Un personaggio, tutte le sue pose"
+sottotitolo_en: "One character, every pose"
+domanda: "Fronte, retro, profilo. E poi una tuta robotica."
+domanda_en: "Front, back, side. Then a robot suit."
+body_en: |
+  A project for an Illustration exam: create a **model sheet** for a character, covering every angle, movement, body structure and signature expression.
+execution: |
+  Sono partito da uno schizzo fatto con Procreate e ho costruito il model sheet nelle tre posizioni principali: fronte, retro e profilo. Poi ho stilizzato il personaggio vestendolo con una tuta robotica.
+execution_en: |
+  I started from a sketch in Procreate and built the model sheet in the three main views: front, back and side. Then I stylised the character by dressing him in a robot suit.
+galleria:
+  - type: "foto"
+    immagine: "/assets/uploads/model-sheet-02.webp"
+  - type: "foto"
+    immagine: "/assets/uploads/model-sheet-01.webp"
+strumenti:
+  - Procreate
+ordine: 4
+---
+Progetto per un esame di Illustrazione: realizzare il **model sheet** di un personaggio in tutte le prospettive, i movimenti, la struttura fisica e le espressioni tipiche.

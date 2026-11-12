@@ -1,9 +1,73 @@
 ---
-title: Blue Origin
-published: false
-categoria: web-design
+title: "Blue Origin"
+title_en: "Blue Origin"
+categoria: "web-design"
+cliente: "ied"
 anno: 2021
-copertina: /assets/uploads/blue-origin-copertina.webp
-sottotitolo: UX/UI design · project work Sketchin
+copertina: "/assets/uploads/blue-origin-03.webp"
+sottotitolo: "Il nuovo sito e lo Space Pass per il volo della New Shepard"
+sottotitolo_en: "The new website and the Space Pass for the New Shepard flight"
+domanda: "Come si vende un posto nello spazio, anche a chi resta a terra?"
+domanda_en: "How do you sell a seat in space, even to people who stay on the ground?"
+body_en: |
+  Launching the new website and rebranding the whole Blue Origin project, for the space flight of the **New Shepard** suborbital rocket: its first crew of astronauts, with one seat reserved for the winner of an online auction.
+concept: |
+  Due percorsi distinti ed esclusivi, tutti e due costruiti sull'esperienza del viaggio nello spazio. Il primo racconta il viaggio reale. Il secondo, **Space Pass**, lo simula con l'Oculus: reale, ma virtuale.
+
+  Tre parole a fare da bussola: **esclusività, lusso, innovazione**.
+concept_en: |
+  Two separate, exclusive journeys, both built on the experience of travelling to space. The first tells the story of the real flight. The second, **Space Pass**, simulates it with an Oculus headset: real, but virtual.
+
+  Three words as our compass: **exclusivity, luxury, innovation**.
+execution: |
+  - Le interfacce desktop e mobile di **New Shepard**: «Lo spazio non è un sogno».
+  - Le interfacce desktop e mobile di **Space Pass**: «Reale ma virtuale».
+  - Un'app per **Apple Watch**: frequenza cardiaca, calorie e boarding pass.
+  - Un **Oculus** personalizzato per la simulazione.
+
+  I prototipi sono su Figma: qui sotto puoi provarne uno.
+execution_en: |
+  - Desktop and mobile interfaces for **New Shepard**: "Space is not a dream".
+  - Desktop and mobile interfaces for **Space Pass**: "Real but virtual".
+  - An **Apple Watch** app: heart rate, calories and boarding pass.
+  - A custom **Oculus** headset for the simulation.
+
+  The prototypes live in Figma: you can try one below.
+coordinamento: |
+  Project work con Sketchin, sviluppato allo IED di Roma in un team di tre: Emanuele Calfa, Arianna Condemi e Francesca Prencipe.
+coordinamento_en: |
+  A project work with Sketchin, developed at IED Rome by a team of three: Emanuele Calfa, Arianna Condemi and Francesca Prencipe.
+galleria:
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-02.webp"
+  - type: "video"
+    link: "https://www.figma.com/proto/WtcybpweB05oEJ5QLd3L22?node-id=450%3A1287&page-id=450%3A1185&scaling=min-zoom"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-01.webp"
+    formato: "meta"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-03.webp"
+    formato: "meta"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-04.webp"
+    formato: "meta"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-05.webp"
+    formato: "meta"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-06.webp"
+    formato: "meta"
+  - type: "foto"
+    immagine: "/assets/uploads/blue-origin-07.webp"
+    formato: "meta"
+strumenti:
+  - Figma
+crediti: |
+  Design: Emanuele Calfa, Arianna Condemi, Francesca Prencipe  
+  IED Roma, 2021
+crediti_en: |
+  Design: Emanuele Calfa, Arianna Condemi, Francesca Prencipe  
+  IED Rome, 2021
 ordine: 1
 ---
+Il lancio del nuovo sito e il rebranding dell'intero progetto Blue Origin, in occasione del volo nello spazio del vettore suborbitale **New Shepard**: il primo equipaggio di astronauti, con un posto riservato a chi vince un'asta online.

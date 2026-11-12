@@ -1,5 +1,6 @@
 ---
 title: Progetto di esempio
+published: false
 categoria: illustration
 cliente: cliente-di-esempio
 anno: 2025

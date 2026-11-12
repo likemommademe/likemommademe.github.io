@@ -87,3 +87,24 @@ about:
       r: Dipende da cosa serve davvero. Scrivimi due righe sul progetto e ti mando una proposta chiara, con tempi e costi.
     - d: In quanto tempo rispondi?
       r: "Di solito in giornata. Se non rispondo, sto disegnando: riprova il giorno dopo."
+
+# Pagina di un progetto (_layouts/progetto.html)
+progetto:
+  work: Work
+  il_progetto: Il progetto
+  cliente: Cliente
+  settore: Settore
+  categoria: Categoria
+  anno: Anno
+  strumenti: Strumenti
+  vedi_galleria: Guarda le immagini
+  brief: Brief e obiettivo
+  concept: Concept
+  execution: Execution
+  coordinamento: Coordinamento e processo
+  risultato: Risultato
+  crediti: Crediti
+  galleria: Galleria
+  precedente: Progetto precedente
+  successivo: Progetto successivo
+  altri: Altri progetti

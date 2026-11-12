@@ -1,5 +1,6 @@
 ---
 title: Materia Viva
+published: false
 categoria: generative-ai
 cliente: ikea
 anno: 2026

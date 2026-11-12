@@ -399,6 +399,116 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .about .testo { margin: 32px 0 0; }
 @media (max-width: 720px) { .progetto-head, .about { grid-template-columns: 1fr; } }
 
+/* =========================================================
+   Pagina di un progetto, sul modello di bitwip (p-projet.css):
+   titolo gigante + copertina quadrata che si appoggia sul foglio,
+   foglio a colori opposti con scheda fissa a sinistra e racconto a destra,
+   galleria a muro su due colonne, precedente/successivo affiancati.
+   Niente numeri 01–07 e niente colori di bitwip: solo i nostri token.
+   ========================================================= */
+.cs-label { margin: 0; display: flex; align-items: center; gap: 10px; font-family: var(--f-label); font-weight: 600; font-size: 13px; line-height: 1.2; letter-spacing: .14em; text-transform: uppercase; }
+
+/* 1. In alto */
+.cs-hero { position: relative; z-index: 3; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; padding: 8px 0 clamp(40px, 4vw, 64px); }
+.cs-hero__txt { grid-column: 1 / span 7; }
+.cs-hero__tag { margin-bottom: clamp(20px, 2.4vw, 36px); }
+.cs-hero__tag a:hover { color: var(--fg); }
+.cs-hero__t { font-size: clamp(3.25rem, 1.4rem + 7.2vw, 9.5rem); line-height: .9; letter-spacing: -.045em; }
+.cs-hero__p { max-width: 38ch; margin: clamp(20px, 2vw, 32px) 0 0; color: var(--muted); font-size: var(--t-lead); line-height: 1.38; }
+.cs-hero__carre { grid-column: 8 / -1; margin: 0 0 calc(clamp(110px, 15vw, 260px) * -1); aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
+.cs-hero__carre img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 2. Il foglio */
+.cs-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin-bottom: clamp(56px, 6vw, 104px); }
+.cs-head > * { grid-column: 1 / span 7; }
+.cs-head__k { padding-bottom: 16px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.cs-head__k::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--accent-3); animation: cs-blink 2s steps(1) infinite; }
+@keyframes cs-blink { 50% { opacity: 0; } }
+.cs-head__t { margin-top: clamp(24px, 3vw, 44px); max-width: 18ch; font-size: var(--t-h2); }
+.cs-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 48px; align-items: start; }
+.cs-fiche { grid-column: 1 / span 4; position: sticky; top: calc(var(--nav-h) + 40px); display: grid; gap: 28px; justify-items: start; }
+.cs-facts { width: 100%; margin: 0; display: grid; border-top: 1px solid var(--line); }
+.cs-facts > div { display: grid; grid-template-columns: minmax(96px, 1fr) 2fr; align-items: baseline; gap: var(--gap); padding: 16px 0; border-bottom: 1px solid var(--line); }
+.cs-facts dt { color: var(--muted); font-size: var(--t-small); }
+.cs-facts dd { margin: 0; font-weight: 500; }
+.cs-facts__s { display: block; }
+.cs-vedi { font-size: var(--t-small); }
+.cs-racconto { grid-column: 6 / -1; display: grid; row-gap: clamp(56px, 5.6vw, 96px); }
+.cs-blocco { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 5fr); column-gap: var(--gap); row-gap: 20px; align-items: start; padding-top: clamp(20px, 1.8vw, 28px); border-top: 1px solid var(--line-2); }
+.cs-blocco > .cs-label { position: sticky; top: calc(var(--nav-h) + 40px); }
+.cs-corpo { max-width: 60ch; min-width: 0; color: color-mix(in srgb, var(--fg) 80%, transparent); }
+.cs-corpo > * { margin: 0; }
+.cs-corpo > * + * { margin-top: 1.1em; }
+.cs-corpo > p:first-child { color: var(--fg); font-size: var(--t-lead); line-height: 1.38; letter-spacing: -.012em; text-wrap: pretty; }
+.cs-corpo > p:first-child + * { margin-top: 1.3em; }
+.cs-corpo ul { padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.cs-corpo li { padding: .6em 0; border-bottom: 1px solid var(--line); color: var(--fg); }
+.cs-corpo strong { color: var(--fg); font-weight: 700; }
+.cs-corpo a { text-decoration: underline; text-underline-offset: 3px; }
+.cs-blocco--crediti .cs-corpo { font-size: var(--t-small); }
+.cs-blocco--crediti .cs-corpo > p:first-child { font-size: inherit; }
+
+/* 3. La galleria */
+.cs-gal-sez > .cs-head__k { margin-bottom: clamp(36px, 4.4vw, 72px); }
+.cs-gal { display: grid; gap: var(--gap); align-items: start; }
+.cs-gal__mur { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
+.cs-gal__col { display: grid; row-gap: var(--gap); align-content: start; }
+.cs-media { margin: 0; }
+.cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }
+.cs-media figcaption { padding-top: 10px; }
+.video--figma { aspect-ratio: 16 / 10; }
+
+/* 4. Precedente e successivo */
+.cs-suite { padding-top: calc(var(--sec) * .6 + var(--r-fascia)); padding-bottom: calc(var(--sec) * .6); }
+.cs-pn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+.cs-pn__a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "freccia txt img"; align-items: center; gap: clamp(16px, 2vw, 32px); padding: clamp(22px, 2.4vw, 36px) clamp(0px, 2vw, 32px) clamp(22px, 2.4vw, 36px) 0; }
+.cs-pn__a--prec { border-right: 1px solid var(--line); }
+.cs-pn__a--succ { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "img txt freccia"; padding-inline: clamp(16px, 2vw, 32px) 0; text-align: right; }
+.cs-pn__freccia { grid-area: freccia; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; transition: background .4s, border-color .4s, color .4s; }
+.cs-pn__freccia svg { transition: transform .5s var(--ease); }
+.cs-pn__a--prec .cs-pn__freccia svg { transform: scaleX(-1); }
+.cs-pn__a:hover .cs-pn__freccia { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
+.cs-pn__a--prec:hover .cs-pn__freccia svg { transform: scaleX(-1) translateX(4px); }
+.cs-pn__a--succ:hover .cs-pn__freccia svg { transform: translateX(4px); }
+.cs-pn__txt { grid-area: txt; display: grid; gap: 8px; min-width: 0; }
+.cs-pn__k { color: var(--muted); }
+.cs-pn__a--succ .cs-pn__k { justify-content: flex-end; }
+.cs-pn__t { font-weight: 500; font-size: var(--t-h3); line-height: 1.15; letter-spacing: -.015em; }
+.cs-pn__tag { display: flex; flex-wrap: wrap; gap: 6px 12px; color: var(--muted); font-size: var(--t-small); }
+.cs-pn__a--succ .cs-pn__tag { justify-content: flex-end; }
+.cs-pn__img { grid-area: img; width: min(14vw, 200px); aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
+.cs-pn__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+.cs-pn__a:hover .cs-pn__img img { transform: scale(1.08); }
+
+/* Blocchi che salgono quando entrano nello schermo */
+html.js [data-rivela] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform 1s var(--ease); }
+html.js [data-rivela].is-in { opacity: 1; transform: none; }
+
+@media (max-width: 980px) {
+  .cs-fiche, .cs-racconto { grid-column: 1 / -1; }
+  .cs-fiche { position: static; }
+  .cs-blocco { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+  .cs-blocco > .cs-label { position: static; }
+}
+@media (max-width: 760px) {
+  .cs-hero { grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+  .cs-hero__txt, .cs-hero__carre { grid-column: 1 / -1; }
+  .cs-hero__carre { margin-bottom: -64px; }
+  .cs-head > * { grid-column: 1 / -1; }
+  .cs-gal__mur { display: flex; flex-direction: column; gap: var(--gap); }
+  .cs-gal__col { display: contents; }
+  .cs-pn { grid-template-columns: minmax(0, 1fr); }
+  .cs-pn__a, .cs-pn__a--succ { grid-template-areas: "freccia txt img"; padding: 20px 0; text-align: left; }
+  .cs-pn__a--prec { border-right: 0; border-bottom: 1px solid var(--line); }
+  .cs-pn__a--succ .cs-pn__k, .cs-pn__a--succ .cs-pn__tag { justify-content: flex-start; }
+  .cs-pn__freccia { width: 44px; height: 44px; }
+  .cs-pn__img { width: 64px; border-radius: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-rivela] { opacity: 1; transform: none; transition: none; }
+  .cs-head__k::before { animation: none; }
+}
+
 /* ---------- About: titolo, timeline con l'anno gigante (come bitwip "through the years"), clienti ---------- */
 .ahero { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: var(--gap); }
 .ahero h1 { font-size: clamp(3.5rem, 2rem + 8vw, 10rem); font-weight: 900; letter-spacing: -.045em; line-height: .86; }

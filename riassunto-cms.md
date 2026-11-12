@@ -50,7 +50,7 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 | Home | `/` | Header animato (lo showreel, che avanza con lo scroll e gira una volta sola, poi resta fisso dietro come header), poi il motto con l'occhio, la frase di apertura e i progetti scelti, nell'ordine deciso nel pannello |
 | Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia, card animate (come bitwip.fr/en/work) |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
-| Progetto | `/progetti/<progetto>/` | Copertina, descrizione, galleria di foto e video, crediti |
+| Progetto | `/progetti/<progetto>/` | Come le pagine progetto di bitwip: titolo gigante con la copertina quadrata che si appoggia sul foglio; foglio a colori opposti con "Il progetto", la frase-titolo, la scheda fissa a sinistra (cliente, settore, categoria, anno, strumenti) e il racconto a destra (Brief, Concept, Execution, Coordinamento, Risultato, Crediti); galleria con le foto "Metà" in un muro a due colonne; progetto precedente e successivo affiancati |
 | About | `/about/` | Testo, foto, loghi dei clienti, contatti |
 | Privacy | `/privacy/` | Richiesta da Google per l'accesso con Google |
 | Showreel | `/lab/showreel.html` | L'animazione dell'header, anche da sola: guidata dallo scroll, `?play` la fa partire da sola. La home la carica con `?embed` e le passa la posizione dello scroll |
@@ -80,9 +80,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ### Progetti
 - Campi: titolo, **Pubblicato sul sito** (spento = bozza), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
-- **Case study**, sezioni fisse: **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
+- **Case study**: **Frase-titolo del progetto** (la frase grande in cima al racconto), poi le sezioni fisse **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
 - I progetti nuovi partono come bozza.
-- **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
+- **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo e prototipi Figma (link `figma.com/proto/...`), si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
 - **Testo con pulsanti**: grassetto, corsivo, titolo, elenco, link.
 - Pulsanti **Duplica**, **Vedi sul sito**, **Elimina**.
 - **Ordine dentro ogni categoria**: nella lista scegli la categoria nel filtro e trascini le righe.
@@ -126,7 +126,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | `about.md` | Pagina About (testo modificabile dal pannello) |
 | `privacy.md` | Pagina privacy |
 | `_layouts/default.html` | Struttura comune: intestazione, piè di pagina, tag SEO e contatore visite |
-| `_layouts/progetto.html` | Pagina di un progetto (galleria con formato intera o metà) |
+| `_layouts/progetto.html` | Pagina di un progetto, sul modello di bitwip. Usa `_includes/progetto-media.html` (foto o video della galleria) e `_includes/progetto-pn.html` (precedente/successivo). Testi fissi in `_data/testi.yml` → `progetto` |
 | `_layouts/categoria.html` | Pagina di una categoria |
 | `_layouts/about.html` | Pagina About |
 | `_includes/card.html` | Riquadro di un progetto negli elenchi |
@@ -138,9 +138,9 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (esempi: `materia-viva`, `progetto-di-esempio`; da Behance, in bozza: `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `sagra-dei-stringozzi`, `situation`) |
+| `_progetti/*.md` | Un file per progetto (online: `audible-il-classico-si-unisce-al-futuro`, `blue-origin`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza: `audible-video-animation` e `situation`, che aspettano video e materiale, e gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
-| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`) |
+| `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
 | `_data/impostazioni.yml` | Nome e contatti |
 | `_data/cms.yml` | Impostazioni delle immagini. Viene creato la prima volta che salvi Sistema → Immagini |
@@ -148,7 +148,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=10`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=11`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -243,6 +243,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Motto: un 7 al posto della T di THE ("7HE"), nero, che si nota al secondo sguardo. Per gli screen reader il titolo si legge "More than meets the eye" (`home.motto_leggibile` in `_data/testi.yml`) |
 
 | 12/11/2026 | Progetti da Behance (behance.net/calfa639164) nel pannello, **in bozza**: Audible (Branding), Audible video animation (Motion Design), Blue Origin (Web Design), Sagra dei Stringozzi (Branding), SITUATION (Web Design), con le copertine originali in WebP. Nuovo cliente **IED** per i progetti di scuola (Audible e Blue Origin non sono clienti veri). Escluso il progetto PORTFOLIO. Behance blocca la lettura automatica delle pagine dei progetti: foto interne e testi vanno ancora aggiunti |
+| 12/11/2026 | Contenuti veri da Behance (pagine salvate in `_materiali/`): foto alla massima risoluzione, ritagliate senza titoli e grafiche delle presentazioni, in WebP; testi trascritti dalle slide e riscritti nelle sezioni del case study, in italiano e inglese. Online: Audible, Blue Origin (con il prototipo Figma), Sagra dei Stringozzi (con i video Vimeo), e dal vecchio PORTFOLIO solo Accademia dei Romani, Joker, Model sheet, Patch e Omaggio a Malika Favre (niente About, Social e branding personale). In bozza: Audible spot (manca il video), SITUATION (manca la pagina salvata), animazioni del PORTFOLIO (mancano i video). Esempi in bozza, home con i progetti veri. Nuova pagina progetto sul modello di bitwip, nuovo campo **Frase-titolo del progetto**, prototipi Figma incorporabili nella galleria |
 ---
 
 ## 10. Prossimi passi
@@ -251,7 +252,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
 4. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
-5. **Inserire i contenuti veri** al posto di quelli di esempio: Materia Viva, Progetto di esempio, Cliente di esempio e le immagini SVG di prova.
+5. **Contenuti che mancano**: i video delle animazioni del PORTFOLIO, lo spot Audible e il video della Sagra caricato su Behance (vanno dati come file o link YouTube/Vimeo); la pagina Behance di SITUATION; gli anni di Accademia dei Romani, Joker, Model sheet e Patch / Malika Favre. Poi si possono eliminare gli esempi (Materia Viva, Progetto di esempio, Cliente di esempio, immagini SVG di prova).
 6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
 7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 

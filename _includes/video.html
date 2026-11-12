@@ -1,14 +1,19 @@
-{% comment %} Trasforma un link YouTube o Vimeo in un video incorporato. {% endcomment %}
+{% comment %} Trasforma un link YouTube, Vimeo o un prototipo Figma in un contenuto incorporato. {% endcomment %}
 {% assign url = include.url %}
+{% assign src = nil %}{% assign figma = false %}
 {% if url contains "youtu" %}
   {% assign id = url | split: "v=" | last | split: "&" | first | split: "youtu.be/" | last | split: "?" | first %}
   {% assign src = "https://www.youtube-nocookie.com/embed/" | append: id %}
 {% elsif url contains "vimeo" %}
   {% assign id = url | split: "/" | last | split: "?" | first %}
   {% assign src = "https://player.vimeo.com/video/" | append: id %}
+{% elsif url contains "figma.com" %}
+  {% assign enc = url | url_encode %}
+  {% assign src = "https://www.figma.com/embed?embed_host=share&url=" | append: enc %}
+  {% assign figma = true %}
 {% endif %}
 {% if src %}
-<div class="video">
+<div class="video{% if figma %} video--figma{% endif %}">
   <iframe src="{{ src }}" title="Video" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 </div>
 {% endif %}

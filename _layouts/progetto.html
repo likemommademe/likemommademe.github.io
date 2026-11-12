@@ -1,107 +1,124 @@
 ---
 layout: default
 ---
+{% comment %}
+  Pagina di un progetto, sul modello delle pagine progetto di bitwip:
+  1. in alto il titolo gigante con la descrizione breve e la copertina quadrata a destra, che si appoggia sul foglio sotto;
+  2. il foglio (colori opposti): etichetta "Il progetto", la frase-titolo, la scheda fissa a sinistra e il racconto a destra;
+  3. la galleria: le immagini "Tutta larghezza" da sole, quelle "Metà" in un muro a due colonne;
+  4. progetto precedente e successivo affiancati.
+  Ogni sezione compare solo se è compilata nel pannello. Tutti i testi fissi stanno in _data/testi.yml (progetto).
+{% endcomment %}
+{% assign t = site.data.testi.progetto %}
 {% assign cat = site.categorie | where: "slug", page.categoria | first %}
 {% assign cliente = site.clienti | where: "slug", page.cliente | first %}
 
-<article class="progetto">
-  <header class="progetto-head">
-    <div>
-      <nav class="briciole">
-        <a href="{{ '/work/' | relative_url }}">Work</a> /
-        {% if cat %}<a href="{{ cat.url | relative_url }}">{{ cat.title }}</a> /{% endif %}
-      </nav>
-      <h1>{{ page.title }}</h1>
-    </div>
-    <dl class="info">
-      {% if cliente %}<div><dt>Cliente</dt><dd>{{ cliente.title }}</dd></div>{% endif %}
-      {% if page.anno %}<div><dt>Anno</dt><dd>{{ page.anno }}</dd></div>{% endif %}
-      {% if cat %}<div><dt>Categoria</dt><dd>{{ cat.title }}</dd></div>{% endif %}
-    </dl>
+<section class="cs-hero">
+  <div class="cs-hero__txt">
+    <ul class="card-tag cs-hero__tag">
+      <li><a href="{{ '/work/' | relative_url }}">{{ t.work }}</a></li>
+      {% if cat %}<li><a href="{{ cat.url | relative_url }}">{{ cat.title }}</a></li>{% endif %}
+      {% if page.anno %}<li>{{ page.anno }}</li>{% endif %}
+    </ul>
+    <h1 class="cs-hero__t rise"><span>{{ page.title }}</span></h1>
+    {% if page.sottotitolo %}<p class="cs-hero__p" data-rivela>{{ page.sottotitolo }}</p>{% endif %}
+  </div>
+  {% if page.copertina %}
+  <figure class="cs-hero__carre">
+    <img src="{{ page.copertina | relative_url }}" alt="{{ page.title }}" fetchpriority="high">
+  </figure>
+  {% endif %}
+</section>
+
+{% capture brief %}{{ content | strip }}{% endcapture %}
+<section class="fascia inv cs-foglio">
+  <header class="cs-head">
+    <p class="cs-label cs-head__k">{{ t.il_progetto }}</p>
+    {% if page.domanda %}<h2 class="cs-head__t" data-rivela>{{ page.domanda }}</h2>{% endif %}
   </header>
 
-  {% if page.copertina %}
-    <img class="cover" src="{{ page.copertina | relative_url }}" alt="{{ page.title }}">
-  {% endif %}
+  <div class="cs-grid">
+    <aside class="cs-fiche" data-rivela>
+      <dl class="cs-facts">
+        {% if cliente %}<div><dt>{{ t.cliente }}</dt><dd>{% if cliente.sito %}<a class="lnk" href="{{ cliente.sito }}" target="_blank" rel="noopener">{{ cliente.title }}</a>{% else %}{{ cliente.title }}{% endif %}</dd></div>{% endif %}
+        {% if cliente.settore %}<div><dt>{{ t.settore }}</dt><dd>{{ cliente.settore }}</dd></div>{% endif %}
+        {% if cat %}<div><dt>{{ t.categoria }}</dt><dd><a class="lnk" href="{{ cat.url | relative_url }}">{{ cat.title }}</a></dd></div>{% endif %}
+        {% if page.anno %}<div><dt>{{ t.anno }}</dt><dd>{{ page.anno }}</dd></div>{% endif %}
+        {% if page.strumenti and page.strumenti.size > 0 %}<div><dt>{{ t.strumenti }}</dt><dd>{% for s in page.strumenti %}<span class="cs-facts__s">{{ s }}</span>{% endfor %}</dd></div>{% endif %}
+      </dl>
+      {% if page.galleria %}<a class="lnk cs-vedi" href="#galleria">{{ t.vedi_galleria }} ↓</a>{% endif %}
+    </aside>
 
-  {% comment %} Case study: ogni sezione compare solo se è compilata nel pannello. {% endcomment %}
-  {% if content != "" %}
-  <section class="sezione">
-    <h2>Brief e obiettivo</h2>
-    <div class="testo">{{ content }}</div>
-  </section>
-  {% endif %}
+    <div class="cs-racconto">
+      {% if brief != "" %}
+      <div class="cs-blocco" data-rivela><h3 class="cs-label">{{ t.brief }}</h3><div class="cs-corpo">{{ content }}</div></div>
+      {% endif %}
+      {% if page.concept %}
+      <div class="cs-blocco" data-rivela><h3 class="cs-label">{{ t.concept }}</h3><div class="cs-corpo">{{ page.concept | markdownify }}</div></div>
+      {% endif %}
+      {% if page.execution %}
+      <div class="cs-blocco" data-rivela><h3 class="cs-label">{{ t.execution }}</h3><div class="cs-corpo">{{ page.execution | markdownify }}</div></div>
+      {% endif %}
+      {% if page.coordinamento %}
+      <div class="cs-blocco" data-rivela><h3 class="cs-label">{{ t.coordinamento }}</h3><div class="cs-corpo">{{ page.coordinamento | markdownify }}</div></div>
+      {% endif %}
+      {% if page.risultato %}
+      <div class="cs-blocco" data-rivela><h3 class="cs-label">{{ t.risultato }}</h3><div class="cs-corpo">{{ page.risultato | markdownify }}</div></div>
+      {% endif %}
+      {% if page.crediti %}
+      <div class="cs-blocco cs-blocco--crediti" data-rivela><h3 class="cs-label">{{ t.crediti }}</h3><div class="cs-corpo">{{ page.crediti | markdownify }}</div></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-  {% if page.concept %}
-  <section class="sezione">
-    <h2>Concept</h2>
-    <div class="testo">{{ page.concept | markdownify }}</div>
-  </section>
-  {% endif %}
-
-  {% if page.execution %}
-  <section class="sezione">
-    <h2>Execution</h2>
-    <div class="testo">{{ page.execution | markdownify }}</div>
-  </section>
-  {% endif %}
-
-  {% if page.galleria %}
-  <div class="galleria">
-    {% for elemento in page.galleria %}
-      <figure class="{{ elemento.formato | default: 'intera' }}">
-        {% if elemento.type == "video" %}
-          {% include video.html url=elemento.link %}
-        {% else %}
-          <img src="{{ elemento.immagine | relative_url }}" alt="{{ elemento.didascalia | default: page.title }}" loading="lazy">
-        {% endif %}
-        {% if elemento.didascalia %}<figcaption>{{ elemento.didascalia }}</figcaption>{% endif %}
-      </figure>
+{% if page.galleria %}
+<section class="fascia cs-gal-sez" id="galleria">
+  <p class="cs-label cs-head__k">{{ t.galleria }}</p>
+  <div class="cs-gal">
+    {% comment %} Le "Metà" consecutive finiscono in un muro a due colonne, alternate (1ª a sinistra, 2ª a destra...). {% endcomment %}
+    {% assign n = page.galleria.size %}
+    {% assign i = 0 %}
+    {% for _ in (1..n) %}
+      {% if i >= n %}{% break %}{% endif %}
+      {% assign el = page.galleria[i] %}
+      {% if el.formato == 'meta' %}
+        {% assign fine = i %}
+        {% for _k in (i..n) %}{% if fine < n and page.galleria[fine].formato == 'meta' %}{% assign fine = fine | plus: 1 %}{% endif %}{% endfor %}
+        <div class="cs-gal__mur">
+          {% for col in (0..1) %}
+          <div class="cs-gal__col">
+            {% assign j = i | plus: col %}
+            {% for _m in (i..fine) %}{% if j < fine %}{% assign elj = page.galleria[j] %}{% include progetto-media.html el=elj titolo=page.title ordine=j %}{% assign j = j | plus: 2 %}{% endif %}{% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+        {% assign i = fine %}
+      {% else %}
+        {% include progetto-media.html el=el titolo=page.title %}
+        {% assign i = i | plus: 1 %}
+      {% endif %}
     {% endfor %}
   </div>
-  {% endif %}
+</section>
+{% endif %}
 
-  {% if page.coordinamento %}
-  <section class="sezione">
-    <h2>Coordinamento e processo</h2>
-    <div class="testo">{{ page.coordinamento | markdownify }}</div>
-  </section>
-  {% endif %}
-
-  {% if page.risultato %}
-  <section class="sezione">
-    <h2>Risultato</h2>
-    <div class="testo">{{ page.risultato | markdownify }}</div>
-  </section>
-  {% endif %}
-
-  {% if page.strumenti and page.strumenti.size > 0 %}
-  <section class="sezione">
-    <h2>Strumenti</h2>
-    <ul class="strumenti">
-      {% for s in page.strumenti %}<li>{{ s }}</li>{% endfor %}
-    </ul>
-  </section>
-  {% endif %}
-
-  {% if page.crediti %}
-  <section class="crediti">
-    <h2>Crediti</h2>
-    {{ page.crediti | markdownify }}
-  </section>
-  {% endif %}
-
-  {% comment %} Progetto successivo nella stessa categoria, nell'ordine deciso nel pannello. {% endcomment %}
-  {% assign stessi = site.progetti | where: "categoria", page.categoria | sort: "ordine", "last" %}
-  {% assign successivo = nil %}
-  {% for p in stessi %}
-    {% if p.url == page.url %}{% assign i = forloop.index0 | plus: 1 %}{% assign successivo = stessi[i] %}{% endif %}
-  {% endfor %}
-  {% if successivo %}
-    <a class="successivo" href="{{ successivo.url | relative_url }}">Progetto successivo: {{ successivo.title }} →</a>
-  {% endif %}
-
-  {% if cat %}
-    <a class="indietro" href="{{ cat.url | relative_url }}">← Altri progetti in {{ cat.title }}</a>
-  {% endif %}
-</article>
+{% comment %} Precedente e successivo: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; si gira in tondo. {% endcomment %}
+{% assign tutti = "" | split: "" %}
+{% assign categorie = site.categorie | sort: "ordine", "last" %}
+{% for c in categorie %}
+  {% assign di_c = site.progetti | where: "categoria", c.slug | sort: "ordine", "last" %}
+  {% assign tutti = tutti | concat: di_c %}
+{% endfor %}
+{% assign tot = tutti.size %}
+{% if tot > 1 %}
+  {% for p in tutti %}{% if p.url == page.url %}{% assign qui = forloop.index0 %}{% endif %}{% endfor %}
+  {% assign iprec = qui | plus: tot | minus: 1 | modulo: tot %}
+  {% assign isucc = qui | plus: 1 | modulo: tot %}
+<section class="fascia inv cs-suite">
+  <nav class="cs-pn" aria-label="{{ t.altri }}">
+    {% assign pprec = tutti[iprec] %}{% assign psucc = tutti[isucc] %}{% include progetto-pn.html p=pprec verso="prec" etichetta=t.precedente %}
+    {% if isucc != iprec %}{% include progetto-pn.html p=psucc verso="succ" etichetta=t.successivo %}{% endif %}
+  </nav>
+</section>
+{% endif %}

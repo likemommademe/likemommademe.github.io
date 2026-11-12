@@ -31,6 +31,7 @@ window.CMS = {
         { name: 'copertina', label: 'Immagine di copertina', type: 'image', required: true },
         { name: 'sottotitolo', label: 'Descrizione breve', type: 'string', i18n: true, hint: 'Una riga, compare sotto la copertina negli elenchi.' },
         // Il case study: ogni sezione compare sul sito solo se è compilata.
+        { name: 'domanda', label: 'Frase-titolo del progetto', type: 'text', i18n: true, group: 'Case study', hint: 'Una frase grande in cima al racconto, come una domanda o una promessa. Es. "Come si porta un classico nelle cuffie di chi ha vent\'anni?"' },
         { name: 'body', label: 'Brief e obiettivo', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Cosa chiedeva il cliente e qual era l’obiettivo.' },
         { name: 'concept', label: 'Concept', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'L’idea e perché funziona.' },
         { name: 'execution', label: 'Execution', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Come l’hai realizzato. Immagini e video vanno nella Galleria qui sotto.' },

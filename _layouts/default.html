@@ -192,6 +192,14 @@
         var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
         rises.forEach(function (e) { io.observe(e); });
       }
+
+      // Blocchi che salgono e compaiono quando entrano nello schermo (pagina progetto)
+      var riv = document.querySelectorAll('[data-rivela]');
+      if (!('IntersectionObserver' in window) || reduce.matches) { riv.forEach(function (e) { e.classList.add('is-in'); }); }
+      else {
+        var io2 = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io2.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+        riv.forEach(function (e) { io2.observe(e); });
+      }
     })();
   </script>
   <script>
