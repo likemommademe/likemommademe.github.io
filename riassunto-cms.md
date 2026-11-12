@@ -79,7 +79,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Stato del sito**: "Sito aggiornato" oppure "In pubblicazione…". Ogni salvataggio va online in 1–2 minuti.
 
 ### Progetti
-- Campi: titolo, **Pubblicato sul sito** (spento = bozza), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
+- Campi: titolo, **Pubblicato sul sito** (spento = bozza), **Link esterno** e **Testo del pulsante** (pulsante blu nella scheda del progetto, es. la pagina IED), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
 - **Case study**: **Frase-titolo del progetto** (la frase grande in cima al racconto), poi le sezioni fisse **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
 - I progetti nuovi partono come bozza.
 - **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, prototipi Figma (link `figma.com/proto/...`) e file video `.mp4` caricati sul sito, e **titoli di sezione** (titolo + due righe) per dividere la galleria in parti. Ogni foto ha un **titolo** e **una riga** che la spiega: su computer compaiono sopra la foto al passaggio del mouse, su telefono restano sotto, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
@@ -148,7 +148,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=13`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=14`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -254,6 +254,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Via i collage sfalsati: nel mosaico (Works e home) ogni riga ha le due foto alla stessa altezza e il testo sotto; nelle gallerie le foto "Metà" vanno a coppie su righe piene della stessa altezza, senza spazi vuoti |
 | 12/11/2026 | Mosaico ripensato: ritmo fisso "uno grande, due affiancati". Il grande ha la foto 16:9 su 8 colonne e il titolo grande accanto; i due affiancati hanno foto 4:3 e testo sotto. Vale su Works (anche con i filtri) e in home |
 | 12/11/2026 | Home: "Lavori selezionati" in scorrimento orizzontale come la home di bitwip. La sezione resta ferma, i progetti scorrono da destra a sinistra (0,7 px di scroll per ogni pixel di spostamento), il titolo a sinistra scivola via e svanisce, in fondo "Vedi tutti i progetti" e una barra di avanzamento. Ogni card: copertina, cliente, categoria, anno, titolo e la frase-titolo del progetto. Su telefono e con "riduci movimento" si scorre col dito. Testi in `_data/testi.yml` → `home.lavori_*` |
+| 12/11/2026 | SITUATION: è la tesi del Master in User Interface Design and AI (IED Roma). Aggiunti il video YouTube di IED in cima alla galleria e il pulsante "Il progetto sul sito IED" (ied.edu/projects/situation). Nuovo campo del pannello **Link esterno** |
 ---
 
 ## 10. Prossimi passi

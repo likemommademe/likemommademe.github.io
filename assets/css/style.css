@@ -484,6 +484,9 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-facts dd { margin: 0; font-weight: 500; }
 .cs-facts__s { display: block; }
 .cs-vedi { font-size: var(--t-small); }
+.cs-link { height: 52px; padding-left: 22px; font-size: 16px; }
+.cs-link .btn__arrow { width: 38px; height: 38px; }
+.cs-link:hover .btn__arrow svg { transform: rotate(-45deg); }
 .cs-racconto { grid-column: 6 / -1; display: grid; row-gap: clamp(56px, 5.6vw, 96px); }
 .cs-blocco { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 5fr); column-gap: var(--gap); row-gap: 20px; align-items: start; padding-top: clamp(20px, 1.8vw, 28px); border-top: 1px solid var(--line-2); }
 .cs-blocco > .cs-label { position: sticky; top: calc(var(--nav-h) + 40px); }

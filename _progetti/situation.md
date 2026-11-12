@@ -4,13 +4,16 @@ title_en: "SITUATION"
 categoria: "web-design"
 cliente: "ied"
 anno: 2022
+link: "https://www.ied.edu/projects/situation"
+link_testo: "Il progetto sul sito IED"
+link_testo_en: "The project on the IED website"
 copertina: "/assets/uploads/situation-01.webp"
 sottotitolo: "Allena come mai prima d'ora: l'app per gli allenatori di pallavolo"
 sottotitolo_en: "Coach like never before: the app for volleyball coaches"
 domanda: "La pallavolo è uno sport di situazione. Perché non allenarla così?"
 domanda_en: "Volleyball is a game of situations. Why not coach it that way?"
 body_en: |
-  An app for volleyball coaches, from the first idea to the launch campaign: identity, interfaces and advertising, under the line **"Coach like never before"**.
+  My thesis for the **Master in User Interface Design and AI** at IED Rome: an app for volleyball coaches, from the first idea to the launch campaign. Identity, interfaces and advertising, under the line **"Coach like never before"**.
 concept: |
   **La pallavolo è uno sport di situazione**: la variabilità delle situazioni di gioco incide sulla tecnica con cui si gioca e si compete. Le situazioni hanno ricorrenze sequenziali, modelli di comportamento mai ripetitivi ma che tendono a riproporre schemi di approccio simili.
 
@@ -36,6 +39,15 @@ execution_en: |
   - **Gyms**: courtside boards, the stands and interview backdrops;
   - **Outdoor**: banners and roll-ups at gym entrances.
 galleria:
+  - type: "sezione"
+    titolo: "Il video"
+    titolo_en: "The video"
+    testo: "Il progetto di tesi raccontato in video, sul canale YouTube di IED."
+    testo_en: "The thesis project told on video, on IED's YouTube channel."
+  - type: "video"
+    link: "https://www.youtube.com/watch?v=KuMUx-4wGjQ"
+    titolo: "Progetto di tesi SITUATION"
+    titolo_en: "SITUATION thesis project"
   - type: "sezione"
     titolo: "L'identità"
     titolo_en: "The identity"
@@ -169,9 +181,9 @@ galleria:
     didascalia: "«Allena come mai prima d'ora», pronto da portare in palestra."
     didascalia_en: "\"Coach like never before\", ready to take to the gym."
 crediti: |
-  Progetto IED
+  Tesi del Master in User Interface Design and AI, IED Roma
 crediti_en: |
-  IED project
+  Thesis for the Master in User Interface Design and AI, IED Rome
 ordine: 2
 ---
-Un'app pensata per gli allenatori di pallavolo, dalla prima idea alla campagna di lancio: identità, interfacce e pubblicità, con il claim **«Allena come mai prima d'ora»**.
+La mia tesi del **Master in User Interface Design and AI** allo IED di Roma: un'app per gli allenatori di pallavolo, dalla prima idea alla campagna di lancio. Identità, interfacce e pubblicità, con il claim **«Allena come mai prima d'ora»**.

@@ -29,6 +29,8 @@ window.CMS = {
         { name: 'cliente', label: 'Cliente', type: 'relation', collection: 'clienti' },
         { name: 'anno', label: 'Anno', type: 'number' },
         { name: 'copertina', label: 'Immagine di copertina', type: 'image', required: true },
+        { name: 'link', label: 'Link esterno', type: 'string', hint: 'Facoltativo: la pagina del progetto su un altro sito (es. la scuola, il cliente). Compare come pulsante nella scheda del progetto.' },
+        { name: 'link_testo', label: 'Testo del pulsante', type: 'string', i18n: true, hint: 'Es. "Il progetto sul sito IED".' },
         { name: 'sottotitolo', label: 'Descrizione breve', type: 'string', i18n: true, hint: 'Una riga, compare sotto la copertina negli elenchi.' },
         // Il case study: ogni sezione compare sul sito solo se è compilata.
         { name: 'domanda', label: 'Frase-titolo del progetto', type: 'text', i18n: true, group: 'Case study', hint: 'Una frase grande in cima al racconto, come una domanda o una promessa. Es. "Come si porta un classico nelle cuffie di chi ha vent\'anni?"' },
