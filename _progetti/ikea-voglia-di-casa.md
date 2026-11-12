@@ -4,7 +4,7 @@ title_en: "IKEA, Feeling at home"
 categoria: "generative-ai"
 cliente: "ikea"
 anno: 2026
-copertina: "/assets/uploads/ikea-voglia-di-casa-copertina-frakta.webp"
+copertina: "/assets/uploads/ikea-voglia-di-casa-copertina-frakta-2.webp"
 sottotitolo: "Uno spazio di lavoro, un temporary store e nove vetrine"
 sottotitolo_en: "A workspace, a temporary store and nine displays"
 domanda: "Sentirsi a casa al primo sguardo."
