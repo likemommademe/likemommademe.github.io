@@ -263,6 +263,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Cinque progetti nuovi in Generative AI, dalle cartelle di `_materiali`: **The North Face, Tokyo** (campagna immaginata, 2026), **Fight Club, la saponetta** (still life in tanti materiali, 2024), **Architecture** (una scultura in sette materiali, 2024), **Lettering 3D** (Chaos, Topboy con il video tutorial, M Gradient, Come mamma mi ha fatto, Hardnails Art, Monkey) e **Scomodo** a parte. Tutti segnati come progetti personali; testi scritti nel mio tono. Non usata la cartella `Malika Favre` |
 | 12/11/2026 | Nuovo progetto **Juniors** (Generative AI, 2026, serie AI x Creatives): i volti di bambola generati con Firefly e 5 video da 8 secondi (uno in cui si sciolgono), compressi a 1280 px. Esclusa l'immagine di riferimento di un'altra artista |
 | 12/11/2026 | Nuovo progetto **Chrome Nails** (Generative AI, 2026, cartella `Unghie ragazza`): la foto e tre spezzoni dei video Firefly scelti dall'utente (lo zoom sulle unghie, le mani che si allungano, il terzo video intero) |
+| 12/11/2026 | Fight Club: aggiunto il video del processo (Illustrator 3D → Firefly), ritrovato dall'utente in bassa risoluzione (480×848) e migliorato: riduzione del rumore, ingrandimento a 1080 px, nitidezza. Affiancato alla saponetta di partenza nella sezione «Il processo» |
 ---
 
 ## 10. Prossimi passi

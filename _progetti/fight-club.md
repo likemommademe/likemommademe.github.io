@@ -21,19 +21,27 @@ concept_en: |
 execution: |
   Metallo cromato, muffa, pelliccia rosa, vetro con i vermi dentro, gel che cola. Il logo non si muove di un millimetro: è la materia a raccontare la storia.
 
-  Ogni versione è un render generato e rifinito in post, con la luce da still life pubblicitario.
+  Prima costruisco la saponetta in 3D in Illustrator, poi la porto in Firefly e la rifinisco in post, con la luce da still life pubblicitario.
 execution_en: |
   Chrome, mould, pink fur, glass with worms inside, dripping gel. The logo doesn't move a millimetre: the material tells the story.
 
-  Each version is a generated render refined in post, lit like an advertising still life.
+  First I build the soap in 3D in Illustrator, then take it into Firefly and refine it in post, lit like an advertising still life.
 galleria:
   - type: "sezione"
-    titolo: "Il modello"
-    titolo_en: "The model"
-    testo: "Tutto parte da qui: la saponetta rosa disegnata in 3D, pulita, su fondo bianco."
-    testo_en: "It all starts here: the pink soap bar modelled in 3D, clean, on a white backdrop."
+    titolo: "Il processo"
+    titolo_en: "The process"
+    testo: "Tutto parte da un rettangolo rosa in Illustrator: lo trasformo in 3D, ci appoggio la scritta, poi passo a Firefly per cambiargli materia."
+    testo_en: "It all starts from a pink rectangle in Illustrator: I turn it into 3D, lay the lettering on top, then move to Firefly to change its material."
+  - type: "video"
+    link: "/assets/uploads/fight-club-processo.mp4"
+    formato: "meta"
+    titolo: "Dal vettoriale alla saponetta"
+    titolo_en: "From vector to soap bar"
+    didascalia: "Un minuto di processo: il 3D in Illustrator, i materiali, poi le varianti generate con Firefly."
+    didascalia_en: "One minute of process: 3D in Illustrator, the materials, then the variations generated with Firefly."
   - type: "foto"
     immagine: "/assets/uploads/fight-club-00.webp"
+    formato: "meta"
     titolo: "La saponetta"
     titolo_en: "The soap bar"
     didascalia: "Il modello di partenza, prima di cambiare materia."
@@ -180,6 +188,7 @@ galleria:
     didascalia_en: "Pastel pink and glossy as gel polish."
     formato: "meta"
 strumenti:
+  - Illustrator
   - Firefly
   - Photoshop
 crediti: |
