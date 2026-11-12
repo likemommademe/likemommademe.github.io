@@ -4,13 +4,24 @@ title_en: "Animations"
 categoria: "motion-design"
 anno: 2021
 copertina: "/assets/uploads/animazioni-copertina-adidas.webp"
-sottotitolo: "Loghi che prendono vita, icone marine e un sushi che si serve da solo"
-sottotitolo_en: "Logos coming to life, sea icons and a sushi that serves itself"
+sottotitolo: "Lo showreel di questo sito, loghi che prendono vita, icone marine e un sushi che si serve da solo"
+sottotitolo_en: "This site's showreel, logos coming to life, sea icons and a sushi that serves itself"
 domanda: "Un logo fermo è solo metà del lavoro."
 domanda_en: "A still logo is only half the job."
 body_en: |
   A collection of animations from 2021: three famous logos re-animated as an exercise, and two animated illustrations.
 galleria:
+  - type: "sezione"
+    titolo: "Lo showreel di questo portfolio"
+    titolo_en: "This portfolio's showreel"
+    testo: "L'intro che apre il sito: diciassette secondi, cinque mondi e un occhiolino finale. Tutta in codice, niente video."
+    testo_en: "The intro that opens this site: seventeen seconds, five worlds and a final wink. All code, no video."
+  - type: "video"
+    link: "/assets/uploads/animazioni-showreel-portfolio.mp4"
+    titolo: "LIKEMOMMADEME"
+    titolo_en: "LIKEMOMMADEME"
+    didascalia: "Branding, Illustration, Generative AI, Motion e Web Design, fino a MORE THAN MEETS THE EYE. Sul sito la muovi tu, scorrendo."
+    didascalia_en: "Branding, Illustration, Generative AI, Motion and Web Design, all the way to MORE THAN MEETS THE EYE. On the site, you drive it by scrolling."
   - type: "sezione"
     titolo: "Logo animation"
     titolo_en: "Logo animation"
@@ -58,6 +69,7 @@ galleria:
 strumenti:
   - After Effects
   - Procreate
+  - Claude
 crediti: |
   Esercizi di motion design. I marchi appartengono ai rispettivi proprietari.
 crediti_en: |

@@ -159,10 +159,30 @@ layout: default
       function fissa() { if (img.naturalWidth) img.closest('.cs-media').style.setProperty('--ar', img.naturalWidth / img.naturalHeight); }
       if (img.complete) fissa(); else img.addEventListener('load', fissa);
     });
-    // Foto da sola, verticale o quadrata: diventa un blocco editoriale (testo a sinistra, foto a destra)
+    // Foto verticale o quadrata rimasta da sola: non resta mai sola. Si accoppia con la foto che la segue
+    // (se è anche lei da sola) oppure, se non c'è, con un suo dettaglio ingrandito. Le due sono alte uguali.
+    function riga(a, b) {
+      var r = document.createElement('div'); r.className = 'cs-gal__riga'; r.setAttribute('data-riga', '');
+      a.parentNode.insertBefore(r, a); r.appendChild(a); r.appendChild(b);
+      [a, b].forEach(function (f) {
+        var i = f.querySelector('img'); if (!i) return;
+        function ar() { if (i.naturalWidth) f.style.setProperty('--ar', f.classList.contains('cs-media--zoom') ? a.style.getPropertyValue('--ar') || 1 : i.naturalWidth / i.naturalHeight); }
+        if (i.complete) ar(); else i.addEventListener('load', ar);
+      });
+    }
     document.querySelectorAll('.cs-gal > .cs-media:not(.cs-media--video) > img').forEach(function (img) {
-      function segna() { if (img.naturalWidth && img.naturalWidth / img.naturalHeight < 1.45) img.parentNode.classList.add('cs-media--alta'); }
-      if (img.complete) segna(); else img.addEventListener('load', segna);
+      function abbina() {
+        var fig = img.parentNode;
+        if (!img.naturalWidth || img.naturalWidth / img.naturalHeight >= 1.25 || fig.dataset.abbinata || !fig.parentNode.classList.contains('cs-gal')) return;
+        fig.dataset.abbinata = '1'; fig.style.setProperty('--ar', img.naturalWidth / img.naturalHeight);
+        var n = fig.nextElementSibling;
+        if (n && n.classList.contains('cs-media') && !n.classList.contains('cs-media--video') && !n.dataset.abbinata) { n.dataset.abbinata = '1'; riga(fig, n); return; }
+        var z = document.createElement('figure'); z.className = 'cs-media cs-media--zoom'; z.setAttribute('aria-hidden', 'true'); z.dataset.abbinata = '1';
+        z.innerHTML = '<span class="cs-zoom"><img src="' + img.currentSrc + '" alt=""></span>';
+        z.style.setProperty('--ar', img.naturalWidth / img.naturalHeight);
+        riga(fig, z);
+      }
+      if (img.complete) abbina(); else img.addEventListener('load', abbina);
     });
     document.querySelectorAll('[data-riga] video').forEach(function (v) {
       function fissa() { if (v.videoWidth) v.closest('.cs-media').style.setProperty('--ar', v.videoWidth / v.videoHeight); }
