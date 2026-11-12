@@ -314,25 +314,17 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .rea-list > .card { grid-column: span 6; }
 .rea-list[data-vista="mosaico"] > [data-m="1"], .rea-list[data-vista="mosaico"] > [data-m="4"] { grid-column: span 7; }
 .rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"] { grid-column: span 5; }
-.rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"] { margin-top: clamp(0px, 8vw, 140px); }
 .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+1), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n) { grid-column: span 7; }
 .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+2), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+3) { grid-column: span 5; }
 .rea-list[data-vista="griglia"] > .card { grid-column: span 4; margin-top: 0; }
 .rea-list > .card[hidden] { display: none; }
 @media (max-width: 860px) { .rea-list > .card, .rea-list[data-vista] > .card[data-m] { grid-column: 1 / -1 !important; margin-top: 0 !important; } }
-/* Mosaico: la card piccola ha il testo sopra e la foto sotto, e la sua foto finisce alla stessa altezza
-   della foto grande accanto. L'altezza della foto grande (7 colonne, 4:3) si calcola dalla larghezza della griglia. */
+/* Mosaico: nessuno sfalsamento. In ogni riga le foto hanno la stessa altezza (quella di una foto 4:3 larga 7 colonne)
+   e il testo sta sotto, allineato: niente spazi vuoti tra le card. */
 @media (min-width: 861px) {
   .rea-list[data-vista="mosaico"] { container-type: inline-size; --col: calc((100cqi - 11 * var(--gap)) / 12); }
-  :is(.rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"],
-      .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+2), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+3)) {
-    margin-top: 0; align-self: start; display: flex; flex-direction: column; justify-content: flex-end;
-    min-height: calc((7 * var(--col) + 6 * var(--gap)) * .75);
-  }
-  :is(.rea-list[data-vista="mosaico"] > [data-m="2"], .rea-list[data-vista="mosaico"] > [data-m="3"],
-      .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+2), .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(4n+3)) .card-meta {
-    order: -1; padding-top: 0; padding-bottom: 24px;
-  }
+  .rea-list[data-vista="mosaico"] > .card { margin-top: 0 !important; }
+  .rea-list[data-vista="mosaico"] > .card .card-img { aspect-ratio: auto; height: calc((7 * var(--col) + 6 * var(--gap)) * .75); }
 }
 
 ::view-transition-group(*) { animation-duration: .6s; animation-timing-function: var(--ease); }
@@ -465,8 +457,9 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 
 /* 3. La galleria */
 .cs-gal { display: grid; gap: var(--gap); align-items: start; }
-.cs-gal__mur { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
-.cs-gal__col { display: grid; row-gap: var(--gap); align-content: start; }
+.cs-gal__riga { display: flex; gap: var(--gap); align-items: flex-start; }
+.cs-gal__riga > .cs-media { flex: var(--ar, 1) 1 0; min-width: 0; }
+.cs-gal__riga > .cs-media img { width: 100%; height: auto; }
 .cs-media { margin: 0; }
 .cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }
 .cs-media figcaption { padding-top: 10px; }
@@ -536,8 +529,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
   .cs-hero__txt, .cs-hero__carre { grid-column: 1 / -1; }
   .cs-hero__carre { margin-bottom: -64px; }
   .cs-head > * { grid-column: 1 / -1; }
-  .cs-gal__mur { display: flex; flex-direction: column; gap: var(--gap); }
-  .cs-gal__col { display: contents; }
+  .cs-gal__riga { flex-direction: column; }
   .cs-pn { grid-template-columns: minmax(0, 1fr); }
   .cs-pn__a, .cs-pn__a--succ { grid-template-areas: "freccia txt img"; padding: 20px 0; text-align: left; }
   .cs-pn__a--prec { border-right: 0; border-bottom: 1px solid var(--line); }

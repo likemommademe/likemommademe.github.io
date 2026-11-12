@@ -75,7 +75,7 @@ layout: default
 {% comment %}
   Galleria a bande: ogni "Titolo di sezione" del pannello apre una banda a tutta larghezza, con il titolo,
   due righe di testo e le sue immagini. Le bande alternano i colori (normale, opposto, normale...).
-  Le "Metà" consecutive finiscono in un muro a due colonne, alternate (1ª a sinistra, 2ª a destra...).
+  Le "Metà" consecutive vanno a coppie su righe piene, con le due foto alla stessa altezza.
 {% endcomment %}
 {% assign banda = 0 %}
 {% if page.galleria %}
@@ -104,16 +104,23 @@ layout: default
       {% if el.type == 'sezione' %}{% continue %}{% endif %}
     {% endif %}
     {% if el.formato == 'meta' %}
+      {% comment %} Le "Metà" consecutive vanno a coppie su righe piene; se ne resta una sola, va a tutta larghezza. {% endcomment %}
       {% assign fine = i %}
       {% for _k in (i..n) %}{% if fine < n and page.galleria[fine].formato == 'meta' and page.galleria[fine].type != 'sezione' %}{% assign fine = fine | plus: 1 %}{% endif %}{% endfor %}
-    <div class="cs-gal__mur">
-      {% for col in (0..1) %}
-      <div class="cs-gal__col">
-        {% assign j = i | plus: col %}
-        {% for _m in (i..fine) %}{% if j < fine %}{% assign elj = page.galleria[j] %}{% include progetto-media.html el=elj titolo=page.title ordine=j %}{% assign j = j | plus: 2 %}{% endif %}{% endfor %}
-      </div>
+      {% assign j = i %}
+      {% for _m in (i..fine) %}
+        {% if j >= fine %}{% break %}{% endif %}
+        {% assign j2 = j | plus: 1 %}
+        {% assign elj = page.galleria[j] %}
+        {% if j2 < fine %}
+          {% assign elj2 = page.galleria[j2] %}
+    <div class="cs-gal__riga" data-riga>{% include progetto-media.html el=elj titolo=page.title %}{% include progetto-media.html el=elj2 titolo=page.title %}</div>
+          {% assign j = j | plus: 2 %}
+        {% else %}
+          {% include progetto-media.html el=elj titolo=page.title %}
+          {% assign j = j | plus: 1 %}
+        {% endif %}
       {% endfor %}
-    </div>
       {% assign i = fine %}
     {% else %}
       {% include progetto-media.html el=el titolo=page.title %}
@@ -143,3 +150,13 @@ layout: default
   </nav>
 </section>
 {% endif %}
+
+<script>
+  // Righe di due foto: ogni foto prende una larghezza proporzionale alla sua forma, così le due sono alte uguali.
+  (function () {
+    document.querySelectorAll('[data-riga] img').forEach(function (img) {
+      function fissa() { if (img.naturalWidth) img.closest('.cs-media').style.setProperty('--ar', img.naturalWidth / img.naturalHeight); }
+      if (img.complete) fissa(); else img.addEventListener('load', fissa);
+    });
+  })();
+</script>
