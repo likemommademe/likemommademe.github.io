@@ -542,8 +542,10 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-gal__sez { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; margin-bottom: clamp(36px, 4.4vw, 72px); padding-bottom: clamp(20px, 2vw, 32px); border-bottom: 1px solid var(--line); }
 .cs-gal__sez-t { grid-column: 1 / span 6; font-size: var(--t-h2); line-height: 1; letter-spacing: -.035em; }
 .cs-gal__sez-p { grid-column: 8 / -1; margin: 0; max-width: 46ch; color: var(--muted); font-size: var(--t-lead); line-height: 1.38; }
-.video--file { aspect-ratio: auto; background: #000; }
-.video--file video { display: block; width: 100%; height: auto; }
+.video--file { aspect-ratio: auto; background: none; display: flex; justify-content: center; }
+.video--file video { display: block; width: 100%; height: auto; border-radius: var(--r); }
+/* un video da solo (non in coppia) non supera l'altezza dello schermo: i quadrati restano leggibili senza scorrere */
+.cs-gal > .cs-media .video--file video { width: auto; max-width: 100%; max-height: 82vh; }
 @media (max-width: 760px) { .cs-gal__sez-t, .cs-gal__sez-p { grid-column: 1 / -1; } }
 
 /* Su computer (mouse) titolo e riga della foto compaiono sopra l'immagine al passaggio; su telefono restano sotto */

@@ -29,6 +29,17 @@ execution_en: |
   From the brief analysis to the narrative structure and voice over, then the styleframes and the storyboard: sixteen flat-colour frames that follow the voice scene by scene, all the way to the final animation.
 galleria:
   - type: "sezione"
+    titolo: "Lo spot"
+    titolo_en: "The spot"
+    testo: "Trenta secondi per portare la Divina Commedia nell'app: dal primo verso al logo finale."
+    testo_en: "Thirty seconds to bring the Divine Comedy into the app: from the first line to the closing logo."
+  - type: "video"
+    link: "/assets/uploads/audible-spot.mp4"
+    titolo: "Lo spot Audible"
+    titolo_en: "The Audible spot"
+    didascalia: "Il video finale, 30 secondi in 1920 × 1080. Alza il volume per sentire il voice over."
+    didascalia_en: "The final video, 30 seconds at 1920 × 1080. Turn the sound up to hear the voice over."
+  - type: "sezione"
     titolo: "Gli styleframe"
     titolo_en: "Styleframes"
     testo: "I quadri chiave dello spot: tinte piatte, i colori di Audible e un'idea per ogni scena."

@@ -16,8 +16,9 @@
   {% assign figma = true %}
 {% endif %}
 {% if file %}
+{% assign poster = url | replace: ".mp4", ".webp" | replace: ".webm", ".webp" | replace: ".mov", ".webp" %}
 <div class="video video--file">
-  <video src="{{ url | relative_url }}" controls playsinline preload="metadata"></video>
+  <video src="{{ url | relative_url }}" poster="{{ poster | relative_url }}" controls muted loop playsinline preload="metadata" data-auto></video>
 </div>
 {% elsif src %}
 <div class="video{% if figma %} video--figma{% endif %}">
