@@ -399,7 +399,7 @@
   // MORE THAN meets THE EYE: ogni pezzo parte sparso e ruotato (valori fissi) e si compone; la O di MORE è un occhio
   const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/><circle class="iride" cx="50" cy="45" r="22" fill="#FF3D8B"/><circle class="pupilla" cx="50" cy="45" r="10" fill="#121414"/></g></svg></span>';
   const fraseEl = E('frase');
-  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', 'T', 'H', 'E', ' ', 'E', 'Y', 'E']
+  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', '7', 'H', 'E', ' ', 'E', 'Y', 'E']
     .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
   const pezzi = [...fraseEl.children].map((n, i) => {
     const r = Math.abs(Math.sin(i * 12.9898 + 1.7) * 43758.5453) % 1, r2 = Math.abs(Math.sin(i * 78.233 + .3) * 9999) % 1;

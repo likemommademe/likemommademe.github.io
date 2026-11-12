@@ -240,6 +240,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Parola speciale dei titoli usata come Baila su bitwip: una parola (al massimo due) dentro un titolo in Cabinet 500, scritta com'è, al 94% del titolo, spaziatura 0, interlinea 0; titoli con spaziatura -0,035em e titoli di sezione larghi al massimo 14 caratteri. Nel pannello si segna con `<em>parola</em>` |
 | 12/11/2026 | Motto: MEETS in TAN Nimbus, stampatello e fucsia come l'iride dell'occhio (0,72em: M e T alte esattamente come le maiuscole di Cabinet, misurate), nello showreel e nella prima sezione |
 | 12/11/2026 | Motto: tolti il compasso (A) e la riga a T (T). Restano l'occhio al posto della O e MEETS in TAN Nimbus fucsia |
+| 12/11/2026 | Motto: un 7 al posto della T di THE ("7HE"), nero, che si nota al secondo sguardo. Per gli screen reader il titolo si legge "More than meets the eye" (`home.motto_leggibile` in `_data/testi.yml`) |
 
 ---
 

@@ -68,7 +68,7 @@ reel: true
 
 {% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="occhio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/><g class="colore"><circle cx="50" cy="45" r="22" fill="#FF3D8B"/><circle cx="50" cy="45" r="10" fill="#121414"/></g></g></svg></span>{% endcapture %}
 <section class="fascia inv apertura" id="apertura">
-  <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
+  <h2 class="motto rise" aria-label="{{ t.motto_leggibile }}"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
   <div class="apertura__grid">
     <div class="apertura__testo">
       <p class="apertura__lead">{{ home.intro }}</p>

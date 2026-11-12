@@ -2,8 +2,10 @@
 # Le frasi dei progetti, della home e delle categorie restano nel pannello.
 
 home:
-  # [occhio] = la O di MORE disegnata come un occhio che fa l'occhiolino
-  motto: "M[occhio]RE THAN <em>meets</em> THE EYE"
+  # [occhio] = la O di MORE disegnata come un occhio che fa l'occhiolino; il 7 sta al posto della T di THE
+  # (si nota solo al secondo sguardo). motto_leggibile è il testo letto da chi usa uno screen reader.
+  motto_leggibile: More than meets the eye
+  motto: "M[occhio]RE THAN <em>meets</em> 7HE EYE"
   mondi_titolo: "Cosa <em>faccio</em>"
   mondi_progetti_uno: progetto
   mondi_progetti_piu: progetti
