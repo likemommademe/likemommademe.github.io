@@ -67,10 +67,8 @@ reel: true
 </script>
 
 {% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="occhio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/><g class="colore"><circle cx="50" cy="45" r="22" fill="#FF3D8B"/><circle cx="50" cy="45" r="10" fill="#121414"/></g></g></svg></span>{% endcapture %}
-{% capture compasso %}<span class="compasso" role="img" aria-label="A"><svg viewBox="0 0 72 72" aria-hidden="true"><path class="compasso__arco" d="M18 47Q36 39 54 47" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><g class="compasso__gamba compasso__gamba-s"><path d="M36 10L9 64" fill="none" stroke="currentColor" stroke-width="19"/><path d="M9 64L4.6 73.6" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g><g class="compasso__gamba compasso__gamba-d"><path d="M36 10L63 64" fill="none" stroke="currentColor" stroke-width="19"/><path class="colore" d="M71.6 60L54.4 68L68 75.5Z" fill="#FF3D8B"/></g><circle cx="36" cy="10" r="11" fill="currentColor"/><rect x="31" y="-8" width="10" height="10" rx="2" fill="currentColor"/></svg></span>{% endcapture %}
-{% capture squadra %}<span class="squadra" role="img" aria-label="T"><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M3 0H61Q64 0 64 3V17Q64 20 61 20H3Q0 20 0 17V3Q0 0 3 0ZM8 6.8A3.2 3.2 0 1 0 8 13.2A3.2 3.2 0 1 0 8 6.8Z" fill="currentColor" fill-rule="evenodd"/><path class="squadra__lama" d="M22 20H42V72H22ZM35.5 28h6.5v3h-6.5ZM38 34h4v3h-4ZM35.5 40h6.5v3h-6.5ZM38 46h4v3h-4ZM35.5 52h6.5v3h-6.5ZM38 58h4v3h-4ZM35.5 64h6.5v3h-6.5Z" fill="currentColor" fill-rule="evenodd"/><g class="colore" fill="#FF3D8B"><circle cx="26.5" cy="14" r="2.8"/><circle cx="37.5" cy="14" r="2.8"/></g></svg></span>{% endcapture %}
 <section class="fascia inv apertura" id="apertura">
-  <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio | replace: '[compasso]', compasso | replace: '[squadra]', squadra }}</span></h2>
+  <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
   <div class="apertura__grid">
     <div class="apertura__testo">
       <p class="apertura__lead">{{ home.intro }}</p>

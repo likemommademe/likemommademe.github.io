@@ -188,10 +188,9 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 @media (min-width: 720px) { .motto { white-space: nowrap; font-size: clamp(2.5rem, 6.4vw, 8rem); } }
 .motto em { font-size: .72em; text-transform: uppercase; color: #FF3D8B; }   /* MEETS: stampatello e fucsia come l'iride, alto come le maiuscole di Cabinet */
 .motto--preso > span { transition: none !important; }   /* arriva dallo showreel: niente maschera */
-/* nella frase tre lettere sono disegni con la stessa forma: O = occhio, A = compasso, T = riga a T (alti come le maiuscole) */
-.occhio, .compasso, .squadra { display: inline-block; height: .66em; margin: 0 .03em; vertical-align: 0; }
-.occhio { height: .69em; width: .767em; vertical-align: -.015em; } .compasso { width: .66em; } .squadra { width: .587em; }
-.occhio svg, .compasso svg, .squadra svg { display: block; width: 100%; height: 100%; overflow: visible; }
+/* nella frase la O è un occhio, alto come le maiuscole (sborda appena, come una O) */
+.occhio { display: inline-block; height: .69em; width: .767em; margin: 0 .03em; vertical-align: -.015em; }
+.occhio svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .occhio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 .motto.is-in .occhio__palpebra { animation: occhiolino .5s 1.1s var(--ease) both; }
 .motto:hover .occhio__palpebra { animation: occhiolino-2 .45s var(--ease); }

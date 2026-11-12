@@ -239,6 +239,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Motto: al posto della S e della E, due disegni che hanno proprio la forma della lettera: la A di THAN è un compasso, la T di THE una riga a T (segnaposto `[compasso]`, `[squadra]`). Showreel: la finestra di Web Design è di nuovo centrata. Parola speciale dei titoli: **TAN Nimbus**, caricato solo dal computer su cui è installato (`local()` in `style.css`, nessun file pubblicato: la licenza per ora è solo personale); chi non ce l'ha vede Yink. Con la licenza web basterà aggiungere il file woff2 nella stessa `@font-face` |
 | 12/11/2026 | Parola speciale dei titoli usata come Baila su bitwip: una parola (al massimo due) dentro un titolo in Cabinet 500, scritta com'è, al 94% del titolo, spaziatura 0, interlinea 0; titoli con spaziatura -0,035em e titoli di sezione larghi al massimo 14 caratteri. Nel pannello si segna con `<em>parola</em>` |
 | 12/11/2026 | Motto: MEETS in TAN Nimbus, stampatello e fucsia come l'iride dell'occhio (0,72em: M e T alte esattamente come le maiuscole di Cabinet, misurate), nello showreel e nella prima sezione |
+| 12/11/2026 | Motto: tolti il compasso (A) e la riga a T (T). Restano l'occhio al posto della O e MEETS in TAN Nimbus fucsia |
 
 ---
 
