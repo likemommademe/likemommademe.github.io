@@ -28,6 +28,17 @@ execution_en: |
   Each version is a generated render refined in post, lit like an advertising still life.
 galleria:
   - type: "sezione"
+    titolo: "Il modello"
+    titolo_en: "The model"
+    testo: "Tutto parte da qui: la saponetta rosa disegnata in 3D, pulita, su fondo bianco."
+    testo_en: "It all starts here: the pink soap bar modelled in 3D, clean, on a white backdrop."
+  - type: "foto"
+    immagine: "/assets/uploads/fight-club-00.webp"
+    titolo: "La saponetta"
+    titolo_en: "The soap bar"
+    didascalia: "Il modello di partenza, prima di cambiare materia."
+    didascalia_en: "The starting model, before the material changes."
+  - type: "sezione"
     titolo: "La classica"
     titolo_en: "The classic"
     testo: "La saponetta com'è nel film, immersa nella schiuma."
