@@ -19,6 +19,7 @@ galleria:
     immagine: "/assets/uploads/patch-02.webp"
   - type: "foto"
     immagine: "/assets/uploads/patch-01.webp"
+    formato: "meta"
 strumenti:
   - Illustrator
   - Procreate

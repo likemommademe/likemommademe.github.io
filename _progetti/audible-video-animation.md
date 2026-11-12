@@ -1,7 +1,6 @@
 ---
 title: "Audible, lo spot"
 title_en: "Audible, the spot"
-published: false
 categoria: "motion-design"
 cliente: "ied"
 anno: 2021

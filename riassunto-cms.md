@@ -138,7 +138,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (online: `audible-il-classico-si-unisce-al-futuro`, `blue-origin`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza: `audible-video-animation` e `situation`, che aspettano video e materiale, e gli esempi `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
 | `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
@@ -244,6 +244,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 | 12/11/2026 | Progetti da Behance (behance.net/calfa639164) nel pannello, **in bozza**: Audible (Branding), Audible video animation (Motion Design), Blue Origin (Web Design), Sagra dei Stringozzi (Branding), SITUATION (Web Design), con le copertine originali in WebP. Nuovo cliente **IED** per i progetti di scuola (Audible e Blue Origin non sono clienti veri). Escluso il progetto PORTFOLIO. Behance blocca la lettura automatica delle pagine dei progetti: foto interne e testi vanno ancora aggiunti |
 | 12/11/2026 | Contenuti veri da Behance (pagine salvate in `_materiali/`): foto alla massima risoluzione, ritagliate senza titoli e grafiche delle presentazioni, in WebP; testi trascritti dalle slide e riscritti nelle sezioni del case study, in italiano e inglese. Online: Audible, Blue Origin (con il prototipo Figma), Sagra dei Stringozzi (con i video Vimeo), e dal vecchio PORTFOLIO solo Accademia dei Romani, Joker, Model sheet, Patch e Omaggio a Malika Favre (niente About, Social e branding personale). In bozza: Audible spot (manca il video), SITUATION (manca la pagina salvata), animazioni del PORTFOLIO (mancano i video). Esempi in bozza, home con i progetti veri. Nuova pagina progetto sul modello di bitwip, nuovo campo **Frase-titolo del progetto**, prototipi Figma incorporabili nella galleria |
+| 12/11/2026 | Aggiunti **IKEA, Voglia di casa** (Generative AI: Workspace, BeYOU, KOMPISHÄNG, Visual Display, dalla cartella `~/Desktop/Claude/IKEA Voglia di casa`; tolti tutti i riferimenti alla candidatura, la parte "Chi sono" e le foto personali) e **SITUATION** (Web Design). Audible spot online anche senza il video. Corrette le foto con parti trasparenti (righe e bande nere: la conversione ora le appoggia su bianco) e tolta da Blue Origin un'immagine troppo piccola |
 ---
 
 ## 10. Prossimi passi
@@ -252,7 +253,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 2. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
 4. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
-5. **Contenuti che mancano**: i video delle animazioni del PORTFOLIO, lo spot Audible e il video della Sagra caricato su Behance (vanno dati come file o link YouTube/Vimeo); la pagina Behance di SITUATION; gli anni di Accademia dei Romani, Joker, Model sheet e Patch / Malika Favre. Poi si possono eliminare gli esempi (Materia Viva, Progetto di esempio, Cliente di esempio, immagini SVG di prova).
+5. **Contenuti che mancano**: i video delle animazioni del PORTFOLIO, lo spot Audible e il video della Sagra caricato su Behance (vanno dati come file o link YouTube/Vimeo); foto di Blue Origin a risoluzione più alta (su Behance arrivano al massimo a 1920 px); gli anni di Accademia dei Romani, Joker, Model sheet e Patch / Malika Favre. Poi si possono eliminare gli esempi (Materia Viva, Progetto di esempio, Cliente di esempio, immagini SVG di prova).
 6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
 7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 
