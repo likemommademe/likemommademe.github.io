@@ -138,7 +138,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Contenuti (modificati dal pannello)
 | File | Contenuto |
 |---|---|
-| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `dcd-studi-estetici`, `etica`, `beyou`, `il-mio-marchio`, `animazioni`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
+| `_progetti/*.md` | Un file per progetto (online: `ikea-voglia-di-casa`, `dcd-studi-estetici`, `etica`, `north-face`, `fight-club`, `architecture`, `lettering-3d`, `scomodo`, `beyou`, `il-mio-marchio`, `animazioni`, `audible-il-classico-si-unisce-al-futuro`, `audible-video-animation`, `blue-origin`, `situation`, `sagra-dei-stringozzi`, `accademia-dei-romani`, `joker`, `model-sheet`, `patch`, `malika-favre`; in bozza gli esempi `materia-viva`, `progetto-di-esempio`) |
 | `_categorie/*.md` | Un file per categoria: `illustration`, `motion-design`, `generative-ai`, `branding`, `web-design` |
 | `_clienti/*.md` | Un file per cliente (per ora: `ikea`, `cliente-di-esempio`, `ied`, `accademia-dei-romani`, `dcd-studi-estetici`, `etica`) |
 | `_data/home.yml` | Frase della home e progetti in home (in ordine) |
@@ -260,6 +260,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Nuovo progetto **Etic.a Labels** (Web Design, 2022, dentro Pixell con il team grafico): wireframe e design del sito poi passato al reparto IT, schermate del sito online (eticasrl.net, senza banner dei cookie), brand manual e logo animato (`_materiali/etica`), stand per Cosmopack, Ipack Ima e Marca, pannelli, social, firme mail, pieghevole, cartellina, campionario e coordinato (dalla chiavetta USB, cartella PIXELL/PROGETTI/ETICA, solo i file miei). Pulsante "Vai al sito di Etic.a" |
 | 12/11/2026 | Etic.a: aggiunti spunti e foto dalla pagina Pixell (pixell.it/progetti/etic-a): restyling del logo e payoff «Dress your brand», valori, virtual tour; nuova sezione «Shooting e video» con le foto still life, il backstage, il feed social e il video corporate «a ritroso» (crediti: Pixell) |
 | 12/11/2026 | SITUATION: il video originale (`_Main_1.mp4`, compresso da 32 a 4,6 MB) al posto di quello YouTube. Animazioni: aggiunte le Icone mare (`__Icone Mare.mp4`) accanto al sushi, nella sezione Illustrazioni animate |
+| 12/11/2026 | Cinque progetti nuovi in Generative AI, dalle cartelle di `_materiali`: **The North Face, Tokyo** (campagna immaginata, 2026), **Fight Club, la saponetta** (still life in tanti materiali, 2024), **Architecture** (una scultura in sette materiali, 2024), **Lettering 3D** (Chaos, Topboy con il video tutorial, M Gradient, Come mamma mi ha fatto, Hardnails Art, Monkey) e **Scomodo** a parte. Tutti segnati come progetti personali; testi scritti nel mio tono. Non usate le cartelle `AI X CREATIVES` e `Malika Favre` |
 ---
 
 ## 10. Prossimi passi
