@@ -148,6 +148,23 @@ reel: true
   </div>
 </section>
 
+{% comment %} Recensioni: le frasi vere dei clienti, dal campo Recensione di ogni progetto. Se non ce n'è nessuna, la sezione non c'è. {% endcomment %}
+{% assign con_rec = site.progetti | where_exp: "p", "p.recensione" %}
+{% if con_rec.size > 0 %}
+<section class="fascia rec-home" aria-labelledby="t-rec">
+  <p class="cs-label cs-head__k">{{ t.rec_k }}</p>
+  <h2 class="rec-home__t rise" id="t-rec"><span>{{ t.rec_titolo }}</span></h2>
+  <div class="rec-home__lista">
+    {% for p in con_rec %}
+    <figure class="rec-home__item" data-rivela>
+      <blockquote>«{{ p.recensione }}»</blockquote>
+      <figcaption><strong>{{ p.recensione_autore }}</strong>{% if p.recensione_ruolo %}<span>{{ p.recensione_ruolo }}</span>{% endif %}<a class="lnk" href="{{ p.url | relative_url }}">{{ p.title }}</a></figcaption>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
 <script>
   // Scorrimento orizzontale dei lavori (come bitwip): per ogni pixel di scroll in giù la fila va a sinistra di 1/0,7 px;
   // l'altezza della sezione è calcolata in modo che l'ultima card arrivi in fondo proprio quando la sezione finisce.

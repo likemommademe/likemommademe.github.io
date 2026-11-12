@@ -164,6 +164,37 @@ html.js .rise.is-in > span { transform: none; }
   .tema { width: 36px; height: 36px; }
 }
 
+/* ---------- Sottomenu di Works (come bitwip): pannello scuro sotto la voce, frase a sinistra, categorie a destra ---------- */
+.nav__item { position: relative; display: flex; align-items: center; gap: 4px; }
+.nav__sub-btn { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; transition: transform .4s var(--ease); }
+.nav__item:is(:hover, :focus-within, .is-open) .nav__sub-btn { transform: rotate(180deg); }
+.sub { position: absolute; left: 50%; top: 100%; z-index: 70; width: min(720px, 92vw); padding-top: 26px; pointer-events: none; opacity: 0; transform: translate(-50%, 10px); transition: opacity .25s var(--ease), transform .45s var(--ease); }
+.nav__item:is(:hover, :focus-within, .is-open) .sub { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.sub__segno { position: absolute; left: 50%; top: 14px; width: 12px; height: 12px; border-radius: 3px; background: var(--accent-3); transform: translateX(-50%) rotate(45deg); z-index: 1; }
+.sub__in { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 34px 32px 30px; border-radius: 28px; background: #121414; color: #F5F5F2; border: 1px solid rgba(245, 245, 242, .12); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45); --line: rgba(245, 245, 242, .14); }
+.sub__aside { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: 6px 30px 2px 0; }
+.sub__lead { margin: 0; max-width: 12ch; font-size: clamp(1.6rem, 1.2rem + .9vw, 2.125rem); font-weight: 500; line-height: 1.04; letter-spacing: -.03em; text-wrap: balance; }
+.sub__punto { color: var(--accent-3); }
+.sub__all { align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; padding-bottom: 4px; border-bottom: 1.5px solid currentColor; font-size: .9375rem; font-weight: 500; }
+.sub__all svg { transition: transform .5s var(--ease); }
+.sub__all:hover svg { transform: translateX(4px); }
+.sub__main { min-width: 0; padding-left: 30px; border-left: 1px solid var(--line); }
+.sub__k { margin: 0; padding: 6px 0 10px; font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(245, 245, 242, .6); }
+.sub__list { margin: 0; padding: 0; list-style: none; }
+.sub__list a { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; font-size: 1.125rem; font-weight: 500; }
+.sub__list li + li a { border-top: 1px solid var(--line); }
+.nav__links .sub__list a::after { display: none; }
+.sub__t { position: relative; }
+.sub__t::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1.5px; background: var(--accent-3); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
+.sub__list a:is(:hover, :focus-visible, [aria-current="page"]) .sub__t::after { transform: scaleX(1); }
+.sub__go { flex: none; opacity: 0; transform: translateX(-8px); transition: opacity .3s, transform .6s var(--ease); }
+.sub__list a:is(:hover, :focus-visible) .sub__go { opacity: 1; transform: none; }
+.nav__links .sub a { padding-top: 12px; padding-bottom: 12px; }
+.nav__links .sub .sub__all { padding: 0 0 4px; }
+.nav__links .sub a::after { display: none; }
+@media (max-width: 720px) { .nav__sub-btn, .sub { display: none; } }
+@media (prefers-reduced-motion: reduce) { .sub, .nav__sub-btn { transition: none; } }
+
 /* ---------- Passaggio tra le pagine (View Transitions) ---------- */
 @view-transition { navigation: auto; }
 ::view-transition-old(root) { animation: vt-esce .55s var(--ease-io) both; transform-origin: 50% 30%; }
@@ -514,7 +545,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }
 .cs-media figcaption { padding-top: 10px; }
 /* Una foto da sola non supera mai l'altezza dello schermo */
-.cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 80vh; margin: 0 auto; }
+.cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 72vh; margin: 0 auto; }
 /* Il dettaglio ingrandito che accompagna una foto verticale rimasta da sola */
 .cs-media--zoom .cs-zoom { display: block; overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
 .cs-media--zoom .cs-zoom img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.9); transform-origin: 50% 40%; border-radius: 0; }
@@ -554,7 +585,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .video--file { aspect-ratio: auto; background: none; display: flex; justify-content: center; }
 .video--file video { display: block; width: 100%; height: auto; border-radius: var(--r); }
 /* un video da solo (non in coppia) non supera l'altezza dello schermo: i quadrati restano leggibili senza scorrere */
-.cs-gal > .cs-media .video--file video { width: auto; max-width: 100%; max-height: 82vh; }
+.cs-gal > .cs-media .video--file video { width: auto; max-width: 100%; max-height: 68vh; }
 @media (max-width: 760px) { .cs-gal__sez-t, .cs-gal__sez-p { grid-column: 1 / -1; } }
 
 /* Su computer (mouse) titolo e riga della foto compaiono sopra l'immagine al passaggio; su telefono restano sotto */
@@ -572,16 +603,50 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 }
 @media (prefers-reduced-motion: reduce) { .cs-media .cs-cap { transition: none; transform: none !important; } }
 
-/* Foto e video dei progetti: entrano con una tendina che si apre dal basso mentre l'immagine si assesta (da 1.18 a 1),
-   la seconda di una coppia arriva un attimo dopo; scorrendo, l'immagine si sposta appena dentro la cornice (parallasse). */
-html.js .cs-media[data-rivela] { opacity: 1; transform: none; clip-path: inset(100% 0 0 0 round var(--r)); transition: clip-path 1.1s var(--ease); }
-html.js .cs-media[data-rivela].is-in { clip-path: inset(0 0 0 0 round var(--r)); }
-html.js .cs-gal__riga > .cs-media[data-rivela]:nth-child(2) { transition-delay: .14s; }
-@media (min-width: 761px) {
-  html.js .cs-media[data-rivela] > img, html.js .cs-media[data-rivela] .video--file video { transform: translate3d(0, var(--py, 0px), 0) scale(1.18); transition: transform 1.6s var(--ease); will-change: transform; }
-  html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in .video--file video { transform: translate3d(0, var(--py, 0px), 0) scale(1.06); }
-  .cs-media { overflow: hidden; border-radius: var(--r); }
-}
+/* Foto e video dei progetti: nessuno spostamento. Quando arrivano sullo schermo fanno solo uno zoom out (da 1,15 a 1)
+   dentro la loro cornice. La cornice resta ferma. */
+html.js .cs-media[data-rivela] { opacity: 1; transform: none; transition: none; }
+.cs-media { overflow: hidden; border-radius: var(--r); }
+html.js .cs-media[data-rivela] > img, html.js .cs-media[data-rivela] .video--file video, html.js .cs-media[data-rivela] .cs-zoom { transform: scale(1.15); transition: transform 1.6s var(--ease); }
+html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in .video--file video, html.js .cs-media[data-rivela].is-in .cs-zoom { transform: none; }
+.cs-media .video--file, .cs-media--zoom .cs-zoom { overflow: hidden; }
+
+/* ---------- Dietro le quinte (in fondo a ogni progetto), come "What you don't see" di bitwip ---------- */
+.cs-dq .cs-head__k { margin-bottom: clamp(28px, 3vw, 48px); }
+.cs-dq__t { font-size: var(--t-h2); max-width: 16ch; }
+.cs-dq__p { max-width: 60ch; margin: clamp(20px, 2vw, 32px) 0 clamp(40px, 4.4vw, 72px); color: var(--muted); font-size: var(--t-lead); line-height: 1.4; }
+.cs-dq__strumenti { margin: 0 0 clamp(48px, 5vw, 88px); }
+.cs-dq__strumenti ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 32px var(--gap); margin: 0; padding: 0; list-style: none; }
+.cs-dq__strumenti li { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.cs-dq__anello { position: relative; width: 64px; aspect-ratio: 1; }
+.cs-dq__anello svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
+.cs-dq__anello circle { fill: none; stroke-width: 3; }
+.cs-dq__pista { stroke: var(--line); }
+.cs-dq__arco { stroke: var(--accent-3); stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; transition: stroke-dashoffset 1.2s var(--ease) calc(var(--i, 0) * 90ms); }
+.cs-dq__strumenti.is-on .cs-dq__arco, html:not(.js) .cs-dq__arco { stroke-dashoffset: 0; }
+.cs-dq__anello b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 1rem; font-weight: 700; letter-spacing: -.02em; }
+.cs-dq__nome { justify-content: center; font-size: 11px; color: var(--muted); }
+.cs-dq__numeri { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 28px var(--gap); margin: 0; }
+.cs-dq__numeri > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 14px; padding-top: 18px; border-top: 1px solid var(--line-2); }
+.cs-dq__numeri dd { margin: 0; font-weight: 300; font-size: clamp(3rem, 2rem + 3vw, 5.5rem); line-height: .9; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+.cs-dq__numeri dt { color: var(--muted); }
+.cs-rec { margin: clamp(56px, 6vw, 104px) 0 0; padding-top: clamp(28px, 3vw, 44px); border-top: 1px solid var(--line-2); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+.cs-rec__k { grid-column: 1 / span 3; color: var(--muted); align-self: start; }
+.cs-rec__q { grid-column: 4 / -1; margin: 0; font-size: var(--t-h3); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; text-wrap: pretty; }
+.cs-rec__chi { grid-column: 4 / -1; display: grid; gap: 2px; margin-top: 24px; }
+.cs-rec__chi span { color: var(--muted); font-size: var(--t-small); }
+@media (max-width: 760px) { .cs-rec__k, .cs-rec__q, .cs-rec__chi { grid-column: 1 / -1; } .cs-rec__q { margin-top: 16px; } }
+@media (prefers-reduced-motion: reduce) { .cs-dq__arco { transition: none; stroke-dashoffset: 0; } }
+
+/* Recensioni in home */
+.rec-home .cs-head__k { margin-bottom: clamp(28px, 3vw, 48px); }
+.rec-home__t { font-size: var(--t-h2); margin-bottom: clamp(40px, 4.4vw, 72px); }
+.rec-home__lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: clamp(40px, 4vw, 64px) var(--gap); }
+.rec-home__item { margin: 0; padding-top: 24px; border-top: 1px solid var(--line-2); }
+.rec-home__item blockquote { margin: 0; font-size: var(--t-h3); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; }
+.rec-home__item figcaption { display: grid; gap: 4px; justify-items: start; margin-top: 22px; }
+.rec-home__item figcaption span { color: var(--muted); font-size: var(--t-small); }
+.rec-home__item .lnk { margin-top: 8px; font-size: var(--t-small); }
 
 /* Blocchi che salgono quando entrano nello schermo */
 html.js [data-rivela] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform 1s var(--ease); }
@@ -609,8 +674,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html.js [data-rivela] { opacity: 1; transform: none; transition: none; }
-  html.js .cs-media[data-rivela] { clip-path: none; }
-  html.js .cs-media[data-rivela] :is(img, video) { transform: none !important; transition: none; }
+  html.js .cs-media[data-rivela] :is(img, video), html.js .cs-media[data-rivela] .cs-zoom { transform: none !important; transition: none; }
   .cs-head__k::before { animation: none; }
 }
 

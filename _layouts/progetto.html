@@ -131,6 +131,11 @@ layout: default
   {% if aperta %}</div></section>{% endif %}
 {% endif %}
 
+{% comment %} Dietro le quinte: colore opposto all'ultima banda della galleria {% endcomment %}
+{% assign pari_dq = banda | modulo: 2 %}
+{% if pari_dq == 1 %}{% include progetto-dietro.html inv=true %}{% else %}{% include progetto-dietro.html %}{% endif %}
+{% assign banda = banda | plus: 1 %}
+
 {% comment %} Precedente e successivo: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; si gira in tondo. {% endcomment %}
 {% assign tutti = "" | split: "" %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
@@ -169,44 +174,47 @@ layout: default
       r.querySelectorAll('img').forEach(function (i) { if (i.complete) formaRiga(r); else i.addEventListener('load', function () { formaRiga(r); }); });
       r.querySelectorAll('video').forEach(function (v) { if (v.readyState >= 1) formaRiga(r); else v.addEventListener('loadedmetadata', function () { formaRiga(r); }); });
     });
-    // Foto verticale o quadrata rimasta da sola: non resta mai sola. Si accoppia con la foto che la segue
-    // (se è anche lei da sola) oppure, se non c'è, con un suo dettaglio ingrandito. Le due sono alte uguali.
+    // Nessuna foto resta da sola (tranne le strisce molto larghe, già basse): quando tutte sono caricate,
+    // ogni foto singola si accoppia con la foto singola che la segue, o se non c'è con un suo dettaglio ingrandito.
+    var LARGA = 2;
     function riga(a, b) {
       var r = document.createElement('div'); r.className = 'cs-gal__riga'; r.setAttribute('data-riga', '');
-      a.parentNode.insertBefore(r, a); r.appendChild(a); r.appendChild(b);
-      setTimeout(function () { formaRiga(r); }, 0); [a, b].forEach(function (f) { var i = f.querySelector('img'); if (i && !i.complete) i.addEventListener('load', function () { formaRiga(r); }); });
-      [a, b].forEach(function (f) {
-        var i = f.querySelector('img'); if (!i) return;
-        function ar() { if (i.naturalWidth) f.style.setProperty('--ar', f.classList.contains('cs-media--zoom') ? a.style.getPropertyValue('--ar') || 1 : i.naturalWidth / i.naturalHeight); }
-        if (i.complete) ar(); else i.addEventListener('load', ar);
-      });
+      a.parentNode.insertBefore(r, a); r.appendChild(a); r.appendChild(b); formaRiga(r);
+    }
+    function rapp(f) { var i = f && f.querySelector(':scope > img'); return i && i.naturalWidth ? i.naturalWidth / i.naturalHeight : 0; }
+    function dettaglio(fig) {
+      var img = fig.querySelector('img');
+      var z = document.createElement('figure'); z.className = 'cs-media cs-media--zoom is-in'; z.setAttribute('aria-hidden', 'true');
+      if (fig.hasAttribute('data-rivela')) { z.setAttribute('data-rivela', ''); z.className = 'cs-media cs-media--zoom' + (fig.classList.contains('is-in') ? ' is-in' : ''); }
+      z.innerHTML = '<span class="cs-zoom"><img src="' + (img.currentSrc || img.src) + '" alt=""></span>';
+      return z;
+    }
+    function decidi(fig) {
+      if (fig.dataset.abbinata || !fig.parentNode.classList.contains('cs-gal')) return;
+      var ar = rapp(fig); if (!ar) return;
+      if (ar >= LARGA) { fig.dataset.abbinata = 'no'; return; }
+      var n = fig.nextElementSibling, ni = n && n.classList.contains('cs-media') && !n.classList.contains('cs-media--video') && !n.dataset.abbinata && n.querySelector(':scope > img');
+      if (ni && !ni.naturalWidth) { ni.loading = 'eager'; ni.addEventListener('load', function () { decidi(fig); }, { once: true }); return; }
+      fig.dataset.abbinata = '1';
+      if (ni && rapp(n) < LARGA) { n.dataset.abbinata = '1'; riga(fig, n); return; }
+      var z = dettaglio(fig); riga(fig, z); if (window.lmmOsserva) window.lmmOsserva(z);
     }
     document.querySelectorAll('.cs-gal > .cs-media:not(.cs-media--video) > img').forEach(function (img) {
-      function abbina() {
-        var fig = img.parentNode;
-        if (!img.naturalWidth || img.naturalWidth / img.naturalHeight >= 1.25 || fig.dataset.abbinata || !fig.parentNode.classList.contains('cs-gal')) return;
-        fig.dataset.abbinata = '1'; fig.style.setProperty('--ar', img.naturalWidth / img.naturalHeight);
-        var n = fig.nextElementSibling;
-        if (n && n.classList.contains('cs-media') && !n.classList.contains('cs-media--video') && !n.dataset.abbinata) { n.dataset.abbinata = '1'; riga(fig, n); return; }
-        var z = document.createElement('figure'); z.className = 'cs-media cs-media--zoom'; z.setAttribute('aria-hidden', 'true'); z.dataset.abbinata = '1';
-        z.innerHTML = '<span class="cs-zoom"><img src="' + img.currentSrc + '" alt=""></span>';
-        z.style.setProperty('--ar', img.naturalWidth / img.naturalHeight);
-        riga(fig, z);
-      }
-      if (img.complete) abbina(); else img.addEventListener('load', abbina);
+      if (img.complete && img.naturalWidth) decidi(img.parentNode); else img.addEventListener('load', function () { decidi(img.parentNode); }, { once: true });
     });
-    // Parallasse: dentro la cornice l'immagine scorre di pochi pixel mentre la pagina si muove
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      var medie = [].slice.call(document.querySelectorAll('.cs-media')), tick = 0;
-      function px() {
-        tick = 0; var vh = innerHeight;
-        medie.forEach(function (f) {
-          var r = f.getBoundingClientRect(); if (r.bottom < -100 || r.top > vh + 100) return;
-          var c = (r.top + r.height / 2 - vh / 2) / vh; f.style.setProperty('--py', (-c * r.height * .05).toFixed(1) + 'px');
-        });
-      }
-      addEventListener('scroll', function () { if (!tick) tick = requestAnimationFrame(px); }, { passive: true }); px();
-    }
+    // Dietro le quinte: i cerchi si disegnano e i numeri si contano da zero quando arrivano sullo schermo
+    var rid = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var dq = document.querySelectorAll('[data-anelli], [data-numeri] .numero__v');
+    if (!rid && 'IntersectionObserver' in window) {
+      dq.forEach(function (el) { if (el.classList.contains('numero__v')) el.dataset.fine = el.textContent, el.textContent = '0'; });
+      var oq = new IntersectionObserver(function (es) { es.forEach(function (e) {
+        if (!e.isIntersecting) return; oq.unobserve(e.target); var el = e.target;
+        if (el.hasAttribute('data-anelli')) { el.classList.add('is-on'); return; }
+        var fine = parseFloat(el.dataset.fine) || 0, t0 = performance.now();
+        (function passo(t) { var k = Math.min(1, (t - t0) / 1200); el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.fine; })(t0);
+      }); }, { threshold: .5 });
+      dq.forEach(function (el) { oq.observe(el); });
+    } else document.querySelectorAll('[data-anelli]').forEach(function (el) { el.classList.add('is-on'); });
     // I video caricati sul sito partono da soli, muti e in loop, solo quando sono sullo schermo (mai con "riduci movimento")
     var vids = document.querySelectorAll('video[data-auto]');
     if (vids.length && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

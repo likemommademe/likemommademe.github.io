@@ -1,0 +1,57 @@
+{% comment %}
+  Banda "Dietro le quinte" in fondo al progetto, come "What you don't see" di bitwip:
+  gli strumenti in cerchi che si disegnano, poi quattro numeri che si contano da zero.
+  I numeri vengono dal pannello (numero_1..4); se sono vuoti, il sito conta foto, video, strumenti e capitoli.
+  In fondo la recensione, se c'è.
+{% endcomment %}
+{% assign t = site.data.testi.progetto %}
+{% assign nfoto = 0 %}{% assign nvideo = 0 %}{% assign nsez = 0 %}
+{% for g in page.galleria %}{% if g.type == 'foto' %}{% assign nfoto = nfoto | plus: 1 %}{% elsif g.type == 'video' %}{% assign nvideo = nvideo | plus: 1 %}{% elsif g.type == 'sezione' %}{% assign nsez = nsez | plus: 1 %}{% endif %}{% endfor %}
+{% assign nstr = page.strumenti | size %}
+<section class="fascia cs-dq{% if include.inv %} inv{% endif %}" aria-labelledby="t-dq">
+  <p class="cs-label cs-head__k">{{ t.dq_k }}</p>
+  <h2 class="cs-dq__t rise" id="t-dq"><span>{{ t.dq_titolo }}</span></h2>
+  <p class="cs-dq__p" data-rivela>{{ t.dq_testo }}</p>
+
+  {% if nstr > 0 %}
+  <figure class="cs-dq__strumenti" data-rivela data-anelli>
+    <ul>
+      {% for s in page.strumenti %}
+        {% case s %}
+          {% when 'Photoshop' %}{% assign ab = 'Ps' %}{% when 'Illustrator' %}{% assign ab = 'Ai' %}{% when 'InDesign' %}{% assign ab = 'Id' %}
+          {% when 'Premiere Pro' %}{% assign ab = 'Pr' %}{% when 'After Effects' %}{% assign ab = 'Ae' %}{% when 'Firefly' %}{% assign ab = 'Ff' %}
+          {% when 'ChatGPT' %}{% assign ab = 'GPT' %}{% when 'Claude' %}{% assign ab = 'Cl' %}{% when 'Midjourney' %}{% assign ab = 'Mj' %}
+          {% when 'Figma' %}{% assign ab = 'Fg' %}{% when 'Sketch' %}{% assign ab = 'Sk' %}{% when 'Adobe XD' %}{% assign ab = 'Xd' %}
+          {% when 'Framer' %}{% assign ab = 'Fr' %}{% when 'Procreate' %}{% assign ab = 'Pc' %}
+          {% else %}{% assign ab = s | slice: 0, 2 %}
+        {% endcase %}
+      <li style="--i:{{ forloop.index0 }}">
+        <span class="cs-dq__anello" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="cs-dq__pista" cx="20" cy="20" r="17" pathLength="100"/><circle class="cs-dq__arco" cx="20" cy="20" r="17" pathLength="100"/></svg><b>{{ ab }}</b></span>
+        <span class="cs-label cs-dq__nome">{{ s }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </figure>
+  {% endif %}
+
+  <dl class="cs-dq__numeri" data-numeri>
+    {% if page.numero_1 %}
+      {% for i in (1..4) %}{% capture nk %}numero_{{ i }}{% endcapture %}{% capture ek %}etichetta_{{ i }}{% endcapture %}{% assign n = page[nk] | append: "" | strip %}{% if n != "" %}
+      <div><dt class="cs-label">{{ page[ek] }}</dt><dd><span class="numero__v" data-valore="{{ n }}">{{ n }}</span></dd></div>
+      {% endif %}{% endfor %}
+    {% else %}
+      {% if nfoto > 0 %}<div><dt class="cs-label">{% if nfoto == 1 %}{{ t.dq_foto_uno }}{% else %}{{ t.dq_foto }}{% endif %}</dt><dd><span class="numero__v" data-valore="{{ nfoto }}">{{ nfoto }}</span></dd></div>{% endif %}
+      {% if nvideo > 0 %}<div><dt class="cs-label">{% if nvideo == 1 %}{{ t.dq_video_uno }}{% else %}{{ t.dq_video }}{% endif %}</dt><dd><span class="numero__v" data-valore="{{ nvideo }}">{{ nvideo }}</span></dd></div>{% endif %}
+      {% if nstr > 0 %}<div><dt class="cs-label">{% if nstr == 1 %}{{ t.dq_strumenti_uno }}{% else %}{{ t.dq_strumenti_n }}{% endif %}</dt><dd><span class="numero__v" data-valore="{{ nstr }}">{{ nstr }}</span></dd></div>{% endif %}
+      {% if nsez > 0 %}<div><dt class="cs-label">{% if nsez == 1 %}{{ t.dq_sezioni_uno }}{% else %}{{ t.dq_sezioni }}{% endif %}</dt><dd><span class="numero__v" data-valore="{{ nsez }}">{{ nsez }}</span></dd></div>{% endif %}
+    {% endif %}
+  </dl>
+
+  {% if page.recensione %}
+  <figure class="cs-rec" data-rivela>
+    <p class="cs-label cs-rec__k">{{ t.rec_k }}</p>
+    <blockquote class="cs-rec__q">«{{ page.recensione }}»</blockquote>
+    <figcaption class="cs-rec__chi"><strong>{{ page.recensione_autore }}</strong>{% if page.recensione_ruolo %}<span>{{ page.recensione_ruolo }}</span>{% endif %}</figcaption>
+  </figure>
+  {% endif %}
+</section>

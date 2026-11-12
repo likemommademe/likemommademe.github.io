@@ -148,7 +148,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=14`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=15`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -269,6 +269,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Copertine: SITUATION (fermo immagine delle particelle), Audible spot (la città animata), Animazioni (il logo Adidas a metà trasformazione), Il mio vecchio logo (i biglietti da visita; rinominato da «Il mio marchio»). Patch e Model sheet: copertina con un foglio unico che raccoglie tutto, poi una schermata per ogni elemento (presi dalle slide originali a 3840 px). Sagra dei Stringozzi e Blue Origin tolti dal sito: restano nel pannello come bozza |
 | 12/11/2026 | Foto verticali o quadrate rimaste da sole (scelta dell'utente, al posto del blocco editoriale): si accoppiano sempre con la foto successiva o, se non c'è, con un loro dettaglio ingrandito, alte uguali (JS in `_layouts/progetto.html`). Animazioni: aggiunto in apertura lo showreel di questo portfolio, registrato fotogramma per fotogramma da `lab/showreel.html` (17,5 s, 30 fps, 2 MB) |
 | 12/11/2026 | Gallerie: coppie sempre divise a metà e alte uguali (cornice con la forma media delle due foto), così le righe sono allineate. Nuovo movimento per foto e video in tutti i progetti: tendina che si apre dal basso, immagine che si assesta da 1,18 a 1,06, la seconda della coppia in ritardo, parallasse leggera allo scroll; su telefono solo la tendina; niente movimento con «riduci movimento» |
+| 12/11/2026 | Foto dei progetti: niente più movimento, solo uno zoom out (da 1,15 a 1) quando arrivano sullo schermo. Nessuna foto resta da sola: si accoppia con la successiva o con un suo dettaglio (tranne le strisce molto larghe); i video da soli sono più piccoli. **Sottomenu di Works** come bitwip: pannello scuro con «Cinque mondi, un solo metodo.», «Tutti i progetti» e le categorie (testi in `_data/testi.yml` → `footer.sub_*`). **Dietro le quinte** in fondo a ogni progetto: gli strumenti in cerchi che si disegnano e quattro numeri che si contano (foto, video, strumenti, capitoli; sostituibili dal pannello). **Recensioni**: nuovo gruppo nel pannello (testo, autore, ruolo); compaiono in fondo al progetto e in una sezione della home, solo se ce n'è almeno una vera |
 ---
 
 ## 10. Prossimi passi
