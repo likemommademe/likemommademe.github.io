@@ -66,13 +66,26 @@ reel: true
   })();
 </script>
 
-{% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="occhio__palpebra"><path d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round"/><circle cx="60" cy="42" r="19" class="occhio__iride"/><circle cx="60" cy="42" r="8" fill="currentColor"/></g></svg></span>{% endcapture %}
-<section class="fascia apertura" id="apertura">
+{% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="occhio__palpebra"><path d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round"/><circle cx="60" cy="42" r="19" class="occhio__iride"/><circle cx="60" cy="42" r="8" fill="#0A0A0A" class="occhio__pupilla"/></g></svg></span>{% endcapture %}
+<section class="fascia inv apertura" id="apertura">
   <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
-  <p class="manifesto">{{ home.intro }}</p>
+  <div class="apertura__grid">
+    <div class="apertura__testo">
+      <p class="apertura__lead">{{ home.intro }}</p>
+      {% if home.apertura_testo and home.apertura_testo != "" %}<p class="apertura__sotto">{{ home.apertura_testo }}</p>{% endif %}
+      <a class="lnk apertura__link" href="{{ '/about/' | relative_url }}">{{ home.apertura_link | default: "Chi sono" }}<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <dl class="numeri" data-numeri>
+      {% for i in (1..4) %}{% capture nk %}numero_{{ i }}{% endcapture %}{% capture ek %}etichetta_{{ i }}{% endcapture %}{% assign n = home[nk] | append: "" | strip %}{% if n != "" %}
+      <div class="numero">
+        <dt>{{ home[ek] }}</dt>
+        <dd>{% assign primo = n | slice: 0 %}{% if primo == "+" %}<span class="numero__piu">+</span>{% assign n = n | remove_first: "+" %}{% endif %}<span class="numero__v" data-valore="{{ n }}">{{ n }}</span></dd>
+      </div>{% endif %}{% endfor %}
+    </dl>
+  </div>
 </section>
 
-<section class="fascia inv">
+<section class="fascia">
   <div class="sec-head">
     <h2 class="rise"><span>{{ t.mondi_titolo }}</span></h2>
   </div>
@@ -91,7 +104,7 @@ reel: true
   </ul>
 </section>
 
-<section class="fascia">
+<section class="fascia inv">
   <div class="sec-head">
     <h2 class="rise"><span>{{ home.titolo_progetti }}</span></h2>
     <a class="lnk" href="{{ '/work/' | relative_url }}">{{ t.lavori_link }}</a>
@@ -105,44 +118,77 @@ reel: true
 </section>
 
 <script>
-  // La frase MORE THAN meets THE EYE passa dallo showreel alla pagina: parte esattamente dove sta nell'header
-  // e, mentre si scorre, resta ferma, cresce e si sposta fino al suo posto; intanto la prima sezione le sale incontro.
+  // La frase MORE THAN meets THE EYE passa dallo showreel alla pagina. Vola in un livello fisso: in verticale resta ferma
+  // dov'era nell'header (così non trema mentre si scorre), cresce e va a sinistra mentre la prima sezione le sale incontro;
+  // quando arriva al suo posto lascia il posto al titolo vero. Il colore si inverte da solo dove passa sopra la sezione
+  // (fusione "differenza"), mentre l'iride resta rosa in un livello suo.
   (function () {
     var ap = document.getElementById('apertura'), h = ap && ap.querySelector('.motto'), frame = document.querySelector('#reel iframe');
     if (!h || !frame) return;
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, H = null, N = null;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, H = null, N = null, V = null, volo = null, iride = null, preso = false;
     var eio = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
     function pronto() { try { var w = frame.contentWindow; return w && w.lmmFrase && w.document.documentElement.dataset.ready === '1' ? w : null; } catch (e) { return null; } }
+    function crea() {
+      volo = document.createElement('div'); volo.className = 'motto-volo'; volo.setAttribute('aria-hidden', 'true');
+      volo.innerHTML = h.firstElementChild.innerHTML;
+      iride = document.createElement('div'); iride.className = 'motto-iride'; iride.setAttribute('aria-hidden', 'true');
+      iride.innerHTML = '<i></i>';
+      document.body.appendChild(volo); document.body.appendChild(iride);
+    }
     function misura() {
       if (!document.body.classList.contains('reel-fatto')) return;
       var w = pronto();
       if (!w) { setTimeout(misura, 200); return; }
-      h.style.transform = '';
-      h.classList.add('is-in', 'motto--preso');   // prima di misurare: senza la maschera abbassata
-      h.style.transformOrigin = '0 ' + (h.firstElementChild.getBoundingClientRect().top - h.getBoundingClientRect().top).toFixed(1) + 'px';
-      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; w.lmmFraseVia(false); return; }
-      var r = w.lmmFrase(), fr = frame.getBoundingClientRect(), sp = h.firstElementChild.getBoundingClientRect();
+      h.classList.add('is-in', 'motto--preso');
+      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; if (volo) volo.style.visibility = iride.style.visibility = 'hidden'; w.lmmFraseVia(false); return; }
+      if (!volo) crea();
+      var cs = getComputedStyle(h);
+      volo.style.fontSize = cs.fontSize; volo.style.lineHeight = cs.lineHeight; volo.style.transform = 'none';
+      var r = w.lmmFrase(), fr = frame.getBoundingClientRect(), sp = h.firstElementChild.getBoundingClientRect(), vb = volo.getBoundingClientRect();
+      var sv = volo.querySelector('.occhio svg').getBoundingClientRect(), m = Math.min(sv.width / 120, sv.height / 84);
+      var ri = 19 * m, rp = 8 * m, ix = sv.left - vb.left + sv.width / 2, iy = sv.top - vb.top + sv.height / 2;
+      iride.style.width = vb.width + 'px'; iride.style.height = vb.height + 'px';
+      iride.firstChild.style.cssText = 'left:' + (ix - ri) + 'px;top:' + (iy - ri) + 'px;width:' + 2 * ri + 'px;height:' + 2 * ri + 'px;--p:' + 2 * rp + 'px';
       H = { l: r.l + fr.left, cy: r.t + fr.top + r.h / 2, w: r.w };
-      N = { l: sp.left, w: sp.width, h: sp.height, top: sp.top + scrollY };
-      muovi(); aspetta();
+      N = { l: sp.left, h: sp.height, top: sp.top + scrollY };
+      V = { w: vb.width, h: vb.height };
+      aspetta();
     }
     // la pagina prende la frase solo quando nello showreel è arrivata al suo posto (se si scorre veloce, l'animazione è un po' indietro)
     function aspetta() {
       var w = pronto();
       if (!H || !w) return;
       if (!w.lmmFine()) { h.style.visibility = 'hidden'; setTimeout(aspetta, 60); return; }
-      h.style.visibility = ''; w.lmmFraseVia(true);
+      preso = true; w.lmmFraseVia(true); muovi();
     }
     function muovi() {
-      if (!H) return;
-      var corsa = N.top + N.h / 2 - H.cy, k = corsa > 0 ? Math.min(1, Math.max(0, scrollY / corsa)) : 1, e = eio(k);
-      if (k >= 1) { h.style.transform = ''; return; }
-      var sc = H.w / N.w + (1 - H.w / N.w) * e, x = H.l + (N.l - H.l) * e, y = H.cy - N.h * sc / 2;
-      h.style.transform = 'translate(' + (x - N.l).toFixed(1) + 'px,' + (y - (N.top - scrollY)).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')';
+      if (!H || !preso) return;
+      var corsa = N.top + N.h / 2 - H.cy, k = corsa > 0 ? Math.min(1, Math.max(0, scrollY / corsa)) : 1;
+      var vola = k < 1;
+      h.style.visibility = vola ? 'hidden' : '';
+      volo.style.visibility = iride.style.visibility = vola ? 'visible' : 'hidden';
+      if (!vola) return;
+      var e = eio(k), s0 = H.w / V.w, sc = s0 + (1 - s0) * e, x = H.l + (N.l - H.l) * e, y = H.cy - V.h * sc / 2;
+      volo.style.transform = iride.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + sc.toFixed(4) + ')';
     }
     addEventListener('scroll', muovi, { passive: true });
     addEventListener('resize', function () { H = null; misura(); });
     document.addEventListener('reelfatto', misura);
     misura();
+
+    // i numeri si contano da zero quando compaiono
+    var nums = document.querySelectorAll('[data-numeri] .numero__v');
+    if (nums.length && !reduce && 'IntersectionObserver' in window) {
+      var conta = function (el) {
+        var fine = parseFloat(el.dataset.valore), t0 = performance.now();
+        if (isNaN(fine)) return;
+        (function passo(t) {
+          var k = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - k, 4);
+          el.textContent = Math.round(fine * e); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.valore;
+        })(t0);
+      };
+      var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { io.unobserve(en.target); conta(en.target); } }); }, { threshold: .6 });
+      nums.forEach(function (n) { if (!isNaN(parseFloat(n.dataset.valore))) { n.textContent = '0'; io.observe(n); } });
+    }
   })();
 </script>

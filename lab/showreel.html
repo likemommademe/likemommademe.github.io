@@ -395,7 +395,7 @@
   'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
   const kin = [...kinEl.children];
   // MORE THAN meets THE EYE: ogni pezzo parte sparso e ruotato (valori fissi) e si compone; la O di MORE è un occhio
-  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" pathLength="1"/><circle class="iride" cx="60" cy="42" r="19" fill="#FF3D8B"/><circle class="pupilla" cx="60" cy="42" r="8" fill="currentColor"/></g></svg></span>';
+  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" pathLength="1"/><circle class="iride" cx="60" cy="42" r="19" fill="#FF3D8B"/><circle class="pupilla" cx="60" cy="42" r="8" fill="#0A0A0A"/></g></svg></span>';
   const fraseEl = E('frase');
   fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', 'T', 'H', 'E', ' ', 'E', 'Y', 'E']
     .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
