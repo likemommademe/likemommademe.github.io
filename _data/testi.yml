@@ -2,8 +2,8 @@
 # Le frasi dei progetti, della home e delle categorie restano nel pannello.
 
 home:
-  # {occhio} è la O di MORE disegnata come un occhio che fa l'occhiolino
-  motto: "M{occhio}RE THAN <em>meets</em> THE EYE"
+  # [occhio] è la O di MORE disegnata come un occhio che fa l'occhiolino
+  motto: "M[occhio]RE THAN <em>meets</em> THE EYE"
   mondi_titolo: "Cosa <em>faccio</em>"
   mondi_progetti_uno: progetto
   mondi_progetti_piu: progetti
