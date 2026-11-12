@@ -1,10 +1,10 @@
 {% comment %} Un elemento della galleria di un progetto: foto o video, con la didascalia se c'è. {% endcomment %}
 {% assign el = include.el %}
-<figure class="cs-media{% if el.type == 'video' %} cs-media--video{% endif %}"{% if include.ordine %} style="order:{{ include.ordine }}"{% endif %} data-rivela>
+<figure class="cs-media{% if el.type == 'video' %} cs-media--video{% endif %}"{% if include.ordine %} style="order:{{ include.ordine }}"{% endif %}{% if el.type != "video" and el.titolo %} tabindex="0"{% endif %} data-rivela>
   {% if el.type == "video" %}
     {% include video.html url=el.link %}
   {% else %}
-    <img src="{{ el.immagine | relative_url }}" alt="{{ el.didascalia | default: include.titolo }}" loading="lazy">
+    <img src="{{ el.immagine | relative_url }}" alt="{% if el.titolo %}{{ el.titolo }}: {% endif %}{{ el.didascalia | default: include.titolo }}" loading="lazy">
   {% endif %}
-  {% if el.didascalia %}<figcaption>{{ el.didascalia }}</figcaption>{% endif %}
+  {% if el.titolo or el.didascalia %}<figcaption class="cs-cap">{% if el.titolo %}<strong class="cs-cap__t">{{ el.titolo }}</strong>{% endif %}{% if el.didascalia %}<span class="cs-cap__p">{{ el.didascalia }}</span>{% endif %}</figcaption>{% endif %}
 </figure>

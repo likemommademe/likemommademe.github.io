@@ -22,9 +22,17 @@ galleria:
     testo_en: "Space-themed patches for the Master: rockets, astronauts and planets, drawn in Illustrator and Procreate."
   - type: "foto"
     immagine: "/assets/uploads/patch-02.webp"
+    titolo: "Tre missioni"
+    titolo_en: "Three missions"
+    didascalia: "Il razzo, l'astronauta del 2021 e il pianeta, ognuno con il nome del Master."
+    didascalia_en: "The rocket, the 2021 astronaut and the planet, each carrying the Master's name."
   - type: "foto"
     immagine: "/assets/uploads/patch-01.webp"
     formato: "meta"
+    titolo: "La patch esagonale"
+    titolo_en: "The hexagon patch"
+    didascalia: "Un razzo che buca il cielo a strisce, dal blu notte al celeste."
+    didascalia_en: "A rocket piercing a striped sky, from midnight to sky blue."
 strumenti:
   - Illustrator
   - Procreate

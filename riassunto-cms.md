@@ -82,7 +82,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Campi: titolo, **Pubblicato sul sito** (spento = bozza), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
 - **Case study**: **Frase-titolo del progetto** (la frase grande in cima al racconto), poi le sezioni fisse **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
 - I progetti nuovi partono come bozza.
-- **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, prototipi Figma (link `figma.com/proto/...`) e file video `.mp4` caricati sul sito, e **titoli di sezione** (titolo + due righe) per dividere la galleria in parti, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
+- **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, prototipi Figma (link `figma.com/proto/...`) e file video `.mp4` caricati sul sito, e **titoli di sezione** (titolo + due righe) per dividere la galleria in parti. Ogni foto ha un **titolo** e **una riga** che la spiega: su computer compaiono sopra la foto al passaggio del mouse, su telefono restano sotto, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
 - **Testo con pulsanti**: grassetto, corsivo, titolo, elenco, link.
 - Pulsanti **Duplica**, **Vedi sul sito**, **Elimina**.
 - **Ordine dentro ogni categoria**: nella lista scegli la categoria nel filtro e trascini le righe.
@@ -148,7 +148,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=12`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=13`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -249,6 +249,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | **BeYOU** tolto da IKEA e diventato un progetto a parte in Branding (logo e communication package per un hotel di lusso accessibile) |
 | 12/11/2026 | About me: foto con lo sfondo tutto rosso (`06_…_ok.jpg`). IKEA: copertina con la foto su FRAKTA; le foto su FRAKTA e su BLÅHAJ a tutta larghezza nella sezione Visual Display |
 | 12/11/2026 | Gallerie dei progetti divise in sezioni, ognuna in una banda con titolo e due righe su cosa ho fatto, a colori alternati (es. SITUATION: L'identità, L'app, I social, In palestra e fuori). Fatto per tutti i 12 progetti. La banda finale con precedente/successivo prende sempre il colore opposto all'ultima |
+| 12/11/2026 | Ogni foto delle gallerie ha titolo e una riga di spiegazione (italiano e inglese), in overlay al passaggio del mouse su computer e sotto la foto su telefono. Nuovi campi nel pannello per ogni foto |
 ---
 
 ## 10. Prossimi passi

@@ -21,6 +21,10 @@ galleria:
     testo_en: "The starting sketch and the character's signature expressions."
   - type: "foto"
     immagine: "/assets/uploads/model-sheet-01.webp"
+    titolo: "Dallo schizzo al disegno"
+    titolo_en: "From sketch to drawing"
+    didascalia: "Le tre espressioni prima a matita, poi ripassate."
+    didascalia_en: "The three expressions first in pencil, then inked."
   - type: "sezione"
     titolo: "Il model sheet"
     titolo_en: "The model sheet"
@@ -28,6 +32,10 @@ galleria:
     testo_en: "Front, back and side, then the robot suit and the character in motion."
   - type: "foto"
     immagine: "/assets/uploads/model-sheet-02.webp"
+    titolo: "Il model sheet"
+    titolo_en: "The model sheet"
+    didascalia: "Fronte, retro e profilo con la tuta robotica, e il personaggio che vola e corre."
+    didascalia_en: "Front, back and side in the robot suit, plus the character flying and running."
 strumenti:
   - Procreate
 ordine: 4

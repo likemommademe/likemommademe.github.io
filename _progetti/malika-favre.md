@@ -22,6 +22,10 @@ galleria:
     testo_en: "Two faces built from positive and negative space, as in Malika Favre's work."
   - type: "foto"
     immagine: "/assets/uploads/malika-favre-01.webp"
+    titolo: "Due ritratti"
+    titolo_en: "Two portraits"
+    didascalia: "Volti costruiti con pochi colori e tanto vuoto."
+    didascalia_en: "Faces built from a few colours and lots of empty space."
   - type: "sezione"
     titolo: "Le variazioni"
     titolo_en: "The variations"
@@ -29,6 +33,10 @@ galleria:
     testo_en: "The same game on hair and stripes: many hairstyles, one mark."
   - type: "foto"
     immagine: "/assets/uploads/malika-favre-02.webp"
+    titolo: "Capelli e righe"
+    titolo_en: "Hair and stripes"
+    didascalia: "Nove acconciature in nero pieno e un ritratto nascosto tra le righe."
+    didascalia_en: "Nine hairstyles in solid black and a portrait hidden in the stripes."
 strumenti:
   - Illustrator
 ordine: 1

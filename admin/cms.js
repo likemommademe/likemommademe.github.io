@@ -656,7 +656,10 @@ function galleryWidget(value) {
     } else {
       entry.link = h('input', { type: 'url', value: item.link || '', placeholder: 'Link YouTube, Vimeo, prototipo Figma o file .mp4' });
     }
-    entry.caption = h('input', { type: 'text', class: 'lang-it', value: item.didascalia || '', placeholder: 'Didascalia (facoltativa)' });
+    // Sotto ogni foto: un titolo e una riga che la spiega.
+    entry.title = h('input', { type: 'text', class: 'lang-it', value: item.titolo || '', placeholder: 'Titolo della foto (facoltativo)' });
+    entry.titleEn = h('input', { type: 'text', class: 'lang-en', value: item.titolo_en || '', placeholder: item.titolo ? `In italiano: ${item.titolo}` : 'Photo title in English (optional)' });
+    entry.caption = h('input', { type: 'text', class: 'lang-it', value: item.didascalia || '', placeholder: 'Una riga che spiega la foto (facoltativa)' });
     entry.captionEn = h('input', {
       type: 'text', class: 'lang-en', value: item.didascalia_en || '',
       placeholder: item.didascalia ? `In italiano: ${item.didascalia}` : 'Caption in English (optional)',
@@ -673,6 +676,8 @@ function galleryWidget(value) {
         entry.format,
         h('button', { type: 'button', class: 'icon-btn danger', title: 'Elimina', onclick: () => { items.delete(el); el.remove(); markDirty(); } }, icon('trash'))),
       entry.image ? entry.image.el : entry.link,
+      entry.title,
+      entry.titleEn,
       entry.caption,
       entry.captionEn);
     items.set(el, entry);
@@ -710,6 +715,8 @@ function galleryWidget(value) {
         type: i.type,
         immagine: i.image?.get(),
         link: i.link?.value.trim(),
+        titolo: i.title.value.trim(),
+        titolo_en: i.titleEn.value.trim(),
         didascalia: i.caption.value.trim(),
         didascalia_en: i.captionEn.value.trim(),
         formato: i.format.value === 'meta' ? 'meta' : undefined,

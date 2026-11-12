@@ -35,6 +35,10 @@ galleria:
     testo_en: "The key frames of the spot: flat colours, Audible's palette and one idea per scene."
   - type: "foto"
     immagine: "/assets/uploads/audible-video-animation-01.webp"
+    titolo: "Styleframe"
+    titolo_en: "Styleframes"
+    didascalia: "Otto quadri chiave, uno per ogni momento dello spot."
+    didascalia_en: "Eight key frames, one for each moment of the spot."
   - type: "sezione"
     titolo: "Lo storyboard"
     titolo_en: "Storyboard"
@@ -42,6 +46,10 @@ galleria:
     testo_en: "Sixteen frames that follow the voice over scene by scene, from the Divine Comedy opening to the closing logo."
   - type: "foto"
     immagine: "/assets/uploads/audible-video-animation-02.webp"
+    titolo: "Storyboard"
+    titolo_en: "Storyboard"
+    didascalia: "Sedici quadri in sequenza, dal logo iniziale a quello finale."
+    didascalia_en: "Sixteen frames in sequence, from the opening logo to the closing one."
 crediti: |
   Progetto IED
 crediti_en: |
