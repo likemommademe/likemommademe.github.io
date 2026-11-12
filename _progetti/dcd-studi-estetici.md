@@ -23,23 +23,23 @@ concept_en: |
 
   The new mark is three capital letters, D, C and D, set in **Aviano Serif** in powder blue. Above them, pink wings: they become a pattern of seagulls that returns on window graphics, envelopes and counters. The idea holding it all together is **lightness**.
 execution: |
-  Ho realizzato interamente il **brand identity manual**: 116 pagine in quattro capitoli.
+  Ho seguito tutta la comunicazione di DCD: il restyling del marchio, il logo animato, i post social, i volantini, le brochure, i listini e tutti i materiali per i centri. Il cuore del lavoro è il **brand identity manual**, 116 pagine in quattro capitoli.
 
   - **Marchio istituzionale**: costruzione geometrica, area di rispetto, dimensioni, versioni a colori e monocromatiche, versione social, palette, font e loghi dei trattamenti.
   - **Immagine coordinata**: carta intestata, biglietti, buste, firma mail, shopper, packaging dei prodotti, schede cliente, diari alimentari, listini e materiali per le cabine.
   - **Advertising**: le gabbie per i post, le affissioni, i monitor in sede, i materiali per la segreteria e le brochure.
   - **Arredamento dei punti vendita**: reception, sala d'attesa, cabine, insegne, targhe, vetrofanie, tappeti e divise.
 execution_en: |
-  I designed the whole **brand identity manual**: 116 pages in four chapters.
+  I handled all of DCD's communication: the logo restyling, the animated logo, social posts, flyers, brochures, price lists and every material for the centres. At the heart of it is the **brand identity manual**, 116 pages in four chapters.
 
   - **Logo**: geometric construction, clear space, sizes, colour and single-colour versions, social version, palette, typefaces and treatment logos.
   - **Brand identity**: letterhead, business cards, envelopes, email signature, shopper, product packaging, client cards, food diaries, price lists and treatment-room materials.
   - **Advertising**: templates for posts, billboards, in-store screens, front-desk materials and brochures.
   - **Store design**: reception, waiting room, treatment rooms, signs, plaques, window graphics, mats and uniforms.
 coordinamento: |
-  Il progetto è nato mentre lavoravo da **Pixell**, l'agenzia che ha seguito tutta la comunicazione di DCD: piano marketing, campagne, social, sito e restyling dei punti vendita insieme allo Studio Loft Canova di Roma. Il brand identity manual l'ho realizzato io, dall'inizio alla fine.
+  Ho lavorato al progetto dentro **Pixell**, l'agenzia di comunicazione di DCD, occupandomi di tutta la comunicazione del brand: dal brand manual al video animato, dai social ai volantini. Per il restyling dei punti vendita ho lavorato insieme allo Studio Loft Canova di Roma.
 coordinamento_en: |
-  The project came to life while I was working at **Pixell**, the agency behind all of DCD's communication: marketing plan, campaigns, social media, website and the store restyling with Studio Loft Canova in Rome. The brand identity manual is mine, from start to finish.
+  I worked on the project at **Pixell**, DCD's communication agency, handling all of the brand's communication: from the brand manual to the animated video, from social media to flyers. For the store restyling I worked alongside Studio Loft Canova in Rome.
 galleria:
   - type: "sezione"
     titolo: "Il marchio"
@@ -83,8 +83,8 @@ galleria:
   - type: "sezione"
     titolo: "Il brand manual"
     titolo_en: "The brand manual"
-    testo: "116 pagine, quattro capitoli: marchio, immagine coordinata, advertising e arredamento dei punti vendita. L'ho realizzato interamente io."
-    testo_en: "116 pages, four chapters: logo, brand identity, advertising and store design. I made it entirely myself."
+    testo: "116 pagine, quattro capitoli: marchio, immagine coordinata, advertising e arredamento dei punti vendita."
+    testo_en: "116 pages, four chapters: logo, brand identity, advertising and store design."
   - type: "foto"
     immagine: "/assets/uploads/dcd-manuale.webp"
     titolo: "Il manuale"
@@ -102,8 +102,8 @@ galleria:
   - type: "sezione"
     titolo: "La campagna"
     titolo_en: "The campaign"
-    testo: "Con Pixell, la campagna istituzionale del 2022 con Manuela Arcuri: affissioni, metro e social."
-    testo_en: "With Pixell, the 2022 brand campaign starring Manuela Arcuri: billboards, metro and social media."
+    testo: "La campagna istituzionale del 2022 con Manuela Arcuri: affissioni, metro e social."
+    testo_en: "The 2022 brand campaign starring Manuela Arcuri: billboards, metro and social media."
   - type: "foto"
     immagine: "/assets/uploads/dcd-affissioni.webp"
     titolo: "Le affissioni"
@@ -152,8 +152,8 @@ galleria:
   - type: "sezione"
     titolo: "Il sito"
     titolo_en: "The website"
-    testo: "Il sito di DCD, realizzato da Pixell con la nuova identità."
-    testo_en: "DCD's website, built by Pixell with the new identity."
+    testo: "Il sito di DCD, con la nuova identità."
+    testo_en: "DCD's website, with the new identity."
   - type: "foto"
     immagine: "/assets/uploads/dcd-sito.webp"
     titolo: "La home"
@@ -166,13 +166,13 @@ strumenti:
   - Photoshop
   - After Effects
 crediti: |
-  Brand identity manual: Emanuele Calfa  
+  Comunicazione, brand identity manual, video, social e stampati: Emanuele Calfa  
   Agenzia: Pixell  
-  Restyling dei punti vendita: Pixell e Studio Loft Canova
+  Restyling dei punti vendita con lo Studio Loft Canova
 crediti_en: |
-  Brand identity manual: Emanuele Calfa  
+  Communication, brand identity manual, video, social and print: Emanuele Calfa  
   Agency: Pixell  
-  Store restyling: Pixell and Studio Loft Canova
+  Store restyling with Studio Loft Canova
 ordine: 2
 ---
 DCD Studi Estetici è una catena di centri specializzati in dimagrimento, modellamento e trattamento della cellulite, **dal 1980**, con affiliati in tutta Italia. L'obiettivo era rinnovare il marchio e dare a tutti i centri un'identità unica e riconoscibile.
