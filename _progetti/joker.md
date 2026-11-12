@@ -18,6 +18,11 @@ execution: |
 execution_en: |
   The illustrations were made with Adobe Illustrator and Procreate.
 galleria:
+  - type: "sezione"
+    titolo: "I ritratti"
+    titolo_en: "The portraits"
+    testo: "Cinque Joker del cinema, ognuno con il suo volto e la sua risata, disegnati solo con le linee."
+    testo_en: "Five screen Jokers, each with his own face and laugh, drawn in lines only."
   - type: "foto"
     immagine: "/assets/uploads/joker-02.webp"
   - type: "foto"
@@ -26,6 +31,11 @@ galleria:
   - type: "foto"
     immagine: "/assets/uploads/joker-03.webp"
     formato: "meta"
+  - type: "sezione"
+    titolo: "La carta e la risata"
+    titolo_en: "The card and the laugh"
+    testo: "Il Joker come carta da gioco, e la sua risata scritta a mano."
+    testo_en: "The Joker as a playing card, and his laugh, hand-lettered."
   - type: "foto"
     immagine: "/assets/uploads/joker-04.webp"
 strumenti:

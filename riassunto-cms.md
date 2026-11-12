@@ -50,7 +50,7 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 | Home | `/` | Header animato (lo showreel, che avanza con lo scroll e gira una volta sola, poi resta fisso dietro come header), poi il motto con l'occhio, la frase di apertura e i progetti scelti, nell'ordine deciso nel pannello |
 | Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia, card animate (come bitwip.fr/en/work) |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
-| Progetto | `/progetti/<progetto>/` | Come le pagine progetto di bitwip: titolo gigante con la copertina quadrata che si appoggia sul foglio; foglio a colori opposti con "Il progetto", la frase-titolo, la scheda fissa a sinistra (cliente, settore, categoria, anno, strumenti) e il racconto a destra (Brief, Concept, Execution, Coordinamento, Risultato, Crediti); galleria con le foto "Metà" in un muro a due colonne; progetto precedente e successivo affiancati |
+| Progetto | `/progetti/<progetto>/` | Come le pagine progetto di bitwip: titolo gigante con la copertina quadrata che si appoggia sul foglio; foglio a colori opposti con "Il progetto", la frase-titolo, la scheda fissa a sinistra (cliente, settore, categoria, anno, strumenti) e il racconto a destra (Brief, Concept, Execution, Coordinamento, Risultato, Crediti); galleria divisa in bande a tutta larghezza, una per ogni **Titolo di sezione** (titolo, due righe, le sue immagini), che alternano i colori; dentro, le foto "Metà" in un muro a due colonne; progetto precedente e successivo affiancati |
 | About | `/about/` | Testo, foto, loghi dei clienti, contatti |
 | Privacy | `/privacy/` | Richiesta da Google per l'accesso con Google |
 | Showreel | `/lab/showreel.html` | L'animazione dell'header, anche da sola: guidata dallo scroll, `?play` la fa partire da sola. La home la carica con `?embed` e le passa la posizione dello scroll |
@@ -248,6 +248,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | About me con la foto (seduto sulla propria testa). IKEA: gallerie divise in quattro sezioni (Workspace, KOMPISHÄNG, Visual Display) con due righe su cosa ho fatto, aggiunte le foto su FRAKTA e su BLÅHAJ. Nel pannello: nuovo elemento della galleria **Titolo di sezione**, e video `.mp4` riproducibili direttamente nella pagina |
 | 12/11/2026 | **BeYOU** tolto da IKEA e diventato un progetto a parte in Branding (logo e communication package per un hotel di lusso accessibile) |
 | 12/11/2026 | About me: foto con lo sfondo tutto rosso (`06_…_ok.jpg`). IKEA: copertina con la foto su FRAKTA; le foto su FRAKTA e su BLÅHAJ a tutta larghezza nella sezione Visual Display |
+| 12/11/2026 | Gallerie dei progetti divise in sezioni, ognuna in una banda con titolo e due righe su cosa ho fatto, a colori alternati (es. SITUATION: L'identità, L'app, I social, In palestra e fuori). Fatto per tutti i 12 progetti. La banda finale con precedente/successivo prende sempre il colore opposto all'ultima |
 ---
 
 ## 10. Prossimi passi

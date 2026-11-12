@@ -449,7 +449,6 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-blocco--crediti .cs-corpo > p:first-child { font-size: inherit; }
 
 /* 3. La galleria */
-.cs-gal-sez > .cs-head__k { margin-bottom: clamp(36px, 4.4vw, 72px); }
 .cs-gal { display: grid; gap: var(--gap); align-items: start; }
 .cs-gal__mur { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
 .cs-gal__col { display: grid; row-gap: var(--gap); align-content: start; }
@@ -480,11 +479,11 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-pn__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
 .cs-pn__a:hover .cs-pn__img img { transform: scale(1.08); }
 
-/* Titoli di sezione dentro la galleria (es. i quattro progetti di IKEA) */
-.cs-gal__sez { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; padding: clamp(48px, 6vw, 104px) 0 clamp(8px, 1vw, 16px); border-bottom: 1px solid var(--line); }
-.cs-gal__sez:first-child { padding-top: 0; }
-.cs-gal__sez-t { grid-column: 1 / span 6; font-size: var(--t-h2); line-height: 1; letter-spacing: -.035em; padding-bottom: 12px; }
-.cs-gal__sez-p { grid-column: 8 / -1; margin: 0; padding-bottom: 16px; max-width: 46ch; color: var(--muted); font-size: var(--t-lead); line-height: 1.38; }
+/* Galleria a bande: ogni sezione è una fascia con titolo, due righe e le sue immagini */
+.cs-banda__k { margin-bottom: clamp(36px, 4.4vw, 72px); }
+.cs-gal__sez { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; margin-bottom: clamp(36px, 4.4vw, 72px); padding-bottom: clamp(20px, 2vw, 32px); border-bottom: 1px solid var(--line); }
+.cs-gal__sez-t { grid-column: 1 / span 6; font-size: var(--t-h2); line-height: 1; letter-spacing: -.035em; }
+.cs-gal__sez-p { grid-column: 8 / -1; margin: 0; max-width: 46ch; color: var(--muted); font-size: var(--t-lead); line-height: 1.38; }
 .video--file { aspect-ratio: auto; background: #000; }
 .video--file video { display: block; width: 100%; height: auto; }
 @media (max-width: 760px) { .cs-gal__sez-t, .cs-gal__sez-p { grid-column: 1 / -1; } }

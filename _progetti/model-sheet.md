@@ -14,10 +14,20 @@ execution: |
 execution_en: |
   I started from a sketch in Procreate and built the model sheet in the three main views: front, back and side. Then I stylised the character by dressing him in a robot suit.
 galleria:
-  - type: "foto"
-    immagine: "/assets/uploads/model-sheet-02.webp"
+  - type: "sezione"
+    titolo: "Le espressioni"
+    titolo_en: "The expressions"
+    testo: "Lo schizzo di partenza e le espressioni tipiche del personaggio."
+    testo_en: "The starting sketch and the character's signature expressions."
   - type: "foto"
     immagine: "/assets/uploads/model-sheet-01.webp"
+  - type: "sezione"
+    titolo: "Il model sheet"
+    titolo_en: "The model sheet"
+    testo: "Fronte, retro e profilo, poi la tuta robotica e il personaggio in movimento."
+    testo_en: "Front, back and side, then the robot suit and the character in motion."
+  - type: "foto"
+    immagine: "/assets/uploads/model-sheet-02.webp"
 strumenti:
   - Procreate
 ordine: 4

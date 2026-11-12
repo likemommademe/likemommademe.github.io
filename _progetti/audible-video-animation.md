@@ -28,8 +28,18 @@ execution: |
 execution_en: |
   From the brief analysis to the narrative structure and voice over, then the styleframes and the storyboard: sixteen flat-colour frames that follow the voice scene by scene, all the way to the final animation.
 galleria:
+  - type: "sezione"
+    titolo: "Gli styleframe"
+    titolo_en: "Styleframes"
+    testo: "I quadri chiave dello spot: tinte piatte, i colori di Audible e un'idea per ogni scena."
+    testo_en: "The key frames of the spot: flat colours, Audible's palette and one idea per scene."
   - type: "foto"
     immagine: "/assets/uploads/audible-video-animation-01.webp"
+  - type: "sezione"
+    titolo: "Lo storyboard"
+    titolo_en: "Storyboard"
+    testo: "Sedici quadri che seguono il voice over scena dopo scena, dall'apertura sulla Divina Commedia al logo finale."
+    testo_en: "Sixteen frames that follow the voice over scene by scene, from the Divine Comedy opening to the closing logo."
   - type: "foto"
     immagine: "/assets/uploads/audible-video-animation-02.webp"
 crediti: |

@@ -15,6 +15,11 @@ execution: |
 execution_en: |
   The patches were made with Adobe Illustrator and Procreate.
 galleria:
+  - type: "sezione"
+    titolo: "Le patch"
+    titolo_en: "The patches"
+    testo: "Patch a tema spaziale per il Master: razzi, astronauti e pianeti, disegnati con Illustrator e Procreate."
+    testo_en: "Space-themed patches for the Master: rockets, astronauts and planets, drawn in Illustrator and Procreate."
   - type: "foto"
     immagine: "/assets/uploads/patch-02.webp"
   - type: "foto"

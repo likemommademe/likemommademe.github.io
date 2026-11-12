@@ -15,10 +15,20 @@ execution: |
 execution_en: |
   The illustrations were made entirely in Adobe Illustrator.
 galleria:
-  - type: "foto"
-    immagine: "/assets/uploads/malika-favre-02.webp"
+  - type: "sezione"
+    titolo: "I ritratti"
+    titolo_en: "The portraits"
+    testo: "Due volti costruiti con pieni e vuoti, come nei lavori di Malika Favre."
+    testo_en: "Two faces built from positive and negative space, as in Malika Favre's work."
   - type: "foto"
     immagine: "/assets/uploads/malika-favre-01.webp"
+  - type: "sezione"
+    titolo: "Le variazioni"
+    titolo_en: "The variations"
+    testo: "Lo stesso gioco su capelli e righe: tante acconciature, un solo segno."
+    testo_en: "The same game on hair and stripes: many hairstyles, one mark."
+  - type: "foto"
+    immagine: "/assets/uploads/malika-favre-02.webp"
 strumenti:
   - Illustrator
 ordine: 1

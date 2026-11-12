@@ -72,41 +72,55 @@ layout: default
   </div>
 </section>
 
+{% comment %}
+  Galleria a bande: ogni "Titolo di sezione" del pannello apre una banda a tutta larghezza, con il titolo,
+  due righe di testo e le sue immagini. Le bande alternano i colori (normale, opposto, normale...).
+  Le "Metà" consecutive finiscono in un muro a due colonne, alternate (1ª a sinistra, 2ª a destra...).
+{% endcomment %}
+{% assign banda = 0 %}
 {% if page.galleria %}
-<section class="fascia cs-gal-sez" id="galleria">
-  <p class="cs-label cs-head__k">{{ t.galleria }}</p>
-  <div class="cs-gal">
-    {% comment %} Le "Metà" consecutive finiscono in un muro a due colonne, alternate (1ª a sinistra, 2ª a destra...). {% endcomment %}
-    {% assign n = page.galleria.size %}
-    {% assign i = 0 %}
-    {% for _ in (1..n) %}
-      {% if i >= n %}{% break %}{% endif %}
-      {% assign el = page.galleria[i] %}
-      {% if el.formato == 'meta' %}
-        {% assign fine = i %}
-        {% for _k in (i..n) %}{% if fine < n and page.galleria[fine].formato == 'meta' %}{% assign fine = fine | plus: 1 %}{% endif %}{% endfor %}
-        <div class="cs-gal__mur">
-          {% for col in (0..1) %}
-          <div class="cs-gal__col">
-            {% assign j = i | plus: col %}
-            {% for _m in (i..fine) %}{% if j < fine %}{% assign elj = page.galleria[j] %}{% include progetto-media.html el=elj titolo=page.title ordine=j %}{% assign j = j | plus: 2 %}{% endif %}{% endfor %}
-          </div>
-          {% endfor %}
-        </div>
-        {% assign i = fine %}
-      {% elsif el.type == 'sezione' %}
-        <div class="cs-gal__sez" data-rivela>
-          <h3 class="cs-gal__sez-t">{{ el.titolo }}</h3>
-          {% if el.testo %}<p class="cs-gal__sez-p">{{ el.testo }}</p>{% endif %}
-        </div>
+  {% assign n = page.galleria.size %}
+  {% assign aperta = false %}
+  {% assign i = 0 %}
+  {% for _ in (1..n) %}
+    {% if i >= n %}{% break %}{% endif %}
+    {% assign el = page.galleria[i] %}
+    {% if el.type == 'sezione' or aperta == false %}
+      {% if aperta %}</div></section>{% endif %}
+      {% assign banda = banda | plus: 1 %}
+      {% assign pari = banda | modulo: 2 %}
+<section class="fascia cs-banda{% if pari == 0 %} inv{% endif %}"{% if banda == 1 %} id="galleria"{% endif %}>
+      {% if el.type == 'sezione' %}
+  <header class="cs-gal__sez" data-rivela>
+    <h2 class="cs-gal__sez-t">{{ el.titolo }}</h2>
+    {% if el.testo %}<p class="cs-gal__sez-p">{{ el.testo }}</p>{% endif %}
+  </header>
         {% assign i = i | plus: 1 %}
       {% else %}
-        {% include progetto-media.html el=el titolo=page.title %}
-        {% assign i = i | plus: 1 %}
+  <p class="cs-label cs-head__k cs-banda__k">{{ t.galleria }}</p>
       {% endif %}
-    {% endfor %}
-  </div>
-</section>
+  <div class="cs-gal">
+      {% assign aperta = true %}
+      {% if el.type == 'sezione' %}{% continue %}{% endif %}
+    {% endif %}
+    {% if el.formato == 'meta' %}
+      {% assign fine = i %}
+      {% for _k in (i..n) %}{% if fine < n and page.galleria[fine].formato == 'meta' and page.galleria[fine].type != 'sezione' %}{% assign fine = fine | plus: 1 %}{% endif %}{% endfor %}
+    <div class="cs-gal__mur">
+      {% for col in (0..1) %}
+      <div class="cs-gal__col">
+        {% assign j = i | plus: col %}
+        {% for _m in (i..fine) %}{% if j < fine %}{% assign elj = page.galleria[j] %}{% include progetto-media.html el=elj titolo=page.title ordine=j %}{% assign j = j | plus: 2 %}{% endif %}{% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+      {% assign i = fine %}
+    {% else %}
+      {% include progetto-media.html el=el titolo=page.title %}
+      {% assign i = i | plus: 1 %}
+    {% endif %}
+  {% endfor %}
+  {% if aperta %}</div></section>{% endif %}
 {% endif %}
 
 {% comment %} Precedente e successivo: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; si gira in tondo. {% endcomment %}
@@ -121,7 +135,8 @@ layout: default
   {% for p in tutti %}{% if p.url == page.url %}{% assign qui = forloop.index0 %}{% endif %}{% endfor %}
   {% assign iprec = qui | plus: tot | minus: 1 | modulo: tot %}
   {% assign isucc = qui | plus: 1 | modulo: tot %}
-<section class="fascia inv cs-suite">
+{% assign ultima = banda | modulo: 2 %}
+<section class="fascia cs-suite{% if ultima == 1 %} inv{% endif %}">
   <nav class="cs-pn" aria-label="{{ t.altri }}">
     {% assign pprec = tutti[iprec] %}{% assign psucc = tutti[isucc] %}{% include progetto-pn.html p=pprec verso="prec" etichetta=t.precedente %}
     {% if isucc != iprec %}{% include progetto-pn.html p=psucc verso="succ" etichetta=t.successivo %}{% endif %}
