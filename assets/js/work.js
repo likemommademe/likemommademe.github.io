@@ -42,7 +42,7 @@
     cards.forEach(c => {
       const ok = dds.every(d => !sel[d.k].size || sel[d.k].has(c.dataset[d.k]));
       c.hidden = !ok;
-      if (ok) { c.dataset.m = (n % 6) + 1; n++; }
+      if (ok) { c.dataset.m = (n % 3) + 1; n++; }
     });
     list.dataset.vista = vista;
     vuoto.hidden = n > 0;

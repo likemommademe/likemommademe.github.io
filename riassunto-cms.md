@@ -48,7 +48,7 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 | Pagina | Indirizzo | Contenuto |
 |---|---|---|
 | Home | `/` | Header animato (lo showreel, che avanza con lo scroll e gira una volta sola, poi resta fisso dietro come header), poi il motto con l'occhio, la frase di apertura e i progetti scelti, nell'ordine deciso nel pannello |
-| Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia, card animate (come bitwip.fr/en/work) |
+| Progetti | `/work/` | Tutti i progetti con filtri a tendina (Categoria, Settore e Paese del cliente), vista Mosaico o Griglia. Mosaico = un progetto grande a tutta larghezza (foto 16:9, testo accanto) e poi due affiancati, e si ripete; Griglia = tre colonne uguali |
 | Categoria | `/work/<categoria>/` | Progetti della categoria, nell'ordine deciso nel pannello |
 | Progetto | `/progetti/<progetto>/` | Come le pagine progetto di bitwip: titolo gigante con la copertina quadrata che si appoggia sul foglio; foglio a colori opposti con "Il progetto", la frase-titolo, la scheda fissa a sinistra (cliente, settore, categoria, anno, strumenti) e il racconto a destra (Brief, Concept, Execution, Coordinamento, Risultato, Crediti); galleria divisa in bande a tutta larghezza, una per ogni **Titolo di sezione** (titolo, due righe, le sue immagini), che alternano i colori; dentro, le foto "Metà" a coppie su righe piene, alte uguali (la larghezza segue la forma di ogni foto, niente tagli e niente spazi vuoti; se ne resta una sola va a tutta larghezza); progetto precedente e successivo affiancati |
 | About | `/about/` | Testo, foto, loghi dei clienti, contatti |
@@ -252,6 +252,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Ogni foto delle gallerie ha titolo e una riga di spiegazione (italiano e inglese), in overlay al passaggio del mouse su computer e sotto la foto su telefono. Nuovi campi nel pannello per ogni foto |
 | 12/11/2026 | Mosaico (Works e home): la card piccola ha il testo sopra e la foto sotto, allineata in basso con la foto grande accanto. Corretta la card che mostrava il cliente della card precedente (BeYOU con "Accademia dei Romani"). IKEA: nuova copertina su FRAKTA (`01_Cover_…_ok.jpg`) |
 | 12/11/2026 | Via i collage sfalsati: nel mosaico (Works e home) ogni riga ha le due foto alla stessa altezza e il testo sotto; nelle gallerie le foto "Metà" vanno a coppie su righe piene della stessa altezza, senza spazi vuoti |
+| 12/11/2026 | Mosaico ripensato: ritmo fisso "uno grande, due affiancati". Il grande ha la foto 16:9 su 8 colonne e il titolo grande accanto; i due affiancati hanno foto 4:3 e testo sotto. Vale su Works (anche con i filtri) e in home |
 ---
 
 ## 10. Prossimi passi
