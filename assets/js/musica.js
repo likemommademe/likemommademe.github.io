@@ -1,7 +1,8 @@
 // Musica della home: lo stesso suono del video di riferimento, generato dal codice (nessun file audio).
-// I browser non permettono di far partire l'audio senza un gesto: parte dal pulsante "Suono"
-// (o al primo tocco/tasto, se nella visita precedente era stata accesa). Si abbassa quando non si scorre,
-// si ferma fuori dallo showreel o quando la scheda è nascosta.
+// Parte da sola appena si comincia a scorrere. Attenzione: i browser non contano lo scroll (rotella, trackpad) come gesto
+// che sblocca l'audio, solo clic, tocchi e tasti. Quindi ci prova allo scroll e, se il browser la tiene ferma, parte al
+// primo clic, tocco o tasto in qualunque punto della pagina. Se la si spegne con il pulsante "Suono", resta spenta
+// (anche nelle visite dopo). Si abbassa quando non si scorre, si ferma fuori dallo showreel o con la scheda nascosta.
 (() => {
   'use strict';
   const btn = document.querySelector('[data-suono]');
@@ -80,9 +81,11 @@
   }
 
   function accendi() {
+    if (on) return;
     if (!ctx) init();
-    ctx.resume().then(() => {
-      if (on) return;
+    const c = ctx;
+    c.resume().then(() => {
+      if (on || c !== ctx || c.state !== 'running') return;
       on = true; loopAt = ctx.currentTime + .05; lastScroll = performance.now();
       timer = setInterval(scheduler, 25);
       btn.setAttribute('aria-pressed', 'true'); btn.classList.add('is-on');
@@ -100,10 +103,17 @@
   addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
   document.addEventListener('visibilitychange', () => { if (ctx && on) { document.hidden ? ctx.suspend() : ctx.resume(); } });
 
-  // se era accesa nella visita precedente, riparte al primo gesto che il browser accetta
+  // partenza automatica: allo scroll (se il browser lo permette) o al primo gesto vero; mai se l'utente l'ha spenta
   let pref = null; try { pref = localStorage.getItem(KEY); } catch (e) {}
-  if (pref === '1') {
-    const primo = e => { if (e.target.closest && e.target.closest('[data-suono]')) return; accendi(); ['pointerdown', 'keydown', 'touchend'].forEach(ev => removeEventListener(ev, primo, true)); };
-    ['pointerdown', 'keydown', 'touchend'].forEach(ev => addEventListener(ev, primo, true));
+  if (pref !== '0') {
+    const GESTI = ['pointerdown', 'keydown', 'touchend'];
+    const basta = () => { removeEventListener('scroll', allo, true); GESTI.forEach(ev => removeEventListener(ev, primo, true)); };
+    const allo = () => { removeEventListener('scroll', allo, true); accendi(); };   // un tentativo solo: poi decide il primo gesto
+    const primo = e => {
+      if (e.target.closest && e.target.closest('[data-suono]')) return basta();   // il pulsante fa da sé
+      accendi(); basta();
+    };
+    addEventListener('scroll', allo, { passive: true, capture: true });
+    GESTI.forEach(ev => addEventListener(ev, primo, true));
   }
 })();

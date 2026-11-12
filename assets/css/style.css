@@ -5,22 +5,22 @@
    ========================================================= */
 
 :root, :root[data-theme="dark"] {
-  --bg: #0A0A0A;
+  --bg: #121414;
   --fg: #F5F5F2;
   --muted: #9A9A9A;
-  --line: #262626;
-  --line-2: #3A3A3A;
-  --placeholder: #161616;
-  --card: #141414;
+  --line: #282B2B;
+  --line-2: #3B3E3E;
+  --placeholder: #1F2121;
+  --card: #1B1E1E;
   --accent-1: #3D5AFF;   /* blu elettrico: link, CTA, focus */
   --accent-2: #12C08E;   /* verde smeraldo */
   --accent-3: #FF3D8B;   /* rosa shocking (provvisorio) */
-  --pill: rgba(28, 28, 28, .72);
+  --pill: rgba(31, 33, 33, .72);
   color-scheme: dark;
 }
 :root[data-theme="light"] {
   --bg: #F4EFE7;          /* color carta, come bitwip */
-  --fg: #0A0A0A;
+  --fg: #121414;
   --muted: #5E5A54;
   --line: #E2DBCF;
   --line-2: #CFC6B8;
@@ -33,7 +33,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme]) { --bg: #F4EFE7; --fg: #0A0A0A; --muted: #5E5A54; --line: #E2DBCF; --line-2: #CFC6B8; --placeholder: #EAE3D8; --card: #FBF8F3; }
+  :root:not([data-theme]) { --bg: #F4EFE7; --fg: #121414; --muted: #5E5A54; --line: #E2DBCF; --line-2: #CFC6B8; --placeholder: #EAE3D8; --card: #FBF8F3; }
 }
 
 :root {
@@ -99,10 +99,10 @@ html.js .rise.is-in > span { transform: none; }
   display: inline-flex; align-items: center; gap: 16px; height: 60px; padding: 0 8px 0 26px; border-radius: 999px;
   background: var(--accent-1); color: #F5F5F2; font-weight: 700; font-size: 18px; position: relative; overflow: hidden; isolation: isolate;
 }
-.btn::before { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; aspect-ratio: 1; border-radius: 50%; background: #0A0A0A;
+.btn::before { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; aspect-ratio: 1; border-radius: 50%; background: #121414;
   transform: translate(-50%, -50%) scale(0); transition: transform .6s var(--ease); z-index: -1; }
 .btn:hover::before { transform: translate(-50%, -50%) scale(1); }
-.btn__arrow { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #0A0A0A; color: #F5F5F2; flex: none; }
+.btn__arrow { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #121414; color: #F5F5F2; flex: none; }
 .btn:hover .btn__arrow { background: var(--accent-1); }
 .btn__arrow svg { transition: transform .6s var(--ease); }
 .btn:hover .btn__arrow svg, .card:hover .btn__arrow svg, .mondo:hover .btn__arrow svg { transform: rotate(-45deg); }
@@ -139,7 +139,7 @@ html.js .rise.is-in > span { transform: none; }
   display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 6px 0 22px; border-radius: 999px;
   background: var(--accent-1); color: #F5F5F2; font-weight: 700; font-size: 17px;
 }
-.nav__arrow { width: 40px; height: 40px; border-radius: 50%; background: #0A0A0A; color: #F5F5F2; display: grid; place-items: center; transition: transform .4s var(--ease); }
+.nav__arrow { width: 40px; height: 40px; border-radius: 50%; background: #121414; color: #F5F5F2; display: grid; place-items: center; transition: transform .4s var(--ease); }
 .nav__cta:hover .nav__arrow { transform: translateX(3px); }
 
 /* Interruttore giorno / notte: un sole che diventa luna */
@@ -189,7 +189,7 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 .motto:hover .occhio__palpebra { animation: occhiolino-2 .45s var(--ease); }
 @keyframes occhiolino { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
 @keyframes occhiolino-2 { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
-.occhio__pupilla { fill: #0A0A0A; }
+.occhio__pupilla { fill: #121414; }
 /* la frase in volo dall'header alla sezione: bianca in "differenza" = scura sul chiaro, chiara sullo scuro */
 .motto-volo { position: fixed; left: 0; top: 0; z-index: 40; width: max-content; margin: 0; color: #fff; mix-blend-mode: difference;
   font-family: var(--f-sans); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
@@ -198,7 +198,7 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 .motto-volo .occhio__iride, .motto-volo .occhio__pupilla { display: none; }
 .motto-iride { position: fixed; left: 0; top: 0; z-index: 41; transform-origin: 0 0; will-change: transform; pointer-events: none; visibility: hidden; }
 .motto-iride i { position: absolute; display: grid; place-items: center; border-radius: 50%; background: #FF3D8B; }
-.motto-iride i::after { content: ""; width: var(--p); height: var(--p); border-radius: 50%; background: #0A0A0A; }
+.motto-iride i::after { content: ""; width: var(--p); height: var(--p); border-radius: 50%; background: #121414; }
 
 /* sotto il motto: a sinistra due testi e il link, a destra i numeri (come bitwip) */
 .apertura__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 7vw, 140px); align-items: start; }
@@ -230,10 +230,10 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
    .inv usa i colori opposti al tema: di notte il beige carta, di giorno il nero. */
 :root { --r-fascia: clamp(24px, 3vw, 48px); }
 :root[data-theme="dark"] .inv, :root:not([data-theme]) .inv {
-  --bg: #F4EFE7; --fg: #0A0A0A; --muted: #5E5A54; --line: #E2DBCF; --line-2: #CFC6B8; --placeholder: #EAE3D8; --card: #FBF8F3;
+  --bg: #F4EFE7; --fg: #121414; --muted: #5E5A54; --line: #E2DBCF; --line-2: #CFC6B8; --placeholder: #EAE3D8; --card: #FBF8F3;
 }
 :root[data-theme="light"] .inv {
-  --bg: #0A0A0A; --fg: #F5F5F2; --muted: #9A9A9A; --line: #262626; --line-2: #3A3A3A; --placeholder: #161616; --card: #141414;
+  --bg: #121414; --fg: #F5F5F2; --muted: #9A9A9A; --line: #282B2B; --line-2: #3B3E3E; --placeholder: #1F2121; --card: #1B1E1E;
 }
 .fascia {
   position: relative; z-index: 1; width: 100vw; margin-left: calc(50% - 50vw); margin-top: calc(var(--r-fascia) * -1);
