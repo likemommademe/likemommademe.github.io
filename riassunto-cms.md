@@ -247,6 +247,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Aggiunti **IKEA, Voglia di casa** (Generative AI: Workspace, KOMPISHÄNG, Visual Display, dalla cartella `~/Desktop/Claude/IKEA Voglia di casa`; tolti tutti i riferimenti alla candidatura, la parte "Chi sono" e le foto personali) e **SITUATION** (Web Design). Audible spot online anche senza il video. Corrette le foto con parti trasparenti (righe e bande nere: la conversione ora le appoggia su bianco) e tolta da Blue Origin un'immagine troppo piccola |
 | 12/11/2026 | About me con la foto (seduto sulla propria testa). IKEA: gallerie divise in quattro sezioni (Workspace, KOMPISHÄNG, Visual Display) con due righe su cosa ho fatto, aggiunte le foto su FRAKTA e su BLÅHAJ. Nel pannello: nuovo elemento della galleria **Titolo di sezione**, e video `.mp4` riproducibili direttamente nella pagina |
 | 12/11/2026 | **BeYOU** tolto da IKEA e diventato un progetto a parte in Branding (logo e communication package per un hotel di lusso accessibile) |
+| 12/11/2026 | About me: foto con lo sfondo tutto rosso (`06_…_ok.jpg`). IKEA: copertina con la foto su FRAKTA; le foto su FRAKTA e su BLÅHAJ a tutta larghezza nella sezione Visual Display |
 ---
 
 ## 10. Prossimi passi
