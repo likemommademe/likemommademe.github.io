@@ -3,7 +3,7 @@ title: "SITUATION"
 title_en: "SITUATION"
 categoria: "web-design"
 cliente: "ied"
-anno: 2022
+anno: 2021
 link: "https://www.ied.edu/projects/situation"
 link_testo: "Il progetto sul sito IED"
 link_testo_en: "The project on the IED website"
@@ -13,7 +13,7 @@ sottotitolo_en: "Coach like never before: the app for volleyball coaches"
 domanda: "La pallavolo è uno sport di situazione. Perché non allenarla così?"
 domanda_en: "Volleyball is a game of situations. Why not coach it that way?"
 body_en: |
-  My thesis for the **Master in User Interface Design and AI** at IED Rome: an app for volleyball coaches, from the first idea to the launch campaign. Identity, interfaces and advertising, under the line **"Coach like never before"**.
+  My thesis for the **Master in Digital Art Direction** at IED Rome: an app for volleyball coaches, from the first idea to the launch campaign. Identity, interfaces and advertising, under the line **"Coach like never before"**.
 concept: |
   **La pallavolo è uno sport di situazione**: la variabilità delle situazioni di gioco incide sulla tecnica con cui si gioca e si compete. Le situazioni hanno ricorrenze sequenziali, modelli di comportamento mai ripetitivi ma che tendono a riproporre schemi di approccio simili.
 
@@ -183,9 +183,9 @@ galleria:
     didascalia: "«Allena come mai prima d'ora», pronto da portare in palestra."
     didascalia_en: "\"Coach like never before\", ready to take to the gym."
 crediti: |
-  Tesi del Master in User Interface Design and AI, IED Roma
+  Tesi del Master in Digital Art Direction, IED Roma
 crediti_en: |
-  Thesis for the Master in User Interface Design and AI, IED Rome
+  Thesis for the Master in Digital Art Direction, IED Rome
 ordine: 2
 ---
-La mia tesi del **Master in User Interface Design and AI** allo IED di Roma: un'app per gli allenatori di pallavolo, dalla prima idea alla campagna di lancio. Identità, interfacce e pubblicità, con il claim **«Allena come mai prima d'ora»**.
+La mia tesi del **Master in Digital Art Direction** allo IED di Roma: un'app per gli allenatori di pallavolo, dalla prima idea alla campagna di lancio. Identità, interfacce e pubblicità, con il claim **«Allena come mai prima d'ora»**.

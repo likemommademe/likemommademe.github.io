@@ -52,35 +52,50 @@ footer:
 
 # Testi provvisori della pagina About: li riscriviamo insieme
 about:
-  sottotitolo: Creative designer. Identità, illustrazioni, motion, AI e siti, dal concept alla consegna.
+  sottotitolo: Creative designer. Identità visive, brand communication e contenuti per digital, stampa ed eventi, dal concept alla consegna.
   foto_titolo: Dietro le quinte
   anni_titolo: "Come mamma mi ha fatto, anno per <em>anno</em>"
-  anni_lead: Credo nelle idee che si vedono finite.
+  anni_lead: Progetto, produco e coordino. Senza perdere di vista i dettagli.
   tappe:
-    - anno: 2016
-      testo: Primo logo, per il bar sotto casa. Pagato in cappuccini.
-    - anno: 2018
-      testo: Prima agenzia. Imparo a tenere insieme clienti, fornitori e scadenze.
+    - anno: 2015
+      testo: Diploma in Grafica al Liceo Artistico Pinturicchio. Da qui non ho più smesso di disegnare.
+    - anno: 2019
+      testo: Primo stage da designer grafico, alla Gps Srl Group. Scopro che i file vanno anche consegnati.
     - anno: 2020
-      testo: Motion design e video entrano nel lavoro di ogni giorno.
+      testo: Laurea in Grafica editoriale all'Accademia di Belle Arti di Roma, 110 e lode. E la mia tesi diventa l'identità dell'Accademia dei Romani, dove lavoro da freelance.
+    - anno: 2021
+      testo: Master in Digital Art Direction allo IED di Roma, 108. La tesi è SITUATION, un'app per allenatori di pallavolo.
+    - anno: 2022
+      testo: Graphic e UX designer da Pixell, prima in stage e poi a contratto. Brand, siti e comunicazione per DCD, Etic.a e altri clienti.
     - anno: 2023
-      testo: Arriva la creative AI. I prompt li scrivo io, la direzione pure.
+      testo: Entro in Ficacci Olive Company come Digital Marketing Specialist. Layout, campagne e video, ogni giorno.
+    - anno: 2025
+      testo: Divento Marketing & Creative designer in Ficacci. Identità, campagne, packaging e materiali per web e stampa.
     - anno: 2026
-      testo: Nasce LIKEMOMMADEME, con un sito e un pannello fatti su misura.
-  valori_titolo: "Tre valori mi <em>guidano</em>"
+      testo: Masterclass AI x Fashion Futures alla Futura AI Academy. E nasce LIKEMOMMADEME, con un sito fatto su misura.
+  valori_titolo: "Tre parole mi <em>descrivono</em>"
   valori:
-    - nome: Curiosità
-      testo: Guardo tutto, provo tutto. Poi tengo solo quello che serve al progetto.
-    - nome: Cura
-      testo: Il dettaglio che nessuno nota è quello che fa sembrare tutto giusto.
-    - nome: Ironia
-      testo: Il lavoro si prende sul serio. Io un po' meno, e si vede.
+    - nome: Visione
+      testo: Concept e art direction. Ogni progetto nasce da un'idea forte e riconoscibile.
+    - nome: Execution
+      testo: Identità visive e contenuti per digital, stampa ed eventi, curati fino all'ultimo dettaglio.
+    - nome: Coordinamento
+      testo: Clienti, team interni, fornitori e partner. Tanti livelli, un solo risultato.
+  strumenti_titolo: "Con cosa <em>lavoro</em>"
+  strumenti:
+    - gruppo: Adobe Creative Suite
+      voci: [Photoshop, Illustrator, InDesign, Premiere Pro, After Effects, Firefly]
+    - gruppo: Creative AI
+      voci: [ChatGPT, Claude, Midjourney, Firefly]
+      nota: Strumenti AI applicati a design, content creation e workflow creativi.
+    - gruppo: UI/UX e prototipazione
+      voci: [Figma, Sketch, Adobe XD, Framer]
   clienti_titolo: Clienti
   dove_titolo: "Da dove <em>lavoro</em>"
-  dove_testo: Lavoro con brand e agenzie in Italia e all'estero, in presenza o da remoto.
+  dove_testo: Vivo e lavoro a Roma. Per i progetti giusti anche da remoto, ovunque.
   dove:
-    - citta: Italia
-      dettaglio: Studio
+    - citta: Roma
+      dettaglio: In sede
       fuso: Europe/Rome
       sigla: ITA
     - citta: Ovunque
@@ -90,11 +105,13 @@ about:
   faq_titolo: "Domande<em class=\"p\">?</em>"
   faq:
     - d: Chi c'è dietro LIKEMOMMADEME?
-      r: Una persona sola, io. Seguo ogni progetto dal concept alla consegna, e quando serve coinvolgo fotografi, sviluppatori e stampatori di fiducia.
+      r: Io, Emanuele Calfa, creative designer di Roma. Seguo ogni progetto dal concept alla consegna, e quando serve coinvolgo fotografi, sviluppatori e stampatori di fiducia.
     - d: Che lavori fai?
       r: Cinque mondi. Branding, illustrazione, motion design, generative AI e web design. Spesso insieme, nello stesso progetto.
     - d: Lavori anche con le agenzie?
-      r: Sì. Posso entrare in un team esistente come creative designer, oppure prendere in mano un progetto intero.
+      r: Sì, ci sono cresciuto. In Pixell ho lavorato dentro un team di grafici e sviluppatori; posso entrare in un team esistente oppure prendere in mano un progetto intero.
+    - d: Usi l'intelligenza artificiale?
+      r: Sì, come uno strumento tra gli altri. L'idea e la direzione restano mie; l'AI mi aiuta a esplorare di più e più in fretta.
     - d: Quanto costa un progetto?
       r: Dipende da cosa serve davvero. Scrivimi due righe sul progetto e ti mando una proposta chiara, con tempi e costi.
     - d: In quanto tempo rispondi?

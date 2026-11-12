@@ -548,7 +548,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 72vh; margin: 0 auto; }
 /* Il dettaglio ingrandito che accompagna una foto verticale rimasta da sola */
 .cs-media--zoom .cs-zoom { display: block; overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
-.cs-media--zoom .cs-zoom img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.9); transform-origin: 50% 40%; border-radius: 0; }
+.cs-media--zoom .cs-zoom img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.5); transform-origin: 50% 40%; border-radius: 0; image-rendering: auto; }
 
 .cs-cap { display: grid; gap: 2px; padding-top: 14px; max-width: 60ch; }
 .cs-cap__t { color: var(--fg); font-weight: 700; font-size: var(--t-body); line-height: 1.3; }
@@ -648,6 +648,21 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 .rec-home__item figcaption span { color: var(--muted); font-size: var(--t-small); }
 .rec-home__item .lnk { margin-top: 8px; font-size: var(--t-small); }
 
+/* About: strisce di foto che scorrono da sole, lente e continue, in direzioni opposte (si fermano passandoci sopra) */
+.vita__pista { animation: vita-scorre 160s linear infinite; }
+.vita__striscia:nth-child(2) .vita__pista { animation-direction: reverse; animation-duration: 190s; }
+.vita:hover .vita__pista { animation-play-state: paused; }
+@keyframes vita-scorre { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-25% - var(--gap) / 4), 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .vita__pista { animation: none; } }
+/* About: strumenti */
+.strum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(32px, 4vw, 64px) var(--gap); }
+.strum__g { padding-top: 20px; border-top: 1px solid var(--line-2); }
+.strum__k { margin-bottom: 20px; color: var(--muted); }
+.strum__g ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.strum__g li { padding: 8px 16px; border: 1px solid var(--line-2); border-radius: 999px; font-weight: 500; }
+.strum__nota { margin: 18px 0 0; color: var(--muted); font-size: var(--t-small); max-width: 34ch; }
+@media (max-width: 860px) { .strum { grid-template-columns: minmax(0, 1fr); } }
+
 /* Blocchi che salgono quando entrano nello schermo */
 html.js [data-rivela] { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform 1s var(--ease); }
 html.js [data-rivela].is-in { opacity: 1; transform: none; }
@@ -730,6 +745,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .vita__pista { display: flex; gap: var(--gap); margin: 0; padding: 0; list-style: none; width: max-content; will-change: transform; }
 .vita__ph { flex: none; height: clamp(160px, 18vw, 300px); border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
 .vita__ph img { height: 100%; width: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.vita__striscia:nth-child(2) .vita__ph img { aspect-ratio: 1; }
 .vita__ph.v2 img { aspect-ratio: 3 / 4; }
 .vita__ph.v3 img { aspect-ratio: 16 / 9; }
 .vita__ph.v4 img { aspect-ratio: 1; }

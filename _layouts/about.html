@@ -42,21 +42,22 @@ layout: default
 </section>
 
 {% comment %} 3. Due strisce di foto che scorrono in direzioni opposte (per ora: copertine e gallerie dei progetti) {% endcomment %}
-{% capture foto %}{% for p in site.progetti %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% for g in p.galleria %}{% if g.immagine %}{{ g.immagine }}|{{ g.didascalia | default: p.title }};{% endif %}{% endfor %}{% endfor %}{% endcapture %}
-{% assign foto = foto | split: ";" %}
-{% if foto.size > 0 %}
+{% comment %} Due strisce: in alto le copertine, in basso una foto per progetto. Ognuna ripetuta 4 volte per un giro continuo. {% endcomment %}
+{% assign prog_vita = site.progetti | sort: "ordine", "last" %}
+{% capture s1 %}{% for p in prog_vita %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% endfor %}{% endcapture %}
+{% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ g.titolo | default: p.title }};{% assign fatto = true %}{% endif %}{% endfor %}{% endfor %}{% endcapture %}
+{% assign strisce = s1 | append: "#" | append: s2 | split: "#" %}
 <section class="fascia inv vita" aria-label="{{ a.foto_titolo }}" data-vita>
-  {% for striscia in (1..2) %}
-  <div class="vita__striscia" data-striscia="{{ striscia }}">
+  {% for st in strisce %}{% assign foto = st | split: ";" %}
+  <div class="vita__striscia" data-striscia="{{ forloop.index }}">
     <ul class="vita__pista">
       {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
-        <li class="vita__ph {% cycle 'v1', 'v2', 'v3', 'v4', 'v5' %}"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy"></li>
+        <li class="vita__ph"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy" decoding="async"></li>
       {% endfor %}{% endfor %}
     </ul>
   </div>
   {% endfor %}
 </section>
-{% endif %}
 
 {% comment %} 4. Valori (come bitwip "Three values guide us"): ogni parola si scrive seguendo lo scroll,
    le lettere fantasma diventano piene e una penna corre davanti all'inchiostro {% endcomment %}
@@ -75,12 +76,28 @@ layout: default
   </div>
 </section>
 
-{% comment %} 5. Clienti (dal pannello) {% endcomment %}
-{% if page.mostra_clienti and site.clienti.size > 0 %}
+{% comment %} Strumenti, divisi in tre gruppi come sul profilo LinkedIn {% endcomment %}
 <section class="fascia inv">
+  <div class="sec-head"><h2 class="rise"><span>{{ a.strumenti_titolo }}</span></h2></div>
+  <div class="strum">
+    {% for g in a.strumenti %}
+    <div class="strum__g" data-rivela>
+      <p class="cs-label strum__k">{{ g.gruppo }}</p>
+      <ul>{% for v in g.voci %}<li>{{ v }}</li>{% endfor %}</ul>
+      {% if g.nota %}<p class="strum__nota">{{ g.nota }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% comment %} 5. Clienti (dal pannello) {% endcomment %}
+{% assign clienti_veri = "" | split: "" %}
+{% for c in site.clienti %}{% assign usati = site.progetti | where: "cliente", c.slug %}{% if usati.size > 0 %}{% assign clienti_veri = clienti_veri | push: c %}{% endif %}{% endfor %}
+{% if page.mostra_clienti and clienti_veri.size > 0 %}
+<section class="fascia">
   <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
   <ul class="clienti">
-    {% for c in site.clienti %}
+    {% for c in clienti_veri %}
       <li>{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}</li>
     {% endfor %}
   </ul>
@@ -88,7 +105,7 @@ layout: default
 {% endif %}
 
 {% comment %} 6. Dove lavoro, con l'ora in tempo reale {% endcomment %}
-<section class="fascia">
+<section class="fascia inv">
   <div class="sec-head">
     <h2 class="rise"><span>{{ a.dove_titolo }}</span></h2>
   </div>
@@ -106,7 +123,7 @@ layout: default
 </section>
 
 {% comment %} 7. Domande frequenti: se ne apri una, le altre si chiudono {% endcomment %}
-<section class="fascia inv">
+<section class="fascia">
   <div class="sec-head"><h2 class="rise"><span>{{ a.faq_titolo }}</span></h2></div>
   <div class="faq">
     {% for q in a.faq %}
@@ -186,18 +203,6 @@ layout: default
       scrivi();
     }
 
-    // Strisce di foto: scorrono in direzioni opposte seguendo lo scroll
-    var vita = document.querySelector('[data-vita]');
-    if (vita && !reduce) {
-      var strisce = vita.querySelectorAll('.vita__pista');
-      var muovi = function () {
-        var r = vita.getBoundingClientRect(), k = (innerHeight - r.top) / (innerHeight + r.height);
-        if (k < -.1 || k > 1.1) return;
-        strisce.forEach(function (s, i) { s.style.transform = 'translateX(' + ((i ? -1 : 1) * (k - .5) * 30 - (i ? 30 : 10)) + '%)'; });
-      };
-      addEventListener('scroll', muovi, { passive: true });
-      muovi();
-    }
 
     // Ora in tempo reale
     var ore = document.querySelectorAll('[data-fuso]');

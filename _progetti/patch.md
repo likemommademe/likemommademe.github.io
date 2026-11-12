@@ -15,11 +15,6 @@ execution: |
 execution_en: |
   The patches were made with Adobe Illustrator and Procreate.
 galleria:
-  - type: "sezione"
-    titolo: "Le patch"
-    titolo_en: "The patches"
-    testo: "Quattro patch, quattro missioni: il cielo che si apre, il lancio, l’astronauta e l’atterraggio."
-    testo_en: "Four patches, four missions: the sky opening up, the launch, the astronaut and the landing."
   - type: "foto"
     immagine: "/assets/uploads/patch-esagono.webp"
     formato: "meta"

@@ -186,7 +186,7 @@ layout: default
       var img = fig.querySelector('img');
       var z = document.createElement('figure'); z.className = 'cs-media cs-media--zoom is-in'; z.setAttribute('aria-hidden', 'true');
       if (fig.hasAttribute('data-rivela')) { z.setAttribute('data-rivela', ''); z.className = 'cs-media cs-media--zoom' + (fig.classList.contains('is-in') ? ' is-in' : ''); }
-      z.innerHTML = '<span class="cs-zoom"><img src="' + (img.currentSrc || img.src) + '" alt=""></span>';
+      z.innerHTML = '<span class="cs-zoom"><img src="' + (img.currentSrc || img.src) + '" alt="" decoding="async"></span>';
       return z;
     }
     function decidi(fig) {
