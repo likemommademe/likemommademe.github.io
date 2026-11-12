@@ -15,13 +15,17 @@ domanda_en: "Dress your brand."
 body_en: |
   Etic.a has been printing labels for food, beverage, cosmetics, pharma, home care and automotive since 2009. It needed a new identity and a website able to show off its techniques, sectors and projects, and to turn visits into enquiries.
 concept: |
-  Il marchio è fatto di due elementi: una forma quadrata con gli angoli stondati, verde chiaro, che rappresenta **l'etichetta**, e il nome in nero, in **Mont**, moderno e tondeggiante. Uno dei quattro angoli ha una rientranza che accoglie la lettera «e»: un segno di **accoglienza** e di **cura** verso i clienti. Sotto, il payoff **labels** in Futura; sopra tutto, la headline **«Dress your brand»**.
+  Etic.a voleva reinventare la propria immagine, per porsi sul mercato in modo più innovativo e coerente con i propri valori: affidabilità, professionalità, attenzione al dettaglio e sostenibilità. Il punto di partenza è stato il **restyling del logo**, migliorato nelle proporzioni.
 
-  Il sito parte dalla stessa idea: il verde e il nero del marchio, foto grandi delle lavorazioni e un percorso chiaro per chi cerca l'etichetta giusta, per settore, per tecnica di stampa, per progetto.
+  Il marchio è fatto di due elementi: una forma quadrata con gli angoli stondati, verde chiaro, che rappresenta **l'etichetta**, e il nome in nero, in **Mont**, moderno e tondeggiante. Uno dei quattro angoli ha una rientranza che accoglie la lettera «e»: un segno di **accoglienza** e di **cura** verso i clienti. Sotto, il payoff **labels** in Futura; sopra tutto, il nuovo payoff **«Dress your brand»**: un'azienda che non si limita a stampare etichette, ma «veste» i prodotti di ogni brand.
+
+  Il sito parte dalla stessa idea: il verde e il nero del marchio, foto grandi delle lavorazioni e un percorso chiaro per chi cerca l'etichetta giusta, per settore, per tecnica di stampa, per progetto. C'è anche un **virtual tour** per visitare l'azienda.
 concept_en: |
-  The logo is made of two elements: a light green square with rounded corners that stands for **the label**, and the name in black, set in **Mont**, modern and rounded. One of the four corners has a notch that holds the letter "e": a sign of **welcome** and **care** for clients. Below, the **labels** payoff in Futura; above it all, the headline **"Dress your brand"**.
+  Etic.a wanted to reinvent its image, to come across as more innovative and truer to its values: reliability, professionalism, attention to detail and sustainability. The starting point was a **logo restyling**, with refined proportions.
 
-  The website grows from the same idea: the logo's green and black, large photos of the print work and a clear path for anyone looking for the right label, by sector, by printing technique, by project.
+  The logo is made of two elements: a light green square with rounded corners that stands for **the label**, and the name in black, set in **Mont**, modern and rounded. One of the four corners has a notch that holds the letter "e": a sign of **welcome** and **care** for clients. Below, the **labels** payoff in Futura; above it all, the new payoff **"Dress your brand"**: a company that doesn't just print labels, but "dresses" every brand's products.
+
+  The website grows from the same idea: the logo's green and black, large photos of the print work and a clear path for anyone looking for the right label, by sector, by printing technique, by project. There's also a **virtual tour** to visit the company.
 execution: |
   Del sito mi sono occupato dall'inizio alla fine: struttura, **wireframe** e **design** di tutte le pagine, desktop e mobile, dalla home alle interne di lavorazioni, etichette, portfolio, news, sostenibilità e lavora con noi. Poi l'ho passato al **reparto IT** per lo sviluppo.
 
@@ -31,9 +35,9 @@ execution_en: |
 
   Around the website, all the communication: the **brand manual** for the new logo, the **animated logo**, trade fair **stands** (Cosmopack, Ipack Ima, Marca), panels, **social posts**, email signatures and banners, the leaflet, the folder, the sample book and the brand identity.
 coordinamento: |
-  Ho lavorato al progetto dentro **Pixell**, insieme al team dei grafici, seguendo tutta la comunicazione di Etic.a. Per il sito ho curato wireframe e design, poi ho passato i file al reparto IT che lo ha sviluppato.
+  Ho lavorato al progetto dentro **Pixell** ([qui la pagina del progetto sul loro sito](https://www.pixell.it/progetti/etic-a/)), insieme al team dei grafici, seguendo tutta la comunicazione di Etic.a. Per il sito ho curato wireframe e design, poi ho passato i file al reparto IT che lo ha sviluppato.
 coordinamento_en: |
-  I worked on the project at **Pixell**, together with the design team, handling all of Etic.a's communication. For the website I took care of wireframes and design, then handed the files to the IT department, who built it.
+  I worked on the project at **Pixell** ([the project on their website](https://www.pixell.it/progetti/etic-a/)), together with the design team, handling all of Etic.a's communication. For the website I took care of wireframes and design, then handed the files to the IT department, who built it.
 galleria:
   - type: "sezione"
     titolo: "Il sito online"
@@ -182,6 +186,52 @@ galleria:
     didascalia_en: "The gold lines that return on the folder, banners and leaflet."
     formato: "meta"
   - type: "sezione"
+    titolo: "Shooting e video"
+    titolo_en: "Shoots and video"
+    testo: "Giorni di riprese e still life per raccontare le etichette sui prodotti, e un video corporate che ripercorre la vita di un'etichetta al contrario, dalla consegna all'incontro con il cliente."
+    testo_en: "Days of filming and still life to show the labels on the products, and a corporate video that retraces a label's life backwards, from delivery to the first meeting with the client."
+  - type: "video"
+    link: "/assets/uploads/etica-video-corporate.mp4"
+    titolo: "Il video corporate"
+    titolo_en: "The corporate video"
+    didascalia: "Ispirato all'ingegneria inversa: in un minuto, la storia di un'etichetta raccontata a ritroso."
+    didascalia_en: "Inspired by reverse engineering: in one minute, a label's story told backwards."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-shooting-beverage.webp"
+    formato: "meta"
+    titolo: "Beverage"
+    titolo_en: "Beverage"
+    didascalia: "Vini e amari, con le etichette in primo piano sul nero."
+    didascalia_en: "Wines and bitters, labels up front on black."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-shooting-food.webp"
+    formato: "meta"
+    titolo: "Food"
+    titolo_en: "Food"
+    didascalia: "Olio, passata e conserve, in una cucina tutta arancione."
+    didascalia_en: "Oil, passata and preserves, in an all-orange kitchen."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-shooting-cosmetica.webp"
+    formato: "meta"
+    titolo: "Home & personal care"
+    titolo_en: "Home & personal care"
+    didascalia: "Flaconi e sieri sul blu, tra le pieghe di un telo bianco."
+    didascalia_en: "Bottles and serums on blue, among the folds of a white sheet."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-shooting-bobine.webp"
+    formato: "meta"
+    titolo: "Le bobine"
+    titolo_en: "The rolls"
+    didascalia: "Le etichette stampate, ancora sulla bobina."
+    didascalia_en: "Printed labels, still on the roll."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-backstage.webp"
+    formato: "meta"
+    titolo: "Il backstage"
+    titolo_en: "Behind the scenes"
+    didascalia: "Il set, le interviste e le riprese in produzione."
+    didascalia_en: "The set, the interviews and filming on the production floor."
+  - type: "sezione"
     titolo: "Le fiere"
     titolo_en: "Trade fairs"
     testo: "Gli stand e i pannelli per Cosmopack, Ipack Ima e Marca, con le firme mail per annunciarli."
@@ -225,6 +275,12 @@ galleria:
     titolo_en: "Social and print"
     testo: "Il format dei post, le campagne per le fiere e tutti gli stampati dell'immagine coordinata."
     testo_en: "The post format, trade fair campaigns and all the printed brand identity."
+  - type: "foto"
+    immagine: "/assets/uploads/etica-social-feed.webp"
+    titolo: "Il feed"
+    titolo_en: "The feed"
+    didascalia: "Le rubriche del profilo, una accanto all'altra nei colori del brand."
+    didascalia_en: "The profile's series, side by side in the brand colours."
   - type: "foto"
     immagine: "/assets/uploads/etica-format-social.webp"
     titolo: "Il format social"
@@ -289,10 +345,12 @@ strumenti:
   - After Effects
 crediti: |
   Wireframe, design del sito e comunicazione: Emanuele Calfa, con il team grafico di Pixell  
-  Sviluppo: reparto IT
+  Sviluppo: reparto IT  
+  Shooting e video corporate: Pixell
 crediti_en: |
   Wireframes, web design and communication: Emanuele Calfa, with the Pixell design team  
-  Development: IT department
+  Development: IT department  
+  Shoots and corporate video: Pixell
 ordine: 1
 ---
 Etic.a stampa etichette per food, beverage, cosmetica, farmaceutica, casa e automotive, dal 2009. Serviva un'identità nuova e un sito capace di raccontare le lavorazioni, i settori e i progetti, e di trasformare le visite in richieste.
