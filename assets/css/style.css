@@ -345,6 +345,48 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .card-go { display: inline-flex; align-items: center; gap: 12px; margin-top: 16px; font-weight: 700; }
 .card-go .btn__arrow { width: 36px; height: 36px; background: var(--fg); color: var(--bg); }
 
+/* ---------- Home: lavori in scorrimento orizzontale (come la "piste" di bitwip) ---------- */
+.piste.fascia { padding-left: 0; padding-right: 0; }
+.piste { --pg: clamp(28px, 4vw, 56px); }
+.piste__rail { display: flex; gap: var(--pg); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--m); padding: 0 var(--m) 14px; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.piste__rail > * { flex: 0 0 auto; scroll-snap-align: start; }
+.piste__intro { width: min(84vw, 440px); display: flex; flex-direction: column; justify-content: flex-start; gap: 28px; transform-origin: 0 50%; }
+.piste.is-pilota .piste__intro { justify-content: space-between; }
+.piste__t { margin-top: clamp(20px, 2vw, 32px); font-size: var(--t-h2); max-width: 12ch; }
+.piste__bas { display: grid; gap: 20px; justify-items: start; }
+.piste__i { margin: 0; max-width: 34ch; color: var(--muted); font-size: var(--t-lead); line-height: 1.38; }
+.pc { width: min(84vw, 520px); display: flex; flex-direction: column; gap: 18px; }
+.pc__media { display: block; aspect-ratio: 4 / 3; border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
+.pc__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+.pc:hover .pc__media img { transform: scale(1.04); }
+.pc__corpo { display: flex; flex-direction: column; gap: 14px; }
+.pc__tag { margin: 0; }
+.pc__tag > span { padding: 4px 12px; border: 1px solid var(--line-2); border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.pc__t { font-weight: 500; font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.02em; }
+.pc__r { display: grid; gap: 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+.pc__rl { color: var(--muted); }
+.pc__q { font-size: var(--t-lead); line-height: 1.3; letter-spacing: -.01em; text-wrap: balance; }
+.pc__go { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; }
+.pc__go .btn__arrow { width: 36px; height: 36px; background: var(--fg); color: var(--bg); }
+.pc:hover .pc__go .btn__arrow svg { transform: rotate(-45deg); }
+.piste__fin { width: min(70vw, 320px); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 28px; }
+.piste__fin-t { font-weight: 500; font-size: clamp(2rem, 1.2rem + 2.2vw, 3.5rem); line-height: 1; letter-spacing: -.035em; text-wrap: balance; }
+.piste__fin-go { display: grid; place-items: center; width: clamp(72px, 6vw, 104px); aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--line-2); transition: background .4s, border-color .4s, color .4s, transform .8s var(--ease); }
+.piste__fin:hover .piste__fin-go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
+.piste__barra { display: none; }
+/* Sul computer: la sezione resta ferma e la fila scorre con lo scroll */
+.piste.is-pilota { padding-top: var(--r-fascia); padding-bottom: 0; --pg: clamp(72px, 7.4vw, 140px); }
+.piste.is-pilota .piste__scena { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; display: flex; flex-direction: column; justify-content: center; padding-top: calc(var(--nav-h) * .6); }
+.piste.is-pilota .piste__rail { overflow: visible; scroll-snap-type: none; width: max-content; height: min(max(65svh, 520px), 565px, 88svh); padding-bottom: 0; align-items: stretch; will-change: transform; }
+.piste.is-pilota .piste__intro { width: clamp(320px, 30vw, 500px); }
+.piste.is-pilota .pc { width: clamp(640px, 60vw, 1000px); display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); column-gap: clamp(22px, 2.2vw, 36px); }
+.piste.is-pilota .pc__media { aspect-ratio: auto; height: 100%; }
+.piste.is-pilota .pc__corpo { height: 100%; }
+.piste.is-pilota .pc__go { margin-top: auto; }
+.piste.is-pilota .piste__fin { width: clamp(240px, 20vw, 360px); }
+.piste.is-pilota .piste__barra { display: block; position: absolute; left: var(--m); right: var(--m); bottom: clamp(18px, 3.2vh, 36px); height: 1px; background: var(--line); overflow: hidden; }
+.piste.is-pilota .piste__barra i { position: absolute; top: 0; bottom: 0; left: 0; width: 20%; background: var(--accent-1); }
+
 /* ---------- Footer scuro con il grande invito ---------- */
 .pied { position: relative; z-index: 2; margin-top: calc(var(--r-fascia) * -1); background: var(--bg); color: var(--fg); border-radius: var(--r-fascia) var(--r-fascia) 0 0; }
 body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }

@@ -10,6 +10,11 @@ home:
   mondi_progetti_uno: progetto
   mondi_progetti_piu: progetti
   lavori_link: Tutti i progetti
+  # Scorrimento orizzontale dei lavori in home
+  lavori_k: Lavori
+  lavori_intro: Dal brief alla consegna, un progetto alla volta. Scorri per vederli tutti.
+  lavori_domanda: In una frase
+  lavori_fine: Vedi tutti i progetti
 
 lavori:
   titolo: Works

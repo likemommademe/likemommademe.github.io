@@ -104,18 +104,100 @@ reel: true
   </ul>
 </section>
 
-<section class="fascia inv">
-  <div class="sec-head">
-    <h2 class="rise"><span>{{ home.titolo_progetti }}</span></h2>
-    <a class="lnk" href="{{ '/work/' | relative_url }}">{{ t.lavori_link }}</a>
-  </div>
-  <div class="rea-list" data-vista="mosaico">
-    {% for slug in home.progetti %}
-      {% assign p = site.progetti | where: "slug", slug | first %}
-      {% if p %}{% include card.html progetto=p %}{% endif %}
-    {% endfor %}
+{% comment %}
+  Lavori selezionati: scorrimento orizzontale come bitwip ("piste"). La sezione resta ferma sullo schermo e,
+  mentre si scorre in giù, la fila dei progetti va da destra a sinistra. Su telefono, o con "riduci movimento",
+  diventa una fila che si scorre col dito. I progetti e il loro ordine si scelgono dal pannello (Pagine → Home).
+{% endcomment %}
+{% assign tl = site.data.testi.lavori %}
+<section class="fascia inv piste" id="lavori" data-piste aria-labelledby="t-lavori">
+  <div class="piste__scena" data-piste-scena>
+    <div class="piste__rail" data-piste-rail>
+      <header class="piste__intro" data-piste-intro>
+        <div>
+          <p class="cs-label cs-head__k">{{ t.lavori_k }}</p>
+          <h2 class="piste__t" id="t-lavori">{{ home.titolo_progetti }}</h2>
+        </div>
+        <div class="piste__bas">
+          <p class="piste__i">{{ t.lavori_intro }}</p>
+          <a class="lnk" href="{{ '/work/' | relative_url }}">{{ t.lavori_link }}</a>
+        </div>
+      </header>
+      {% for slug in home.progetti %}
+        {% assign p = site.progetti | where: "slug", slug | first %}
+        {% if p %}
+        {% assign pc = nil %}{% if p.categoria %}{% assign pc = site.categorie | where: "slug", p.categoria | first %}{% endif %}
+        {% assign pcl = nil %}{% if p.cliente %}{% assign pcl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
+      <a class="pc" href="{{ p.url | relative_url }}">
+        <span class="pc__media">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}</span>
+        <span class="pc__corpo">
+          <span class="card-tag pc__tag">{% if pcl %}<span>{{ pcl.title }}</span>{% endif %}{% if pc %}<span>{{ pc.title }}</span>{% endif %}{% if p.anno %}<span>{{ p.anno }}</span>{% endif %}</span>
+          <span class="pc__t">{{ p.title }}</span>
+          {% if p.domanda %}<span class="pc__r"><span class="cs-label pc__rl">{{ t.lavori_domanda }}</span><span class="pc__q">{{ p.domanda }}</span></span>{% endif %}
+          <span class="pc__go">{{ tl.vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+        </span>
+      </a>
+        {% endif %}
+      {% endfor %}
+      <a class="piste__fin" href="{{ '/work/' | relative_url }}">
+        <span class="piste__fin-t">{{ t.lavori_fine }}</span>
+        <span class="piste__fin-go" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+    </div>
+    <div class="piste__barra" aria-hidden="true"><i data-piste-barra></i></div>
   </div>
 </section>
+
+<script>
+  // Scorrimento orizzontale dei lavori (come bitwip): per ogni pixel di scroll in giù la fila va a sinistra di 1/0,7 px;
+  // l'altezza della sezione è calcolata in modo che l'ultima card arrivi in fondo proprio quando la sezione finisce.
+  (function () {
+    var sec = document.querySelector('[data-piste]'); if (!sec) return;
+    var scena = sec.querySelector('[data-piste-scena]'), rail = sec.querySelector('[data-piste-rail]');
+    var intro = sec.querySelector('[data-piste-intro]'), barra = sec.querySelector('[data-piste-barra]');
+    var mq = matchMedia('(min-width: 761px) and (min-height: 600px)'), rid = matchMedia('(prefers-reduced-motion: reduce)');
+    var K = .7, d = { on: false, top: 0, run: 0, dist: 0, corsa: 0 }, ultimo = -1, raf = 0;
+    function lim(x, a, b) { return Math.min(b, Math.max(a, x)); }
+    function pos() {
+      raf = 0; if (!d.on) return;
+      var t = lim((window.scrollY - d.top) / (d.run || 1), 0, 1); if (t === ultimo) return; ultimo = t;
+      var x = t * d.dist;
+      rail.style.transform = 'translate3d(' + (-x).toFixed(1) + 'px,0,0)';
+      if (barra) barra.style.transform = 'translate3d(' + (t * d.corsa).toFixed(2) + '%,0,0)';
+      if (intro) {   // il titolo scivola via un po' più veloce e svanisce, come su bitwip
+        var L = intro.offsetWidth || 1, q = Math.min(1, x / L);
+        intro.style.opacity = q ? (1 - q).toFixed(3) : '';
+        intro.style.transform = q ? 'translate3d(' + (-.7 * Math.min(x, L)).toFixed(1) + 'px,0,0) scale(' + (1 - .08 * q).toFixed(4) + ')' : '';
+      }
+    }
+    function misura() {
+      d.on = mq.matches && !rid.matches;
+      sec.classList.toggle('is-pilota', d.on);
+      if (!d.on) { sec.style.height = ''; rail.style.transform = ''; if (intro) { intro.style.opacity = ''; intro.style.transform = ''; } return; }
+      rail.style.transform = 'none';
+      var vw = document.documentElement.clientWidth, pad = parseFloat(getComputedStyle(sec).paddingTop) || 0;
+      d.dist = Math.max(0, rail.scrollWidth - vw); d.run = Math.round(d.dist * K);
+      var e = lim(vw / (rail.scrollWidth || 1), .08, .5); d.corsa = (1 - e) / e * 100;
+      if (barra) barra.style.width = (e * 100).toFixed(2) + '%';
+      sec.style.height = (d.run + scena.offsetHeight + pad) + 'px';
+      d.top = sec.getBoundingClientRect().top + window.scrollY + pad;
+      ultimo = -1; pos();
+    }
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(pos); }, { passive: true });
+    addEventListener('resize', misura); addEventListener('load', misura); document.addEventListener('reelfatto', function () { setTimeout(misura, 50); });
+    (mq.addEventListener ? mq.addEventListener('change', misura) : mq.addListener(misura));
+    if ('ResizeObserver' in window) new ResizeObserver(function () { if (d.on) { d.top = sec.getBoundingClientRect().top + window.scrollY + (parseFloat(getComputedStyle(sec).paddingTop) || 0); ultimo = -1; pos(); } }).observe(document.body);
+    // da tastiera: se il focus va su una card, porta lo scroll dove quella card è visibile
+    rail.addEventListener('focusin', function (ev) {
+      if (!d.on) return; scena.scrollLeft = 0;
+      var el = ev.target.closest('.pc, .piste__fin, .piste__intro'); if (!el) return;
+      var off = el.offsetLeft - (parseFloat(getComputedStyle(rail).paddingLeft) || 0);
+      window.scrollTo({ top: Math.round(d.top + lim(off / (d.dist || 1), 0, 1) * d.run), behavior: 'auto' });
+    });
+    rail.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; });
+    misura();
+  })();
+</script>
 
 <script>
   // La frase MORE THAN meets THE EYE passa dallo showreel alla pagina. Vola in un livello fisso: in verticale resta ferma
