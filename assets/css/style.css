@@ -6,7 +6,7 @@
 
 /* TAN Nimbus (TanTypeCo): per ora solo con licenza personale, quindi NON si carica nessun file. Lo si vede solo sui
    computer dove è installato (local); per gli altri resta Yink. Con la licenza web basterà aggiungere qui il file woff2. */
-@font-face { font-family: "TAN Nimbus"; src: local("TAN NIMBUS"), local("TAN-NIMBUS"); size-adjust: 105%; font-display: swap; }
+@font-face { font-family: "TAN Nimbus"; src: local("TAN NIMBUS"), local("TAN-NIMBUS"); size-adjust: 93%; font-display: swap; }
 
 :root, :root[data-theme="dark"] {
   --bg: #121414;
@@ -74,7 +74,8 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
 h1, h2, h3 { text-wrap: balance; }
 h1 { font-weight: 500; font-size: var(--t-h1); line-height: .98; letter-spacing: -.035em; margin: 0; }
-h2 { font-weight: 500; font-size: var(--t-h2); line-height: 1; letter-spacing: -.03em; margin: 0; }
+h2 { font-weight: 500; font-size: var(--t-h2); line-height: 1; letter-spacing: -.035em; margin: 0; }
+.sec-head h2, .anni__t { max-width: 14ch; }   /* come bitwip: titoli di sezione stretti, a capo bilanciato */
 h3 { font-weight: 500; font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.02em; margin: 0; }
 :focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; border-radius: 6px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -91,7 +92,8 @@ html.js .rise > span { transform: translateY(105%); transition: transform 1s var
 html.js .rise.is-in > span { transform: none; }
 
 /* Il font creativo: yink solo su UNA parola (o sulla punteggiatura) dentro un titolo, come bitwip con Baila */
-:is(h1, h2, h3, .manifesto) em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: lowercase; font-size: 1em; line-height: 0; }
+/* la parola speciale, come Baila su bitwip: scritta com'è, al 94% del titolo, spaziatura 0, senza allargare la riga */
+:is(h1, h2, h3, .manifesto) em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; font-size: .94em; line-height: 0; }
 :is(h1, h2, h3) em.p { color: var(--accent-3); font-size: 1.15em; }
 .rise { padding-top: .12em; margin-top: -.12em; }
 
