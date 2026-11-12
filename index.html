@@ -277,10 +277,10 @@ reel: true
       var conta = function (el) {
         var fine = parseFloat(el.dataset.valore), t0 = performance.now();
         if (isNaN(fine)) return;
-        (function passo(t) {
-          var k = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - k, 4);
+        (function passo() {
+          var k = Math.max(0, Math.min(1, (performance.now() - t0) / 1400)), e = 1 - Math.pow(1 - k, 4);
           el.textContent = Math.round(fine * e); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.valore;
-        })(t0);
+        })();
       };
       var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { io.unobserve(en.target); conta(en.target); } }); }, { threshold: .6 });
       nums.forEach(function (n) { if (!isNaN(parseFloat(n.dataset.valore))) { n.textContent = '0'; io.observe(n); } });

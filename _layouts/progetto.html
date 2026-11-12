@@ -219,7 +219,7 @@ layout: default
         if (!e.isIntersecting) return; oq.unobserve(e.target); var el = e.target;
         if (el.hasAttribute('data-anelli')) { el.classList.add('is-on'); return; }
         var fine = parseFloat(el.dataset.fine) || 0, t0 = performance.now();
-        (function passo(t) { var k = Math.min(1, (t - t0) / 1200); el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.fine; })(t0);
+        (function passo() { var k = Math.max(0, Math.min(1, (performance.now() - t0) / 1200)); el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.fine; })();
       }); }, { threshold: .5 });
       dq.forEach(function (el) { oq.observe(el); });
     } else document.querySelectorAll('[data-anelli]').forEach(function (el) { el.classList.add('is-on'); });
