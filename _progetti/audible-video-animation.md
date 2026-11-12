@@ -4,7 +4,7 @@ title_en: "Audible, the spot"
 categoria: "motion-design"
 cliente: "ied"
 anno: 2021
-copertina: "/assets/uploads/audible-video-animation-01.webp"
+copertina: "/assets/uploads/audible-spot-copertina.webp"
 sottotitolo: "Uno spot animato di 30 secondi per i classici di Audible"
 sottotitolo_en: "A 30-second animated spot for Audible's classics"
 domanda: "Nel mezzo del cammin di nostra vita… c’è Audible."

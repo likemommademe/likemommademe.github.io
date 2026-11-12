@@ -1,6 +1,7 @@
 ---
 title: "Sagra dei Stringozzi"
 title_en: "Sagra dei Stringozzi"
+published: false
 categoria: "branding"
 cliente: "ied"
 anno: 2021

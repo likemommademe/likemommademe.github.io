@@ -3,7 +3,7 @@ title: "Animazioni"
 title_en: "Animations"
 categoria: "motion-design"
 anno: 2021
-copertina: "/assets/uploads/animazioni-copertina.webp"
+copertina: "/assets/uploads/animazioni-copertina-adidas.webp"
 sottotitolo: "Loghi che prendono vita, icone marine e un sushi che si serve da solo"
 sottotitolo_en: "Logos coming to life, sea icons and a sushi that serves itself"
 domanda: "Un logo fermo è solo metà del lavoro."

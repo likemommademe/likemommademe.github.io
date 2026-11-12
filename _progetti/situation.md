@@ -7,7 +7,7 @@ anno: 2022
 link: "https://www.ied.edu/projects/situation"
 link_testo: "Il progetto sul sito IED"
 link_testo_en: "The project on the IED website"
-copertina: "/assets/uploads/situation-01.webp"
+copertina: "/assets/uploads/situation-copertina.webp"
 sottotitolo: "Allena come mai prima d'ora: l'app per gli allenatori di pallavolo"
 sottotitolo_en: "Coach like never before: the app for volleyball coaches"
 domanda: "La pallavolo è uno sport di situazione. Perché non allenarla così?"

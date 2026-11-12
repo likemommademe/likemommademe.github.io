@@ -266,6 +266,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Fight Club: aggiunto il video del processo (Illustrator 3D → Firefly), ritrovato dall'utente in bassa risoluzione (480×848) e migliorato: riduzione del rumore, ingrandimento a 1080 px, nitidezza. Affiancato alla saponetta di partenza nella sezione «Il processo» |
 | 12/11/2026 | Gallerie: una foto da sola non supera più l'altezza dello schermo; se è verticale o quadrata diventa un blocco editoriale (titolo e riga a sinistra, foto a destra). Malika Favre rifatto con i file originali in alta (`_materiali/Malika Favre`), più l'illustrazione «La luna» che mancava |
 | 12/11/2026 | Copertine nuove: The North Face (i due che si baciano nel vicolo), Lettering 3D (Chaos in argento liquido), Fight Club (la muffa rosa), Architecture (il vetro rotto). Fight Club più corto: da 17 a 10 foto, due per materiale; dove due foto erano uguali ora c'è la foto intera più un dettaglio zoomato; tolto il pon pon |
+| 12/11/2026 | Copertine: SITUATION (fermo immagine delle particelle), Audible spot (la città animata), Animazioni (il logo Adidas a metà trasformazione), Il mio vecchio logo (i biglietti da visita; rinominato da «Il mio marchio»). Patch e Model sheet: copertina con un foglio unico che raccoglie tutto, poi una schermata per ogni elemento (presi dalle slide originali a 3840 px). Sagra dei Stringozzi e Blue Origin tolti dal sito: restano nel pannello come bozza |
 ---
 
 ## 10. Prossimi passi

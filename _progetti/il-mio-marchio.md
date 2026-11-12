@@ -1,9 +1,9 @@
 ---
-title: "Il mio marchio"
-title_en: "My logo"
+title: "Il mio vecchio logo"
+title_en: "My old logo"
 categoria: "branding"
 anno: 2021
-copertina: "/assets/uploads/il-mio-marchio-01.webp"
+copertina: "/assets/uploads/il-mio-marchio-03.webp"
 sottotitolo: "Il monogramma CE, dalla griglia alla stationery"
 sottotitolo_en: "The CE monogram, from grid to stationery"
 domanda: "Due iniziali, sei quadrati, un solo segno."

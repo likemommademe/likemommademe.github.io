@@ -1,6 +1,7 @@
 ---
 title: "Blue Origin"
 title_en: "Blue Origin"
+published: false
 categoria: "web-design"
 cliente: "ied"
 anno: 2021
