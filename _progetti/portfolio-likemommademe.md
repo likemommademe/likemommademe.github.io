@@ -40,6 +40,17 @@ execution_en: |
   I decided what to build and how it should look; Claude wrote the code with me, step by step.
 galleria:
   - type: "sezione"
+    titolo: "Il promo"
+    titolo_en: "The promo"
+    testo: "Quindici secondi a 120 battiti: il punto rosa del logo chiude la frase, accende il computer, clicca sul sito e torna a essere il logo."
+    testo_en: "Fifteen seconds at 120 BPM: the logo's pink dot ends the sentence, switches on the computer, clicks through the site and becomes the logo again."
+  - type: "video"
+    link: "/assets/uploads/portfolio-promo.mp4"
+    titolo: "Un portfolio che non sembra un template"
+    titolo_en: "A portfolio that doesn't look like a template"
+    didascalia: "Il sito vero, dentro il computer, navigato dal punto rosa. Musica scritta in codice: alza il volume."
+    didascalia_en: "The real site, inside the computer, browsed by the pink dot. Music written in code: turn the sound up."
+  - type: "sezione"
     titolo: "Lo showreel"
     titolo_en: "The showreel"
     testo: "L’intro del sito: diciassette secondi in codice, che sul sito si muovono con lo scroll."
