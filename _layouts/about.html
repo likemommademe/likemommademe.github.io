@@ -45,7 +45,7 @@ layout: default
 {% comment %} Due strisce: in alto le copertine, in basso una foto per progetto. Ognuna ripetuta 4 volte per un giro continuo. {% endcomment %}
 {% assign prog_vita = site.progetti | sort: "ordine", "last" %}
 {% capture s1 %}{% for p in prog_vita %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% endfor %}{% endcapture %}
-{% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ g.titolo | default: p.title }};{% assign fatto = true %}{% endif %}{% endfor %}{% endfor %}{% endcapture %}
+{% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% unless g.immagine contains 'riferimento' %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ g.titolo | default: p.title }};{% assign fatto = true %}{% endif %}{% endunless %}{% endfor %}{% endfor %}{% endcapture %}
 {% assign strisce = s1 | append: "#" | append: s2 | split: "#" %}
 <section class="fascia inv vita" aria-label="{{ a.foto_titolo }}" data-vita>
   {% for st in strisce %}{% assign foto = st | split: ";" %}
