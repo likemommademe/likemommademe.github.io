@@ -635,11 +635,26 @@ function galleryWidget(value) {
 
   function add(item, file) {
     const entry = { type: item.type };
+    if (item.type === 'sezione') {
+      // Titolo di sezione: divide la galleria in parti (es. i progetti di un lavoro), con due righe di testo.
+      entry.title = h('input', { type: 'text', class: 'lang-it', value: item.titolo || '', placeholder: 'Titolo della sezione' });
+      entry.titleEn = h('input', { type: 'text', class: 'lang-en', value: item.titolo_en || '', placeholder: item.titolo ? `In italiano: ${item.titolo}` : 'Section title in English' });
+      entry.text = h('textarea', { class: 'lang-it', rows: 2, placeholder: 'Due righe su cosa hai fatto' }, item.testo || '');
+      entry.textEn = h('textarea', { class: 'lang-en', rows: 2, placeholder: item.testo ? `In italiano: ${item.testo}` : 'Two lines on what you did' }, item.testo_en || '');
+      const el = h('div', { class: 'gallery-item sort-item' },
+        h('div', { class: 'gallery-head' },
+          grip(), icon('tag'), h('strong', {}, 'Titolo di sezione'), h('span', { class: 'grow' }),
+          h('button', { type: 'button', class: 'icon-btn danger', title: 'Elimina', onclick: () => { items.delete(el); el.remove(); markDirty(); } }, icon('trash'))),
+        entry.title, entry.titleEn, entry.text, entry.textEn);
+      items.set(el, entry);
+      list.append(el);
+      return;
+    }
     if (item.type === 'foto') {
       entry.image = imageWidget(item.immagine);
       if (file) entry.image.pick(file);
     } else {
-      entry.link = h('input', { type: 'url', value: item.link || '', placeholder: 'Link YouTube o Vimeo' });
+      entry.link = h('input', { type: 'url', value: item.link || '', placeholder: 'Link YouTube, Vimeo, prototipo Figma o file .mp4' });
     }
     entry.caption = h('input', { type: 'text', class: 'lang-it', value: item.didascalia || '', placeholder: 'Didascalia (facoltativa)' });
     entry.captionEn = h('input', {
@@ -677,7 +692,8 @@ function galleryWidget(value) {
           type: 'button', class: 'btn small',
           onclick: async () => { const p = await pickFromLibrary(); if (p) { add({ type: 'foto', immagine: p }); markDirty(); } },
         }, icon('images'), 'Dalla libreria'),
-        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'video' }); markDirty(); } }, icon('plus'), 'Aggiungi video'))),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'video' }); markDirty(); } }, icon('plus'), 'Aggiungi video'),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'sezione' }); markDirty(); } }, icon('plus'), 'Aggiungi titolo di sezione'))),
     files);
   dropzone(zone, addFiles);
 
@@ -686,7 +702,11 @@ function galleryWidget(value) {
   return {
     el: zone,
     get: () => ordered()
-      .map((i) => clean({
+      .map((i) => i.type === 'sezione' ? clean({
+        type: 'sezione',
+        titolo: i.title.value.trim(), titolo_en: i.titleEn.value.trim(),
+        testo: i.text.value.trim(), testo_en: i.textEn.value.trim(),
+      }) : clean({
         type: i.type,
         immagine: i.image?.get(),
         link: i.link?.value.trim(),
@@ -694,7 +714,7 @@ function galleryWidget(value) {
         didascalia_en: i.captionEn.value.trim(),
         formato: i.format.value === 'meta' ? 'meta' : undefined,
       }))
-      .filter((i) => i.immagine || i.link),
+      .filter((i) => i.immagine || i.link || i.titolo),
     files: async () => (await Promise.all(ordered().filter((i) => i.image).map((i) => i.image.files()))).flat(),
   };
 }

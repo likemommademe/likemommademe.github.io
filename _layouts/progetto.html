@@ -94,6 +94,12 @@ layout: default
           {% endfor %}
         </div>
         {% assign i = fine %}
+      {% elsif el.type == 'sezione' %}
+        <div class="cs-gal__sez" data-rivela>
+          <h3 class="cs-gal__sez-t">{{ el.titolo }}</h3>
+          {% if el.testo %}<p class="cs-gal__sez-p">{{ el.testo }}</p>{% endif %}
+        </div>
+        {% assign i = i | plus: 1 %}
       {% else %}
         {% include progetto-media.html el=el titolo=page.title %}
         {% assign i = i | plus: 1 %}
