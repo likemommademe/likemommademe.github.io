@@ -66,9 +66,11 @@ reel: true
   })();
 </script>
 
-{% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 120 84" aria-hidden="true"><g class="occhio__palpebra"><path d="M6 42Q60 -6 114 42Q60 90 6 42Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round"/><circle cx="60" cy="42" r="19" class="occhio__iride"/><circle cx="60" cy="42" r="8" fill="#121414" class="occhio__pupilla"/></g></svg></span>{% endcapture %}
+{% capture occhio %}<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="occhio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/><g class="colore"><circle cx="50" cy="45" r="22" fill="#FF3D8B"/><circle cx="50" cy="45" r="10" fill="#121414"/></g></g></svg></span>{% endcapture %}
+{% capture esse %}<span class="esse" role="img" aria-label="S"><svg viewBox="0 0 64 72" aria-hidden="true"><path class="esse__tratto" d="M54 17C49 10 41 8 33 8C21 8 13 14 13 22C13 32 23 34 33 36C44 38 53 41 53 51C53 60 45 64 32 64C22 64 13 60 9 54" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" pathLength="1"/><g class="esse__maniglie colore" fill="#FF3D8B"><path d="M9.4 31.5L56.6 40.5" stroke="#FF3D8B" stroke-width="3.5"/><circle cx="9.4" cy="31.5" r="5"/><circle cx="56.6" cy="40.5" r="5"/><rect x="26" y="29" width="14" height="14" rx="1.5"/><rect x="48.5" y="11.5" width="11" height="11" rx="1.5"/><rect x="3.5" y="48.5" width="11" height="11" rx="1.5"/></g></svg></span>{% endcapture %}
+{% capture timeline %}<span class="linea" role="img" aria-label="E"><svg viewBox="0 0 60 72" aria-hidden="true"><g fill="currentColor"><rect class="linea__clip" x="15" y="0" width="45" height="17" rx="8.5"/><rect class="linea__clip" x="15" y="27.5" width="33" height="17" rx="8.5"/><rect class="linea__clip" x="15" y="55" width="45" height="17" rx="8.5"/></g><g class="linea__testina colore" fill="#FF3D8B"><rect x="1" y="-2" width="10" height="76" rx="3"/><path d="M-4 -13H16V-4L6 5L-4 -4Z"/></g></svg></span>{% endcapture %}
 <section class="fascia inv apertura" id="apertura">
-  <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio }}</span></h2>
+  <h2 class="motto rise"><span>{{ t.motto | replace: '[occhio]', occhio | replace: '[esse]', esse | replace: '[timeline]', timeline }}</span></h2>
   <div class="apertura__grid">
     <div class="apertura__testo">
       <p class="apertura__lead">{{ home.intro }}</p>
@@ -130,9 +132,8 @@ reel: true
     function pronto() { try { var w = frame.contentWindow; return w && w.lmmFrase && w.document.documentElement.dataset.ready === '1' ? w : null; } catch (e) { return null; } }
     function crea() {
       volo = document.createElement('div'); volo.className = 'motto-volo'; volo.setAttribute('aria-hidden', 'true');
-      volo.innerHTML = h.firstElementChild.innerHTML;
-      iride = document.createElement('div'); iride.className = 'motto-iride'; iride.setAttribute('aria-hidden', 'true');
-      iride.innerHTML = '<i></i>';
+      iride = document.createElement('div'); iride.className = 'motto-volo motto-colori'; iride.setAttribute('aria-hidden', 'true');
+      volo.innerHTML = iride.innerHTML = h.firstElementChild.innerHTML;   // due copie identiche: testo in "differenza", colori a parte
       document.body.appendChild(volo); document.body.appendChild(iride);
     }
     function misura() {
@@ -140,15 +141,12 @@ reel: true
       var w = pronto();
       if (!w) { setTimeout(misura, 200); return; }
       h.classList.add('is-in', 'motto--preso');
-      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; if (volo) volo.style.visibility = iride.style.visibility = 'hidden'; w.lmmFraseVia(false); return; }
+      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; document.body.classList.remove('motto-vola'); w.lmmFraseVia(false); return; }
       if (!volo) crea();
       var cs = getComputedStyle(h);
-      volo.style.fontSize = cs.fontSize; volo.style.lineHeight = cs.lineHeight; volo.style.transform = 'none';
+      volo.style.fontSize = cs.fontSize; volo.style.lineHeight = cs.lineHeight; volo.style.transform = iride.style.transform = 'none';
       var r = w.lmmFrase(), fr = frame.getBoundingClientRect(), sp = h.firstElementChild.getBoundingClientRect(), vb = volo.getBoundingClientRect();
-      var sv = volo.querySelector('.occhio svg').getBoundingClientRect(), m = Math.min(sv.width / 120, sv.height / 84);
-      var ri = 19 * m, rp = 8 * m, ix = sv.left - vb.left + sv.width / 2, iy = sv.top - vb.top + sv.height / 2;
-      iride.style.width = vb.width + 'px'; iride.style.height = vb.height + 'px';
-      iride.firstChild.style.cssText = 'left:' + (ix - ri) + 'px;top:' + (iy - ri) + 'px;width:' + 2 * ri + 'px;height:' + 2 * ri + 'px;--p:' + 2 * rp + 'px';
+      iride.style.fontSize = cs.fontSize; iride.style.lineHeight = cs.lineHeight;
       H = { l: r.l + fr.left, cy: r.t + fr.top + r.h / 2, w: r.w };
       N = { l: sp.left, h: sp.height, top: sp.top + scrollY };
       V = { w: vb.width, h: vb.height };
@@ -166,7 +164,7 @@ reel: true
       var corsa = N.top + N.h / 2 - H.cy, k = corsa > 0 ? Math.min(1, Math.max(0, scrollY / corsa)) : 1;
       var vola = k < 1;
       h.style.visibility = vola ? 'hidden' : '';
-      volo.style.visibility = iride.style.visibility = vola ? 'visible' : 'hidden';
+      document.body.classList.toggle('motto-vola', vola);
       if (!vola) return;
       var e = eio(k), s0 = H.w / V.w, sc = s0 + (1 - s0) * e, x = H.l + (N.l - H.l) * e, y = H.cy - V.h * sc / 2;
       volo.style.transform = iride.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + sc.toFixed(4) + ')';

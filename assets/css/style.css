@@ -181,24 +181,24 @@ body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh
 .motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.02em; text-transform: uppercase; transform-origin: 0 0; }
 @media (min-width: 720px) { .motto { white-space: nowrap; font-size: clamp(2.5rem, 6.4vw, 8rem); } }
 .motto--preso > span { transition: none !important; }   /* arriva dallo showreel: niente maschera */
-.occhio { display: inline-block; width: .9em; height: .64em; margin: 0 .02em; vertical-align: -.02em; }
-.occhio svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.occhio__iride { fill: var(--accent-3); }
+/* nella frase: la O è un occhio, la S un tracciato della penna, l'ultima E una timeline (stessa altezza delle maiuscole) */
+.occhio, .esse, .linea { display: inline-block; height: .72em; margin: 0 .03em; vertical-align: 0; }
+.occhio { width: .8em; } .esse { width: .64em; } .linea { width: .6em; margin-right: 0; }
+.occhio svg, .esse svg, .linea svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .occhio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 .motto.is-in .occhio__palpebra { animation: occhiolino .5s 1.1s var(--ease) both; }
 .motto:hover .occhio__palpebra { animation: occhiolino-2 .45s var(--ease); }
 @keyframes occhiolino { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
 @keyframes occhiolino-2 { 0%, 100% { transform: scaleY(1); } 45%, 55% { transform: scaleY(.08); } }
-.occhio__pupilla { fill: #121414; }
 /* la frase in volo dall'header alla sezione: bianca in "differenza" = scura sul chiaro, chiara sullo scuro */
 .motto-volo { position: fixed; left: 0; top: 0; z-index: 40; width: max-content; margin: 0; color: #fff; mix-blend-mode: difference;
   font-family: var(--f-sans); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
-  transform-origin: 0 0; will-change: transform; pointer-events: none; visibility: hidden; }
-.motto-volo em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: lowercase; font-size: 1em; line-height: 0; }
-.motto-volo .occhio__iride, .motto-volo .occhio__pupilla { display: none; }
-.motto-iride { position: fixed; left: 0; top: 0; z-index: 41; transform-origin: 0 0; will-change: transform; pointer-events: none; visibility: hidden; }
-.motto-iride i { position: absolute; display: grid; place-items: center; border-radius: 50%; background: #FF3D8B; }
-.motto-iride i::after { content: ""; width: var(--p); height: var(--p); border-radius: 50%; background: #121414; }
+  transform-origin: 0 0; will-change: transform; pointer-events: none; opacity: 0; }
+body.motto-vola .motto-volo { opacity: 1; }
+.motto-volo .colore { visibility: hidden; }
+/* secondo livello, sopra: solo le parti colorate (iride, maniglie della S, testina della timeline), senza fusione */
+.motto-volo.motto-colori { z-index: 41; mix-blend-mode: normal; visibility: hidden; }
+.motto-volo.motto-colori .colore { visibility: visible; }
 
 /* sotto il motto: a sinistra due testi e il link, a destra i numeri (come bitwip) */
 .apertura__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 7vw, 140px); align-items: start; }
