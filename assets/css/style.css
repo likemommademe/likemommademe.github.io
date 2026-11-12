@@ -510,6 +510,17 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-media { margin: 0; }
 .cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }
 .cs-media figcaption { padding-top: 10px; }
+/* Una foto da sola non supera mai l'altezza dello schermo */
+.cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 80vh; margin: 0 auto; }
+/* Foto da sola verticale o quadrata: blocco editoriale, testo a sinistra e foto a destra (lo segna il JS: cs-media--alta) */
+@media (min-width: 761px) {
+  .cs-gal > .cs-media--alta { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: end; }
+  .cs-gal > .cs-media--alta > img { grid-column: 5 / -1; grid-row: 1; justify-self: start; margin: 0; max-height: 78vh; }
+  .cs-gal > .cs-media--alta:not(:has(.cs-cap)) > img { grid-column: 3 / span 8; justify-self: center; }
+  .cs-gal > .cs-media--alta > .cs-cap { grid-column: 1 / span 4; grid-row: 1; align-self: end; padding: 0 0 8px; gap: 10px; max-width: 30ch; }
+  .cs-gal > .cs-media--alta .cs-cap__t { font-size: var(--t-h3); font-weight: 500; line-height: 1.1; letter-spacing: -.02em; }
+  .cs-gal > .cs-media--alta .cs-cap__p { font-size: var(--t-body); }
+}
 .cs-cap { display: grid; gap: 2px; padding-top: 14px; max-width: 60ch; }
 .cs-cap__t { color: var(--fg); font-weight: 700; font-size: var(--t-body); line-height: 1.3; }
 .cs-cap__p { color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
@@ -559,6 +570,9 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
   .cs-media:not(.cs-media--video) .cs-cap__t { color: #F5F5F2; }
   .cs-media:not(.cs-media--video) .cs-cap__p { color: rgba(245, 245, 242, .78); }
   .cs-media:not(.cs-media--video):is(:hover, :focus-visible) .cs-cap { opacity: 1; transform: none; }
+  .cs-gal > .cs-media--alta .cs-cap { position: static; opacity: 1; transform: none; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: 0 0 8px; pointer-events: auto; }
+  .cs-gal > .cs-media--alta .cs-cap__t { color: var(--fg); }
+  .cs-gal > .cs-media--alta .cs-cap__p { color: var(--muted); }
   .cs-media:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 4px; border-radius: var(--r); }
 }
 @media (prefers-reduced-motion: reduce) { .cs-media .cs-cap { transition: none; transform: none !important; } }

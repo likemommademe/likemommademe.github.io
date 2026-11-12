@@ -264,6 +264,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Nuovo progetto **Juniors** (Generative AI, 2026, serie AI x Creatives): i volti di bambola generati con Firefly e 5 video da 8 secondi (uno in cui si sciolgono), compressi a 1280 px. Esclusa l'immagine di riferimento di un'altra artista |
 | 12/11/2026 | Nuovo progetto **Chrome Nails** (Generative AI, 2026, cartella `Unghie ragazza`): la foto e tre spezzoni dei video Firefly scelti dall'utente (lo zoom sulle unghie, le mani che si allungano, il terzo video intero) |
 | 12/11/2026 | Fight Club: aggiunto il video del processo (Illustrator 3D → Firefly), ritrovato dall'utente in bassa risoluzione (480×848) e migliorato: riduzione del rumore, ingrandimento a 1080 px, nitidezza. Affiancato alla saponetta di partenza nella sezione «Il processo» |
+| 12/11/2026 | Gallerie: una foto da sola non supera più l'altezza dello schermo; se è verticale o quadrata diventa un blocco editoriale (titolo e riga a sinistra, foto a destra). Malika Favre rifatto con i file originali in alta (`_materiali/Malika Favre`), più l'illustrazione «La luna» che mancava |
 ---
 
 ## 10. Prossimi passi

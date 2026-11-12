@@ -159,6 +159,11 @@ layout: default
       function fissa() { if (img.naturalWidth) img.closest('.cs-media').style.setProperty('--ar', img.naturalWidth / img.naturalHeight); }
       if (img.complete) fissa(); else img.addEventListener('load', fissa);
     });
+    // Foto da sola, verticale o quadrata: diventa un blocco editoriale (testo a sinistra, foto a destra)
+    document.querySelectorAll('.cs-gal > .cs-media:not(.cs-media--video) > img').forEach(function (img) {
+      function segna() { if (img.naturalWidth && img.naturalWidth / img.naturalHeight < 1.45) img.parentNode.classList.add('cs-media--alta'); }
+      if (img.complete) segna(); else img.addEventListener('load', segna);
+    });
     document.querySelectorAll('[data-riga] video').forEach(function (v) {
       function fissa() { if (v.videoWidth) v.closest('.cs-media').style.setProperty('--ar', v.videoWidth / v.videoHeight); }
       if (v.readyState >= 1) fissa(); else v.addEventListener('loadedmetadata', fissa);
