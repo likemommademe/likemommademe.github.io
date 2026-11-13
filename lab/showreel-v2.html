@@ -479,7 +479,7 @@
   const SC = { k: .58, cy: 720 };   // cy: la scena rimpicciolita finisce sopra le categorie in basso (fondo a circa 940)
   // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
   const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.15, 3.55)) + eIO(p(t, 4.15, 4.4)) - eIO(p(t, 5.2, 5.6))
-                   + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.86, 8.22)) + eIO(p(t, 8.95, 9.2)) - eIO(p(t, 10.0, 10.4))
+                   + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.86, 8.22)) 
                    + eIO(p(t, 11.35, 11.6)) - eIO(p(t, 12.3, 12.7));
   const sceneS = t => { const a = sceneA(t), web = t >= 6.4 && t < 8.5; return { k: lerp(1, web ? .72 : SC.k, a), cy: lerp(500, web ? 700 : SC.cy, a) }; };   // Web: la pagina piccola resta più grande
   const mapS = (S, x, y) => [960 + (x - 960) * S.k, S.cy + (y - 500) * S.k];
@@ -502,6 +502,15 @@
       z += .2 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = lerp(960, fx, sceneA(t)); ay = lerp(540, fy, sceneA(t));
     }
     const push = 0;   // V2: niente respiro della camera
+    // V2 · movimenti di camera, uno per mondo, sempre per un motivo (fermi a t = 14.25, prima che l'occhio atterri nella O)
+    const zk = (a1, b1, c1, d1) => eIO(p(t, a1, b1)) * (1 - eIO(p(t, c1, d1)));
+    let k = zk(2.4, 4.0, 4.32, 4.9); z += .12 * k;                                                  // Illustration: si avvicina allo schizzo
+    k = zk(5.6, 6.0, 6.3, 6.6); z += .05 * k;                                                      // Branding: spinta sulla tavola
+    k = zk(7.95, 8.22, 8.3, 8.5); z += .08 * k; fx = lerp(fx, 485, .35 * k); fy = lerp(fy, 607, .35 * k);   // Web: verso il pulsante cliccato
+    const kb = zk(9.38, 9.6, 10.2, 10.45), bxx = lerp(560, 1360, p(t, 9.42, 10.32));
+    z += .07 * kb; fx = lerp(fx, 960 + (bxx - 960) * .35, kb); fy = lerp(fy, 640, .4 * kb);           // Motion: segue la pallina
+    z += .1 * eIO(p(t, 11.8, 12.3)) * (1 - eIO(p(t, 12.36, 12.9)));                               // Gen AI: vicino alla barra, poi indietro sull'esplosione
+    z += .2 * zk(13.36, 13.85, 13.92, 14.25);                                                     // e dentro, quando le varianti si richiudono
     const cambio = [2, 4.2, 6.6, 9, 11.4].reduce((a, w) => t >= w ? w : a, -9);   // l'inizio del mondo in corso
     z *= 1 + push + ((t < 1.97 || (t >= 14.4 && t < 16.2)) ? .014 * Math.exp(-12 * (T % BEAT)) : (t >= 2 && t < 14 ? .02 * Math.exp(-9 * (t - cambio)) : 0));   // V2: un colpo solo quando cambia il mondo
     return { z, fx, fy, ax, ay };
@@ -713,7 +722,7 @@
   const SKN = [SKP[0].getAttribute('d'), SKP[1].getAttribute('d')].map(d => d.match(/-?[\d.]+/g).map(Number));
   const SKTGT = [700, 500, 817, 272.5, 1103, 272.5, 1220, 500, 1103, 727.5, 817, 727.5, 700, 500];   // = occhio a 220 × 154 dopo la scala
   const SKMORPH = (i, k) => { const n = SKN[i].map((v, j) => lerp(v, SKTGT[j], k)); return `M${f1(n[0])} ${f1(n[1])}C${n.slice(2, 8).map(f1).join(' ')}C${n.slice(8, 14).map(f1).join(' ')}`; };
-  const SKT = [[2.05, 2.62], [2.62, 3.02], [3.02, 3.36], [3.36, 3.52], [3.54, 3.62], [3.62, 3.7], [3.7, 3.78], [3.8, 3.86], [3.86, 3.92], [3.92, 3.98]];
+  const SKT = [[2.05, 2.58], [2.62, 3.0], [3.05, 3.36], [3.4, 3.54], [3.6, 3.71], [3.76, 3.87], [3.92, 4.03], [4.08, 4.13], [4.16, 4.21], [4.24, 4.29]];   // tra un tratto e l'altro la matita ha il tempo di spostarsi
   const PEN = mk('g');
   PEN.innerHTML = '<path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/><path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/><path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/><path d="M0 0L4 -12L12 -4Z" fill="#121414"/>';
 
@@ -828,14 +837,14 @@
   // MOTION: la stessa parola cinetica della versione originale. Le lettere entrano veloci da destra con scia e sfocatura,
   // si alzano e diventano rosa quando la testina della timeline ci passa sotto, poi volano nella fine della timeline
   function drawKin(t) {
-    const on = t >= 9.0 && t < 10.3; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
+    const on = t >= 9.0 && t < 10.75; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
     if (!on) return;
-    const S = sceneS(t), phx = 960 + (560 + 800 * p(t, 9.5, 10.95) - 960) * S.k, end = mapS(S, 1360, 820);
+    const S = sceneS(t), phx = 960 + (lerp(560, 1360, p(t, 9.42, 10.32)) - 960) * S.k, end = mapS(S, 1360, 820);
     kin.forEach((L, j) => {
       const a = 9.04 + .05 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));
       const x = pos(t), v = (pos(t - 1 / 60) - x) * 60;
-      const near = t >= 9.5 && t < 9.95 ? Math.max(0, 1 - Math.abs(phx - M.kx[j]) / 130) : 0;
-      const ex = eIn(p(t, 9.9 + .04 * j, 10.2 + .04 * j));
+      const near = t >= 9.42 && t < 10.32 ? Math.max(0, 1 - Math.abs(phx - M.kx[j]) / 130) : 0;
+      const ex = eIn(p(t, 10.12 + .03 * j, 10.38 + .03 * j));
       const tx = x + (end[0] - M.kx[j]) * ex, ty = -70 * spring(near) + (end[1] - M.ky) * ex;
       L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${-Math.min(18, v * .004)}deg) scale(${(1 - ex) * (1 + .12 * near)})`;
       const blur = Math.min(18, v * .005);
@@ -859,24 +868,29 @@
       // i due contorni dello schizzo si inchiostrano: diventano la linea spessa e pulita del segno
       const ink = eIO(p(t, 4.48, 4.95));
       SKP.forEach((n, i) => {
-        traccia(n, eOut(p(t, SKT[i][0], SKT[i][1])));
+        traccia(n, eIO(p(t, SKT[i][0], SKT[i][1])));   // ogni tratto accelera e rallenta, come una mano
         if (i < 2) { n.setAttribute('d', SKMORPH(i, ink)); n.setAttribute('stroke-width', f1(lerp(5, 26, ink))); if (ink > 0) n.style.strokeDasharray = 'none'; }
         else n.style.opacity = (1 - eIO(p(t, i < 4 ? 4.62 : 4.45, i < 4 ? 4.98 : 4.75))).toFixed(3);   // iride e pupilla a matita restano mentre si riempiono di colore
       });
       show(SK, t < 4.97);
     }
-    const penOn = t >= 1.97 && t < 4.25; vis(PEN, penOn);
+    const penOn = t >= 1.97 && t < 4.52; vis(PEN, penOn);
     if (penOn) {
-      let px = 960, py = 500;
-      let j = SKT.findIndex(([a, b]) => t >= a && t < b);
-      if (j < 0) j = t < SKT[0][0] ? -1 : SKT.findIndex(([a]) => a > t) - 1;
-      if (j >= 0 && j < SKP.length) {
-        const [a, b] = SKT[j], L = SKP[j].getTotalLength(), q = SKP[j].getPointAtLength(L * eOut(p(t, a, b))); px = q.x; py = q.y;
-      } else if (t >= SKT[SKT.length - 1][1]) { const q = SKP[SKP.length - 1].getPointAtLength(SKP[SKP.length - 1].getTotalLength()); px = q.x; py = q.y; }
-      if (t < 2.08) { const k = eIO(p(t, 1.98, 2.08)); px = lerp(960, 692, k); py = lerp(500, 506, k); }
-      const via = eIn(p(t, 3.98, 4.25)); px += 700 * via; py += 500 * via;
+      // i tratti stanno nel gruppo dello schizzo (scalato): riporto i loro punti sul palco
+      const toS = q => ({ x: 960 + (q.x - 960) * .846, y: 500 + (q.y - 500) * .846 });
+      const startOf = i => toS(SKP[i].getPointAtLength(0)), endOf = i => toS(SKP[i].getPointAtLength(SKP[i].getTotalLength()));
+      let px = 960, py = 500, lift = 0;
+      const j = SKT.findIndex(([a, b]) => t >= a && t < b);
+      if (j >= 0) { const [a, b] = SKT[j], q = toS(SKP[j].getPointAtLength(SKP[j].getTotalLength() * eIO(p(t, a, b)))); px = q.x; py = q.y; }
+      else {
+        let k = -1; SKT.forEach((sg, i) => { if (sg[1] <= t) k = i; });
+        if (k < 0) { const q0 = startOf(0), m = eIO(p(t, 1.98, SKT[0][0])); px = lerp(960, q0.x, m); py = lerp(500, q0.y, m); lift = bump(m); }
+        else if (k < SKP.length - 1) { const e = endOf(k), s0 = startOf(k + 1), m = eIO(p(t, SKT[k][1], SKT[k + 1][0])); px = lerp(e.x, s0.x, m); py = lerp(e.y, s0.y, m); lift = bump(m); }   // si alza e va al tratto dopo
+        else { const e = endOf(k); px = e.x; py = e.y; }
+      }
+      const via = eIO(p(t, 4.3, 4.52)); px += 700 * via; py += 500 * via;
       const s0 = spring(p(t, 1.97, 2.12));
-      PEN.setAttribute('transform', `translate(${f1(px)} ${f1(py)}) rotate(${f1(-6 * Math.sin(t * 9))}) scale(${s0.toFixed(3)})`);
+      PEN.setAttribute('transform', `translate(${f1(px)} ${f1(py - 16 * lift)}) rotate(${f1(-4 * Math.sin(t * 6) - 6 * lift)}) scale(${(s0 * (1 + .06 * lift)).toFixed(3)})`);
     }
 
     /* 2 · Branding: la griglia mette ordine, lo schizzo diventa un segno pulito */
@@ -943,18 +957,24 @@
       const k0 = spring(p(t, 7.4, 7.75)); e2.ir *= k0; e2.pr *= k0; e2.draw = eOut(p(t, 7.4, 7.7));
       const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY + giuW, 460, z); e2.a = lerp(160, 210, z); e2.b = lerp(112, 147, z);
       e2.sw = lerp(16, 21, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(48 * k0, 63, z); e2.pr = lerp(21 * k0, 27, z);
-      // 4 · Motion, tre chiavi sulla timeline. 1: l'occhio strizza la palpebra
-      const bk = p(t, 9.7, 10.08), blinkK = bk < .4 ? eIO(bk / .4) : 1 - eIO((bk - .4) / .6);
-      e2.sy = 1 - .94 * blinkK;   // si chiude con dolcezza e si riapre più lento
-      // 2: prende spessore e fa un giro intero su se stesso, come una moneta (com'era prima)
-      e2.spin = t >= 10.2 && t < 10.64;
-      // 3: saltello con i principi del motion: si carica schiacciandosi, si allunga salendo, si schiaccia atterrando
-      const car = bump(p(t, 10.6, 10.72)), su = p(t, 10.7, 10.9), atterra = bump(p(t, 10.88, 11.0));
+      // 4 · Motion: l'occhio si stringe nella sua iride e diventa la pallina rosa che corre sulla timeline sotto MOTION
+      const pal = eIO(p(t, 9.0, 9.32)), ritorno = eIO(p(t, 10.3, 10.58));
+      const bx = lerp(560, 1360, p(t, 9.42, 10.32));
+      if (t >= 9.0 && t < 10.58) {
+        const k = pal * (1 - ritorno);
+        const rx = t < 10.3 ? (t < 9.42 ? 560 : bx) : lerp(1360, 960, ritorno), ry = t < 10.3 ? 820 : lerp(820, 460, ritorno) - 140 * bump(ritorno);
+        e2.x = lerp(e2.x, rx, t < 10.3 ? pal : 1); e2.y = lerp(e2.y, ry, t < 10.3 ? pal : 1);
+        e2.a = lerp(210, 24, k); e2.b = lerp(147, 17, k); e2.sw = lerp(21, 0, k); e2.ir = lerp(63, 24, k); e2.pr = lerp(27, 0, k);
+        e2.sx = 1 + .25 * bump(p(t, 9.42, 9.6)) * k; e2.sy = 1 - .2 * bump(p(t, 9.42, 9.6)) * k;   // parte con una spinta
+      }
+      // poi, tornato occhio, fa il giro su se stesso in 3D e il saltello
+      e2.spin = t >= 10.58 && t < 10.98;
+      const car = bump(p(t, 10.98, 11.08)), su = p(t, 11.06, 11.24), atterra = bump(p(t, 11.22, 11.32));
       const h = 150 * Math.sin(Math.PI * clamp(su)), str = su > 0 && su < 1 ? bump(su) : 0;
-      e2.y -= h; e2.sx = (1 + .1 * car) * (1 - .08 * str) * (1 + .14 * atterra); e2.sy *= (1 - .14 * car) * (1 + .12 * str) * (1 - .16 * atterra);
+      e2.y -= h; e2.sx = (e2.sx ?? 1) * (1 + .1 * car) * (1 - .08 * str) * (1 + .14 * atterra); e2.sy = (e2.sy ?? 1) * (1 - .14 * car) * (1 + .12 * str) * (1 - .16 * atterra);
       // poi il passaggio a Gen AI (tre proposte)
       e2.base = { x: e2.x, y: e2.y, a: e2.a, b: e2.b, sw: e2.sw, ir: e2.ir, pr: e2.pr };
-      if (MG === '4') { const fill = eIO(p(t, 11.0, 11.18)); e2.prc = mix(INK, PINK, fill); e2.pr = lerp(e2.pr, e2.ir, fill); if (t >= 11.18) e2.on = false; }   // la pupilla si fa rosa: una sola pallina
+      if (MG === '4') { const fill = eIO(p(t, 11.28, 11.42)); e2.prc = mix(INK, PINK, fill); e2.pr = lerp(e2.pr, e2.ir, fill); if (t >= 11.42) e2.on = false; }   // la pupilla si fa rosa: una sola pallina
       if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
       if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
       if (MG === '3') {
@@ -969,7 +989,7 @@
       }
     }
     if (e2.spin) {
-      const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
+      const spin = TAU * eIO(p(t, 10.6, 10.96)), th = 44 * bump(p(t, 10.58, 10.98)), lift = .2 * bump(p(t, 10.6, 10.96));
       const PJ = boardProj(lift, 0, 1900, [e2.x, e2.y]), scE = e2.a / 220;
       EXT.map((e, i) => ({ e, i, r: PJ(0, 0, 640, 640, -th * i / (EXT.length - 1), scE, spin) })).sort((a, b) => b.r.d - a.r.d).forEach(({ e, i, r }) => {
         const front = i === EXT.length - 1;
@@ -983,9 +1003,9 @@
     // ---- il passaggio Motion → Gen AI
     const eb = e2.base || { x: 960, y: 460, a: 210, b: 147, sw: 21, ir: 63, pr: 27 };
     const fieldC = TH === THEMES.light ? '#EFE9DF' : '#1F2121', lineC = TH === THEMES.light ? '#E2DBCF' : '#282B2B';
-    const m1On = (MG === '1' && t >= 11.02 && t < 11.42) || (MG === '4' && t >= 11.18 && t < 11.54); show(PMORPH, m1On); show(PIRIS, m1On);
+    const m1On = (MG === '1' && t >= 11.02 && t < 11.42) || (MG === '4' && t >= 11.42 && t < 11.74); show(PMORPH, m1On); show(PIRIS, m1On);
     if (m1On) {   // 1 · il contorno dell'occhio si apre nella barra, l'iride diventa il pulsante, la pupilla il cursore
-      const m = MG === '4' ? eIO(p(t, 11.18, 11.52)) : eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, BY, 1240, 96);
+      const m = MG === '4' ? eIO(p(t, 11.42, 11.72)) : eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, BY, 1240, 96);
       PMORPH.setAttribute('d', path4(A.map((v, i) => lerp(v, Bp[i], m))));
       PMORPH.setAttribute('stroke', mix(fg, lineC, m)); PMORPH.setAttribute('stroke-width', f1(lerp(eb.sw, 2, m)));
       PMORPH.setAttribute('fill', fieldC); PMORPH.setAttribute('fill-opacity', (m * m).toFixed(3));
@@ -1006,21 +1026,20 @@
       POVL.setAttribute('fill', INK);
     }
     GHOST.forEach(gh => vis(gh.g, false));
-    const moOn = t >= 9.0 && t < 11.1; show(MO, moOn);
+    const moOn = t >= 9.0 && t < 11.42; show(MO, moOn);
     if (moOn) {
-      const out = 1 - eIn(p(t, 10.96, 11.1));   // la timeline resta fino al saltello, poi se ne va
+      const out = 1 - eIn(p(t, 11.26, 11.4));
       TRK.setAttribute('stroke', TH.line2); traccia(TRK, eOut(p(t, 9.0, 9.35)) * out);
-      const phx = 560 + 800 * p(t, 9.5, 10.95);
+      const bx = lerp(560, 1360, p(t, 9.42, 10.32));
       KF.forEach((r, i) => {
-        const x = [700, 960, 1220][i], at = 9.5 + (x - 560) / 800 * 1.45, k = spring(p(t, 9.2 + .08 * i, 9.45 + .08 * i)) * out * (1 + .4 * bump(p(t, at, at + .15)));
+        const x = [700, 960, 1220][i], at = 9.42 + (x - 560) / 800 * .9, k = spring(p(t, 9.16 + .06 * i, 9.4 + .06 * i)) * out * (1 + .4 * bump(p(t, at, at + .15)));
         r.setAttribute('transform', `translate(${x} 820) rotate(45) scale(${k.toFixed(3)})`);
-        r.setAttribute('fill', phx >= x - 4 && t >= 9.5 ? PINK : fg);
+        r.setAttribute('fill', bx >= x - 4 && t >= 9.42 ? PINK : fg);
       });
-      vis(PH, t >= 9.45 && out > .01); PH.setAttribute('transform', `translate(${f1(phx)} 820)`); PH.setAttribute('stroke', PINK); PH.setAttribute('fill', PINK);
-      PH.style.opacity = (eOut(p(t, 9.45, 9.55)) * out).toFixed(3);
+      vis(PH, false);   // la testina è la pallina rosa
     }
     // la barra: parte dalla timeline (800 x 6 in basso) e sale fino a diventare il campo del prompt (1000 x 96)
-    const bar0 = MG === '4' ? 11.52 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.36;
+    const bar0 = MG === '4' ? 11.72 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.36;
     const barOn = t >= bar0 && t < 12.5; show(BAR, barOn);
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
@@ -1030,13 +1049,13 @@
       BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
     }
-    const gp0 = MG === '4' ? 11.52 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.54;
+    const gp0 = MG === '4' ? 11.72 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.54;
     const gpOn = t >= gp0 && t < 12.5; show(GP, gpOn);
     if (gpOn) {
       const k = MG === '1' || MG === '4' ? 1 : eOut(p(t, gp0, gp0 + .16));
       GP.style.opacity = (k * (1 - up)).toFixed(3);
       GP.setAttribute('transform', `translate(0 ${f1(BY - 286 - 160 * up)})`);   // testo e pulsante disegnati a 286: spostati al centro
-      GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.7, 12.04))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
+      GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.76, 12.08))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
       const genero = t >= 12.16; GBT.textContent = genero ? 'Generating…' : 'Generate';
       GBR.setAttribute('transform', `translate(1448 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1448 -286)`);
     }
