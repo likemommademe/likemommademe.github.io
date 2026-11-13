@@ -321,4 +321,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Gallerie: le coppie di foto con forme simili sono allineate (stessa larghezza e altezza, ritaglio minimo); solo le coppie molto diverse restano a mosaico. |
 | 13/11/2026 | Accademia dei Romani: insegna più vicina e dettaglio ritagliato senza il muro vuoto sotto, tutte e due della stessa forma. |
 | 13/11/2026 | Portfolio LIKEMOMMADEME: tolta la sezione «Su telefono». |
-| 13/11/2026 | Accademia dei Romani: accanto all'insegna torna la foto originale del marchio sul muro, al posto del dettaglio ritoccato. |
+| 13/11/2026 | Accademia dei Romani: a sinistra torna la foto originale dell'insegna (anche copertina), a destra resta il dettaglio delle lettere in acciaio. |
