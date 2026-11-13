@@ -765,8 +765,8 @@
   // 5 · Gen AI: il prompt, poi l'esplosione di varianti, poi tutte di nuovo in una
   const BAR = mk('rect', { rx: 3 });   // la timeline che diventa la barra del prompt
   const GP = mk('g');
-  GP.innerHTML = `<text id="v2pt" x="520" y="298" font-family="Cabinet Grotesk" font-weight="500" font-size="32" style="fill:var(--fg)"></text>
-    <rect id="v2gen" x="1222" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1332" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
+  GP.innerHTML = `<text id="v2pt" x="400" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
+    <rect id="v2gen" x="1338" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1448" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
   const GPROMPT = 'Create an eye, 24 variations, pop style';
   const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
@@ -936,7 +936,7 @@
     const barOn = t >= 11.14 && t < 12.5; show(BAR, barOn);   // nasce dall'occhio chiuso
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
-      const m = eIO(p(t, 11.14, 11.46)), w = lerp(420 + 21, 1000, m), h = lerp(21, 96, m), cy = lerp(460, 286, m) - 160 * up;
+      const m = eIO(p(t, 11.14, 11.46)), w = lerp(420 + 21, 1240, m), h = lerp(21, 96, m), cy = lerp(460, 286, m) - 160 * up;
       BAR.setAttribute('x', f1(960 - w / 2)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(11, 48, m)));
       BAR.setAttribute('fill', mix(fg, TH === THEMES.light ? '#EFE9DF' : '#1F2121', eIO(p(t, 11.16, 11.4)))); BAR.setAttribute('stroke', TH === THEMES.light ? '#E2DBCF' : '#282B2B'); BAR.setAttribute('stroke-width', f1(2 * m));
       BAR.style.opacity = (1 - up).toFixed(3);
@@ -948,7 +948,7 @@
       GP.setAttribute('transform', `translate(0 ${f1(-160 * up)})`);
       GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.7, 12.04))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
       const genero = t >= 12.16; GBT.textContent = genero ? 'Generating…' : 'Generate';
-      GBR.setAttribute('transform', `translate(1332 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1332 -286)`);
+      GBR.setAttribute('transform', `translate(1448 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1448 -286)`);
     }
     // l'esplosione: 24 varianti dell'occhio partono dal centro; poi si richiudono in una sola
     const tlOn = t >= 12.36 && t < 13.95;
@@ -977,7 +977,7 @@
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
     if (c2) {
-      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1560, 1332, a), y = lerp(600, 292, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
+      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1640, 1448, a), y = lerp(600, 292, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
   }
