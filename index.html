@@ -17,6 +17,8 @@ reel: true
 <script>
   (function () {
     var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
+    // prova della versione "Uno schizzo diventa tutto": la home la carica con ?v2 nell'indirizzo
+    if (/[?&]v2\b/.test(location.search)) frame.src = frame.src.replace('/showreel.html', '/showreel-v2.html');
     var KEY = 'lmm-intro-fatta', fatta = false;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     // L'intro gira una volta sola. Riparte solo ricaricando la pagina o cliccando HOME / il logo (che riaprono la home);

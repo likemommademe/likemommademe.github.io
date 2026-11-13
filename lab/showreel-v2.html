@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIKEMOMMADEME Showreel</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Showreel di LIKEMOMMADEME, Creative Designer: cinque mondi in quindici secondi.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233D5AFF'/%3E%3Cpath d='M10 7h4v14h8v4H10z' fill='%23F5F5F2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,900&display=swap">
+<!-- Yink (Adobe Fonts), font delle categorie: progetto web "LIKEMOMMADEME portfolio" -->
+<link rel="stylesheet" href="https://use.typekit.net/rtt3djn.css">
+<style>/* TAN Nimbus: solo dal computer su cui è installato (licenza personale), altrimenti Yink */
+@font-face { font-family: "TAN Nimbus"; src: local("TAN NIMBUS"), local("TAN-NIMBUS"); size-adjust: 93%; font-display: swap; }</style>
+<style>
+  :root {
+    --ink: #121414; --paper: #F5F5F2; --muted: #8A8A8A; --line: #262626;
+    --blue: #3D5AFF; --green: #12C08E; --pink: #FF3D8B;
+    /* notte (predefinita) */
+    --bg: #121414; --fg: #F5F5F2; --panel: #1B1E1E; --field: #121414; --dot: #3B3E3E;
+  }
+  :root.light { --bg: #F4EFE7; --fg: #121414; --muted: #6B665E; --line: #E2DBCF; --panel: #FBF8F3; --field: #EFE9DF; --dot: #D8D0C3; }   /* color carta, come bitwip */
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+
+  #stage {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+    transform-origin: 0 0; overflow: hidden;
+    background: var(--bg); color: var(--fg);
+    font-family: "Cabinet Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .abs { position: absolute; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: top; }
+  .mask > span { display: inline-block; }
+  #cam { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .scena { left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .scena > svg#fx { z-index: auto; }
+
+  /* Nome */
+  #name { position: absolute; left: 0; right: 0; top: 372px; text-align: center; white-space: nowrap;
+          font-weight: 900; font-size: 190px; line-height: .8; letter-spacing: -.02em; z-index: 5; }
+  #name .mask { padding: .1em 0 .04em; margin: -.1em 0 -.04em; }
+  #role { position: absolute; left: 0; right: 0; top: 560px; text-align: center;
+          font-weight: 500; font-size: 44px; line-height: 1.15; }
+  .sq { width: 64px; height: 64px; border-radius: 12px; }
+
+  /* Cornice: marchio e mondi */
+  #mark { display: none; }   /* il logo sta solo nel menu del sito */
+  #markx { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; z-index: 9; }
+  .w { position: absolute; top: 980px; width: 400px; margin-left: -200px; text-align: center; white-space: nowrap;
+       font-weight: 500; font-size: 26px; line-height: 1.3; z-index: 9; }
+  .w .mask { padding-bottom: 2px; }
+  .w i { position: absolute; left: 50%; bottom: -12px; width: 64px; height: 4px; margin-left: -32px;
+         border-radius: 2px; transform: scaleX(0); }
+
+  /* Titoli dei mondi: a sinistra, in uno spazio loro, mentre la camera sposta il mondo a destra */
+
+  svg#fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; z-index: 4; }
+
+  /* Generative AI */
+  #ai { left: 410px; top: 190px; width: 1100px; height: 640px; border-radius: 24px; background: var(--panel);
+        box-shadow: inset 0 0 0 2px var(--line); }
+  #ai .dots { position: absolute; left: 28px; top: 30px; display: flex; gap: 10px; }
+  #ai .dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--dot); }
+  #ai .ttl { position: absolute; left: 104px; top: 24px; font-weight: 500; font-size: 20px; color: var(--muted); }
+  #field { left: 40px; top: 80px; width: 1020px; height: 84px; border-radius: 42px; background: var(--field); box-shadow: inset 0 0 0 2px var(--line); overflow: hidden; }
+  #ftext { left: 90px; top: 24px; font-weight: 500; font-size: 30px; line-height: 36px; white-space: nowrap; }
+  #ftext .caret { display: inline-block; width: 3px; height: 32px; margin-left: 4px; vertical-align: -5px; background: var(--pink); }
+  #fbar { left: 0; bottom: 0; width: 1020px; height: 4px; background: var(--pink); transform-origin: 0 50%; transform: scaleX(0); }
+  #gen { left: 880px; top: 94px; width: 160px; height: 56px; border-radius: 28px; background: var(--pink); color: var(--ink);
+         font-weight: 900; font-size: 24px; display: flex; align-items: center; justify-content: center; }
+  .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
+  #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
+
+  /* La frase finale: MORE THAN MEETS THE EYE. La O è un occhio che fa l'occhiolino, MEETS è in TAN Nimbus fucsia */
+  #frase { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; font-size: 130px; line-height: 1; letter-spacing: -.02em; z-index: 6; }
+  #frase .fu { display: inline-block; }
+  #frase .fy { font-family: "TAN Nimbus", "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; letter-spacing: 0; font-size: .72em; line-height: 0; text-transform: uppercase; color: var(--pink); }   /* MEETS in stampatello e fucsia come l'iride; .72em = M e T alte esattamente come le maiuscole di Cabinet (misurate: .670 / .930) */
+  .occhio { display: inline-block; height: .69em; width: .767em; vertical-align: -.015em; margin: 0 .03em; }
+  .occhio svg { width: 100%; height: 100%; overflow: visible; display: block; }
+  .occhio .palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
+
+  /* Motion Design */
+  #kin, .kt { left: 0; right: 0; }
+  #kin { top: 330px; text-align: center; white-space: nowrap;
+         font-weight: 900; font-size: 250px; line-height: .8; letter-spacing: -.02em; }
+  #kin span, .kt span { display: inline-block; }
+  .ct { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; line-height: .9; letter-spacing: -.02em; z-index: 8; }   /* V2: il titolo passa sopra la scena mentre sale */
+  .ct .mask { padding: .16em 0 .14em; margin: -.16em 0 -.14em; }
+  .ct .mask.y { padding-left: .1em; padding-right: .16em; margin-left: -.1em; margin-right: -.16em; }   /* yink esce dai bordi: più spazio, niente lettere tagliate */
+  .ct .y { font-family: "yink", "Cabinet Grotesk", sans-serif; font-weight: 400; font-style: normal; letter-spacing: 0; text-transform: lowercase; color: var(--fg); }
+  .kt { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; line-height: .8; letter-spacing: -.02em; }
+
+  /* Web Design: finestra del browser chiara e vetrosa */
+  #win { overflow: hidden; z-index: 3; color: var(--ink); }
+  #wfill { position: absolute; inset: 0; background: #FCFDFF; transform-origin: 50% 100%; }
+  #wband { left: 0; top: 0; width: 1000px; height: 56px; background: #F1F6FF; border-bottom: 1px solid #E3EAF5; }
+  #wband .dots { position: absolute; left: 24px; top: 21px; display: flex; gap: 9px; }
+  #wband .dots i { width: 13px; height: 13px; border-radius: 50%; background: #D5DDEA; }
+  #wurl { left: 330px; top: 12px; width: 340px; height: 32px; border-radius: 16px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3EAF5;
+          font-weight: 500; font-size: 15px; line-height: 32px; text-align: center; color: #8A93A6; }
+  #wview { left: 0; top: 56px; width: 1000px; height: 604px; overflow: hidden; }
+  #wpage { left: 0; top: 0; width: 1000px; height: 604px; transform-origin: 500px 300px; }
+  #wpage .wlogo { position: absolute; left: 40px; top: 24px; font-weight: 900; font-size: 18px; letter-spacing: -.01em; }
+  #wpage .wpill { position: absolute; right: 40px; top: 18px; height: 32px; padding: 0 16px; border-radius: 16px; background: var(--ink); color: var(--paper);
+                  font-weight: 500; font-size: 14px; line-height: 32px; }
+  #wpage h3 { position: absolute; left: 40px; top: 96px; margin: 0; width: 520px; font-weight: 900; font-size: 64px; line-height: .92; letter-spacing: -.025em; }
+  #wpage .wtext { position: absolute; left: 40px; top: 262px; width: 400px; font-weight: 400; font-size: 19px; line-height: 1.45; color: #8A8F99; }
+  #wpage .wtext b { color: var(--ink); font-weight: 700; }
+  #wcta { left: 40px; top: 360px; width: 180px; height: 58px; border-radius: 29px; background: var(--blue); color: var(--paper);
+          font-weight: 700; font-size: 21px; display: flex; align-items: center; justify-content: center; transform-origin: 90px 29px; }
+  #wpage .wimg { position: absolute; left: 600px; top: 90px; width: 360px; height: 330px; border-radius: 26px; overflow: hidden;
+                 background: linear-gradient(150deg, #3D5AFF, #6F86FF 55%, #12C08E); }
+  #wpage .wcards { position: absolute; left: 40px; top: 462px; display: flex; gap: 20px; }
+  #wpage .wcards i { width: 293px; height: 160px; border-radius: 20px; background: #EEF2F8; }
+  #wcard { left: 240px; top: 0; width: 520px; height: 640px; border-radius: 40px; background: #FFFFFF;
+           box-shadow: 0 -2px 0 #EEF2F8, 0 24px 60px rgba(30, 47, 82, .18); }
+  #wcard .grab { position: absolute; left: 230px; top: 12px; width: 60px; height: 6px; border-radius: 3px; background: #DADFE8; }
+  #wcard .cover { position: absolute; left: 24px; top: 32px; width: 472px; height: 300px; border-radius: 28px; overflow: hidden;
+                  background: linear-gradient(160deg, #12C08E, #3D5AFF 70%); }
+  #wcard .glass { position: absolute; left: 22px; bottom: -34px; font-weight: 900; font-size: 210px; line-height: .8; letter-spacing: -.04em;
+                  color: transparent; background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.32));
+                  -webkit-background-clip: text; background-clip: text; }
+  #wcard .cap1 { position: absolute; left: 30px; top: 352px; font-weight: 700; font-size: 30px; }
+  #wcard .cap2 { position: absolute; left: 30px; top: 394px; font-weight: 400; font-size: 19px; color: #8A8F99; }
+
+  /* Comandi */
+  #ui { position: fixed; left: 0; right: 0; bottom: 0; height: 56px; display: flex; align-items: center; justify-content: center;
+        gap: 14px; font: 14px/1 system-ui, sans-serif; color: #bbb; }
+  #ui button { font: inherit; color: #eee; background: #1b1b1b; border: 1px solid #333; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  #ui button:focus-visible, #ui input:focus-visible { outline: 2px solid #3D5AFF; outline-offset: 2px; }
+  #ui input { width: min(46vw, 620px); accent-color: #3D5AFF; }
+  #tc { width: 92px; font-variant-numeric: tabular-nums; }
+  body.clean #ui { display: none; }
+
+  /* Modalità scroll ed embed */
+  html.scroll, html.scroll body { overflow-x: hidden; overflow-y: visible; height: auto; }
+  body.scroll #stage { position: fixed; }
+  body.scroll #ui, body.embed #ui { display: none; }
+  #scroller { display: none; }
+  body.scroll #scroller { display: block; height: 1600vh; }
+  /* a pagina ferma: la pillola che invita a scorrere */
+  #hint { position: fixed; left: 0; top: 0; display: none; pointer-events: none; opacity: 0; z-index: 20; will-change: transform; }
+  .pillola { display: inline-flex; align-items: center; gap: 12px; height: 46px; padding: 0 18px 0 16px; border-radius: 999px;
+    background: var(--bg); color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--line), 0 10px 30px rgba(0,0,0,.25); font: 700 14px/1 "Cabinet Grotesk", system-ui, sans-serif; letter-spacing: .14em; }
+  .pillola__sq { width: 12px; height: 12px; border-radius: 3px; background: var(--pink); animation: gira 3s linear infinite; }
+  .pillola__mq { width: 150px; overflow: hidden; white-space: nowrap; -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+  .pillola__mq > span { display: inline-block; animation: scorre 6s linear infinite; }
+  @keyframes scorre { to { transform: translateX(-50%); } }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .pillola__sq, .pillola__mq > span { animation: none; } }
+  body.scroll #hint, body.embed #hint { display: flex; }
+  body.embed { background: var(--bg); }
+</style>
+</head>
+<body>
+<div id="stage" role="img" aria-label="Showreel di LIKEMOMMADEME, Creative Designer: Brand Identity, Illustration, Generative AI, Motion Design, UI/UX Design.">
+
+  <div id="cam" class="abs">
+    <div class="scena abs">
+    <div id="ai" class="abs">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="ttl">Generatore</div>
+      <div id="field" class="abs"><div id="ftext" class="abs"><span id="ptext"></span><span class="caret"></span></div><div id="fbar" class="abs"></div></div>
+      <div id="gen" class="abs">Genera</div>
+      <div id="results"></div>
+    </div>
+    </div>
+
+    <div id="kin" class="abs"></div>
+    <div id="frase" class="abs" aria-hidden="true"></div>
+    <div class="scena abs">
+    <div id="win" class="abs">
+      <div id="wfill"></div>
+      <div id="wband" class="abs"><div class="dots"><i></i><i></i><i></i></div><div id="wurl" class="abs">likemommademe.github.io</div></div>
+      <div id="wview" class="abs">
+        <div id="wpage" class="abs">
+          <div class="wlogo">LIKEMOMMADEME</div><div class="wpill">Contatti</div>
+          <h3>Siti che si fanno ricordare.</h3>
+          <div class="wtext">Dal concept al codice, con un pannello <b>fatto su misura</b> per aggiornarli da soli.</div>
+          <div id="wcta" class="abs">Scopri</div>
+          <div class="wimg"><svg width="360" height="330" viewBox="0 0 360 330" aria-hidden="true"><path id="wblob" fill="#F5F5F2"/></svg></div>
+          <div class="wcards"><i></i><i></i><i></i></div>
+        </div>
+        <div id="wcard" class="abs">
+          <i class="grab"></i>
+          <div class="cover"><div class="glass">WEB</div></div>
+          <div class="cap1">Il tuo sito</div>
+          <div class="cap2">Design, sviluppo e CMS su misura</div>
+        </div>
+      </div>
+    </div>
+
+    <svg id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
+      <g id="grid" fill="none" stroke="#8A8A8A" stroke-width="2">
+        <rect x="-260" y="-260" width="520" height="520" pathLength="1"/>
+        <circle r="260" pathLength="1"/>
+        <circle r="130" pathLength="1"/>
+        <path d="M-360 0H360" pathLength="1"/>
+        <path d="M0 -360V360" pathLength="1"/>
+        <path d="M-260 -260L260 260" pathLength="1"/>
+        <path d="M260 -260L-260 260" pathLength="1"/>
+      </g>
+      <g id="boxes"></g>
+      <g id="miniBox"></g>
+      <g id="orbita">
+        <g id="oIll"><path id="oIllB"/><circle cx="-30" cy="-12" r="10" fill="#121414"/><path class="oOcchio" d="M18 -12h22" stroke="#121414" stroke-width="10" stroke-linecap="round"/><path d="M-36 20Q0 54 36 20" fill="none" stroke="#121414" stroke-width="9" stroke-linecap="round"/></g>
+        <g id="oAi"><path id="oAiB" fill="#FF3D8B"/><path id="oAiS" d="M0 -26C3 -6 6 -3 26 0C6 3 3 6 0 26C-3 6 -6 3 -26 0C-6 -3 -3 -6 0 -26Z" fill="#FF3D8B"/></g>
+        <g id="oMot"><path d="M-160 0H160" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".35"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="translate(-110 0) rotate(45)" fill="#3D5AFF"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="rotate(45)" fill="#12C08E"/>
+          <rect x="-15" y="-15" width="30" height="30" rx="5" transform="translate(110 0) rotate(45)" fill="#FF3D8B"/>
+          <g id="oPh"><path d="M0 -46V46" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cy="-46" r="10" fill="currentColor"/></g></g>
+        <g id="oWeb"><rect x="-150" y="-100" width="300" height="200" rx="20" style="fill:var(--panel)" stroke="currentColor" stroke-width="5"/>
+          <circle cx="-120" cy="-72" r="7" fill="#FF3D8B"/><circle cx="-98" cy="-72" r="7" fill="#12C08E"/><circle cx="-76" cy="-72" r="7" fill="#3D5AFF"/>
+          <rect x="-120" y="-38" width="170" height="18" rx="9" fill="currentColor"/><rect x="-120" y="-8" width="230" height="10" rx="5" fill="currentColor" opacity=".3"/><rect x="-120" y="12" width="190" height="10" rx="5" fill="currentColor" opacity=".3"/>
+          <rect id="oBtn" x="-120" y="40" width="110" height="36" rx="18" fill="#3D5AFF"/>
+          <path id="oCur" d="M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z" fill="#F5F5F2" stroke="#121414" stroke-width="2.5" stroke-linejoin="round"/></g>
+      </g>
+      <g id="sqs"></g>
+      <g id="graph" fill="none">
+        <path id="tl" d="M510 830H1410" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round" pathLength="1"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+        <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4"/>
+      </g>
+      <path id="blob"/>
+      <path id="contour" fill="none" stroke="#F5F5F2" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+      <g id="face">
+        <circle id="eyeL" r="16" fill="#121414"/>
+        <circle id="eyeR" r="16" fill="#121414"/>
+        <path id="smile" d="M-84 40Q0 128 84 40" fill="none" stroke="#121414" stroke-width="14" stroke-linecap="round" pathLength="1"/>
+      </g>
+      <g id="storia"></g>
+      <g id="pen">
+        <path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/>
+        <path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/>
+        <path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/>
+        <path d="M0 0L4 -12L12 -4Z" fill="#121414"/>
+      </g>
+    </svg>
+    <svg id="cursor" class="abs" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z" fill="#F5F5F2" stroke="#121414" stroke-width="2.5" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div id="name" aria-hidden="true"></div>
+    <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
+    <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
+    <div id="sq2" class="abs sq" style="background:var(--green)"></div>
+    <div id="sq3" class="abs sq" style="background:var(--pink)"></div>
+  </div>
+
+  <div id="mark" class="abs"><span class="mask"><span>LIKEMOMMADEME</span></span></div>
+  <div id="worlds" aria-hidden="true"></div>
+</div>
+
+<div id="scroller"></div>
+<div id="hint" aria-hidden="true"><span class="pillola"><i class="pillola__sq"></i><span class="pillola__mq"><span>SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ </span></span></span></div>
+<div id="ui">
+  <button id="pp" type="button">Pausa</button>
+  <input id="scrub" type="range" min="0" max="17.5" step="0.01" value="0" aria-label="Posizione nel tempo">
+  <span id="tc">00.00 / 15</span>
+  <button id="snd" type="button" aria-pressed="false">Suono: no</button>
+</div>
+
+<script>
+(() => {
+  /* ---------- Costanti ---------- */
+  const DUR = 17.5, BEAT = .5, TAU = Math.PI * 2;
+  // Dopo ogni mondo tutto si raccoglie in un punto e il suo titolo entra al centro, come MOTION.
+  // Durante il titolo la scena resta ferma su quel punto (la camera invece continua a respirare).
+  const TITLES = [];   // (i titoli a pausa sono stati sostituiti da titoli dentro le scene)
+  function remap(T) {
+    let shift = 0;
+    for (const g of TITLES) {
+      const start = g.at + shift;
+      if (T < start) return { t: T - shift };
+      if (T < start + g.dur) return { t: g.at, title: g, lt: (T - start) / g.dur };
+      shift += g.dur;
+    }
+    return { t: T - shift };
+  }
+  const INK = '#121414', PAPER = '#F5F5F2', BLUE = '#3D5AFF', GREEN = '#12C08E', PINK = '#FF3D8B', TRACK = '#CFCFCA', LINE = '#262626';
+  const G = 80;                                  // apertura del nome: LIKE · MOM · MADE · ME
+  const GOFF = [-1.5, -.5, .5, 1.5];             // spostamento di ogni parola, in multipli di G
+  // I cinque mondi: inizio e fine nel tempo. Brand ha due battute (il cubo), gli altri una.
+  // V2 "Uno schizzo diventa tutto": un solo occhio attraversa il lavoro, nell'ordine in cui lavoro davvero
+  const WORLDS = [
+    { label: 'Illustration',   col: GREEN, t0: 2,   t1: 4.2 },
+    { label: 'Brand Identity', col: BLUE,  t0: 4.2, t1: 6.6 },
+    { label: 'Web Design',     col: GREEN, t0: 6.6, t1: 9 },
+    { label: 'Motion Design',  col: BLUE,  t0: 9,   t1: 11.4 },
+    { label: 'Generative AI',  col: PINK,  t0: 11.4, t1: 14 }
+  ];
+  const ROW_X = [384, 672, 960, 1248, 1536];
+  // Giorno e notte: i colori di testo e linee seguono il tema (gli accenti restano uguali)
+  const THEMES = { dark: { fg: '#F5F5F2', dim: '#5E5E5E', line2: '#3A3A3A', win: '#FCFDFF' }, light: { fg: '#121414', dim: '#A39C91', line2: '#D5CCBE', win: '#FFFFFF' } };
+  let TH = THEMES.dark;
+  function setTheme(name) {
+    const light = name === 'light'; TH = light ? THEMES.light : THEMES.dark;
+    document.documentElement.classList.toggle('light', light);
+  }
+  const WIN = { x: 460, y: 220, w: 1000, h: 660 };   // finestra del browser (Web Design), centrata come la timeline da cui nasce
+  const CTA = { x: WIN.x + 40 + 90, y: WIN.y + 56 + 360 + 29 };
+
+  /* ---------- Funzioni del tempo ---------- */
+  const clamp = (x, a = 0, b = 1) => x < a ? a : x > b ? b : x;
+  const p = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const eOut = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+  const eIn = x => x <= 0 ? 0 : Math.pow(2, 10 * x - 10);
+  const eIO = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+  const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);   // smorzamento critico: niente rimbalzo
+  const bump = x => Math.sin(Math.PI * clamp(x));
+  const rgb = h => h.startsWith('rgb') ? h.match(/\d+/g).map(Number) : [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, k) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], clamp(k)))).join(',')})`; };
+  const maskY = (t, a, d, b, e, dir = 1) => {
+    if (t < a) return 110;
+    let y = 110 * (1 - eOut(p(t, a, a + d)));
+    if (b != null && t >= b) y = 110 * dir * eIn(p(t, b, b + e));
+    return y;
+  };
+  const f1 = v => v.toFixed(1);
+
+  /* ---------- Forme ---------- */
+  const SQ = a => Math.pow(Math.pow(Math.abs(Math.cos(a)), 6) + Math.pow(Math.abs(Math.sin(a)), 6), -1 / 6);
+  const CI = () => 1;
+  const FL = a => 1 + .13 * Math.sin(6 * a);
+  const BL = a => 1 + .09 * Math.sin(3 * a + 1) + .05 * Math.sin(5 * a + 2.2);
+  const N = 180;
+  const rAt = (a, R, A, B, k, rot, hand) => { let r = R * lerp(A(a + rot), B(a + rot), k); if (hand) r = r * 1.1 + Math.sin(11 * a) * 5 + Math.sin(23 * a + 1) * 3; return r; };
+  function shape(cx, cy, R, A, B, k, rot = 0, hand = false) {
+    if (R < .5) return 'M0 0';
+    let d = '';
+    for (let j = 0; j < N; j++) {
+      const a = j / N * TAU, r = rAt(a, R, A, B, k, rot, hand);
+      d += (j ? 'L' : 'M') + f1(cx + r * Math.cos(a)) + ' ' + f1(cy + r * Math.sin(a));
+    }
+    return d + 'Z';
+  }
+  const svgEl = (w, h, inner) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${inner}</svg>`;
+
+  /* ---------- Costruzione del DOM ---------- */
+  const $ = s => document.querySelector(s), E = id => document.getElementById(id);
+  const stage = $('#stage');
+  const nameEl = $('#name');
+  'LIKEMOMMADEME'.split('').forEach(ch => {
+    const m = document.createElement('span'); m.className = 'mask';
+    const c = document.createElement('span'); c.textContent = ch;
+    m.appendChild(c); nameEl.appendChild(m);
+  });
+  const masks = [...nameEl.children], letters = masks.map(m => m.firstChild);
+  const group = i => i < 4 ? 0 : i < 7 ? 1 : i < 11 ? 2 : 3;   // LIKE | MOM | MADE | ME
+
+  const worldsEl = $('#worlds');
+  WORLDS.forEach((w, i) => {
+    const d = document.createElement('div'); d.className = 'w';
+    d.innerHTML = `<span class="mask"><span>${w.label}</span></span><i style="background:${w.col}"></i>`;
+    worldsEl.appendChild(d);
+  });
+  const worldEls = [...worldsEl.children];
+
+  // Brand Identity: nove quadrati 2D, poi gli stessi come blocchi 3D
+  const NS = 'http://www.w3.org/2000/svg', sqsEl = E('sqs'), sqs = [];
+  for (let k = 0; k < 9; k++) {
+    const r = document.createElementNS(NS, 'rect'); sqsEl.appendChild(r);
+    sqs.push({ el: r, i: (k % 3) - 1, j: Math.floor(k / 3) - 1, k });
+  }
+  // tre configurazioni di altezze, una per battito: i blocchi si alzano e si rimescolano
+  const H1 = [180, 320, 240, 420, 560, 300, 380, 260, 480].map(h => h * .8);
+  const H2 = [460, 200, 380, 260, 300, 520, 220, 420, 280].map(h => h * .8);
+  const H3 = [260, 480, 200, 520, 420, 240, 500, 180, 380].map(h => h * .8);
+  const RISE = [4, 1, 3, 5, 0, 7, 2, 6, 8];       // ordine in cui si alzano
+
+  // Generatore AI: quattro risultati (il secondo è la forma che prosegue)
+  const AI = { x: 410, y: 190 }, SEL = { x: AI.x + 40 + 261 + 118.5, y: AI.y + 200 + 200, R: 70, rot: 1.35 };
+  const CHIP = { x: AI.x + 40 + 42, y: AI.y + 80 + 42 };
+  const resArt = [
+    [BLUE, `<text x="118.5" y="250" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="230" fill="${PAPER}">L</text>`],
+    [INK, `<path d="${shape(118.5, 200, SEL.R, BL, BL, 0, SEL.rot)}" fill="${PINK}"/>`],
+    [GREEN, `<circle cx="94" cy="180" r="11" fill="${INK}"/><circle cx="144" cy="180" r="11" fill="${INK}"/><path d="M84 222Q119 266 154 222" fill="none" stroke="${INK}" stroke-width="12" stroke-linecap="round"/>`],
+    [PAPER, [0, 1, 2, 3, 4, 5, 6, 7, 8].map(k => `<rect x="${44 + (k % 3) * 52}" y="${126 + Math.floor(k / 3) * 52}" width="44" height="44" rx="10" ${k % 2 ? `fill="${PINK}"` : `fill="none" stroke="${PINK}" stroke-width="4"`}/>`).join('')]
+  ];
+  const resultsEl = E('results');
+  resArt.forEach(([bg, art], i) => {
+    const r = document.createElement('div'); r.className = 'abs res';
+    r.style.left = (40 + 261 * i) + 'px'; r.style.background = bg;
+    r.innerHTML = svgEl(237, 400, art);
+    resultsEl.appendChild(r);
+  });
+  const results = [...resultsEl.children];
+  // tempi del generatore, espressi nel tempo "locale" del mondo (u = t - 2)
+  const CURSOR_KEYS = [[6.25, 1580, 1000], [6.5, 760, 318], [6.95, 1372, 318], [7.02, 1372, 318], [7.42, SEL.x, SEL.y + 40], [7.52, SEL.x, SEL.y + 40], [7.85, 1100, 1160]];
+  const CLICKS = [6.5, 7.02, 7.52];
+
+  // Motion Design: parola cinetica
+  const kinEl = E('kin');
+  'MOTION'.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch; kinEl.appendChild(s); });
+  const kin = [...kinEl.children];
+  // MORE THAN meets THE EYE: ogni pezzo parte sparso e ruotato (valori fissi) e si compone; la O di MORE è un occhio
+  const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/><circle class="iride" cx="50" cy="45" r="22" fill="#FF3D8B"/><circle class="pupilla" cx="50" cy="45" r="10" fill="#121414"/></g></svg></span>';
+  const fraseEl = E('frase');
+  fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', '7', 'H', 'E', ' ', 'E', 'Y', 'E']
+    .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
+  const pezzi = [...fraseEl.children].map((n, i) => {
+    const r = Math.abs(Math.sin(i * 12.9898 + 1.7) * 43758.5453) % 1, r2 = Math.abs(Math.sin(i * 78.233 + .3) * 9999) % 1;
+    return { n, occhio: n.classList.contains('occhio'), dx: (r - .5) * 640, dy: (r2 - .5) * 420, rot: (r - .5) * 90 };
+  });
+  const occhio = fraseEl.querySelector('.occhio');
+  const traccia = (n, k) => { if (k >= 1) n.style.strokeDasharray = 'none'; else dash(n, k); };   // finito il disegno, niente tratteggio: il contorno resta chiuso
+  const CT = [
+    { world: 0, word: 'ILLUSTRATION', col: GREEN, tin: 2.2,   tout: 3.15 },
+    { world: 1, word: 'BRANDING',     col: BLUE,  tin: 4.35,  tout: 5.2 },
+    { world: 2, word: 'WEB DESIGN',   col: GREEN, tin: 6.75,  tout: 7.6 },
+    { world: 3, word: 'MOTION',       col: BLUE,  tin: 9.1,   tout: 9.9 },
+    { world: 4, word: 'GEN AI',       col: PINK,  tin: 11.55, tout: 12.3 }
+  ];
+  CT.forEach(c => {
+    const d = document.createElement('div'); d.className = 'abs ct'; d.setAttribute('aria-hidden', 'true'); d.style.color = c.col;
+    c.word.split('|').forEach((part, k) => part.split('').forEach(ch => { const m = document.createElement('span'); m.className = 'mask' + (k ? ' y' : ''); const x = document.createElement('span'); x.textContent = ch === ' ' ? '\u00a0' : ch; m.appendChild(x); d.appendChild(m); }));
+    E('mark').before(d); c.el = d; c.letters = [...d.querySelectorAll('.mask > span')];   // fuori dalla camera: lo zoom non li tocca
+  });
+  TITLES.forEach(g => {
+    const d = document.createElement('div'); d.className = 'abs kin kt'; d.setAttribute('aria-hidden', 'true');
+    g.word.split('').forEach(ch => { const s = document.createElement('span'); s.textContent = ch === ' ' ? '\u00a0' : ch; d.appendChild(s); });
+    kinEl.after(d); g.el = d; g.letters = [...d.children];
+  });
+
+  // Web Design: il cursore entra, passa sul pulsante e clicca (tempi locali u = t - 2)
+  const WEB_KEYS = [[10.42, 1700, 980], [10.85, CTA.x + 28, CTA.y + 14], [11.08, CTA.x + 22, CTA.y + 10], [11.5, 1050, 1200]];
+  E('wblob').setAttribute('d', shape(180, 165, 92, BL, FL, .4, .8));
+
+  const el = {
+    blob: E('blob'), contour: E('contour'), face: E('face'), eyeL: E('eyeL'), eyeR: E('eyeR'), smile: E('smile'), pen: E('pen'),
+    grid: E('grid'), gridParts: [...E('grid').children], boxes: E('boxes'), sqs: sqsEl,
+    graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
+    role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
+    ptext: E('ptext'), caret: $('#ftext .caret'), fbar: E('fbar'), ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl,
+    frase: fraseEl, nameEl: E('name'), miniBox: E('miniBox'), orbita: E('orbita'), win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
+  };
+  const PROMPT = 'un poster per la mamma, stile pop, 4 varianti';
+  let M = null;   // misure prese una volta, a riposo
+
+  function measure() {
+    const s0 = stage.getBoundingClientRect(), S = s0.width / 1920;
+    const box = n => { const b = n.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; };
+    const r = letters.map(box), k = kin.map(box), cy = (r[0].t + r[0].b) / 2;
+    M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0], lr: r,
+          gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
+          kx: k.map(b => (b.l + b.r) / 2), ky: (k[0].t + k[0].b) / 2 };
+    CT.forEach(c => {
+      c.el.style.fontSize = '250px';
+      const w = [...c.el.children].reduce((a, m) => a + m.getBoundingClientRect().width / S, 0);
+      const size = Math.min(250, 1720 / Math.max(1, w) * 250);
+      c.el.style.fontSize = size + 'px'; c.el.style.top = (398 - size * .8 / 2) + 'px';
+    });
+    fraseEl.style.fontSize = '130px';
+    const fw = [...fraseEl.children].reduce((a, n) => a + n.getBoundingClientRect().width / S, 0);
+    const fsz = Math.min(130, 1720 / Math.max(1, fw) * 130);
+    fraseEl.style.fontSize = fsz + 'px'; fraseEl.style.top = (470 - fsz / 2) + 'px';
+    const ob = box(occhio); M.eye = { x: (ob.l + ob.r) / 2, y: (ob.t + ob.b) / 2, w: ob.r - ob.l };
+    // la riga delle categorie: compatta e centrata in basso, la stessa che poi si apre ai lati del logo
+    const lw = worldEls.map(d => box(d.firstChild.firstChild)).map(b => b.r - b.l), GAP = 56;
+    const tot = lw.reduce((a, w) => a + w, 0) + GAP * 4;
+    let x = 960 - tot / 2; M.RX = lw.map(w => { const c = x + w / 2; x += w + GAP; return c; });
+    worldEls.forEach((d, i) => { d.style.left = M.RX[i] + 'px'; });
+    // titoli al centro: stessa grandezza di MOTION, rimpiccioliti se la parola è troppo lunga
+    TITLES.forEach(g => {
+      g.el.style.fontSize = '250px';
+      const w = g.letters.reduce((a, c) => a + c.getBoundingClientRect().width / S, 0);
+      const size = Math.min(250, 1720 / Math.max(1, w) * 250);
+      g.el.style.fontSize = size + 'px'; g.el.style.top = (500 - size * .8 / 2) + 'px';
+      g.kx = g.letters.map(c => { const b = box(c); return (b.l + b.r) / 2; }); g.ky = 500;
+    });
+  }
+
+  // La scena (forma, quadrati, generatore, browser, cursore) si rimpicciolisce sotto il titolo centrale.
+  // Durante MOTION torna a piena grandezza, perché lì la parola e la timeline sono già composte insieme.
+  const SC = { k: .58, cy: 720 };   // cy: la scena rimpicciolita finisce sopra le categorie in basso (fondo a circa 940)
+  // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
+  const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.15, 3.55)) + eIO(p(t, 4.15, 4.4)) - eIO(p(t, 5.2, 5.6))
+                   + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.6, 8)) + eIO(p(t, 8.95, 9.2)) - eIO(p(t, 9.9, 10.3))
+                   + eIO(p(t, 11.35, 11.6)) - eIO(p(t, 12.3, 12.7));
+  const sceneS = t => { const a = sceneA(t); return { k: lerp(1, SC.k, a), cy: lerp(500, SC.cy, a) }; };
+  const mapS = (S, x, y) => [960 + (x - 960) * S.k, S.cy + (y - 500) * S.k];
+  const scene = [...document.querySelectorAll('.scena')];
+
+  const vis = (node, on) => { node.style.visibility = on ? 'visible' : 'hidden'; };
+  const dash = (node, k) => { node.style.strokeDasharray = '1 1'; node.style.strokeDashoffset = String(1 - clamp(k)); };
+
+  /* ---------- Camera ---------- */
+  function camAt(t, T) {
+    const u = t - 2;
+    let z = 1, fx = 960, fy = 540, ax = 960, ay = 540;
+    if (false && u >= 6.4 && u < 8) {                     // zoom alla Screen Studio sul generatore
+      const zin = eIO(p(u, 6.42, 6.72)), zout = eIO(p(u, 6.98, 7.3)), k = zin * (1 - zout);
+      const S = sceneS(t), F = mapS(S, 820, CHIP.y), Q = mapS(S, SEL.x, SEL.y);
+      const a = sceneA(t);
+      z = 1 + lerp(.38, .55, a) * k + .05 * p(u, 6.72, 6.98) * (1 - zout);
+      fx = lerp(fx, F[0], k); fy = lerp(540, F[1], k); ax = lerp(960, fx, a); ay = lerp(540, fy, a);   // con il titolo cresce sul posto, senza venire al centro
+      const k2 = eIO(p(u, 7.38, 7.55)) * (1 - eIO(p(u, 7.6, 7.95)));
+      z += .2 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = lerp(960, fx, sceneA(t)); ay = lerp(540, fy, sceneA(t));
+    }
+    const push = T >= 2 && T < 14 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
+    z *= 1 + push + (T < 16.2 ? .014 * Math.exp(-12 * (T % BEAT)) : 0);
+    return { z, fx, fy, ax, ay };
+  }
+
+  /* ---------- La forma che attraversa i mondi ---------- */
+  function blobAt(t) {
+    const s = { cx: 960, cy: 500, R: 0, A: SQ, B: SQ, k: 0, col: BLUE, rot: 0 };
+    if (t < 1.97) return s;
+    if (t < 3) { s.R = lerp(16, 260, spring(p(t, 1.97, 2.45))); return s; }  // il monogramma nasce dai tre quadratini
+    if (t < 5.85) return s;                                                  // diviso nei quadrati e nei blocchi
+    if (t < 6.15) { const m = eIO(p(t, 5.85, 6.15)); s.R = lerp(75, 240, m); s.B = CI; s.k = m; s.col = mix(PINK, GREEN, m); return s; }   // il quadrato rosa diventa la forma verde
+    const u = t - 2;                                                         // da qui i tempi dei mondi successivi
+    s.col = GREEN; s.R = 240; s.A = s.B = CI;
+    if (u < 5) return s;
+    if (u < 5.5) { s.B = FL; s.k = spring(p(u, 5, 5.4)); s.rot = (u - 5) * .6; return s; }
+    if (u < 6) { s.A = FL; s.B = BL; s.k = spring(p(u, 5.5, 5.9)); s.rot = .3 + (u - 5.5) * .6; return s; }
+    s.A = s.B = BL;
+    if (u < 7.5) { const m = eIO(p(u, 6, 6.35)); s.cx = lerp(960, CHIP.x, m); s.cy = lerp(500, CHIP.y, m); s.R = lerp(240, 26, m) * (1 - eIn(p(u, 7.02, 7.16))); s.rot = lerp(.6, SEL.rot, m); return s; }   // la forma verde vola nel campo del prompt
+    s.col = PINK; s.rot = SEL.rot;
+    if (u < 8) { const m = eIO(p(u, 7.6, 8)); s.cx = lerp(SEL.x, 960, m); s.cy = lerp(SEL.y, 500, m); s.R = lerp(SEL.R, 200, m); return s; }
+    if (u < 8.5) { const m = eIO(p(u, 8, 8.4)); s.cx = lerp(960, 510, m); s.cy = lerp(500, 830, m); s.R = lerp(200, 24, m); s.B = CI; s.k = m; return s; }   // diventa il pallino della timeline
+    s.A = s.B = CI; s.R = 24; s.cy = 830;
+    s.cx = 510 + 900 * p(u, 8.5, 9.5);
+    s.R = 24 * (1 - eIn(p(u, 9.78, 10)));          // la testina finisce nell'angolo della finestra che nasce
+    return s;
+  }
+
+  /* ---------- Brand: i blocchi 3D (proiezione prospettica, ordinamento del pittore) ---------- */
+  function drawBoxes(t) {
+    const th0 = (90 - 44 * eIO(p(t, 4, 4.45)) + 44 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    // mentre la vista si inclina il blocco scende, così resta al centro della pagina (da piatto combacia con la griglia 2D)
+    const dy = 175 * eIO(p(t, 4, 4.45)) * (1 - eIO(p(t, 5.5, 5.85)));
+    const yaw = (32 * eIO(p(t, 4.5, 4.95)) - 60 * eIO(p(t, 5, 5.45)) + 28 * eIO(p(t, 5.5, 5.85))) * Math.PI / 180;
+    const sink = 1 - eIO(p(t, 5.5, 5.8));
+    const hs = sqs.map(q => {
+      const o = RISE.indexOf(q.k);
+      const k2 = eIO(p(t, 4.6 + .02 * o, 4.92 + .02 * o)), k3 = eIO(p(t, 5.05 + .02 * o, 5.38 + .02 * o));
+      return lerp(lerp(H1[q.k], H2[q.k], k2), H3[q.k], k3) * spring(p(t, 4.05 + .035 * o, 4.45 + .035 * o)) * sink;
+    });
+    renderBoxes({ th: th0, yaw, dy, hs, cx: 960, cy: 500, sc: 1, target: el.boxes });
+  }
+  function renderBoxes({ th, yaw, dy, hs, cx, cy, sc, target }) {
+    const D = 2200, F = 2200, cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw);
+    const cam = [-D * cT * sY, D * sT, -D * cT * cY];
+    const proj = ([x, y, z]) => {
+      const xr = x * cY - z * sY, zr = x * sY + z * cY;
+      const d = zr * cT - y * sT, u = y * cT + zr * sT, s = F / (D + d);
+      return [cx + xr * s * sc, cy + dy - u * s * sc, d];
+    };
+    const boxes = sqs.map(q => {
+      const h = hs[q.k];
+      const b = { x: q.i * 168, z: -q.j * 168, w: 150, h, col: q.k === 4 ? PINK : BLUE };
+      b.depth = proj([b.x, h / 2, b.z])[2];
+      return b;
+    }).sort((a, b) => b.depth - a.depth);
+    let out = '';
+    boxes.forEach(b => {
+      const x0 = b.x - 75, x1 = b.x + 75, z0 = b.z - 75, z1 = b.z + 75, y1 = Math.max(0, b.h);
+      const fs = [{ v: [[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], n: [0, 1, 0], c: [b.x, y1, b.z], col: mix(b.col, PAPER, .22 * clamp(b.h / 60)) }];
+      if (y1 > .5) fs.push(
+        { v: [[x0, 0, z0], [x1, 0, z0], [x1, y1, z0], [x0, y1, z0]], n: [0, 0, -1], c: [b.x, y1 / 2, z0], col: b.col },
+        { v: [[x0, 0, z1], [x1, 0, z1], [x1, y1, z1], [x0, y1, z1]], n: [0, 0, 1], c: [b.x, y1 / 2, z1], col: mix(b.col, INK, .5) },
+        { v: [[x0, 0, z0], [x0, 0, z1], [x0, y1, z1], [x0, y1, z0]], n: [-1, 0, 0], c: [x0, y1 / 2, b.z], col: mix(b.col, INK, .32) },
+        { v: [[x1, 0, z0], [x1, 0, z1], [x1, y1, z1], [x1, y1, z0]], n: [1, 0, 0], c: [x1, y1 / 2, b.z], col: mix(b.col, INK, .32) });
+      fs.forEach(fc => {
+        if (fc.n[0] * (cam[0] - fc.c[0]) + fc.n[1] * (cam[1] - fc.c[1]) + fc.n[2] * (cam[2] - fc.c[2]) <= 0) return;
+        out += `<polygon points="${fc.v.map(proj).map(q => f1(q[0]) + ',' + f1(q[1])).join(' ')}" fill="${fc.col}" stroke="${fc.col}" stroke-width=".8" stroke-linejoin="round"/>`;
+      });
+    });
+    target.innerHTML = out;
+  }
+
+  /* ---------- Titoli al centro, con lo stesso movimento di MOTION ---------- */
+  function drawTitles(R) {
+    TITLES.forEach(g => {
+      const on = R.title === g; vis(g.el, on);
+      if (!on) return;
+      const lt = R.lt, n = g.letters.length, sp = 6 / n;      // la stessa durata totale anche per le parole lunghe
+      g.letters.forEach((L, j) => {
+        const a = .02 + .05 * j * sp, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));
+        const x = pos(lt), v = (pos(lt - 1 / 60) - x) * 60;
+        const wave = bump(p(lt, .44 + .028 * j * sp, .66 + .028 * j * sp));
+        const ex = eIn(p(lt, .72 + .02 * j * sp, .96));
+        const tx = x + (960 - g.kx[j]) * ex, ty = -60 * spring(wave) + (g.ky - 500) * ex;
+        L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${-Math.min(18, v * .004)}deg) scale(${((1 - ex) * (1 + .12 * wave)).toFixed(3)})`;
+        const blur = Math.min(18, v * .005);
+        L.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
+        const e1 = Math.min(120, v * .05), e2 = Math.min(240, v * .1), ec = TH === THEMES.light ? '10,10,10' : '245,245,242';
+        L.style.textShadow = e1 > 2 ? `${f1(e1)}px 0 0 rgba(${ec},.28), ${f1(e2)}px 0 0 rgba(${ec},.12)` : 'none';
+        L.style.color = wave > .02 ? mix(TH.fg, g.col, wave * 1.6) : TH.fg;
+      });
+    });
+  }
+
+  /* ---------- Fine: MORE THAN meets THE EYE, poi l'header finale ---------- */
+  let IDLE = 0;   // tempo reale a intro finita: il cubo e la forma piccoli continuano a muoversi
+  // posizioni degli elementi intorno al logo (spazio del palco 1920 x 1080), con l'ingresso scaglionato
+  const ORB = { box: [250, 245, 16.05], ill: [1665, 240, 16.15], ai: [640, 215, 16.25], mot: [260, 705, 16.35], web: [1660, 712, 16.45] };
+  const FR = { y: 152, k: .42 };   // la frase, a fine intro, sotto il nome (dove all'inizio c'era il ruolo)
+  let fraseVia = false;            // a intro finita la frase passa alla pagina, che la porta nella prima sezione
+  function drawFinale(t) {
+    const fOn = t >= 14 && !fraseVia; vis(el.frase, fOn);
+    if (fOn) {
+      pezzi.forEach((q, i) => {
+        if (q.occhio) return;
+        const k = eOut(p(t, 14.2 + .028 * i, 14.85 + .028 * i));
+        q.n.style.transform = `translate(${f1((1 - k) * q.dx)}px, ${f1((1 - k) * q.dy)}px) rotate(${f1((1 - k) * q.rot)}deg) scale(${lerp(.5, 1, k).toFixed(3)})`;
+        q.n.style.opacity = k.toFixed(3);
+      });
+      const qui = t >= 14.3 ? 1 : 0;   // V2: l'occhio della storia è appena atterrato qui
+      traccia(occhio.querySelector('.contorno'), qui);
+      occhio.querySelector('.iride').setAttribute('r', 22 * qui);
+      occhio.querySelector('.pupilla').setAttribute('r', 10 * qui);
+      // l'occhiolino: la palpebra si chiude e si riapre
+      occhio.querySelector('.palpebra').style.transform = `scaleY(${(1 - .92 * bump(p(t, 15.3, 15.58))).toFixed(3)})`;
+      // la frase scende sotto il nome, che sale grande come all'inizio
+      const giu = eIO(p(t, 15.65, 16.25));
+      el.frase.style.transform = `translateY(${f1(FR.y * giu)}px) scale(${lerp(1, FR.k, giu).toFixed(3)})`;
+    }
+    // intorno al logo, gli elementi dei cinque mondi: entrano uno dopo l'altro e poi restano vivi
+    const oOn = t >= 16; vis(el.orbita, oOn); vis(el.miniBox, oOn);
+    if (!oOn) return;
+    const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
+    const kb = pop(ORB.box[2]);
+    renderBoxes({ th: 50 * Math.PI / 180, yaw: (25 + 20 * Math.sin(IDLE * .6)) * Math.PI / 180, dy: 0,
+      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0], cy: ORB.box[1] + fl(0), sc: .34 * kb, target: el.miniBox });
+    const place = (id, o, extra = '') => { const k = pop(o[2]); E(id).setAttribute('transform', `translate(${o[0]} ${f1(o[1] + fl(o[0]))}) scale(${k.toFixed(3)}) ${extra}`); return k; };
+    place('oIll', ORB.ill, `rotate(${f1(6 * Math.sin(IDLE * .8))})`);
+    E('oIllB').setAttribute('d', shape(0, 0, 92, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .3));
+    E('oIllB').setAttribute('fill', GREEN);
+    const wink = bump(((IDLE % 4) - 3.2) / .35);   // ogni tanto la faccina strizza l'occhio
+    E('oIll').querySelector('.oOcchio').setAttribute('transform', `translate(29 -12) scale(1 ${(1 + 1.6 * wink).toFixed(2)}) translate(-29 12)`);
+    place('oAi', ORB.ai);
+    E('oAiB').setAttribute('d', shape(0, 0, 54, BL, FL, .5 + .5 * Math.sin(IDLE * 1.2 + 1), -IDLE * .4));
+    E('oAiS').setAttribute('transform', `translate(62 -50) rotate(${f1(IDLE * 40)}) scale(${(.8 + .25 * Math.sin(IDLE * 2)).toFixed(3)})`);
+    place('oMot', ORB.mot);
+    E('oPh').setAttribute('transform', `translate(${f1(150 * Math.sin(IDLE * .9))} 0)`);
+    place('oWeb', ORB.web, `rotate(${f1(-3 + 2 * Math.sin(IDLE * .7))})`);
+    const ck = (IDLE % 3) / 3, cx = lerp(110, -70, eIO(p(ck, 0, .45))), cy = lerp(90, 52, eIO(p(ck, 0, .45)));
+    E('oCur').setAttribute('transform', `translate(${f1(cx)} ${f1(cy)}) scale(${(1 - .12 * bump(p(ck, .5, .62))).toFixed(3)})`);
+    E('oBtn').setAttribute('opacity', (1 - .35 * bump(p(ck, .5, .62))).toFixed(2));
+  }
+  // la home chiede dove sta la frase a fine intro, per prenderla esattamente da lì
+  window.lmmFrase = () => {
+    const save = el.frase.style.transform; el.frase.style.transform = `translateY(${FR.y}px) scale(${FR.k})`;
+    const rs = pezzi.map(q => q.n.getBoundingClientRect());
+    el.frase.style.transform = save;
+    const l = Math.min(...rs.map(r => r.left)), r = Math.max(...rs.map(r => r.right)), tp = Math.min(...rs.map(r => r.top)), bt = Math.max(...rs.map(r => r.bottom));
+    return { l, t: tp, w: r - l, h: bt - tp };
+  };
+  window.lmmFraseVia = via => { fraseVia = via; lastDrawn = -1; };
+  window.lmmFine = () => !M || seekT >= 16.3;   // la frase è già al suo posto sotto il nome?
+
+
+  let seekT = 0;
+
+  /* ================= V2 · "Uno schizzo diventa tutto" =================
+     Un solo occhio attraversa il processo: schizzo a matita (Illustration) → logo sulla griglia, poi un blocco 3D
+     (Branding) → logo di un sito che gli si costruisce intorno (Web Design) → prende vita sulla timeline (Motion)
+     → esplode in varianti generate (Gen AI) → tutte si richiudono in un solo occhio, che diventa la O della frase. */
+  const ST = E('storia');
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const mk = (tag, attrs = {}, parent = ST) => { const n = document.createElementNS(SVGNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.appendChild(n); return n; };
+  const almond = (x, y, a, b) => `M${f1(x - a)} ${f1(y)}C${f1(x - .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}Z`;
+  const almondTop = (x, y, a, b) => `M${f1(x)} ${f1(y - .9375 * b)}C${f1(x + .3 * a)} ${f1(y - .9375 * b)} ${f1(x + .78 * a)} ${f1(y - .6 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}C${f1(x - .78 * a)} ${f1(y - .6 * b)} ${f1(x - .3 * a)} ${f1(y - .9375 * b)} ${f1(x)} ${f1(y - .9375 * b)}Z`;   // parte dall'alto: chiusura liscia
+  // un occhio riutilizzabile: contorno, iride, pupilla
+  function mkEye(parent = ST) {
+    const g = mk('g', {}, parent), o = mk('path', { fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round', pathLength: 1 }, g);
+    const i = mk('circle', {}, g), pu = mk('circle', {}, g);
+    return { g, o, i, pu };
+  }
+  function setEye(e, q) {
+    vis(e.g, q.on !== false && (q.op ?? 1) > .001); if (q.on === false || (q.op ?? 1) <= .001) return;
+    const sx = q.sx ?? 1, sy = q.sy ?? 1;
+    e.g.setAttribute('transform', `translate(${f1(q.x)} ${f1(q.y)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(${f1(-q.x)} ${f1(-q.y)})`);
+    e.g.style.opacity = (q.op ?? 1).toFixed(3);
+    e.o.setAttribute('d', almondTop(q.x, q.y, q.a, q.b));
+    e.o.setAttribute('stroke', q.col); e.o.setAttribute('stroke-width', f1(q.sw));
+    if (q.draw !== undefined) traccia(e.o, q.draw); else e.o.style.strokeDasharray = 'none';
+    const ix = q.x + (q.lx || 0) * q.a * .24, iy = q.y + (q.ly || 0) * q.b * .3;
+    e.i.setAttribute('cx', f1(ix)); e.i.setAttribute('cy', f1(iy)); e.i.setAttribute('r', f1(Math.max(0, q.ir))); e.i.setAttribute('fill', q.irc || PINK);
+    e.pu.setAttribute('cx', f1(ix)); e.pu.setAttribute('cy', f1(iy)); e.pu.setAttribute('r', f1(Math.max(0, q.pr))); e.pu.setAttribute('fill', q.prc || INK);
+  }
+
+  // 1 · Illustration: lo schizzo a matita (tratti sovrapposti, imperfetti)
+  const SK = mk('g', { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  const SKP = [
+    'M692 506C820 318 1100 318 1226 498C1100 690 820 690 698 502',
+    'M706 492C830 330 1090 322 1214 506C1094 676 826 684 690 510',
+    'M1030 500C1030 455 990 425 958 428C918 432 888 466 892 504C896 546 934 572 968 568C1006 563 1034 534 1026 492C1020 470 1000 452 980 448',
+    'M950 488C975 478 985 505 962 515C940 522 938 495 958 490C972 488 976 505 962 508',
+    'M862 374L844 338', 'M960 356L960 314', 'M1058 374L1076 338',
+    'M762 560L792 530', 'M782 592L824 548', 'M818 614L862 570'
+  ].map(d => mk('path', { d, pathLength: 1 }, SK));
+  const SKT = [[2.05, 2.62], [2.62, 3.02], [3.02, 3.36], [3.36, 3.52], [3.54, 3.62], [3.62, 3.7], [3.7, 3.78], [3.8, 3.86], [3.86, 3.92], [3.92, 3.98]];
+  const PEN = mk('g');
+  PEN.innerHTML = '<path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/><path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/><path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/><path d="M0 0L4 -12L12 -4Z" fill="#121414"/>';
+
+  // 2 · Branding: griglia di costruzione, occhio pulito, blocco 3D con il marchio, palette e carattere
+  const GR = mk('g', { fill: 'none', 'stroke-width': 2 });
+  const GRP = ['M640 500H1280', 'M960 300V700', 'M700 330L1220 670', 'M1220 330L700 670'].map(d => mk('path', { d, pathLength: 1 }, GR));
+  GRP.push(mk('circle', { cx: 960, cy: 500, r: 260, pathLength: 1 }, GR), mk('circle', { cx: 960, cy: 500, r: 78, pathLength: 1 }, GR), mk('rect', { x: 700, y: 350, width: 520, height: 300, pathLength: 1 }, GR));
+  const TILE = mk('g'), TL = Array.from({ length: 7 }, () => mk('rect', { width: 640, height: 640, rx: 140 }, TILE));
+  const TE = mkEye(TILE);   // l'occhio stampato sulla faccia del blocco
+  const KIT = mk('g');
+  const CHIPS = [BLUE, GREEN, PINK].map(c => mk('circle', { r: 42, fill: c }, KIT));
+  const AA = mk('text', { x: 440, y: 555, 'text-anchor': 'middle', 'font-family': 'Cabinet Grotesk', 'font-weight': 900, 'font-size': 150 }, KIT); AA.textContent = 'Aa';
+  const EYE1 = mkEye();   // l'occhio pulito che nasce dallo schizzo
+
+  // 3 · Web Design: il sito che si costruisce intorno al logo
+  const W2 = { x: 330, y: 170, w: 1260, h: 680 };
+  const WEB = mk('g');
+  WEB.innerHTML = `<defs><linearGradient id="v2g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3D5AFF"/><stop offset="1" stop-color="#12C08E"/></linearGradient><clipPath id="v2c"><rect x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28"/></clipPath></defs>
+    <rect id="v2fill" x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28" fill="#FFFFFF"/>
+    <g clip-path="url(#v2c)">
+      <g id="v2bar"><rect x="${W2.x}" y="${W2.y}" width="${W2.w}" height="56" fill="#F1F6FF"/><circle cx="364" cy="198" r="7" fill="#D5DCE6"/><circle cx="388" cy="198" r="7" fill="#D5DCE6"/><circle cx="412" cy="198" r="7" fill="#D5DCE6"/>
+        <rect x="760" y="182" width="400" height="32" rx="16" fill="#FFFFFF" stroke="#E3E8EF"/><text x="960" y="204" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="500" font-size="16" fill="#8A93A3">likemommademe.github.io</text></g>
+      <g id="v2nav"><rect x="1150" y="276" width="60" height="10" rx="5" fill="#C9CED6"/><rect x="1232" y="276" width="60" height="10" rx="5" fill="#C9CED6"/><rect x="1314" y="276" width="60" height="10" rx="5" fill="#C9CED6"/>
+        <rect x="1420" y="262" width="122" height="38" rx="19" fill="#121414"/><text x="1481" y="287" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="700" font-size="15" fill="#F5F5F2">Contatti</text></g>
+      <g id="v2h1" font-family="Cabinet Grotesk" font-weight="900" font-size="66" fill="#121414" letter-spacing="-1.5"><text x="398" y="430">Visioni che</text><text x="398" y="500">si vedono.</text></g>
+      <g id="v2sub"><rect x="400" y="540" width="390" height="12" rx="6" fill="#C9CED6"/><rect x="400" y="566" width="300" height="12" rx="6" fill="#C9CED6"/></g>
+      <g id="v2cta"><rect x="400" y="610" width="170" height="54" rx="27" fill="#3D5AFF"/><text x="485" y="644" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="700" font-size="20" fill="#F5F5F2">Scopri</text></g>
+      <rect id="v2card" x="980" y="320" width="520" height="380" rx="28" fill="url(#v2g)"/>
+      <g id="v2cards"><rect x="400" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/><rect x="790" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/><rect x="1180" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/></g>
+    </g>
+    <rect id="v2out" x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28" fill="none" stroke-width="3" pathLength="1"/>`;
+  ST.appendChild(TILE);   // il logo sta sopra la pagina, nel suo header
+  const OY = 40;          // tutta la pagina un po' più in basso: lascia spazio al titolo
+  const wq = id => WEB.querySelector('#' + id);
+  const V2 = { fill: wq('v2fill'), bar: wq('v2bar'), nav: wq('v2nav'), h1: wq('v2h1'), sub: wq('v2sub'), cta: wq('v2cta'), card: wq('v2card'), cards: wq('v2cards'), out: wq('v2out') };
+
+  // 4 · Motion: timeline, chiavi, tracciato di movimento, fantasmi (onion skin)
+  const MO = mk('g');
+  const TRK = mk('path', { d: 'M560 820H1360', fill: 'none', 'stroke-width': 6, 'stroke-linecap': 'round', pathLength: 1 }, MO);
+  const KF = [700, 960, 1220].map(() => mk('rect', { x: -13, y: -13, width: 26, height: 26, rx: 4 }, MO));
+  const MPATH = mk('path', { d: 'M960 460C1060 230 1300 250 1240 440', fill: 'none', 'stroke-width': 3, 'stroke-dasharray': '10 12' }, MO);
+  const HANDLES = mk('g', {}, MO);
+  HANDLES.innerHTML = '<path d="M960 460L1060 230M1240 440L1300 250" stroke-width="2"/><rect x="1053" y="223" width="14" height="14"/><rect x="1293" y="243" width="14" height="14"/>';
+  const PH = mk('g', {}, MO); mk('path', { d: 'M0 -34V34', 'stroke-width': 5, 'stroke-linecap': 'round' }, PH); mk('circle', { cy: -34, r: 9 }, PH);
+  const GHOST = [mkEye(MO), mkEye(MO), mkEye(MO)];
+  const EYE2 = mkEye();   // l'occhio del sito che diventa protagonista
+  const mBez = (s, P) => { const u1 = 1 - s; return [u1 * u1 * u1 * P[0][0] + 3 * u1 * u1 * s * P[1][0] + 3 * u1 * s * s * P[2][0] + s * s * s * P[3][0], u1 * u1 * u1 * P[0][1] + 3 * u1 * u1 * s * P[1][1] + 3 * u1 * s * s * P[2][1] + s * s * s * P[3][1]]; };
+  const MP = [[960, 460], [1060, 230], [1300, 250], [1240, 440]];
+
+  // 5 · Gen AI: il prompt, poi l'esplosione di varianti, poi tutte di nuovo in una
+  const GP = mk('g');
+  GP.innerHTML = `<rect x="560" y="250" width="800" height="72" rx="36" style="fill:var(--field);stroke:var(--line)" stroke-width="2"/><text id="v2pt" x="608" y="295" font-family="Cabinet Grotesk" font-weight="500" font-size="26" style="fill:var(--fg)"></text>
+    <rect id="v2gen" x="1196" y="262" width="150" height="48" rx="24" fill="#FF3D8B"/><text id="v2gent" x="1271" y="293" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="20" fill="#121414">Genera</text>`;
+  const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
+  const GPROMPT = 'occhio, 24 varianti, stile pop';
+  const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
+  const fgOn = bg => [BLUE, INK, '#2A3DCC'].includes(bg) ? '#F5F5F2' : INK;
+  const pupilla = (k, r, c) => [
+    `<circle r="${r}" fill="${c}"/>`, `<ellipse rx="${r * .38}" ry="${r * 1.25}" fill="${c}"/>`,
+    `<path d="M0 ${-r * 1.4}C${r * .25} ${-r * .25} ${r * .25} ${-r * .25} ${r * 1.4} 0C${r * .25} ${r * .25} ${r * .25} ${r * .25} 0 ${r * 1.4}C${-r * .25} ${r * .25} ${-r * .25} ${r * .25} ${-r * 1.4} 0C${-r * .25} ${-r * .25} ${-r * .25} ${-r * .25} 0 ${-r * 1.4}Z" fill="${c}"/>`,
+    `<path d="M0 ${r * 1.1}C${-r * 1.6} 0 ${-r * .7} ${-r * 1.3} 0 ${-r * .35}C${r * .7} ${-r * 1.3} ${r * 1.6} 0 0 ${r * 1.1}Z" fill="${c}"/>`,
+    `<rect x="${-r}" y="${-r}" width="${2 * r}" height="${2 * r}" rx="${r * .25}" fill="${c}"/>`,
+    `<path d="M${-r * .36} ${-r * 1.2}H${r * .36}V${-r * .36}H${r * 1.2}V${r * .36}H${r * .36}V${r * 1.2}H${-r * .36}V${r * .36}H${-r * 1.2}V${-r * .36}H${-r * .36}Z" fill="${c}"/>`][k % 6];
+  const TILES = [];
+  for (let k = 0; k < 24; k++) {
+    const col = k % 6, row = (k / 6) | 0, bg = BGS[(k * 5 + row) % 6], fg = fgOn(bg);
+    const irc = [PINK, BLUE, GREEN, '#F4EFE7'].filter(c => c !== bg)[(k * 3) % 3];
+    const sh = (k * 7) % 4, a = 50, b = 30;
+    const forma = [`<path d="${almond(0, 0, a, b)}"/>`, `<circle r="${a * .74}"/>`, `<rect x="${-a * .8}" y="${-a * .62}" width="${a * 1.6}" height="${a * 1.24}" rx="${a * .3}"/>`, `<path d="M${-a} 0L0 ${-a * .78}L${a} 0L0 ${a * .78}Z"/>`][sh];
+    const ciglia = k % 3 === 0 ? `<path d="M-30 -36L-38 -50M0 -42V-58M30 -36L38 -50" stroke="${fg}" stroke-width="6" stroke-linecap="round"/>` : '';
+    const g = mk('g'); g.innerHTML = `<rect x="-74" y="-74" width="148" height="148" rx="26" fill="${bg}"/>${ciglia}<g fill="none" stroke="${fg}" stroke-width="8" stroke-linejoin="round">${forma}</g><circle r="${sh === 1 ? 22 : 17}" fill="${irc}"/><g>${pupilla((k * 5 + 1) % 6, 8, fgOn(irc) === INK ? INK : '#F5F5F2')}</g>`;
+    const cx = 471 + 74 + col * 166, cy = 237 + 74 + row * 166;
+    const rr = Math.abs(Math.sin(k * 7.13 + 2) * 1e4) % 1;
+    TILES.push({ g, cx, cy, d: Math.hypot(cx - 960, cy - 560), rot: (rr - .5) * 70 });
+  }
+  const EYE3 = mkEye();   // l'occhio finale: tutte le varianti in una, che diventa la O della frase
+  const CUR = mk('path', { d: 'M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z', fill: '#F5F5F2', stroke: '#121414', 'stroke-width': 2.5, 'stroke-linejoin': 'round' });
+  ST.appendChild(PEN);   // la matita sopra a tutto
+
+  // il blocco 3D: ogni strato è lo stesso rettangolo arrotondato proiettato a una profondità diversa
+  function tileAt(cx, cy, S, rx, ry, depth) {
+    const D = 1800, cY = Math.cos(ry), sY = Math.sin(ry), cX = Math.cos(rx), sX = Math.sin(rx);
+    const P = (x, y, z) => { const x1 = x * cY + z * sY, z1 = -x * sY + z * cY, y2 = y * cX - z1 * sX, z2 = y * sX + z1 * cX, k = D / (D + z2 * S); return [cx + x1 * k * S, cy + y2 * k * S]; };
+    return z => { const a = P(-320, -320, z), b = P(320, -320, z), c = P(-320, 320, z); return `matrix(${((b[0] - a[0]) / 640).toFixed(4)} ${((b[1] - a[1]) / 640).toFixed(4)} ${((c[0] - a[0]) / 640).toFixed(4)} ${((c[1] - a[1]) / 640).toFixed(4)} ${f1(a[0])} ${f1(a[1])})`; };
+  }
+
+  function drawStoria(t) {
+    const on = t >= 1.97 && t < 14.32; vis(ST, on); vis(PEN, on);
+    if (!on) return;
+    const fg = TH.fg, dim = TH === THEMES.light ? '#B9B0A3' : '#4A4D4D';
+
+    /* 1 · lo schizzo: la matita nasce dove si sono raccolti i tre quadratini */
+    const skOn = t < 5; vis(SK, skOn);
+    if (skOn) {
+      SK.setAttribute('stroke', fg); SK.setAttribute('stroke-width', 5);
+      SK.style.opacity = (1 - eIO(p(t, 4.55, 4.95))).toFixed(3);
+      SKP.forEach((n, i) => traccia(n, eOut(p(t, SKT[i][0], SKT[i][1]))));
+    }
+    const penOn = t >= 1.97 && t < 4.25; vis(PEN, penOn);
+    if (penOn) {
+      let px = 960, py = 500;
+      let j = SKT.findIndex(([a, b]) => t >= a && t < b);
+      if (j < 0) j = t < SKT[0][0] ? -1 : SKT.findIndex(([a]) => a > t) - 1;
+      if (j >= 0 && j < SKP.length) {
+        const [a, b] = SKT[j], L = SKP[j].getTotalLength(), q = SKP[j].getPointAtLength(L * eOut(p(t, a, b))); px = q.x; py = q.y;
+      } else if (t >= SKT[SKT.length - 1][1]) { const q = SKP[SKP.length - 1].getPointAtLength(SKP[SKP.length - 1].getTotalLength()); px = q.x; py = q.y; }
+      if (t < 2.08) { const k = eIO(p(t, 1.98, 2.08)); px = lerp(960, 692, k); py = lerp(500, 506, k); }
+      const via = eIn(p(t, 3.98, 4.25)); px += 700 * via; py += 500 * via;
+      const s0 = spring(p(t, 1.97, 2.12));
+      PEN.setAttribute('transform', `translate(${f1(px)} ${f1(py)}) rotate(${f1(-6 * Math.sin(t * 9))}) scale(${s0.toFixed(3)})`);
+    }
+
+    /* 2 · Branding: la griglia mette ordine, lo schizzo diventa un segno pulito */
+    const grOn = t >= 4.18 && t < 5.35; vis(GR, grOn);
+    if (grOn) { GR.setAttribute('stroke', dim); GRP.forEach((n, i) => traccia(n, eOut(p(t, 4.18 + .04 * i, 4.55 + .04 * i)) * (1 - eIn(p(t, 5.0 + .02 * i, 5.3 + .02 * i))))); }
+    const tileS = t < 6.2 ? spring(p(t, 5.3, 5.7)) : lerp(1, .1, eIO(p(t, 6.2, 6.6)));
+    const e1On = t >= 4.5 && t < 5.66;
+    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 260, b: 150, sw: 26, col: mix(fg, '#F5F5F2', eIO(p(t, 5.35, 5.6))), draw: eOut(p(t, 4.5, 4.95)), ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
+    // il blocco: cresce dietro il segno, poi gira in 3D (il momento 2D → 3D) e vola nell'header del sito
+    const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
+    const tOn = t >= 5.3 && t < 9.0; vis(TILE, tOn);
+    if (tOn) {
+      const fly = eIO(p(t, 6.2, 6.6));
+      let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY, fly), S = Math.max(.001, tileS);
+      cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
+      const ry = .62 * bump(p(t, 5.72, 6.22)), rx = .26 * bump(p(t, 5.72, 6.22));
+      const T = tileAt(cx, cy, S, rx, ry, 90);
+      TL.forEach((r, i) => { const z = 90 * (1 - i / (TL.length - 1)); r.setAttribute('transform', T(z)); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .25 * i / TL.length)); });
+      TILE.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
+      TE.g.setAttribute('transform', T(0));
+      setEye(TE, { on: t >= 5.66, x: 320, y: 320, a: 260, b: 150, sw: 26, col: '#F5F5F2', ir: 78, pr: 34 });
+      TE.g.setAttribute('transform', T(0));   // setEye riscrive la trasformazione: la faccia del blocco comanda
+    }
+    const kitOn = t >= 5.55 && t < 6.3; vis(KIT, kitOn);
+    if (kitOn) {
+      const out = eIn(p(t, 6.08, 6.28));
+      CHIPS.forEach((c, i) => { const k = spring(p(t, 5.58 + .07 * i, 5.9 + .07 * i)) * (1 - out); c.setAttribute('cx', 1400); c.setAttribute('cy', 380 + 120 * i); c.setAttribute('r', f1(42 * k)); });
+      AA.setAttribute('fill', fg); AA.style.opacity = (eOut(p(t, 5.62, 5.85)) * (1 - out)).toFixed(3);
+      AA.setAttribute('transform', `translate(0 ${f1(30 * (1 - eOut(p(t, 5.62, 5.9))))})`);
+    }
+
+    /* 3 · Web Design: la finestra si disegna intorno al logo, la pagina si compone */
+    const wOn = t >= 6.42 && t < 9.0; vis(WEB, wOn);
+    if (wOn) {
+      WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${OY})`);
+      WEB.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
+      V2.out.setAttribute('stroke', fg); traccia(V2.out, eOut(p(t, 6.42, 6.85)));
+      V2.out.style.opacity = (1 - eIO(p(t, 6.85, 7.0))).toFixed(3);
+      V2.fill.style.opacity = eOut(p(t, 6.7, 6.95)).toFixed(3);
+      const rise = (n, a, d = 24) => { const k = eOut(p(t, a, a + .3)); n.style.opacity = k.toFixed(3); n.setAttribute('transform', `translate(0 ${f1(d * (1 - k))})`); };
+      rise(V2.bar, 6.78, -12); rise(V2.nav, 6.9); rise(V2.h1, 7.0, 40); rise(V2.sub, 7.12); rise(V2.cta, 7.2); rise(V2.cards, 7.75, 90);
+      const ck = spring(p(t, 7.18, 7.55)); V2.card.style.opacity = Math.min(1, ck * 1.5).toFixed(3);
+      V2.card.setAttribute('transform', `translate(1240 510) scale(${lerp(.8, 1, ck).toFixed(3)}) translate(-1240 -510)`);
+      V2.cta.querySelector('rect').setAttribute('transform', `translate(485 637) scale(${(1 - .08 * bump(p(t, 8.22, 8.36))).toFixed(3)}) translate(-485 -637)`);
+    }
+    // l'occhio del sito: nasce nella card e, con lo zoom, diventa il protagonista di Motion
+    const e2On = t >= 7.3 && t < 11.45;
+    let e2 = { on: e2On, x: 1240, y: 510 + OY, a: 150, b: 86, sw: 14, col: '#F5F5F2', ir: 45, pr: 19, op: 1 };
+    if (e2On) {
+      const k0 = spring(p(t, 7.3, 7.65)); e2.ir *= k0; e2.pr *= k0; e2.draw = eOut(p(t, 7.3, 7.6));
+      const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY, 460, z); e2.a = lerp(150, 200, z); e2.b = lerp(86, 115, z);
+      e2.sw = lerp(14, 22, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(45 * k0, 60, z); e2.pr = lerp(19 * k0, 26, z);
+      // 4 · Motion: le chiavi della timeline fanno battere le palpebre, muovere l'occhio lungo il tracciato, schiacciarlo all'arrivo
+      e2.sy = 1 - .94 * bump(p(t, 9.74, 9.94));
+      const mv = eIO(p(t, 10.22, 10.7)), back = eIO(p(t, 11.0, 11.35));
+      if (t >= 10.22) {
+        const [mx, my] = mBez(mv, MP), [nx, ny] = mBez(Math.min(1, mv + .02), MP), dl = Math.hypot(nx - mx, ny - my) || 1;
+        e2.x = mx; e2.y = my; e2.lx = mv < 1 ? (nx - mx) / dl : 0; e2.ly = mv < 1 ? (ny - my) / dl : 0;
+      }
+      const sq = bump(p(t, 10.7, 10.95)); e2.sx = (e2.sx ?? 1) * (1 + .2 * sq); e2.sy *= 1 - .2 * sq;
+      e2.x = lerp(e2.x, 960, back); e2.y = lerp(e2.y, 520, back); e2.a = lerp(e2.a, 110, back); e2.b = lerp(e2.b, 63, back);
+      e2.sw = lerp(e2.sw, 14, back); e2.ir = lerp(e2.ir, 33, back); e2.pr = lerp(e2.pr, 14, back);
+      // 5 · Gen AI: l'occhio piccolo sotto il prompt, poi esplode nelle varianti
+      const boom = eIn(p(t, 12.3, 12.42)); e2.op = 1 - boom; e2.sx *= 1 + .5 * boom; e2.sy *= 1 + .5 * boom;
+      if (t >= 12.42) e2.on = false;
+    }
+    setEye(EYE2, e2);
+    const moOn = t >= 9.0 && t < 11.4; vis(MO, moOn);
+    if (moOn) {
+      const out = 1 - eIn(p(t, 11.0, 11.3));
+      TRK.setAttribute('stroke', TH.line2); traccia(TRK, eOut(p(t, 9.0, 9.35)) * out);
+      const phx = 560 + 800 * p(t, 9.5, 10.95);
+      KF.forEach((r, i) => {
+        const x = [700, 960, 1220][i], k = spring(p(t, 9.2 + .08 * i, 9.45 + .08 * i)) * out * (1 + .4 * bump(p(t, 9.5 + (x - 560) / 800 * 1.45, 9.5 + (x - 560) / 800 * 1.45 + .15)));
+        r.setAttribute('transform', `translate(${x} 820) rotate(45) scale(${k.toFixed(3)})`);
+        r.setAttribute('fill', phx >= x - 4 && t >= 9.5 ? PINK : fg);
+      });
+      vis(PH, t >= 9.45 && out > .01); PH.setAttribute('transform', `translate(${f1(phx)} 820)`); PH.setAttribute('stroke', PINK); PH.setAttribute('fill', PINK);
+      PH.style.opacity = (eOut(p(t, 9.45, 9.55)) * out).toFixed(3);
+      const pk = eOut(p(t, 10.0, 10.22)) * (1 - eIn(p(t, 10.75, 11.0)));
+      MPATH.setAttribute('stroke', dim); MPATH.style.opacity = pk.toFixed(3);
+      HANDLES.setAttribute('stroke', dim); HANDLES.setAttribute('fill', dim); HANDLES.style.opacity = pk.toFixed(3);
+      // fantasmi: dove era l'occhio qualche istante prima (onion skin)
+      const mv = eIO(p(t, 10.22, 10.7));
+      GHOST.forEach((gh, i) => {
+        const s2 = mv - .12 * (i + 1), vivo = t >= 10.22 && t < 10.8 && s2 > 0;
+        if (!vivo) { vis(gh.g, false); return; }
+        const [gx, gy] = mBez(s2, MP);
+        setEye(gh, { x: gx, y: gy, a: 200, b: 115, sw: 22, col: fg, ir: 60, pr: 26, op: .3 - .08 * i });
+      });
+    }
+    const gpOn = t >= 11.42 && t < 12.5; vis(GP, gpOn);
+    if (gpOn) {
+      const k = spring(p(t, 11.42, 11.7)), up = eIn(p(t, 12.26, 12.48));
+      GP.style.opacity = (Math.min(1, k * 1.4) * (1 - up)).toFixed(3);
+      GP.setAttribute('transform', `translate(960 286) scale(${lerp(.9, 1, k).toFixed(3)}) translate(-960 -286) translate(0 ${f1(-160 * up)})`);
+      GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.7, 12.04))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
+      const genero = t >= 12.16; GBT.textContent = genero ? 'Genero…' : 'Genera';
+      GBR.setAttribute('transform', `translate(1271 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1271 -286)`);
+    }
+    // l'esplosione: 24 varianti dell'occhio partono dal centro; poi si richiudono in una sola
+    const tlOn = t >= 12.36 && t < 13.95;
+    TILES.forEach(q => {
+      vis(q.g, tlOn); if (!tlOn) return;
+      const a0 = 12.36 + q.d / 600 * .22, kOut = spring(p(t, a0, a0 + .42));
+      const b0 = 13.36 + (1 - q.d / 600) * .2, kIn = eIn(p(t, b0, b0 + .34));
+      const k = kOut * (1 - kIn);
+      const x = lerp(960, q.cx, eOut(p(t, a0, a0 + .42))) , y = lerp(520, q.cy, eOut(p(t, a0, a0 + .42)));
+      const fx = lerp(x, 960, kIn), fy = lerp(y, 500, kIn);
+      const fl = 4 * Math.sin(t * 6 + q.cx);
+      q.g.setAttribute('transform', `translate(${f1(fx)} ${f1(fy + fl * (1 - kIn))}) rotate(${f1(q.rot * (1 - eOut(p(t, a0, a0 + .42))) + q.rot * .6 * kIn)}) scale(${Math.max(0, k).toFixed(3)})`);
+    });
+    // l'occhio finale: nasce dove le varianti si sono raccolte e atterra nella O di MORE, con la sua stessa forma
+    const e3On = t >= 13.78 && t < 14.32;
+    if (e3On) {
+      const k = spring(p(t, 13.78, 14.0)), m = eIO(p(t, 13.98, 14.3)), w = M.eye.w;
+      setEye(EYE3, { x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: lerp(170 * k, .44 * w, m), b: lerp(98 * k, .376 * w, m),
+        sw: lerp(18, .13 * w, m), col: fg, ir: lerp(52 * k, .22 * w, m), pr: lerp(22 * k, .10 * w, m) });
+    } else vis(EYE3.g, false);
+    // il cursore: clicca "Scopri" nel sito, indica l'occhio, poi preme "Genera"
+    const c1 = t >= 7.85 && t < 8.6, c2 = t >= 11.8 && t < 12.4; vis(CUR, c1 || c2);
+    if (c1) {
+      const a = eOut(p(t, 7.85, 8.2)), b2 = eIO(p(t, 8.3, 8.5));
+      const x = lerp(lerp(1720, 485, a), 1240, b2), y = lerp(lerp(1010, 640 + OY, a), 520 + OY, b2), sc = 1 - .2 * bump(p(t, 8.2, 8.32));
+      CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
+    }
+    if (c2) {
+      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1500, 1271, a), y = lerp(560, 292, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
+      CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
+    }
+  }
+  // gli elementi della versione con i mondi separati restano spenti durante la storia
+  const OLD = () => [el.blob, el.grid, el.boxes, el.sqs, el.graph, el.contour, el.face, el.pen, el.ai, el.cursor, el.kin, el.win];
+  const spegni = off => OLD().forEach(n => { n.style.display = off ? 'none' : ''; });   // display: i figli non possono riaccendersi
+
+  /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
+  function seek(T) {
+    seekT = T;
+    if (!M) return;
+    const R = remap(T), t = R.t;
+    const u = t - 2;   // tempo dei mondi dopo il Brand (scritti sulla timeline originale)
+
+    const S = sceneS(t);
+    scene.forEach(n => { n.style.transform = `translate(960px, ${f1(S.cy)}px) scale(${S.k.toFixed(4)}) translate(-960px, -500px)`; });
+    const cm = camAt(t, T);
+    drawTitles(R);
+    drawFinale(t);
+    CT.forEach(c => {
+      const on = t >= c.tin && t < c.tout + .3; vis(c.el, on);
+      if (on) c.letters.forEach((x, j) => { x.style.transform = `translateY(${f1(maskY(t, c.tin + .03 * j, .34, c.tout - .08 + .014 * j, .2, -1))}%)`; });
+    });
+    el.cam.style.transform = `translate(${f1(cm.ax)}px, ${f1(cm.ay)}px) scale(${cm.z}) translate(${-cm.fx}px, ${-cm.fy}px)`;
+
+    /* Nome, ruolo, quadratini (battuta 1 e chiusura) */
+    for (let i = 0; i < 13; i++) {
+      const m = masks[i], c = letters[i];
+      if (false && i === 0 && t >= 1.5 && t < 14) {
+        m.style.overflow = 'visible'; vis(c, t < 3.05);
+        if (t >= 3.05) continue;
+        const mv = eIO(p(t, 1.62, 2.12));          // la L va al centro solo quando le altre lettere sono già cadute
+        const LS = sceneS(Math.max(t, 2.12)), Lt = mapS(LS, 960, 500);
+        const s = lerp(1, 2.3 * LS.k, mv) * (1 - eIn(p(t, 2.9, 3.05)));
+        c.style.transformOrigin = '50% 50%';
+        c.style.color = mix(TH.fg, PAPER, mv);
+        c.style.transform = `translate(${lerp(GOFF[0] * G, Lt[0] - M.Lcx, mv)}px, ${lerp(0, Lt[1] - M.Lcy, mv)}px) scale(${s})`;
+        continue;
+      }
+      // Uscita: le lettere cadono intere (niente maschere che le tagliano), una parola dopo l'altra, con il motion blur
+      m.style.overflow = t < 14 ? 'visible' : 'hidden';
+      let x = 0, y = 0, sy = 1, jump = 0, dy = 0, rot = 0, blur = 0;
+      if (t < 2) {
+        sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
+        jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
+        x = GOFF[group(i)] * G * eIO(p(t, .9, 1.3));
+        if (true) {
+          const a = 1.45 + .05 * group(i) + .01 * i, fall = q => 1000 * eIn(p(q, a, a + .34));
+          dy = fall(t); const v = (dy - fall(t - 1 / 60)) * 60;
+          rot = (((i * 37) % 11) - 5) * 2.2 * p(t, a, a + .34);
+          blur = Math.min(10, v * .0016);
+        }
+      } else if (t < 14) { y = 115; }
+      else { y = 115 * (1 - eOut(p(t, 15.8 + .02 * i, 16.25 + .02 * i))); c.style.color = ''; }   // header finale: il nome grande, come all'inizio
+      vis(c, y < 114 && dy < 990);
+      c.style.transformOrigin = '50% 100%';
+      c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scaleY(${sy.toFixed(3)})`;
+      c.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
+    }
+    let ry = 0;
+    if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
+    else if (t >= 14) ry = 115;
+    el.role.style.transform = `translateY(${ry}%)`;
+    [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
+      const on = t >= 1 && t < 1.99; vis(q, on); if (!on) return;
+      const room = clamp((eIO(p(t, .9, 1.3)) - .55) / .45);   // il quadratino entra solo quando lo spazio tra le parole c'è
+      const go = eIO(p(t, 1.55 + .04 * n, 1.98));                // poi i tre volano al centro e diventano il monogramma
+      const s = spring(p(t, 1.08 + .04 * n, 1.36 + .04 * n)) * room * (1 - .55 * go);
+      const QC = mapS(sceneS(2.12), 960, 500), qx = lerp(M.gaps[n], QC[0], go), qy = lerp(M.cy, QC[1], go);
+      q.style.transform = `translate(${f1(qx - 32)}px, ${f1(qy - 32)}px) rotate(${f1([-6, 4, -3][n] * (1 - go) + 45 * go)}deg) scale(${s.toFixed(3)})`;
+    });
+
+    /* Cornice: marchio, riga dei mondi, titoli */
+    el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
+    const active = R.title ? R.title.world : WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
+    worldEls.forEach((d, i) => {
+      d.style.color = active === i || active === -1 ? TH.fg : TH.dim;
+      d.lastChild.style.transform = `scaleX(${active === i ? (R.title ? 1 : eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3))) : 0})`;
+    });
+    /* La forma */
+    const b = blobAt(t);
+    if (t >= 1.97) b.R = 0;   // V2: niente forma che attraversa i mondi, c'è l'occhio
+    el.blob.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot));
+    el.blob.setAttribute('fill', b.col);
+
+    /* Brand Identity: monogramma, griglia di costruzione, quattro quarti, nove quadrati, blocchi 3D */
+    const gOn = t >= 2.4 && t < 3.15; vis(el.grid, gOn);
+    if (gOn) {
+      el.grid.setAttribute('transform', 'translate(960 500)');
+      el.gridParts.forEach((g, j) => dash(g, eOut(p(t, 2.4 + .05 * j, 2.75 + .05 * j)) * (1 - eIn(p(t, 2.88 + .02 * j, 3.1 + .02 * j)))));
+    }
+    const qOn = (t >= 3 && t < 4.02) || (t >= 5.8 && t < 6.15); vis(el.sqs, qOn);
+    if (qOn) sqs.forEach(q => {
+      const corner = q.i !== 0 && q.j !== 0, center = q.i === 0 && q.j === 0;
+      let s = 0, off = 168, rot = 0, col = center ? PINK : BLUE;
+      if (t < 3.25) {                                       // quattro quarti che si staccano e ruotano
+        if (corner) { const k = spring(p(t, 3, 3.25)); off = lerp(130, 150, k); s = lerp(260, 232, k); rot = 90 * eIO(p(t, 3, 3.25)); }
+      } else if (t < 4.02) {                                // diventano una griglia 3 x 3
+        if (corner) { const k = spring(p(t, 3.25, 3.55)); off = lerp(150, 168, k); s = lerp(232, 150, k); }
+        else if (center) s = 150 * spring(p(t, 3.5, 3.78));
+        else { const o = [1, 3, 5, 7].indexOf(q.k); s = 150 * spring(p(t, 3.3 + .04 * o, 3.58 + .04 * o)); }
+      } else {                                              // tornano piatti e rientrano: il rosa diventa la forma
+        const c = eIn(p(t, 5.85 + .012 * q.k, 6.05 + .012 * q.k)); s = center ? 0 : 150 * (1 - c); off = 168 * (1 - c);
+      }
+      if (center) off = 0;
+      const x = 960 + q.i * off, y = 500 + q.j * off;
+      q.el.setAttribute('x', f1(x - s / 2)); q.el.setAttribute('y', f1(y - s / 2));
+      q.el.setAttribute('width', f1(Math.max(0, s))); q.el.setAttribute('height', f1(Math.max(0, s)));
+      q.el.setAttribute('fill', col);
+      q.el.setAttribute('transform', `rotate(${rot.toFixed(2)} ${f1(x)} ${f1(y)})`);
+    });
+    const bxOn = t >= 4 && t < 5.8; vis(el.boxes, bxOn);
+    if (bxOn) drawBoxes(t);
+
+    /* Illustration: una matita disegna il contorno e il sorriso */
+    const iOn = u >= 4.1 && u < 6; vis(el.contour, iOn);
+    const draw = eOut(p(u, 4.15, 4.6));
+    if (iOn) {
+      el.contour.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot, true));
+      el.contour.setAttribute('stroke', TH.fg);
+      dash(el.contour, draw * (1 - eIn(p(u, 5.6, 5.95))));
+    }
+    const fs = spring(p(u, 4.55, 4.85)) * (1 - eIn(p(u, 5.45, 5.75)));
+    vis(el.face, fs > .001);
+    if (fs > .001) {
+      el.face.setAttribute('transform', `translate(${b.cx} ${b.cy}) scale(${fs})`);
+      el.eyeL.setAttribute('transform', 'translate(-72 -40)');
+      el.eyeR.setAttribute('transform', `translate(72 -40) scale(1 ${1 - .9 * bump(p(u, 5, 5.22))})`);
+      dash(el.smile, eOut(p(u, 4.62, 4.98)));
+    }
+    const penOn = u >= 4.1 && u < 5.3; vis(el.pen, penOn);
+    if (penOn) {
+      let px, py;
+      if (u < 4.6) { const a = draw * TAU, r = rAt(a, b.R, b.A, b.B, b.k, b.rot, true); px = b.cx + r * Math.cos(a); py = b.cy + r * Math.sin(a); }
+      else if (u < 5) {
+        const s = eOut(p(u, 4.62, 4.98)), qx = (1 - s) * (1 - s) * -84 + 2 * (1 - s) * s * 0 + s * s * 84, qy = (1 - s) * (1 - s) * 40 + 2 * (1 - s) * s * 128 + s * s * 40;
+        const k = eIO(p(u, 4.58, 4.66)), [ax, ay] = [b.cx + b.R * 1.1, b.cy];
+        px = lerp(ax, b.cx + qx, k); py = lerp(ay, b.cy + qy, k);
+      } else { const k = eIn(p(u, 5, 5.3)); px = b.cx + 84 + 600 * k; py = b.cy + 40 + 500 * k; }
+      if (u < 4.2) { const k = eOut(p(u, 4.1, 4.2)); px = lerp(px + 500, px, k); py = lerp(py + 400, py, k); }
+      el.pen.setAttribute('transform', `translate(${f1(px)} ${f1(py)})`);
+    }
+
+    /* Generative AI: il cursore guida il generatore, i risultati emergono dalla sfocatura */
+    const aOn = u >= 6 && u < 7.95; vis(el.ai, aOn);
+    if (aOn) {
+      const k = eOut(p(u, 6, 6.35)), out = eIn(p(u, 7.6, 7.92)), ins = 50 * (1 - k) + 50 * out;
+      el.ai.style.clipPath = `inset(${ins}% 0 ${ins}% 0 round 24px)`;
+      el.ptext.textContent = PROMPT.slice(0, Math.round(PROMPT.length * p(u, 6.52, 6.95)));
+      vis(el.caret, u >= 6.5 && u < 7.02 && (u < 6.95 || (u * 4 | 0) % 2 === 0));
+      el.gen.style.transform = `scale(${1 - .1 * bump(p(u, 7.02, 7.18))})`;
+      el.gen.style.background = u >= 7.02 && u < 7.4 ? TH.fg : PINK;
+      el.gen.style.color = u >= 7.02 && u < 7.4 ? (TH === THEMES.light ? PAPER : INK) : INK;
+      el.gen.textContent = u >= 7.02 && u < 7.4 ? 'Genero…' : 'Genera';
+      el.fbar.style.transform = `scaleX(${u >= 7.02 && u < 7.42 ? eOut(p(u, 7.02, 7.4)) : 0})`;
+      results.forEach((r, i) => {
+        const a = 7.06 + .07 * i, kk = eOut(p(u, a, a + .34)), on = u >= a; vis(r, on);
+        if (!on) return;
+        r.style.transform = `scale(${lerp(.86, 1, kk)})`;
+        r.style.filter = kk < .995 ? `blur(${f1(26 * (1 - kk))}px) saturate(${f1(kk)})` : 'none';
+        r.style.boxShadow = i === 1 ? `inset 0 0 0 ${4 * eOut(p(u, 7.52, 7.6))}px ${PINK}` : 'none';
+        vis(r.firstChild, !(i === 1 && u >= 7.52));
+      });
+    }
+    const aiCur = u >= 6.25 && u < 7.85, webCur = u >= 10.42 && u < 11.5;
+    vis(el.cursor, aiCur || webCur);
+    if (aiCur || webCur) {
+      const KEYS = aiCur ? CURSOR_KEYS : WEB_KEYS, clicks = aiCur ? CLICKS : [11.02];
+      let j = 0; while (j < KEYS.length - 2 && u >= KEYS[j + 1][0]) j++;
+      const [t0, x0, y0] = KEYS[j], [t1, x1, y1] = KEYS[j + 1], m = webCur && j === 0 ? eOut(p(u, t0, t1)) : eIO(p(u, t0, t1));
+      let sc = clicks.reduce((a, c) => a * (1 - .2 * bump(p(u, c - .02, c + .12))), 1);
+      let rot = 0;
+      if (webCur) { sc *= 1 + .45 * eOut(p(u, 10.78, 10.95)) * (1 - eIn(p(u, 11.1, 11.3))); rot = -14 * bump(p(u, 10.42, 10.9)); }
+      el.cursor.style.transform = `translate(${f1(lerp(x0, x1, m) - 6)}px, ${f1(lerp(y0, y1, m) - 4)}px) rotate(${f1(rot)}deg) scale(${sc.toFixed(3)})`;
+    }
+
+    /* Motion Design: timeline e parola cinetica che reagisce alla testina, con la scia */
+    const mOn = u >= 8 && u < 10; vis(el.graph, mOn);
+    if (mOn) {
+      const out = 1 - eIn(p(u, 9.6, 9.9));
+      dash(el.tl, eOut(p(u, 8, 8.4)) * out);
+      el.tl.setAttribute('stroke', TH.line2);
+      el.kfs.forEach((kf, i) => {
+        const s = spring(p(u, 8.5 + .5 * i, 8.75 + .5 * i)) * out * (1 + .35 * bump(p(u, 8.5 + .5 * i, 8.7 + .5 * i)));
+        kf.setAttribute('transform', `translate(${510 + 450 * i} 830) rotate(45) scale(${s})`);
+        kf.setAttribute('fill', b.cx >= 510 + 450 * i - 4 && u >= 8.5 ? PINK : TH.fg);
+      });
+    }
+    const kOn = u >= 8.25 && u < 9.95; vis(el.kin, kOn);
+    if (kOn) {
+      kin.forEach((L, j) => {
+        const a = 8.28 + .05 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));
+        const x = pos(u), v = (pos(u - 1 / 60) - x) * 60;
+        const near = u >= 8.5 && u < 9.55 ? Math.max(0, 1 - Math.abs(b.cx - M.kx[j]) / 130) : 0;
+        const ex = eIn(p(u, 9.5 + .04 * j, 9.82 + .04 * j));
+        const tx = x + (1410 - M.kx[j]) * ex, ty = -70 * spring(near) + (830 - M.ky) * ex;
+        L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${-Math.min(18, v * .004)}deg) scale(${(1 - ex) * (1 + .12 * near)})`;
+        const blur = Math.min(18, v * .005);
+        L.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
+        const e1 = Math.min(120, v * .05), e2 = Math.min(240, v * .1);
+        const ec = TH === THEMES.light ? '10,10,10' : '245,245,242';
+        L.style.textShadow = e1 > 2 ? `${f1(e1)}px 0 0 rgba(${ec},.28), ${f1(e2)}px 0 0 rgba(${ec},.12)` : 'none';
+        L.style.color = near > .02 ? mix(TH.fg, PINK, near * 1.6) : TH.fg;
+      });
+    }
+
+    /* Web Design: la timeline diventa un browser, la pagina scorre al suo posto, il cursore clicca,
+       sale una card con il titolo in vetro; alla fine la finestra si stringe nella L del nome */
+    const wOn = u >= 9.75 && u < 12.36; vis(el.win, wOn);
+    if (wOn) {
+      let r, rad;
+      if (u < 10.2) {
+        const m = eIO(p(u, 9.75, 10.2));
+        r = { x: lerp(510, WIN.x, m), y: lerp(826, WIN.y, m), w: lerp(900, WIN.w, m), h: lerp(8, WIN.h, m) }; rad = lerp(4, 28, m);
+      } else if (u < 12) { r = WIN; rad = 28; }
+      else {   // la finestra si stringe nel punto in cui nasce l'occhio
+        const m = eIO(p(u, 12, 12.34));
+        r = { x: lerp(WIN.x, M.eye.x - 3, m), y: lerp(WIN.y, M.eye.y - 3, m), w: lerp(WIN.w, 6, m), h: lerp(WIN.h, 6, m) }; rad = lerp(28, 3, m);
+      }
+      Object.assign(el.win.style, { left: f1(r.x) + 'px', top: f1(r.y) + 'px', width: f1(r.w) + 'px', height: f1(r.h) + 'px', borderRadius: f1(rad) + 'px' });
+      el.win.style.boxShadow = u < 10.1 ? `inset 0 0 0 3px ${mix(TH.fg, '#E3EAF5', p(u, 9.9, 10.1))}` : `inset 0 0 0 1px #E3EAF5, 0 30px 80px rgba(61, 90, 255, ${TH === THEMES.light ? .16 : .22})`;
+      el.wfill.style.transform = `scaleY(${eOut(p(u, 9.92, 10.22))})`;
+      el.wfill.style.background = u < 12 ? TH.win : mix(TH.win, TH.fg, p(u, 12, 12.2));
+      const inner = u >= 10.08 && u < 12.1; vis(el.wband, inner); vis(el.wview, inner);
+      if (inner) {
+        el.wband.style.transform = `translateY(${f1(-56 * (1 - eOut(p(u, 10.08, 10.35))))}px)`;
+        // la pagina arriva bassa e sfocata e scorre al suo posto; la sfocatura segue la velocità
+        const off = q => 420 * (1 - eOut(p(q, 10.12, 10.62)));
+        const y = off(u), vy = (off(u - 1 / 60) - y) * 60;
+        const back = eOut(p(u, 11.08, 11.3)) * (1 - eIn(p(u, 11.85, 12)));     // la pagina si sfoca sotto la card
+        const exit = eIn(p(u, 11.6, 11.95));
+        el.wpage.style.transform = `translateY(${f1(y - 40 * exit)}px) scale(${(1 - .04 * back).toFixed(4)})`;
+        const pb = Math.min(22, vy * .012) + 3 * back + 6 * exit;
+        el.wpage.style.filter = pb > .3 ? `blur(${f1(pb)}px)` : 'none';
+        // il pulsante si accende quando il cursore ci passa sopra, poi viene premuto
+        const hov = eOut(p(u, 10.8, 10.95)) * (1 - eIn(p(u, 11.15, 11.35)));
+        el.wcta.style.transform = `scale(${(1 + .06 * hov - .08 * bump(p(u, 11, 11.14))).toFixed(4)})`;
+        el.wcta.style.background = mix(BLUE, '#2F45D8', hov);
+        // la card sale sopra la pagina, con la sfocatura al massimo mentre è veloce
+        const cy = q => lerp(640, 150, eOut(p(q, 11.06, 11.42))) - 70 * eIn(p(q, 11.55, 11.95));
+        const top = cy(u), cv = (cy(u - 1 / 60) - top) * 60;
+        vis(el.wcard, u >= 11.06);
+        const cs = 1 - .05 * eIn(p(u, 11.55, 11.95));
+        el.wcard.style.transform = `translateY(${f1(top)}px) scale(${cs.toFixed(4)})`;
+        const cb = Math.min(14, Math.abs(cv) * .006) + 7 * exit;
+        el.wcard.style.filter = cb > .3 ? `blur(${f1(cb)}px)` : 'none';
+      }
+    }
+    spegni(t >= 1.97 && t < 14.4);   // V2: i mondi separati restano spenti
+    drawStoria(t);
+  }
+
+  /* ---------- Orologio, comandi, suono ---------- */
+  const qs = new URLSearchParams(location.search);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (qs.has('clean')) document.body.classList.add('clean');
+  const embed = qs.has('embed');   // dentro l'header del sito: il tempo arriva dalla pagina che lo contiene
+  const scrollMode = embed || (!qs.has('play') && !qs.has('t') && !reduced);
+  if (embed) document.body.classList.add('embed');
+  else if (scrollMode) { document.body.classList.add('scroll'); document.documentElement.classList.add('scroll'); }
+  let embedTarget = 0, done = false, vede = true;
+  setTheme(qs.get('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+  if (embed) addEventListener('message', e => {
+    if (e.origin !== location.origin || !e.data) return;
+    if (e.data.theme && (e.data.theme === 'light') !== (TH === THEMES.light)) { setTheme(e.data.theme); lastDrawn = -1; }
+    if (e.data.done) done = true;
+    if (typeof e.data.vede === 'boolean') vede = e.data.vede;
+    if (typeof e.data.reel === 'number') embedTarget = reduced ? 0 : clamp(e.data.reel) * DUR;
+    if (typeof e.data.mx === 'number') { ptr.x = e.data.mx; ptr.y = e.data.my; ptr.in = !!e.data.dentro; }
+  });
+  let playing = !(reduced || qs.has('t')) && !scrollMode, sound = false, ctx = null, master = null, noise = null;
+  let base = qs.has('t') ? parseFloat(qs.get('t')) || 0 : 0, ref = 0, nextBeat = 0, dragging = false;
+  const clock = () => sound && ctx ? ctx.currentTime : performance.now() / 1000;
+  const nowT = () => playing ? base + (clock() - ref) : base;
+  const rebase = t => { base = t; ref = clock(); nextBeat = Math.ceil((t - 1e-6) / BEAT) * BEAT; };
+
+  function initAudio() {
+    ctx = new AudioContext(); master = ctx.createGain(); master.gain.value = .5; master.connect(ctx.destination);
+    noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+    const d = noise.getChannelData(0); let seed = 7;
+    for (let i = 0; i < d.length; i++) { seed = (seed * 16807) % 2147483647; d[i] = seed / 1073741823.5 - 1; }
+  }
+  const env = (g, at, peak, len) => { g.gain.setValueAtTime(peak, at); g.gain.exponentialRampToValueAtTime(.001, at + len); };
+  function kick(at, strong) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.setValueAtTime(150, at); o.frequency.exponentialRampToValueAtTime(42, at + .13);
+    env(g, at, strong ? .95 : .7, .28); o.connect(g).connect(master); o.start(at); o.stop(at + .3);
+  }
+  function hit(at) {
+    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    n.buffer = noise; f.type = 'highpass'; f.frequency.value = 2500; env(g, at, .3, .18);
+    n.connect(f).connect(g).connect(master); n.start(at); n.stop(at + .2);
+    const o = ctx.createOscillator(), g2 = ctx.createGain(); o.type = 'triangle'; o.frequency.value = 220;
+    env(g2, at, .22, .25); o.connect(g2).connect(master); o.start(at); o.stop(at + .3);
+  }
+  function riser(at, len) {
+    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    n.buffer = noise; n.loop = true; f.type = 'bandpass'; f.Q.value = 6;
+    f.frequency.setValueAtTime(300, at); f.frequency.exponentialRampToValueAtTime(6000, at + len);
+    g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.35, at + len); g.gain.linearRampToValueAtTime(0, at + len + .03);
+    n.connect(f).connect(g).connect(master); n.start(at); n.stop(at + len + .05);
+  }
+  function chime(at) {
+    [880, 1320].forEach((fq, i) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = fq; env(g, at, .16 - i * .06, .6); o.connect(g).connect(master); o.start(at); o.stop(at + .65); });
+  }
+  function schedule(tu) {
+    while (nextBeat < tu + .2) {
+      const at = ref + (nextBeat - base);
+      if (at >= ctx.currentTime - .01) {
+        const bt = Math.round((((nextBeat % DUR) + DUR) % DUR) / BEAT) % 30;
+        kick(at, bt % 4 === 0);
+        if (bt % 4 === 0) hit(at);
+        if (bt === 6) riser(at, 1);              // verso i blocchi 3D
+        if (bt === 28) chime(at);
+      }
+      nextBeat += BEAT;
+    }
+  }
+
+  const pp = E('pp'), scrub = E('scrub'), tc = E('tc'), snd = E('snd');
+  const setPlaying = on => { if (on === playing) return; const t = nowT(); playing = on; rebase(t); pp.textContent = on ? 'Pausa' : 'Play'; if (ctx) on && sound ? ctx.resume() : ctx.suspend(); };
+  pp.textContent = playing ? 'Pausa' : 'Play';
+  pp.onclick = () => setPlaying(!playing);
+  if (!scrollMode) stage.onclick = () => setPlaying(!playing);
+  scrub.oninput = () => { dragging = true; rebase(parseFloat(scrub.value)); };
+  scrub.onchange = () => { dragging = false; };
+  snd.onclick = () => {
+    if (!ctx) initAudio();
+    const t = nowT();
+    if (!sound) { ctx.resume().then(() => { sound = true; rebase(t); snd.textContent = 'Suono: sì'; snd.setAttribute('aria-pressed', 'true'); }); }
+    else { sound = false; rebase(t); ctx.suspend(); snd.textContent = 'Suono: no'; snd.setAttribute('aria-pressed', 'false'); }
+  };
+  addEventListener('keydown', e => {
+    if (e.target === scrub || scrollMode) return;
+    if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+    if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') { setPlaying(false); rebase(clamp(Math.round(base / BEAT) * BEAT + (e.code === 'ArrowRight' ? BEAT : -BEAT), 0, DUR)); }
+  });
+
+  function fit() {
+    const uiH = ['clean', 'scroll', 'embed'].some(c => document.body.classList.contains(c)) ? 0 : 56;
+    const S = Math.min(innerWidth / 1920, (innerHeight - uiH) / 1080);
+    stage.style.transform = `translate(${(innerWidth - 1920 * S) / 2}px, ${(innerHeight - uiH - 1080 * S) / 2}px) scale(${S})`;
+  }
+  addEventListener('resize', fit); fit();
+
+  // Scroll: il tempo insegue la posizione con una molla a smorzamento critico (accelera e frena, senza scatti né rimbalzi)
+  let st = 0, sv = 0, lastNow = 0, lastDrawn = -1, amp = 0;
+  const hv = new Array(13).fill(0), ptr = { x: -999, y: -999, in: false };
+  // il mouse: direttamente nella pagina dello showreel, oppure passato dalla home (dove lo showreel non riceve il mouse)
+  addEventListener('pointermove', e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.in = true; });
+  document.addEventListener('pointerleave', () => { ptr.in = false; });
+  const hint = E('hint'), W0 = 7;
+  function scrollFrame(now) {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const pr = embed ? embedTarget / DUR : max > 0 ? clamp(scrollY / max) : 0;
+    const target = done ? DUR : reduced ? 0 : pr * DUR;
+    if (done && reduced) { st = DUR; sv = 0; }
+    const dt = lastNow ? Math.min(.05, (now - lastNow) / 1000) : .016; lastNow = now;
+    for (let i = 0, h = dt / 4; i < 4; i++) { sv += (W0 * W0 * (target - st) - 2 * W0 * sv) * h; st += sv * h; }
+    if (Math.abs(target - st) < .0005 && Math.abs(sv) < .002) { st = target; sv = 0; }
+    st = clamp(st, 0, DUR);
+    if (st > DUR - .9 && vede) { IDLE += reduced ? 0 : dt; lastDrawn = -1; }   // a intro finita l'header resta vivo
+    if (st !== lastDrawn) { seek(st); lastDrawn = st; }
+    // in cima, a pagina ferma: la lettera sotto il mouse si ingrandisce (le vicine un po' meno);
+    // accanto alla freccia compare la pillola SCROLL e la segue
+    const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920;
+    const sx = (ptr.x - r0.left) / SS, sy = (ptr.y - r0.top) / SS;
+    const sopra = ptr.in && !reduced && st < .02 && sy > M.lr[0].t - 60 && sy < M.lr[0].b + 60 && sx > M.lr[0].l - 60 && sx < M.lr[12].r + 60;
+    amp += ((sopra ? 1 : 0) - amp) * (1 - Math.exp(-dt * (sopra ? 10 : 8)));
+    if (st < .02 && (amp > .002 || hv.some(v => v > .002))) {
+      // morbido: la lettera sotto il mouse cresce poco e lentamente; le vicine si scostano quanto serve per non toccarsi
+      letters.forEach((c, i) => {
+        const L = M.lr[i], cx = (L.l + L.r) / 2, d = Math.abs(sx - cx) / Math.max(1, L.r - L.l);
+        const goal = sopra ? clamp(1 - d * .9) : 0;
+        hv[i] += (goal - hv[i]) * (1 - Math.exp(-dt * 5));
+      });
+      const GROW = .12;
+      letters.forEach((c, i) => {
+        let dx = 0;
+        for (let j = 0; j < 13; j++) if (j !== i) dx += Math.sign(i - j) * hv[j] * GROW * (M.lr[j].r - M.lr[j].l) * .55;
+        c.style.transformOrigin = '50% 100%';
+        c.style.transform = `translate(${f1(dx)}px, ${f1(-4 * hv[i])}%) scale(${(1 + GROW * hv[i]).toFixed(3)}) rotate(${f1((i % 2 ? -2 : 2) * hv[i])}deg)`;
+      });
+      lastDrawn = -1;
+    }
+    hint.style.opacity = amp.toFixed(3);
+    hint.style.transform = `translate(${f1(ptr.x + 22)}px, ${f1(ptr.y + 18)}px) scale(${(.85 + .15 * amp).toFixed(3)})`;
+    requestAnimationFrame(scrollFrame);
+  }
+  function frame() {
+    const tu = nowT();
+    if (playing && sound) schedule(tu);
+    const t = playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
+    seek(t);
+    if (!dragging) scrub.value = t.toFixed(2);
+    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / ' + DUR;
+    requestAnimationFrame(frame);
+  }
+
+  window.seek = t => { playing = false; rebase(t); seek(t); };
+  // la pagina che contiene lo showreel lo chiama nello stesso istante in cui cambia tema, così il cerchio lo rivela già nel colore nuovo
+  window.lmmTheme = name => { setTheme(name); if (M) { seek(scrollMode ? st : nowT()); lastDrawn = -1; } };
+  const start = () => {
+    if (M) return;
+    measure(); rebase(base); document.documentElement.dataset.ready = '1';
+    requestAnimationFrame(scrollMode ? scrollFrame : frame);
+  };
+  document.fonts.ready.then(start);
+  setTimeout(start, 2500);
+})();
+</script>
+</body>
+</html>
