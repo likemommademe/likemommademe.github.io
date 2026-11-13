@@ -474,7 +474,7 @@
 
   // La scena (forma, quadrati, generatore, browser, cursore) si rimpicciolisce sotto il titolo centrale.
   // Durante MOTION torna a piena grandezza, perché lì la parola e la timeline sono già composte insieme.
-  const SC = { k: .58, cy: 772 };
+  const SC = { k: .58, cy: 720 };   // cy: la scena rimpicciolita finisce sopra le categorie in basso (fondo a circa 940)
   // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
   const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.3, 3.75)) + eIO(p(t, 5.8, 6.05)) - eIO(p(t, 6.98, 7.42))
                    + eIO(p(t, 7.85, 8.1)) - eIO(p(t, 8.85, 9.28)) + eIO(p(t, 11.75, 12.2)) - eIO(p(t, 12.92, 13.36));
