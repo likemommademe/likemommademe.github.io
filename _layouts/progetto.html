@@ -168,14 +168,23 @@ layout: default
 <script>
   // Righe di due foto: ogni foto prende una larghezza proporzionale alla sua forma, così le due sono alte uguali.
   (function () {
-    // Forma comune di una coppia: la media delle proporzioni delle due foto (o video)
+    // Ogni foto della riga tiene la sua forma e prende una larghezza proporzionale: stessa altezza, niente tagli.
+    // Il dettaglio ingrandito copia la forma della foto accanto.
     function formaRiga(r) {
-      var v = [].map.call(r.children, function (f) {
+      var figs = [].slice.call(r.children);
+      var ar = figs.map(function (f) {
+        if (f.classList.contains('cs-media--zoom')) return 0;
         var m = f.querySelector('img, video'); if (!m) return 0;
         var w = m.naturalWidth || m.videoWidth, h = m.naturalHeight || m.videoHeight;
-        return f.classList.contains('cs-media--zoom') ? 0 : (w && h ? w / h : 0);
-      }).filter(Boolean);
-      if (v.length) r.style.setProperty('--ar-riga', (v.reduce(function (a, b) { return a + b; }, 0) / v.length).toFixed(4));
+        return w && h ? w / h : 0;
+      });
+      var veri = ar.filter(Boolean); if (!veri.length) return;
+      var media = veri.reduce(function (a, b) { return a + b; }, 0) / veri.length;
+      r.style.setProperty('--ar-riga', media.toFixed(4));
+      if (veri.length < figs.length - figs.filter(function (f) { return f.classList.contains('cs-media--zoom'); }).length) return; // non ancora tutte caricate
+      ar = ar.map(function (a) { return a || media; });
+      figs.forEach(function (f, i) { f.style.setProperty('--ar', ar[i].toFixed(4)); });
+      r.style.setProperty('--cols', ar.map(function (a) { return 'minmax(0, ' + a.toFixed(4) + 'fr)'; }).join(' '));
     }
     window.lmmFormaRiga = formaRiga;
     document.querySelectorAll('[data-riga]').forEach(function (r) {

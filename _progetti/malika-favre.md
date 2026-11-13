@@ -47,7 +47,7 @@ galleria:
     didascalia: "Un ritratto nascosto tra le righe, con un solo dettaglio rosso."
     didascalia_en: "A portrait hidden in the stripes, with a single red detail."
   - type: "foto"
-    immagine: "/assets/uploads/malika-favre-acconciature.webp"
+    immagine: "/assets/uploads/malika-favre-acconciature-hd.webp"
     formato: "sola"
     titolo: "Le acconciature"
     titolo_en: "The hairstyles"

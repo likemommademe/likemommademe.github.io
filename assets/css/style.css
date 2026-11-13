@@ -537,10 +537,10 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-gal { display: grid; gap: var(--gap); align-items: start; }
 /* Coppie: divise sempre a metà, le due cornici hanno la stessa forma (media delle due foto) e la foto la riempie.
    Così tutte le righe sono allineate tra loro e non restano buchi. */
-.cs-gal__riga { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+.cs-gal__riga { display: grid; grid-template-columns: var(--cols, repeat(2, minmax(0, 1fr))); gap: var(--gap); align-items: start; }
 .cs-gal__riga > .cs-media { min-width: 0; }
-.cs-gal__riga--tre { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.cs-gal__riga > .cs-media > img, .cs-gal__riga > .cs-media .video--file video, .cs-gal__riga > .cs-media .cs-zoom { display: block; width: 100%; height: auto; aspect-ratio: var(--ar-riga, 4 / 3); object-fit: cover; max-height: none; }
+.cs-gal__riga--tre { grid-template-columns: var(--cols, repeat(3, minmax(0, 1fr))); }
+.cs-gal__riga > .cs-media > img, .cs-gal__riga > .cs-media .video--file video, .cs-gal__riga > .cs-media .cs-zoom { display: block; width: 100%; height: auto; aspect-ratio: var(--ar, var(--ar-riga, 4 / 3)); object-fit: cover; max-height: none; }
 .cs-gal__riga > .cs-media .video--file { display: block; }
 .cs-media { margin: 0; }
 .cs-media img { width: 100%; border-radius: var(--r); background: var(--placeholder); }

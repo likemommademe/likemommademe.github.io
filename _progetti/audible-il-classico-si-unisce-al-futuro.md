@@ -140,7 +140,7 @@ galleria:
     didascalia_en: "The light version of the banner."
   - type: "foto"
     immagine: "/assets/uploads/audible-il-classico-si-unisce-al-futuro-12.webp"
-    formato: "meta"
+    formato: "sola"
     titolo: "Riprendi, tre volte"
     titolo_en: "Pick up, three times"
     didascalia: "Inferno, Purgatorio e Paradiso affiancati sull'arancio."
