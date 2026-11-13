@@ -603,7 +603,7 @@
   // il mouse sulla schermata finale: ogni elemento si scosta morbido dal puntatore, cresce appena e ruota un poco
   let PTR = { x: -9999, y: -9999, in: false };
   const REP = {};
-  const repel = (id, x, y, R = 320, F = 80) => {
+  const repel = (id, x, y, R = 260, F = 26) => {   // leggero: si scostano appena
     const o = REP[id] || (REP[id] = { x: 0, y: 0, s: 0 });
     let tx = 0, ty = 0, ts = 0;
     if (PTR.in) { const dx = x - PTR.x, dy = y - PTR.y, d = Math.hypot(dx, dy) || 1; if (d < R) { const k = 1 - d / R, e = k * k * (3 - 2 * k); tx = dx / d * F * e; ty = dy / d * F * e; ts = e; } }
@@ -636,7 +636,7 @@
     const oOn = t >= 16; vis(el.orbita, oOn); vis(el.miniBox, oOn);
     if (!oOn) return;
     const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
-    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .1)}) scale(${(k * (1 + .08 * r.s)).toFixed(3)}) ${extra}`); return k; };
+    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .06)}) scale(${(k * (1 + .03 * r.s)).toFixed(3)}) ${extra}`); return k; };
     drawOrbitaV2(t, pop, fl);   // V2: matita, icona 3D, varianti
     place('oMot', ORB.mot);
     E('oPh').setAttribute('transform', `translate(${f1(150 * Math.sin(IDLE * .9))} 0)`);
@@ -670,6 +670,16 @@
   const almondTop = (x, y, a, b) => `M${f1(x)} ${f1(y - .9375 * b)}C${f1(x + .3 * a)} ${f1(y - .9375 * b)} ${f1(x + .78 * a)} ${f1(y - .6 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}C${f1(x - .78 * a)} ${f1(y - .6 * b)} ${f1(x - .3 * a)} ${f1(y - .9375 * b)} ${f1(x)} ${f1(y - .9375 * b)}Z`;   // parte dall'alto: chiusura liscia
   // un occhio riutilizzabile: contorno, iride, pupilla
   const show = (n, on) => { n.style.display = on ? '' : 'none'; };   // spegne il gruppo e tutto quello che contiene
+  // la forma della O della frase (viewBox 100: punte a ±44, alto 35,25), per l'occhio che ci atterra
+  const almondO = (x, y, a) => { const k = a / 44, T = 35.25 * k; return `M${f1(x)} ${f1(y - T)}C${f1(x + 19 * k)} ${f1(y - T)} ${f1(x + 38 * k)} ${f1(y - 23.5 * k)} ${f1(x + a)} ${f1(y)}C${f1(x + 38 * k)} ${f1(y + 23.5 * k)} ${f1(x + 19 * k)} ${f1(y + T)} ${f1(x)} ${f1(y + T)}C${f1(x - 19 * k)} ${f1(y + T)} ${f1(x - 38 * k)} ${f1(y + 23.5 * k)} ${f1(x - a)} ${f1(y)}C${f1(x - 38 * k)} ${f1(y - 23.5 * k)} ${f1(x - 19 * k)} ${f1(y - T)} ${f1(x)} ${f1(y - T)}Z`; };
+  // passaggio Motion → Gen AI, tre proposte da confrontare: ?mg=1 occhio→barra, ?mg=2 tuffo nella pupilla, ?mg=3 pupilla→cursore
+  const MG = new URLSearchParams(location.search).get('mg') || '1';
+  // l'occhio in 4 curve (alto, destra, basso, sinistra) e la barra con la stessa struttura: così una si trasforma nell'altra
+  const eye4 = (x, y, a, b) => [x, y - .9375 * b, x + .3875 * a, y - .9375 * b, x + .775 * a, y - .625 * b, x + a, y, x + .775 * a, y + .625 * b, x + .3875 * a, y + .9375 * b, x, y + .9375 * b,
+    x - .3875 * a, y + .9375 * b, x - .775 * a, y + .625 * b, x - a, y, x - .775 * a, y - .625 * b, x - .3875 * a, y - .9375 * b, x, y - .9375 * b];
+  const pill4 = (cx, cy, w, h) => { const r = h / 2, L = cx - w / 2, R = cx + w / 2, T = cy - r, B = cy + r;
+    return [cx, T, R - .448 * r, T, R, cy - .552 * r, R, cy, R, cy + .552 * r, R - .448 * r, B, cx, B, L + .448 * r, B, L, cy + .552 * r, L, cy, L, cy - .552 * r, L + .448 * r, T, cx, T]; };
+  const path4 = n => `M${f1(n[0])} ${f1(n[1])}` + [0, 1, 2, 3].map(i => 'C' + n.slice(2 + i * 6, 8 + i * 6).map(f1).join(' ')).join('') + 'Z';
   function mkEye(parent = ST) {
     const g = mk('g', {}, parent), o = mk('path', { fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round', pathLength: 1 }, g);
     const i = mk('circle', {}, g), pu = mk('circle', {}, g);
@@ -680,7 +690,7 @@
     const sx = q.sx ?? 1, sy = q.sy ?? 1;
     e.g.setAttribute('transform', `translate(${f1(q.x)} ${f1(q.y)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(${f1(-q.x)} ${f1(-q.y)})`);
     e.g.style.opacity = (q.op ?? 1).toFixed(3);
-    e.o.setAttribute('d', almondTop(q.x, q.y, q.a, q.b));
+    e.o.setAttribute('d', q.O ? almondO(q.x, q.y, q.a) : almondTop(q.x, q.y, q.a, q.b));
     e.o.setAttribute('stroke', q.col); e.o.setAttribute('stroke-width', f1(q.sw));
     if (q.draw !== undefined) traccia(e.o, q.draw); else e.o.style.strokeDasharray = 'none';
     const ix = q.x + (q.lx || 0) * q.a * .24, iy = q.y + (q.ly || 0) * q.b * .3;
@@ -801,6 +811,7 @@
   }
   const EYE3 = mkEye();   // l'occhio finale: tutte le varianti in una, che diventa la O della frase
   const CUR = mk('path', { d: 'M6 4V32L13.5 25.5L18.5 36L23.5 33.8L18.6 23.4H29Z', fill: '#F5F5F2', stroke: '#121414', 'stroke-width': 2.5, 'stroke-linejoin': 'round' });
+  const PMORPH = mk('path', { 'stroke-linejoin': 'round' }), PIRIS = mk('rect', { fill: PINK }), PPUP = mk('rect'), POVL = mk('path', { 'fill-rule': 'evenodd' });
   ST.appendChild(PEN);   // la matita sopra a tutto
 
   // il blocco 3D: ogni strato è lo stesso rettangolo arrotondato proiettato a una profondità diversa
@@ -912,9 +923,11 @@
       const car = bump(p(t, 10.6, 10.72)), su = p(t, 10.7, 10.9), atterra = bump(p(t, 10.88, 11.0));
       const h = 150 * Math.sin(Math.PI * clamp(su)), str = su > 0 && su < 1 ? bump(su) : 0;
       e2.y -= h; e2.sx = (1 + .1 * car) * (1 - .08 * str) * (1 + .14 * atterra); e2.sy *= (1 - .14 * car) * (1 + .12 * str) * (1 - .16 * atterra);
-      // poi l'occhio si chiude: chiuso è una linea, e quella linea diventa la barra del prompt
-      const chiudi = eIn(p(t, 11.02, 11.16)); e2.sy *= 1 - chiudi;
-      if (t >= 11.16) e2.on = false;
+      // poi il passaggio a Gen AI (tre proposte)
+      e2.base = { x: e2.x, y: e2.y, a: e2.a, b: e2.b, sw: e2.sw, ir: e2.ir, pr: e2.pr };
+      if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
+      if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
+      if (MG === '3') { const m = eIO(p(t, 11.02, 11.3)); e2.x = lerp(e2.x, 402, m); e2.y = lerp(e2.y, 286, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
     }
     if (e2.spin) {
       const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
@@ -928,6 +941,31 @@
     }
     show(EXTG, !!e2.spin);
     setEye(EYE2, e2);
+    // ---- il passaggio Motion → Gen AI
+    const eb = e2.base || { x: 960, y: 460, a: 210, b: 147, sw: 21, ir: 63, pr: 27 };
+    const fieldC = TH === THEMES.light ? '#EFE9DF' : '#1F2121', lineC = TH === THEMES.light ? '#E2DBCF' : '#282B2B';
+    const m1On = MG === '1' && t >= 11.02 && t < 11.42; show(PMORPH, m1On); show(PIRIS, m1On);
+    if (m1On) {   // 1 · il contorno dell'occhio si apre nella barra, l'iride diventa il pulsante, la pupilla il cursore
+      const m = eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, 286, 1240, 96);
+      PMORPH.setAttribute('d', path4(A.map((v, i) => lerp(v, Bp[i], m))));
+      PMORPH.setAttribute('stroke', mix(fg, lineC, m)); PMORPH.setAttribute('stroke-width', f1(lerp(eb.sw, 2, m)));
+      PMORPH.setAttribute('fill', fieldC); PMORPH.setAttribute('fill-opacity', (m * m).toFixed(3));
+      const r = eb.ir; PIRIS.setAttribute('x', f1(lerp(eb.x - r, 1338, m))); PIRIS.setAttribute('y', f1(lerp(eb.y - r, 250, m))); PIRIS.setAttribute('width', f1(lerp(2 * r, 220, m))); PIRIS.setAttribute('height', f1(lerp(2 * r, 72, m))); PIRIS.setAttribute('rx', f1(lerp(r, 36, m)));
+    }
+    const pupOn = (MG === '1' && t >= 11.02 && t < 11.7) || (MG === '3' && t >= 11.28 && t < 11.7); show(PPUP, pupOn);
+    if (pupOn) {   // la pupilla diventa il cursore del campo, che lampeggia finché parte il testo
+      const m = MG === '1' ? eIO(p(t, 11.02, 11.4)) : 1, r = MG === '1' ? eb.pr : 5, blink = t > 11.42 && ((t * 4) | 0) % 2 === 1 ? 0 : 1;
+      PPUP.setAttribute('x', f1(lerp(eb.x - r, 400, m))); PPUP.setAttribute('y', f1(lerp(eb.y - r, 266, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
+      PPUP.setAttribute('fill', MG === '1' ? mix(INK, fg, m) : fg); PPUP.style.opacity = blink;
+    }
+    const ovOn = MG === '2' && t >= 11.02 && t < 11.52; show(POVL, ovOn);
+    if (ovOn) {   // 2 · la pupilla cresce fino a coprire tutto, poi un cerchio si apre sulla schermata di Gen AI
+      const g = eIn(p(t, 11.06, 11.26)), o = eOut(p(t, 11.26, 11.5)), R = 2300;
+      const cx = eb.x, cy = eb.y, rr = Math.max(.1, lerp(eb.pr * 3, R, g)), hole = lerp(0, R, o);
+      POVL.setAttribute('d', t < 11.26 ? `M${f1(cx)} ${f1(cy - rr)}A${f1(rr)} ${f1(rr)} 0 1 0 ${f1(cx)} ${f1(cy + rr)}A${f1(rr)} ${f1(rr)} 0 1 0 ${f1(cx)} ${f1(cy - rr)}Z`
+        : `M-200 -200H2120V1280H-200ZM960 ${f1(286 - hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(286 + hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(286 - hole)}Z`);
+      POVL.setAttribute('fill', INK);
+    }
     GHOST.forEach(gh => vis(gh.g, false));
     const moOn = t >= 9.0 && t < 11.1; show(MO, moOn);
     if (moOn) {
@@ -943,17 +981,20 @@
       PH.style.opacity = (eOut(p(t, 9.45, 9.55)) * out).toFixed(3);
     }
     // la barra: parte dalla timeline (800 x 6 in basso) e sale fino a diventare il campo del prompt (1000 x 96)
-    const barOn = t >= 11.14 && t < 12.5; show(BAR, barOn);   // nasce dall'occhio chiuso
+    const bar0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.28;
+    const barOn = t >= bar0 && t < 12.5; show(BAR, barOn);
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
-      const m = eIO(p(t, 11.14, 11.46)), w = lerp(420 + 21, 1240, m), h = lerp(21, 96, m), cy = lerp(460, 286, m) - 160 * up;
-      BAR.setAttribute('x', f1(960 - w / 2)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(11, 48, m)));
-      BAR.setAttribute('fill', mix(fg, TH === THEMES.light ? '#EFE9DF' : '#1F2121', eIO(p(t, 11.16, 11.4)))); BAR.setAttribute('stroke', TH === THEMES.light ? '#E2DBCF' : '#282B2B'); BAR.setAttribute('stroke-width', f1(2 * m));
+      // 3: la barra si disegna intorno al cursore; 1 e 2: è già al suo posto
+      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = lerp(400, 340, m), w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = 286 - 160 * up;
+      BAR.setAttribute('x', f1(MG === '3' ? x0 : 340)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(1.5, 48, m)));
+      BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
     }
-    const gpOn = t >= 11.38 && t < 12.5; show(GP, gpOn);
+    const gp0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.5;
+    const gpOn = t >= gp0 && t < 12.5; show(GP, gpOn);
     if (gpOn) {
-      const k = eOut(p(t, 11.38, 11.55));
+      const k = MG === '1' ? 1 : eOut(p(t, gp0, gp0 + .16));
       GP.style.opacity = (k * (1 - up)).toFixed(3);
       GP.setAttribute('transform', `translate(0 ${f1(-160 * up)})`);
       GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.7, 12.04))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
@@ -976,8 +1017,8 @@
     const e3On = t >= 13.78 && t < 14.32;
     if (e3On) {
       const k = spring(p(t, 13.78, 14.0)), m = eIO(p(t, 13.98, 14.3)), w = M.eye.w;
-      setEye(EYE3, { x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: lerp(210 * k, .44 * w, m), b: lerp(147 * k, .376 * w, m),
-        sw: lerp(21, .13 * w, m), col: fg, ir: lerp(63 * k, .22 * w, m), pr: lerp(27 * k, .10 * w, m) });   // si arrotonda fino alla forma della O
+      const a3 = lerp(160 * k, .44 * w, m);   // nasce dalle varianti già con la forma e lo spessore della O: atterrando cambia solo grandezza
+      setEye(EYE3, { O: true, x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: a3, b: a3 * .8, sw: a3 * 13 / 44, col: fg, ir: a3 * 22 / 44, pr: a3 * 10 / 44 });
     } else vis(EYE3.g, false);
     // il cursore: clicca "Scopri" nel sito, indica l'occhio, poi preme "Genera"
     const c1 = t >= 7.85 && t < 8.6, c2 = t >= 11.8 && t < 12.4; vis(CUR, c1 || c2);
@@ -1006,17 +1047,17 @@
     // l'icona dell'app in 3D: lo spessore si sposta mentre ondeggia
     const kt = pop(ORB.box[2]), sw = Math.sin(IDLE * .7);
     const rT = repel('tile', ORB.box[0], ORB.box[1]);
-    oTile.setAttribute('transform', `translate(${f1(ORB.box[0] + rT.x)} ${f1(ORB.box[1] + fl(0) + rT.y)}) rotate(${f1(-8 + 7 * sw + rT.x * .12)}) scale(${(kt * (1 + .08 * rT.s)).toFixed(3)})`);
+    oTile.setAttribute('transform', `translate(${f1(ORB.box[0] + rT.x)} ${f1(ORB.box[1] + fl(0) + rT.y)}) rotate(${f1(-8 + 7 * sw + rT.x * .06)}) scale(${(kt * (1 + .03 * rT.s)).toFixed(3)})`);
     oTileL.forEach((r, i) => r.setAttribute('transform', `translate(${f1((3 - i) * 5 * (.6 + .4 * sw))} ${f1((3 - i) * 6)})`));
     // la matita che rifà lo schizzo
     const kp = pop(ORB.ill[2]), ang = IDLE * 1.6;
     const rP = repel('pen', ORB.ill[0], ORB.ill[1]);
-    oPen.setAttribute('transform', `translate(${f1(ORB.ill[0] + rP.x)} ${f1(ORB.ill[1] + fl(ORB.ill[0]) + rP.y)}) rotate(${f1(rP.x * .1)}) scale(${(kp * 1.05 * (1 + .08 * rP.s)).toFixed(3)})`);
+    oPen.setAttribute('transform', `translate(${f1(ORB.ill[0] + rP.x)} ${f1(ORB.ill[1] + fl(ORB.ill[0]) + rP.y)}) rotate(${f1(rP.x * .06)}) scale(${(kp * 1.05 * (1 + .03 * rP.s)).toFixed(3)})`);
     oPen.querySelector('.oPenP').setAttribute('transform', `translate(${f1(70 * Math.cos(ang))} ${f1(48 * Math.sin(ang))}) rotate(${f1(-8 * Math.sin(ang))})`);
     // tre varianti generate, a ventaglio
-    const kv = pop(ORB.ai[2]), ap = .7 + .3 * Math.sin(IDLE * 1.1) + .5 * ((REP.var || {}).s || 0);
+    const kv = pop(ORB.ai[2]), ap = .7 + .3 * Math.sin(IDLE * 1.1) + .2 * ((REP.var || {}).s || 0);
     const rV = repel('var', ORB.ai[0], ORB.ai[1]);
-    oVar.setAttribute('transform', `translate(${f1(ORB.ai[0] + rV.x)} ${f1(ORB.ai[1] + fl(ORB.ai[0]) + rV.y)}) rotate(${f1(rV.x * .1)}) scale(${(kv * (1 + .08 * rV.s)).toFixed(3)})`);
+    oVar.setAttribute('transform', `translate(${f1(ORB.ai[0] + rV.x)} ${f1(ORB.ai[1] + fl(ORB.ai[0]) + rV.y)}) rotate(${f1(rV.x * .06)}) scale(${(kv * (1 + .03 * rV.s)).toFixed(3)})`);
     oVarT.forEach((q, i) => q.g.setAttribute('transform', `translate(${f1((i - 1) * 62 * ap)} ${f1(Math.abs(i - 1) * 10)}) rotate(${f1(q.r * ap)})`));
   }
   // gli elementi della versione con i mondi separati restano spenti durante la storia

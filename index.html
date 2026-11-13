@@ -18,7 +18,7 @@ reel: true
   (function () {
     var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
     // prova della versione "Uno schizzo diventa tutto": la home la carica con ?v2 nell'indirizzo
-    if (/[?&]v2\b/.test(location.search)) frame.src = frame.src.replace('/showreel.html', '/showreel-v2.html');
+    if (/[?&]v2\b/.test(location.search)) { var mg = (location.search.match(/[?&]mg=(\d)/) || [])[1]; frame.src = frame.src.replace('/showreel.html', '/showreel-v2.html') + (mg ? '&mg=' + mg : ''); }
     var KEY = 'lmm-intro-fatta', fatta = false;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     // L'intro gira una volta sola. Riparte solo ricaricando la pagina o cliccando HOME / il logo (che riaprono la home);

@@ -599,7 +599,7 @@
   // il mouse sulla schermata finale: ogni elemento si scosta morbido dal puntatore, cresce appena e ruota un poco
   let PTR = { x: -9999, y: -9999, in: false };
   const REP = {};
-  const repel = (id, x, y, R = 320, F = 80) => {
+  const repel = (id, x, y, R = 260, F = 26) => {   // leggero: si scostano appena
     const o = REP[id] || (REP[id] = { x: 0, y: 0, s: 0 });
     let tx = 0, ty = 0, ts = 0;
     if (PTR.in) { const dx = x - PTR.x, dy = y - PTR.y, d = Math.hypot(dx, dy) || 1; if (d < R) { const k = 1 - d / R, e = k * k * (3 - 2 * k); tx = dx / d * F * e; ty = dy / d * F * e; ts = e; } }
@@ -633,8 +633,8 @@
     const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
     const kb = pop(ORB.box[2]);
     renderBoxes({ th: 50 * Math.PI / 180, yaw: (25 + 20 * Math.sin(IDLE * .6)) * Math.PI / 180, dy: 0,
-      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0] + repel('box', ORB.box[0], ORB.box[1]).x, cy: ORB.box[1] + fl(0) + REP.box.y, sc: .34 * kb * (1 + .08 * REP.box.s), target: el.miniBox });
-    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .1)}) scale(${(k * (1 + .08 * r.s)).toFixed(3)}) ${extra}`); return k; };
+      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0] + repel('box', ORB.box[0], ORB.box[1]).x, cy: ORB.box[1] + fl(0) + REP.box.y, sc: .34 * kb * (1 + .03 * REP.box.s), target: el.miniBox });
+    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .06)}) scale(${(k * (1 + .03 * r.s)).toFixed(3)}) ${extra}`); return k; };
     place('oIll', ORB.ill, `rotate(${f1(6 * Math.sin(IDLE * .8))})`);
     E('oIllB').setAttribute('d', shape(0, 0, 92, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .3));
     E('oIllB').setAttribute('fill', GREEN);
