@@ -413,7 +413,7 @@
     { world: 0, word: 'ILLUSTRATION', col: GREEN, tin: 2.2,   tout: 3.15 },
     { world: 1, word: 'BRANDING',     col: BLUE,  tin: 4.35,  tout: 5.2 },
     { world: 2, word: 'WEB DESIGN',   col: GREEN, tin: 6.75,  tout: 7.6, dy: -95 },   // più in alto: non tocca la finestra del sito
-    { world: 4, word: 'GEN AI',       col: PINK,  tin: 11.55, tout: 12.3 }
+    { world: 4, word: 'GEN AI',       col: PINK,  tin: 11.55, tout: 12.48 }
   ];
   CT.forEach(c => {
     const d = document.createElement('div'); d.className = 'abs ct'; d.setAttribute('aria-hidden', 'true'); d.style.color = c.col;
@@ -480,7 +480,7 @@
   // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
   const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.15, 3.55)) + eIO(p(t, 4.15, 4.4)) - eIO(p(t, 5.2, 5.6))
                    + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.86, 8.22)) 
-                   + eIO(p(t, 11.35, 11.6)) - eIO(p(t, 12.3, 12.7));
+                   + eIO(p(t, 11.35, 11.6)) - eIO(p(t, 12.5, 12.85));
   const sceneS = t => { const a = sceneA(t), web = t >= 6.4 && t < 8.5; return { k: lerp(1, web ? .72 : SC.k, a), cy: lerp(500, web ? 700 : SC.cy, a) }; };   // Web: la pagina piccola resta più grande
   const mapS = (S, x, y) => [960 + (x - 960) * S.k, S.cy + (y - 500) * S.k];
   const scene = [...document.querySelectorAll('.scena')];
@@ -701,7 +701,7 @@
     e.g.setAttribute('transform', `translate(${f1(q.x)} ${f1(q.y)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)}) translate(${f1(-q.x)} ${f1(-q.y)})`);
     e.g.style.opacity = (q.op ?? 1).toFixed(3);
     e.o.setAttribute('d', q.O ? almondO(q.x, q.y, q.a) : almondTop(q.x, q.y, q.a, q.b));
-    e.o.setAttribute('stroke', q.col); e.o.setAttribute('stroke-width', f1(q.sw));
+    e.o.setAttribute('stroke', q.col); e.o.setAttribute('stroke-width', f1(q.sw)); e.o.style.opacity = (q.oop ?? 1).toFixed(3);
     if (q.draw !== undefined) traccia(e.o, q.draw); else e.o.style.strokeDasharray = 'none';
     const ix = q.x + (q.lx || 0) * q.a * .24, iy = q.y + (q.ly || 0) * q.b * .3;
     e.i.setAttribute('cx', f1(ix)); e.i.setAttribute('cy', f1(iy)); e.i.setAttribute('r', f1(Math.max(0, q.ir))); e.i.setAttribute('fill', q.irc || PINK);
@@ -778,7 +778,7 @@
     </g>
     <rect id="v2out" x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28" fill="none" stroke-width="3" pathLength="1"/>`;
   ST.appendChild(BOARD); ST.appendChild(TILE); ST.appendChild(EYE1.g);   // tavola e logo sopra la pagina; il segno sopra l'icona che gli cresce dietro
-  const OY = -30;         // la pagina più in alto: lontana dalle categorie (il titolo ha già il suo spazio)
+  const OY = 30;          // centrata in verticale tra il menu del sito e le categorie in basso
   const wq = id => WEB.querySelector('#' + id);
   const V2 = { fill: wq('v2fill'), bar: wq('v2bar'), nav: wq('v2nav'), h1: wq('v2h1'), sub: wq('v2sub'), cta: wq('v2cta'), card: wq('v2card'), cards: wq('v2cards'), out: wq('v2out') };
 
@@ -797,7 +797,6 @@
   const GP = mk('g');
   GP.innerHTML = `<text id="v2pt" x="400" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
     <rect id="v2gen" x="1338" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1448" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
-  if (MG === '4') GP.querySelector('#v2pt').setAttribute('x', 448);   // accanto all'icona dell'occhio
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
   const VIOLA = '#8A5CFF';   // il viola della pupilla che diventa il cursore (colore nuovo, solo qui)
   const BY = 500;   // la barra del prompt sta al centro dello schermo, dove l'occhio diventa il cursore
@@ -976,13 +975,10 @@
       e2.base = { x: e2.x, y: e2.y, a: e2.a, b: e2.b, sw: e2.sw, ir: e2.ir, pr: e2.pr };
       if (MG === '4') {
         const fill = eIO(p(t, 11.28, 11.42)); e2.prc = mix(INK, PINK, fill); e2.pr = lerp(e2.pr, e2.ir, fill);   // la pupilla si fa rosa: una sola pallina
-        // la pallina si stacca (la disegna PIRIS); l'occhio, sempre occhio, va a sinistra e diventa l'icona del campo
-        const ic = eIO(p(t, 11.42, 11.74));
-        if (t >= 11.42) { e2.ir = 0; e2.prc = INK; e2.pr = lerp(e2.base.ir * .45, 6, ic); }
-        e2.x = lerp(e2.x, 392, ic); e2.y = lerp(e2.y, BY, ic); e2.a = lerp(e2.a, 26, ic); e2.b = lerp(e2.b, 18, ic); e2.sw = lerp(e2.sw, 4, ic);
-        const up2 = eIn(p(t, 12.26, 12.48)); e2.y -= 160 * up2; e2.op = 1 - up2; if (t >= 12.48) e2.on = false;   // se ne va con la barra
+        e2.oop = 1 - eIO(p(t, 11.36, 11.5));   // poi il contorno dell'occhio svanisce e resta solo la pallina
+        if (t >= 11.5) e2.on = false;
       }
-      if (MG !== '4' && t >= 11.45) e2.on = false;   // la pupilla si fa rosa: una sola pallina
+      if (MG !== '4' && t >= 11.45) e2.on = false;
       if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
       if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
       if (MG === '3') {
@@ -1011,11 +1007,16 @@
     // ---- il passaggio Motion → Gen AI
     const eb = e2.base || { x: 960, y: 460, a: 210, b: 147, sw: 21, ir: 63, pr: 27 };
     const fieldC = TH === THEMES.light ? '#EFE9DF' : '#1F2121', lineC = TH === THEMES.light ? '#E2DBCF' : '#282B2B';
-    const m1On = MG === '1' && t >= 11.02 && t < 11.42, irOn = m1On || (MG === '4' && t >= 11.42 && t < 11.74); show(PMORPH, m1On); show(PIRIS, irOn);
-    if (MG === '4' && irOn) {   // 4 · la pallina rosa scivola a destra e si allarga nel tasto Generate
-      const m = eIO(p(t, 11.42, 11.72)), r = eb.ir, cx = lerp(eb.x, 1448, m), cy = lerp(eb.y, BY, m) - 40 * bump(m);
-      const w = lerp(2 * r, 220, eIO(p(t, 11.5, 11.72))), h = lerp(2 * r, 72, eIO(p(t, 11.5, 11.72)));
-      PIRIS.setAttribute('x', f1(cx - w / 2)); PIRIS.setAttribute('y', f1(cy - h / 2)); PIRIS.setAttribute('width', f1(w)); PIRIS.setAttribute('height', f1(h)); PIRIS.setAttribute('rx', f1(Math.min(w, h) / 2));
+    const m1On = MG === '1' && t >= 11.02 && t < 11.42, irOn = m1On || (MG === '4' && t >= 11.5 && t < 12.0); show(PMORPH, m1On); show(PIRIS, irOn);
+    if (MG === '4' && irOn) {   // 4 · la pallina rimbalza tre volte, sempre più basso, e diventa il tasto Generate
+      const u = p(t, 11.5, 11.88), r0 = eb.ir, rr = lerp(r0, 36, eIO(u));
+      const x = lerp(eb.x, 1448, eIO(u)), fl = BY;   // il "pavimento" è la riga della barra
+      let y, c = 0;
+      if (u < .3) y = lerp(eb.y, fl - rr, (u / .3) * (u / .3));
+      else { const segs = [[.3, .62, 120], [.62, .84, 48], [.84, 1, 14]]; const sg = segs.find(q => u < q[1]) || segs[2]; const k = clamp((u - sg[0]) / (sg[1] - sg[0])); y = fl - rr - sg[2] * 4 * k * (1 - k); }
+      [.3, .62, .84, 1].forEach(q => { c = Math.max(c, bump(clamp((u - q + .035) / .07))); });   // schiacciata a ogni contatto
+      const mk2 = eIO(p(t, 11.86, 12.0)), w = lerp(2 * rr * (1 + .22 * c), 220, mk2), h = lerp(2 * rr * (1 - .22 * c), 72, mk2), cy = lerp(y + rr * .22 * c, BY, mk2);
+      PIRIS.setAttribute('x', f1(x - w / 2)); PIRIS.setAttribute('y', f1(cy - h / 2)); PIRIS.setAttribute('width', f1(w)); PIRIS.setAttribute('height', f1(h)); PIRIS.setAttribute('rx', f1(Math.min(w, h) / 2));
     }
     if (m1On) {   // 1 · il contorno dell'occhio si apre nella barra, l'iride diventa il pulsante, la pupilla il cursore
       const m = MG === '4' ? eIO(p(t, 11.42, 11.72)) : eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, BY, 1240, 96);
@@ -1052,31 +1053,31 @@
       vis(PH, false);   // la testina è la pallina rosa
     }
     // la barra: parte dalla timeline (800 x 6 in basso) e sale fino a diventare il campo del prompt (1000 x 96)
-    const bar0 = MG === '4' ? 11.5 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.36;
-    const barOn = t >= bar0 && t < 12.5; show(BAR, barOn);
-    const up = eIn(p(t, 12.26, 12.48));
+    const bar0 = MG === '4' ? 11.74 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.36;
+    const barOn = t >= bar0 && t < 12.7; show(BAR, barOn);
+    const up = eIn(p(t, 12.48, 12.66));
     if (barOn) {
       // 3: la barra si disegna intorno al cursore; 1 e 2: è già al suo posto
-      const m = MG === '3' ? eIO(p(t, 11.36, 11.58)) : MG === '4' ? eIO(p(t, 11.5, 11.78)) : 1, x0 = MG === '4' ? 340 : 960 - lerp(3, 1240, m) / 2, w = MG === '4' ? lerp(110, 1240, m) : lerp(3, 1240, m), h = MG === '4' ? 96 : lerp(40, 96, m), cy = BY - 160 * up;   // si allarga dal cursore verso i due lati
+      const m = MG === '3' ? eIO(p(t, 11.36, 11.58)) : MG === '4' ? eIO(p(t, 11.74, 12.0)) : 1, x0 = MG === '4' ? 340 : 960 - lerp(3, 1240, m) / 2, w = MG === '4' ? lerp(110, 1240, m) : lerp(3, 1240, m), h = MG === '4' ? 96 : lerp(40, 96, m), cy = BY - 160 * up;   // si allarga dal cursore verso i due lati
       BAR.setAttribute('x', f1(MG === '3' || MG === '4' ? x0 : 340)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(1.5, 48, m)));
       BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : MG === '4' ? Math.min(1, m * 2) : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
     }
-    const gp0 = MG === '4' ? 11.74 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.54;
-    const gpOn = t >= gp0 && t < 12.5; show(GP, gpOn);
+    const gp0 = MG === '4' ? 12.0 : MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.54;
+    const gpOn = t >= gp0 && t < 12.7; show(GP, gpOn);
     if (gpOn) {
       const k = MG === '1' || MG === '4' ? 1 : eOut(p(t, gp0, gp0 + .16));
       GP.style.opacity = (k * (1 - up)).toFixed(3);
       GP.setAttribute('transform', `translate(0 ${f1(BY - 286 - 160 * up)})`);   // testo e pulsante disegnati a 286: spostati al centro
-      GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.76, 12.08))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
-      const genero = t >= 12.16; GBT.textContent = genero ? 'Generating…' : 'Generate';
-      GBR.setAttribute('transform', `translate(1448 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1448 -286)`);
+      GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 12.02, 12.3))) + (t < 12.32 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
+      const genero = t >= 12.38; GBT.textContent = genero ? 'Generating…' : 'Generate';
+      GBR.setAttribute('transform', `translate(1448 286) scale(${(1 - .1 * bump(p(t, 12.36, 12.48))).toFixed(3)}) translate(-1448 -286)`);
     }
     // l'esplosione: 24 varianti dell'occhio partono dal centro; poi si richiudono in una sola
-    const tlOn = t >= 12.36 && t < 13.95;
+    const tlOn = t >= 12.56 && t < 13.95;
     TILES.forEach(q => {
       vis(q.g, tlOn); if (!tlOn) return;
-      const a0 = 12.36 + q.d / 600 * .22, kOut = spring(p(t, a0, a0 + .42));
+      const a0 = 12.56 + q.d / 600 * .2, kOut = spring(p(t, a0, a0 + .42));
       const b0 = 13.36 + (1 - q.d / 600) * .2, kIn = eIn(p(t, b0, b0 + .34));
       const k = kOut * (1 - kIn);
       const x = lerp(960, q.cx, eOut(p(t, a0, a0 + .42))) , y = lerp(BY, q.cy, eOut(p(t, a0, a0 + .42)));   // escono dalla barra del prompt
@@ -1092,14 +1093,14 @@
       setEye(EYE3, { O: true, x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: a3, b: a3 * .8, sw: a3 * 13 / 44, col: fg, ir: a3 * 22 / 44, pr: a3 * 10 / 44 });
     } else vis(EYE3.g, false);
     // il cursore: clicca "Scopri" nel sito, indica l'occhio, poi preme "Genera"
-    const c1 = t >= 7.85 && t < 8.6, c2 = t >= 11.8 && t < 12.4; vis(CUR, c1 || c2);
+    const c1 = t >= 7.85 && t < 8.6, c2 = t >= 12.06 && t < 12.6; vis(CUR, c1 || c2);
     if (c1) {
       const a = eOut(p(t, 7.85, 8.2)), b2 = eIO(p(t, 8.3, 8.5));
       const x = lerp(lerp(1720, 485, a), 1240, b2), y = lerp(lerp(1010, 640 + OY, a), 520 + OY, b2), sc = 1 - .2 * bump(p(t, 8.2, 8.32));
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
     if (c2) {
-      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1640, 1448, a), y = lerp(820, BY + 6, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
+      const a = eOut(p(t, 12.06, 12.32)), x = lerp(1640, 1448, a), y = lerp(820, BY + 6, a), sc = 1 - .2 * bump(p(t, 12.35, 12.47));
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
   }
