@@ -313,3 +313,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Scomodo: tolta la foto «Col pennello» (e il suo dettaglio). |
 | 13/11/2026 | Scomodo: nuova sezione «L'ispirazione» con la foto originale dei lecca lecca con le venature (scomodo-06), spostata dagli stecchi; negli stecchi restano tre foto in una riga. |
 | 13/11/2026 | Audible: il maxi poster ora in due foto, di giorno e di notte, affiancate; copertina del progetto: il maxi poster di notte. Materiali locali: 70 file con nomi tipo «Firefly…» o «ChatGPT Image…» rinominati con nomi descrittivi in italiano. |
+| 13/11/2026 | Audible: nuova foto della pensilina con Il corsaro nero, di notte sotto la pioggia, al posto della vecchia. |
