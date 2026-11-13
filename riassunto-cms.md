@@ -319,3 +319,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | IKEA: le 6 foto di KOMPISHÄNG ora in tre righe da due, nessuna da sola. |
 | 13/11/2026 | IKEA: anche «Emotion» grande a tutta larghezza. |
 | 13/11/2026 | Gallerie: le coppie di foto con forme simili sono allineate (stessa larghezza e altezza, ritaglio minimo); solo le coppie molto diverse restano a mosaico. |
+| 13/11/2026 | Accademia dei Romani: insegna più vicina e dettaglio ritagliato senza il muro vuoto sotto, tutte e due della stessa forma. |
