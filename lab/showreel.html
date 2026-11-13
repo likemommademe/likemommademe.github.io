@@ -74,10 +74,6 @@
   .res { top: 200px; width: 237px; height: 400px; border-radius: 16px; overflow: hidden; }
   #cursor { left: 0; top: 0; width: 40px; height: 40px; z-index: 6; transform-origin: 6px 4px; overflow: visible; }
 
-  /* Gen AI: la tela del generatore, il contatore dei passi */
-  #genTela { fill: var(--field); }
-  #genPasso { font: 500 20px "Cabinet Grotesk", sans-serif; fill: var(--muted); }
-
   /* La frase finale: MORE THAN MEETS THE EYE. La O è un occhio che fa l'occhiolino, MEETS è in TAN Nimbus fucsia */
   #frase { left: 0; right: 0; text-align: center; white-space: nowrap; font-weight: 900; font-size: 130px; line-height: 1; letter-spacing: -.02em; z-index: 6; }
   #frase .fu { display: inline-block; }
@@ -208,7 +204,6 @@
         <path d="M260 -260L-260 260" pathLength="1"/>
       </g>
       <g id="boxes"></g>
-      <g id="gen3d"><rect id="genTela" x="600" y="386" width="720" height="412" rx="18"/><g id="genRumore"></g><g id="genVox"></g><path id="genPall"/><text id="genPasso" x="628" y="424"></text></g>
       <g id="miniBox"></g>
       <g id="orbita">
         <g id="oIll"><path id="oIllB"/><circle cx="-30" cy="-12" r="10" fill="#121414"/><path class="oOcchio" d="M18 -12h22" stroke="#121414" stroke-width="10" stroke-linecap="round"/><path d="M-36 20Q0 54 36 20" fill="none" stroke="#121414" stroke-width="9" stroke-linecap="round"/></g>
@@ -263,7 +258,7 @@
 <div id="hint" aria-hidden="true"><span class="pillola"><i class="pillola__sq"></i><span class="pillola__mq"><span>SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ SCROLL ↓ </span></span></span></div>
 <div id="ui">
   <button id="pp" type="button">Pausa</button>
-  <input id="scrub" type="range" min="0" max="20.1" step="0.01" value="0" aria-label="Posizione nel tempo">
+  <input id="scrub" type="range" min="0" max="17.5" step="0.01" value="0" aria-label="Posizione nel tempo">
   <span id="tc">00.00 / 15</span>
   <button id="snd" type="button" aria-pressed="false">Suono: no</button>
 </div>
@@ -271,14 +266,11 @@
 <script>
 (() => {
   /* ---------- Costanti ---------- */
-  const HOLD = { at: 9.3, dur: 2.6 };   // Gen AI: la scena si ferma dopo il clic e il personaggio 3D si genera
-  const DUR = 17.5 + HOLD.dur, BEAT = .5, TAU = Math.PI * 2;
+  const DUR = 17.5, BEAT = .5, TAU = Math.PI * 2;
   // Dopo ogni mondo tutto si raccoglie in un punto e il suo titolo entra al centro, come MOTION.
   // Durante il titolo la scena resta ferma su quel punto (la camera invece continua a respirare).
   const TITLES = [];   // (i titoli a pausa sono stati sostituiti da titoli dentro le scene)
   function remap(T) {
-    if (T >= HOLD.at && T < HOLD.at + HOLD.dur) return { t: HOLD.at, gen: (T - HOLD.at) / HOLD.dur };
-    if (T >= HOLD.at + HOLD.dur) T -= HOLD.dur;
     let shift = 0;
     for (const g of TITLES) {
       const start = g.at + shift;
@@ -442,10 +434,9 @@
     graph: E('graph'), tl: E('tl'), kfs: [...document.querySelectorAll('.kf')],
     role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
     ptext: E('ptext'), caret: $('#ftext .caret'), fbar: E('fbar'), ai: E('ai'), gen: E('gen'), cursor: E('cursor'), cam: E('cam'), kin: kinEl,
-    gen3d: E('gen3d'), genTela: E('genTela'), genRumore: E('genRumore'), genVox: E('genVox'), genPall: E('genPall'), genPasso: E('genPasso'),
     frase: fraseEl, nameEl: E('name'), miniBox: E('miniBox'), orbita: E('orbita'), win: E('win'), wfill: E('wfill'), wband: E('wband'), wview: E('wview'), wpage: E('wpage'), wcta: E('wcta'), wcard: E('wcard')
   };
-  const PROMPT = 'Creami un personaggio 3D, stile pop';
+  const PROMPT = 'un poster per la mamma, stile pop, 4 varianti';
   let M = null;   // misure prese una volta, a riposo
 
   function measure() {
@@ -499,7 +490,7 @@
     const u = t - 2;
     let z = 1, fx = 960, fy = 540, ax = 960, ay = 540;
     if (u >= 6.4 && u < 8) {                     // zoom alla Screen Studio sul generatore
-      const zin = eIO(p(u, 6.42, 6.72)), zout = eIO(p(u, 6.96, 7.28)), k = zin * (1 - zout);
+      const zin = eIO(p(u, 6.42, 6.72)), zout = eIO(p(u, 6.98, 7.3)), k = zin * (1 - zout);
       const S = sceneS(t), F = mapS(S, 820, CHIP.y), Q = mapS(S, SEL.x, SEL.y);
       const a = sceneA(t);
       z = 1 + lerp(.38, .55, a) * k + .05 * p(u, 6.72, 6.98) * (1 - zout);
@@ -507,8 +498,8 @@
       const k2 = eIO(p(u, 7.38, 7.55)) * (1 - eIO(p(u, 7.6, 7.95)));
       z += .2 * k2; fx = lerp(fx, Q[0], k2); fy = lerp(fy, Q[1], k2); ax = lerp(960, fx, sceneA(t)); ay = lerp(540, fy, sceneA(t));
     }
-    const push = t >= 2 && t < 14 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
-    z *= 1 + push + (t < 16.2 && !(t === HOLD.at) ? .014 * Math.exp(-12 * (T % BEAT)) : 0);
+    const push = T >= 2 && T < 14 ? .025 * Math.pow(Math.sin(Math.PI * T / 2), 2) : 0;
+    z *= 1 + push + (T < 16.2 ? .014 * Math.exp(-12 * (T % BEAT)) : 0);
     return { z, fx, fy, ax, ay };
   }
 
@@ -525,7 +516,7 @@
     if (u < 5.5) { s.B = FL; s.k = spring(p(u, 5, 5.4)); s.rot = (u - 5) * .6; return s; }
     if (u < 6) { s.A = FL; s.B = BL; s.k = spring(p(u, 5.5, 5.9)); s.rot = .3 + (u - 5.5) * .6; return s; }
     s.A = s.B = BL;
-    if (u < 7.5) { const m = eIO(p(u, 6, 6.35)); s.cx = lerp(960, CHIP.x, m); s.cy = lerp(500, CHIP.y, m); s.R = lerp(240, 26, m) * (1 - eIn(p(u, 6.98, 7.05))); s.rot = lerp(.6, SEL.rot, m); if (u >= 7.3) { s.cx = SEL.x; s.cy = SEL.y; s.R = SEL.R; s.col = PINK; s.rot = SEL.rot; } return s; }   // la forma verde vola nel campo del prompt
+    if (u < 7.5) { const m = eIO(p(u, 6, 6.35)); s.cx = lerp(960, CHIP.x, m); s.cy = lerp(500, CHIP.y, m); s.R = lerp(240, 26, m) * (1 - eIn(p(u, 7.02, 7.16))); s.rot = lerp(.6, SEL.rot, m); return s; }   // la forma verde vola nel campo del prompt
     s.col = PINK; s.rot = SEL.rot;
     if (u < 8) { const m = eIO(p(u, 7.6, 8)); s.cx = lerp(SEL.x, 960, m); s.cy = lerp(SEL.y, 500, m); s.R = lerp(SEL.R, 200, m); return s; }
     if (u < 8.5) { const m = eIO(p(u, 8, 8.4)); s.cx = lerp(960, 510, m); s.cy = lerp(500, 830, m); s.R = lerp(200, 24, m); s.B = CI; s.k = m; return s; }   // diventa il pallino della timeline
@@ -602,90 +593,6 @@
     });
   }
 
-  /* ---------- Gen AI: dal rumore al personaggio 3D, passo dopo passo (come un modello di diffusione) ---------- */
-  // Omino di cubetti: gambe blu, corpo e braccia rosa, mani e testa verdi (la faccina di Illustration), occhi scuri.
-  const VOX = [];
-  (() => {
-    const add = (x, y, z, col, tipo, m = 1) => VOX.push({ x, y, z, col, tipo, m });
-    for (let y = 0; y < 5; y++) for (const x of [-1, 1]) for (const z of [-1, 0]) add(x, y, z, y === 0 ? '#2A3DCC' : BLUE);
-    for (let y = 5; y < 10; y++) for (let x = -1; x <= 1; x++) for (const z of [-1, 0]) add(x, y, z, PINK);
-    for (let y = 5; y < 10; y++) for (const x of [-2, 2]) for (const z of [-1, 0]) add(x, y, z, y === 5 ? GREEN : PINK);
-    for (let y = 10; y < 13; y++) for (let x = -1; x <= 1; x++) for (let z = -2; z <= 0; z++) add(x, y, z, GREEN);
-    for (let x = -1; x <= 1; x++) for (let z = -2; z <= 0; z++) add(x, 13, z, '#2A3DCC');   // capelli
-    add(-1, 13, 1, '#2A3DCC'); add(0, 13, 1, '#2A3DCC'); add(1, 13, 1, '#2A3DCC'); add(0, 12, 1, '#2A3DCC');
-    // occhietti e bocca che sporgono dal viso: una faccina che sorride (e alla fine strizza l'occhio)
-    add(-.85, 11.45, -2.55, INK, 'occhio', .32); add(.85, 11.45, -2.55, INK, 'occhioD', .32);
-    add(-.42, 10.4, -2.55, PINK, '', .3); add(0, 10.3, -2.55, PINK, '', .3); add(.42, 10.4, -2.55, PINK, '', .3);
-    const rnd = i => Math.abs(Math.sin(i * 91.17 + 3.1) * 43758.5453) % 1;   // valori fissi: ogni volta lo stesso rumore
-    VOX.forEach((v, i) => {
-      v.sx = (rnd(i) - .5) * 560; v.sy = 30 + rnd(i + 300) * 270; v.sz = (rnd(i + 600) - .5) * 200;   // dentro la tela
-      v.rc = [BLUE, GREEN, PINK, BLUE, PINK][(rnd(i + 900) * 5) | 0]; v.del = rnd(i + 1200) * .4;
-    });
-    VOX.forEach((v, i) => { v.h = rnd(i + 1500); });
-  })();
-  const NOISE = Array.from({ length: 180 }, (_, i) => { const r = q => Math.abs(Math.sin(i * 12.9898 + q * 78.233) * 43758.5453) % 1; return { x: 612 + r(1) * 696, y: 440 + r(2) * 344, r }; });
-  const VS = 24, GSTEPS = 30;
-  function drawGen(u, g) {
-    // g: avanzamento della generazione (0 prima, 0..1 durante la pausa, 1 dopo)
-    const on = u >= 7.04 && u < 7.3 || g !== undefined; vis(el.gen3d, on);
-    if (!on) return;
-    const k = g === undefined ? 0 : g;
-    const apri = eOut(p(u, 7.04, 7.28)), chiudi = eIO(p(k, .87, .97));
-    el.genTela.style.opacity = (apri * (1 - chiudi)).toFixed(3);
-    // contatore dei passi: il dettaglio che fa capire subito che è un'AI
-    const kd = eIO(p(k, .03, .58)), step = Math.max(1, Math.ceil(kd * GSTEPS));
-    el.genPasso.textContent = k < .6 ? `passo ${step}/${GSTEPS}` : 'fatto';
-    el.genPasso.style.opacity = (apri * (1 - eIn(p(k, .84, .9)))).toFixed(3);
-    // rumore 2D: pixel che cambiano colore a ogni passo e si spengono man mano che la forma emerge
-    const nOp = apri * (1 - eIO(p(k, .05, .5)));
-    let nz = '';
-    if (nOp > .01) NOISE.forEach((q, i) => {
-      const c = [BLUE, GREEN, PINK, TH.fg][((q.r(3 + step) * 4) | 0)];
-      nz += `<rect x="${f1(q.x)}" y="${f1(q.y)}" width="18" height="18" rx="3" fill="${c}" opacity="${(nOp * (.35 + .65 * q.r(5 + step))).toFixed(2)}"/>`;
-    });
-    el.genRumore.innerHTML = nz;
-    // i cubetti: partono sparsi e colorati a caso, a scatti (un passo alla volta) vanno al loro posto
-    const vOp = clamp(k / .06);
-    if (vOp <= 0) { el.genVox.innerHTML = ''; vis(el.genPall, false); return; }
-    const kq = Math.floor(kd * GSTEPS) / GSTEPS;
-    const giro = TAU * eIO(p(k, .46, .78)), yaw = -1.1 + .5 * kd + giro, th = .38;   // di tre quarti e un po' dall'alto, poi un giro intero
-    const cT = Math.cos(th), sT = Math.sin(th), cY = Math.cos(yaw), sY = Math.sin(yaw), D = 2200, F = 2200;
-    const camv = [-D * cT * sY, D * sT, -D * cT * cY];
-    const cx = 960, cy = 750 - 6 * Math.sin(k * 9) * (1 - kd);
-    const proj = ([x, y, z]) => { const xr = x * cY - z * sY, zr = x * sY + z * cY, d = zr * cT - y * sT, uu = y * cT + zr * sT, sc = F / (D + d); return [cx + xr * sc, cy - uu * sc, d]; };
-    const wink = bump(p(k, .79, .86));
-    const cubi = VOX.map((v, i) => {
-      const ki = eIO(clamp((kq - v.del) / (1 - .4))), jit = (1 - ki) * 28;
-      const tx = v.x * VS, ty = v.y * VS + VS / 2, tz = (v.z + .5) * VS;
-      const px = lerp(v.sx, tx, ki) + jit * (Math.sin(i * 7 + step * 1.7)), py = lerp(v.sy, ty, ki) + jit * Math.cos(i * 3 + step), pz = lerp(v.sz, tz, ki);
-      const sz = VS * lerp(.55, v.m, ki) * .98, col = mix(v.rc, v.col, ki);
-      const syc = v.tipo === 'occhioD' ? 1 - .82 * wink : 1;
-      return { px, py, pz, sz, syc, col, d: proj([px, py, pz])[2] };
-    }).sort((a, b) => b.d - a.d);
-    const P = [SEL.x, SEL.y];
-    let out = '';
-    cubi.forEach(c => {
-      const h = c.sz / 2, hy = h * c.syc, x0 = c.px - h, x1 = c.px + h, y0 = c.py - hy, y1 = c.py + hy, z0 = c.pz - h, z1 = c.pz + h;
-      const fs = [
-        { v: [[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], n: [0, 1, 0], c: [c.px, y1, c.pz], col: mix(c.col, PAPER, .25) },
-        { v: [[x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0]], n: [0, 0, -1], c: [c.px, c.py, z0], col: c.col },
-        { v: [[x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]], n: [0, 0, 1], c: [c.px, c.py, z1], col: mix(c.col, INK, .45) },
-        { v: [[x0, y0, z0], [x0, y0, z1], [x0, y1, z1], [x0, y1, z0]], n: [-1, 0, 0], c: [x0, c.py, c.pz], col: mix(c.col, INK, .28) },
-        { v: [[x1, y0, z0], [x1, y0, z1], [x1, y1, z1], [x1, y1, z0]], n: [1, 0, 0], c: [x1, c.py, c.pz], col: mix(c.col, INK, .28) }];
-      fs.forEach(fc => {
-        if (fc.n[0] * (camv[0] - fc.c[0]) + fc.n[1] * (camv[1] - fc.c[1]) + fc.n[2] * (camv[2] - fc.c[2]) <= 0) return;
-        const pts = fc.v.map(proj).map(q => [lerp(q[0], P[0], chiudi), lerp(q[1], P[1], chiudi)]);   // alla fine tutto si raccoglie nel pallino
-        const col = mix(fc.col, PINK, chiudi);
-        out += `<polygon points="${pts.map(q => f1(q[0]) + ',' + f1(q[1])).join(' ')}" fill="${col}" stroke="${col}" stroke-width=".8" stroke-linejoin="round"/>`;
-      });
-    });
-    el.genVox.innerHTML = out;
-    el.genVox.style.opacity = vOp.toFixed(3);
-    // il pallino rosa nasce mentre il personaggio si raccoglie: è lo stesso che poi va sulla timeline di Motion
-    const pr = spring(p(k, .95, 1)); vis(el.genPall, pr > 0);
-    if (pr > 0) { el.genPall.setAttribute('d', shape(SEL.x, SEL.y, SEL.R * pr, BL, BL, 0, SEL.rot)); el.genPall.setAttribute('fill', PINK); }
-  }
-
   /* ---------- Fine: MORE THAN meets THE EYE, poi l'header finale ---------- */
   let IDLE = 0;   // tempo reale a intro finita: il cubo e la forma piccoli continuano a muoversi
   // posizioni degli elementi intorno al logo (spazio del palco 1920 x 1080), con l'ingresso scaglionato
@@ -748,9 +655,9 @@
   let seekT = 0;
   /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
   function seek(T) {
+    seekT = T;
     if (!M) return;
     const R = remap(T), t = R.t;
-    seekT = t;
     const u = t - 2;   // tempo dei mondi dopo il Brand (scritti sulla timeline originale)
 
     const S = sceneS(t);
@@ -758,7 +665,6 @@
     const cm = camAt(t, T);
     drawTitles(R);
     drawFinale(t);
-    drawGen(u, R.gen);
     CT.forEach(c => {
       const on = t >= c.tin && t < c.tout + .3; vis(c.el, on);
       if (on) c.letters.forEach((x, j) => { x.style.transform = `translateY(${f1(maskY(t, c.tin + .03 * j, .34, c.tout - .08 + .014 * j, .2, -1))}%)`; });
@@ -821,7 +727,6 @@
     });
     /* La forma */
     const b = blobAt(t);
-    if (R.gen !== undefined) b.R = 0;   // durante la generazione il pallino è disegnato dal personaggio che si raccoglie
     el.blob.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot));
     el.blob.setAttribute('fill', b.col);
 
@@ -894,8 +799,15 @@
       el.gen.style.background = u >= 7.02 && u < 7.4 ? TH.fg : PINK;
       el.gen.style.color = u >= 7.02 && u < 7.4 ? (TH === THEMES.light ? PAPER : INK) : INK;
       el.gen.textContent = u >= 7.02 && u < 7.4 ? 'Genero…' : 'Genera';
-      el.fbar.style.transform = `scaleX(${u >= 7.02 && u < 7.42 ? (R.gen !== undefined ? lerp(.25, 1, R.gen) : u < 7.3 ? .25 * eOut(p(u, 7.02, 7.3)) : 1) : 0})`;
-      results.forEach(r => vis(r, false));   // al posto dei quattro risultati ora c'è il personaggio 3D
+      el.fbar.style.transform = `scaleX(${u >= 7.02 && u < 7.42 ? eOut(p(u, 7.02, 7.4)) : 0})`;
+      results.forEach((r, i) => {
+        const a = 7.06 + .07 * i, kk = eOut(p(u, a, a + .34)), on = u >= a; vis(r, on);
+        if (!on) return;
+        r.style.transform = `scale(${lerp(.86, 1, kk)})`;
+        r.style.filter = kk < .995 ? `blur(${f1(26 * (1 - kk))}px) saturate(${f1(kk)})` : 'none';
+        r.style.boxShadow = i === 1 ? `inset 0 0 0 ${4 * eOut(p(u, 7.52, 7.6))}px ${PINK}` : 'none';
+        vis(r.firstChild, !(i === 1 && u >= 7.52));
+      });
     }
     const aiCur = u >= 6.25 && u < 7.85, webCur = u >= 10.42 && u < 11.5;
     vis(el.cursor, aiCur || webCur);
