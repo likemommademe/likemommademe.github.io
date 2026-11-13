@@ -1,6 +1,6 @@
 {% comment %} Un elemento della galleria di un progetto: foto o video, con la didascalia se c'è. {% endcomment %}
 {% assign el = include.el %}
-<figure class="cs-media{% if el.type == 'video' %} cs-media--video{% endif %}{% if el.formato == 'sola' %} cs-media--sola{% endif %}"{% if el.formato == 'sola' %} data-abbinata="no"{% endif %}{% if el.type != "video" and el.titolo %} tabindex="0"{% endif %} data-rivela>
+<figure class="cs-media{% if el.type == 'video' %} cs-media--video{% endif %}{% if el.formato == 'sola' %} cs-media--sola{% endif %}{% if el.formato == 'grande' %} cs-media--grande{% endif %}"{% if el.formato == 'sola' or el.formato == 'grande' %} data-abbinata="no"{% endif %}{% if el.type != "video" and el.titolo %} tabindex="0"{% endif %} data-rivela>
   {% if el.type == "video" %}
     {% include video.html url=el.link %}
   {% else %}

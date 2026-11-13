@@ -665,9 +665,10 @@ function galleryWidget(value) {
       placeholder: item.didascalia ? `In italiano: ${item.didascalia}` : 'Caption in English (optional)',
     });
     entry.format = h('select', { class: 'compact', title: 'Larghezza sul sito' },
-      h('option', { value: 'intera', selected: item.formato !== 'meta' && item.formato !== 'sola' }, 'Tutta larghezza'),
+      h('option', { value: 'intera', selected: !item.formato || item.formato === 'intera' }, 'Tutta larghezza'),
       h('option', { value: 'meta', selected: item.formato === 'meta' }, 'Metà'),
-      h('option', { value: 'sola', selected: item.formato === 'sola' }, 'Da sola, senza dettaglio'));
+      h('option', { value: 'sola', selected: item.formato === 'sola' }, 'Da sola, senza dettaglio'),
+      h('option', { value: 'grande', selected: item.formato === 'grande' }, 'Grande, a tutta larghezza'));
     const el = h('div', { class: 'gallery-item sort-item' },
       h('div', { class: 'gallery-head' },
         grip(),
@@ -720,7 +721,7 @@ function galleryWidget(value) {
         titolo_en: i.titleEn.value.trim(),
         didascalia: i.caption.value.trim(),
         didascalia_en: i.captionEn.value.trim(),
-        formato: i.format.value === 'meta' || i.format.value === 'sola' ? i.format.value : undefined,
+        formato: ['meta', 'sola', 'grande'].indexOf(i.format.value) >= 0 ? i.format.value : undefined,
       }))
       .filter((i) => i.immagine || i.link || i.titolo),
     files: async () => (await Promise.all(ordered().filter((i) => i.image).map((i) => i.image.files()))).flat(),

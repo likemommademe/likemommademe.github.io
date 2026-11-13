@@ -547,6 +547,7 @@ figcaption { padding-top: 8px; color: var(--muted); font-size: var(--t-small); }
 .cs-media figcaption { padding-top: 10px; }
 /* Una foto da sola non supera mai l'altezza dello schermo */
 .cs-gal > .cs-media > img { width: auto; max-width: 100%; max-height: 72vh; margin: 0 auto; }
+.cs-gal > .cs-media--grande > img { width: 100%; max-height: none; }
 /* Il dettaglio ingrandito che accompagna una foto verticale rimasta da sola */
 .cs-media--zoom .cs-zoom { display: block; overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
 .cs-media--zoom .cs-zoom img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.5); transform-origin: 50% 40%; border-radius: 0; image-rendering: auto; }
