@@ -352,3 +352,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Cerca: torna il pannello di prima (con le miniature), la lente resta accanto a Works. Home: le card dello scorrimento orizzontale sono più larghe. Pagine progetto: la copertina in cima torna quadrata come all'inizio. |
 | 14/11/2026 | Menu Works: la tendina ora è chiara di giorno e scura di notte, come la ricerca. |
 | 14/11/2026 | Work, vista Mosaico: i titoli dei progetti grandi sono più piccoli e vanno a capo, così non escono più dal riquadro. |
+| 14/11/2026 | North Face: tolta la foto delle mani; «Sotto l'insegna» senza dettaglio ingrandito, la campagna ora è in due righe da due. |
