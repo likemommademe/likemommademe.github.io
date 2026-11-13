@@ -11,9 +11,9 @@ domanda_en: "A space mission, stitched on your sleeve."
 body_en: |
   Born during the **Master in Digital Art Direction** at IED. The brief: design space-themed **patches** that bring out the purpose and theme of the Master, its **digital** side.
 execution: |
-  Le patch sono realizzate con Adobe Illustrator e Procreate.
+  Le patch sono disegnate con Adobe Illustrator e Procreate, poi ricamate: per ognuna, il disegno e la patch vera, una accanto all'altra.
 execution_en: |
-  The patches were made with Adobe Illustrator and Procreate.
+  The patches were drawn in Adobe Illustrator and Procreate, then embroidered: for each one, the drawing and the real patch side by side.
 galleria:
   - type: "foto"
     immagine: "/assets/uploads/patch-esagono.webp"
@@ -23,12 +23,26 @@ galleria:
     didascalia: "Il cielo a strisce, dal blu notte al celeste, bucato da un razzo rosso."
     didascalia_en: "A striped sky, from midnight to sky blue, pierced by a red rocket."
   - type: "foto"
+    immagine: "/assets/uploads/patch-esagono-ricamata.webp"
+    formato: "meta"
+    titolo: "Ricamata"
+    titolo_en: "Embroidered"
+    didascalia: "Il decollo cucito su una giacca di jeans."
+    didascalia_en: "Lift-off, stitched on a denim jacket."
+  - type: "foto"
     immagine: "/assets/uploads/patch-razzo.webp"
     formato: "meta"
     titolo: "Il lancio"
     titolo_en: "The launch"
     didascalia: "Mezzo cielo nero, mezzo bersaglio rosso: si parte dal centro."
     didascalia_en: "Half black sky, half red target: we launch from the centre."
+  - type: "foto"
+    immagine: "/assets/uploads/patch-razzo-ricamata.webp"
+    formato: "meta"
+    titolo: "Ricamata"
+    titolo_en: "Embroidered"
+    didascalia: "Il lancio sulla manica di un bomber."
+    didascalia_en: "The launch, on a bomber jacket sleeve."
   - type: "foto"
     immagine: "/assets/uploads/patch-astronauta.webp"
     formato: "meta"
@@ -37,12 +51,26 @@ galleria:
     didascalia: "Il casco, la luna e un saluto con due dita: la patch del 2021."
     didascalia_en: "The helmet, the moon and a two-finger salute: the 2021 patch."
   - type: "foto"
+    immagine: "/assets/uploads/patch-astronauta-ricamata.webp"
+    formato: "meta"
+    titolo: "Ricamata"
+    titolo_en: "Embroidered"
+    didascalia: "L'astronauta ricamato, con il saluto e tutto."
+    didascalia_en: "The astronaut embroidered, salute and all."
+  - type: "foto"
     immagine: "/assets/uploads/patch-pianeta.webp"
     formato: "meta"
     titolo: "Il pianeta"
     titolo_en: "The planet"
     didascalia: "Un pianeta ocra e una scia di stelle: l'atterraggio."
     didascalia_en: "An ochre planet and a trail of stars: the landing."
+  - type: "foto"
+    immagine: "/assets/uploads/patch-pianeta-ricamata.webp"
+    formato: "meta"
+    titolo: "Ricamata"
+    titolo_en: "Embroidered"
+    didascalia: "Il pianeta in filo ocra e blu."
+    didascalia_en: "The planet in ochre and blue thread."
 strumenti:
   - Illustrator
   - Procreate

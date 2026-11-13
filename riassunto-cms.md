@@ -306,3 +306,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Promo del portfolio: lo showreel della home dentro lo schermo scorre a circa metà velocità (registrazione rifatta con il doppio dei fotogrammi), il video ora dura 46 s |
 | 13/11/2026 | DCD: il logo nuovo nel confronto Prima/Dopo ora è quadrato, centrato alla stessa altezza del vecchio e senza la striscia blu sul bordo. |
 | 13/11/2026 | DCD: nuova sezione «I social» con il carosello sponsorizzato e i post (dalla pagina Pixell del progetto), più la schermata Instagram. Le metro ora sono a tutta larghezza. |
+| 13/11/2026 | Patch: accanto a ogni patch disegnata c'è la foto della patch ricamata (decollo, lancio, astronauta, pianeta). |
