@@ -667,7 +667,8 @@
   const SVGNS = 'http://www.w3.org/2000/svg';
   const mk = (tag, attrs = {}, parent = ST) => { const n = document.createElementNS(SVGNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.appendChild(n); return n; };
   const almond = (x, y, a, b) => `M${f1(x - a)} ${f1(y)}C${f1(x - .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}Z`;
-  const almondTop = (x, y, a, b) => `M${f1(x)} ${f1(y - .9375 * b)}C${f1(x + .3 * a)} ${f1(y - .9375 * b)} ${f1(x + .78 * a)} ${f1(y - .6 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}C${f1(x - .78 * a)} ${f1(y - .6 * b)} ${f1(x - .3 * a)} ${f1(y - .9375 * b)} ${f1(x)} ${f1(y - .9375 * b)}Z`;   // parte dall'alto: chiusura liscia
+  // stessa identica curva dell'occhio a matita inchiostrato (le due metà dell'almond), solo che parte dall'alto: chiusura liscia
+  const almondTop = (x, y, a, b) => path4(eye4(x, y, a, b));
   // un occhio riutilizzabile: contorno, iride, pupilla
   const show = (n, on) => { n.style.display = on ? '' : 'none'; };   // spegne il gruppo e tutto quello che contiene
   // la forma della O della frase (viewBox 100: punte a ±44, alto 35,25), per l'occhio che ci atterra
@@ -788,6 +789,7 @@
   GP.innerHTML = `<text id="v2pt" x="400" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
     <rect id="v2gen" x="1338" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1448" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
+  const VIOLA = '#8A5CFF';   // il viola della pupilla che diventa il cursore (colore nuovo, solo qui)
   const BY = 500;   // la barra del prompt sta al centro dello schermo, dove l'occhio diventa il cursore
   const GPROMPT = 'Create an eye, 24 variations, pop style';
   const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
@@ -836,7 +838,7 @@
       SKP.forEach((n, i) => {
         traccia(n, eOut(p(t, SKT[i][0], SKT[i][1])));
         if (i < 2) { n.setAttribute('d', SKMORPH(i, ink)); n.setAttribute('stroke-width', f1(lerp(5, 26, ink))); if (ink > 0) n.style.strokeDasharray = 'none'; }
-        else n.style.opacity = (1 - eIO(p(t, 4.45, 4.75))).toFixed(3);
+        else n.style.opacity = (1 - eIO(p(t, i < 4 ? 4.62 : 4.45, i < 4 ? 4.98 : 4.75))).toFixed(3);   // iride e pupilla a matita restano mentre si riempiono di colore
       });
       show(SK, t < 4.97);
     }
@@ -859,9 +861,9 @@
     if (grOn) { GR.setAttribute('stroke', dim); GRP.forEach((n, i) => traccia(n, eOut(p(t, 4.18 + .04 * i, 4.55 + .04 * i)) * (1 - eIn(p(t, 5.0 + .02 * i, 5.3 + .02 * i))))); }
     const tileS = t < 6.2 ? spring(p(t, 5.3, 5.7)) : lerp(1, .1, eIO(p(t, 6.2, 6.6)));
     const e1On = t >= 4.95 && t < 5.5;
-    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 220, b: 154, sw: 22, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 66 * spring(p(t, 4.85, 5.15)), pr: 29 * spring(p(t, 4.95, 5.2)) });
-    // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra
-    if (t >= 4.85 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 220, b: 154, sw: 0, col: fg, ir: 66 * spring(p(t, 4.85, 5.15)), pr: 29 * spring(p(t, 4.95, 5.2)) });
+    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 220, b: 154, sw: 22, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 66 * eOut(p(t, 4.6, 5.0)), pr: 29 * eOut(p(t, 4.78, 5.1)) });
+    // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra: il disco cresce dentro il cerchio a matita
+    if (t >= 4.6 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 220, b: 154, sw: 0, col: fg, ir: 66 * eOut(p(t, 4.6, 5.0)), pr: 29 * eOut(p(t, 4.78, 5.1)) });
     const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
     const giuW = 60 * (1 - eIO(p(t, 7.86, 8.22)));   // la pagina, sotto il titolo, sta più in basso: tutto quello che ci sta dentro scende con lei
     // la tavola del marchio: la camera si inclina e ci gira intorno, gli oggetti con il logo compaiono intorno all'icona
@@ -888,11 +890,12 @@
       let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY + giuW, fly);
       cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
       const PT = boardProj(.6 * bK, sway * bK, 1900, [cx, cy]);
-      TL.forEach((r, i) => { const z = -70 * i / (TL.length - 1); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
+      // la faccia davanti sta sul piano dell'occhio e lo spessore va indietro: nessun salto di grandezza
+      TL.forEach((r, i) => { const z = 70 * (1 - i / (TL.length - 1)); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
       TILE.style.opacity = (Math.min(1, grow * 2) * (1 - eIO(p(t, 8.55, 8.9)))).toFixed(3);
       const ec = '#F5F5F2';
       setEye(TE, { on: t >= 5.5, x: 320, y: 320, a: 220, b: 154, sw: 22, col: ec, ir: 66, pr: 29 });   // prende il posto del logo che ha appena finito di girare
-      TE.g.setAttribute('transform', PT(0, 0, 640, 640, -70, S).m);
+      TE.g.setAttribute('transform', PT(0, 0, 640, 640, 0, S).m);
     }
 
     /* 3 · Web Design: la finestra si disegna intorno al logo, la pagina si compone */
@@ -929,8 +932,16 @@
       e2.base = { x: e2.x, y: e2.y, a: e2.a, b: e2.b, sw: e2.sw, ir: e2.ir, pr: e2.pr };
       if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
       if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
-      if (MG === '3') { const m = eIO(p(t, 11.02, 11.3));   // resta al centro
-        e2.x = lerp(e2.x, 960, m); e2.y = lerp(e2.y, BY, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
+      if (MG === '3') {
+        // dopo il saltello la pupilla si riempie di viola fino a occupare l'iride
+        const fill = eIO(p(t, 11.0, 11.16));
+        e2.prc = mix(INK, VIOLA, fill); e2.pr = lerp(e2.pr, e2.ir, fill);
+        // poi l'occhio si stringe intorno a lei, al centro: resta solo il puntino viola, che diventa il cursore
+        const m = eIO(p(t, 11.14, 11.36));
+        e2.x = lerp(e2.x, 960, m); e2.y = lerp(e2.y, BY, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.2, m);
+        e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 6, m); e2.op = 1 - eIn(p(t, 11.3, 11.36));
+        if (t >= 11.36) e2.on = false;
+      }
     }
     if (e2.spin) {
       const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
@@ -955,11 +966,11 @@
       PMORPH.setAttribute('fill', fieldC); PMORPH.setAttribute('fill-opacity', (m * m).toFixed(3));
       const r = eb.ir; PIRIS.setAttribute('x', f1(lerp(eb.x - r, 1338, m))); PIRIS.setAttribute('y', f1(lerp(eb.y - r, 250, m))); PIRIS.setAttribute('width', f1(lerp(2 * r, 220, m))); PIRIS.setAttribute('height', f1(lerp(2 * r, 72, m))); PIRIS.setAttribute('rx', f1(lerp(r, 36, m)));
     }
-    const pupOn = (MG === '1' && t >= 11.02 && t < 11.7) || (MG === '3' && t >= 11.28 && t < 11.7); show(PPUP, pupOn);
+    const pupOn = (MG === '1' && t >= 11.02 && t < 11.7) || (MG === '3' && t >= 11.34 && t < 11.7); show(PPUP, pupOn);
     if (pupOn) {   // la pupilla diventa il cursore del campo, che lampeggia finché parte il testo
-      const m = MG === '1' ? eIO(p(t, 11.02, 11.4)) : 1, r = MG === '1' ? eb.pr : 5, blink = t > 11.42 && ((t * 4) | 0) % 2 === 1 ? 0 : 1;
-      PPUP.setAttribute('x', f1(MG === '3' ? lerp(958.5, 400, eIO(p(t, 11.5, 11.68))) : lerp(eb.x - r, 400, m)));   // 3: nato al centro, scivola all'inizio del campo PPUP.setAttribute('y', f1(lerp(eb.y - r, BY - 20, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
-      PPUP.setAttribute('fill', MG === '1' ? mix(INK, fg, m) : fg); PPUP.style.opacity = blink;
+      const m = MG === '1' ? eIO(p(t, 11.02, 11.4)) : eIO(p(t, 11.34, 11.46)), r = MG === '1' ? eb.pr : 6, blink = t > 11.42 && ((t * 4) | 0) % 2 === 1 ? 0 : 1;
+      PPUP.setAttribute('x', f1(MG === '3' ? lerp(lerp(960 - r, 958.5, m), 400, eIO(p(t, 11.52, 11.7))) : lerp(eb.x - r, 400, m)));   // 3: nato al centro, scivola all'inizio del campo PPUP.setAttribute('y', f1(lerp(MG === '3' ? BY - r : eb.y - r, BY - 20, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
+      PPUP.setAttribute('fill', MG === '1' ? mix(INK, fg, m) : mix(VIOLA, fg, eIO(p(t, 11.5, 11.7)))); PPUP.style.opacity = blink;
     }
     const ovOn = MG === '2' && t >= 11.02 && t < 11.52; show(POVL, ovOn);
     if (ovOn) {   // 2 · la pupilla cresce fino a coprire tutto, poi un cerchio si apre sulla schermata di Gen AI
@@ -984,17 +995,17 @@
       PH.style.opacity = (eOut(p(t, 9.45, 9.55)) * out).toFixed(3);
     }
     // la barra: parte dalla timeline (800 x 6 in basso) e sale fino a diventare il campo del prompt (1000 x 96)
-    const bar0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.28;
+    const bar0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.36;
     const barOn = t >= bar0 && t < 12.5; show(BAR, barOn);
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
       // 3: la barra si disegna intorno al cursore; 1 e 2: è già al suo posto
-      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = 960 - lerp(3, 1240, m) / 2, w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = BY - 160 * up;   // si allarga dal cursore verso i due lati
+      const m = MG === '3' ? eIO(p(t, 11.36, 11.58)) : 1, x0 = 960 - lerp(3, 1240, m) / 2, w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = BY - 160 * up;   // si allarga dal cursore verso i due lati
       BAR.setAttribute('x', f1(MG === '3' ? x0 : 340)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(1.5, 48, m)));
       BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
     }
-    const gp0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.5;
+    const gp0 = MG === '1' ? 11.4 : MG === '2' ? 11.24 : 11.54;
     const gpOn = t >= gp0 && t < 12.5; show(GP, gpOn);
     if (gpOn) {
       const k = MG === '1' ? 1 : eOut(p(t, gp0, gp0 + .16));
