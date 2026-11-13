@@ -506,7 +506,6 @@
     const zk = (a1, b1, c1, d1) => eIO(p(t, a1, b1)) * (1 - eIO(p(t, c1, d1)));
     let k = zk(2.4, 4.0, 4.32, 4.9); z += .12 * k;                                                  // Illustration: si avvicina allo schizzo
     k = zk(5.6, 6.0, 6.3, 6.6); z += .05 * k;                                                      // Branding: spinta sulla tavola
-    k = zk(7.95, 8.3, 8.36, 8.52); z += .05 * k;                                                  // Web: un leggero zoom dritto nello schermo, centrato
     const kb = zk(9.38, 9.6, 10.2, 10.45), bxx = lerp(560, 1360, p(t, 9.42, 10.32));
     z += .07 * kb; fx = lerp(fx, 960 + (bxx - 960) * .35, kb); fy = lerp(fy, 640, .4 * kb);           // Motion: segue la pallina
     z += .1 * eIO(p(t, 11.8, 12.3)) * (1 - eIO(p(t, 12.36, 12.9)));                               // Gen AI: vicino alla barra, poi indietro sull'esplosione
@@ -838,11 +837,11 @@
   // MOTION: la stessa parola cinetica della versione originale. Le lettere entrano veloci da destra con scia e sfocatura,
   // si alzano e diventano rosa quando la testina della timeline ci passa sotto, poi volano nella fine della timeline
   function drawKin(t) {
-    const on = t >= 9.2 && t < 10.75; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
+    const on = t >= 8.98 && t < 10.75; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
     if (!on) return;
     const S = sceneS(t), phx = 960 + (lerp(560, 1360, p(t, 9.42, 10.32)) - 960) * S.k, end = mapS(S, 1360, 820);
     kin.forEach((L, j) => {
-      const a = 9.2 + .05 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));   // entra quando l'occhio è già la pallina
+      const a = 8.98 + .045 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));   // parte da fuori schermo: si vede quando l'occhio ha già lasciato il centro
       const x = pos(t), v = (pos(t - 1 / 60) - x) * 60;
       const near = t >= 9.42 && t < 10.32 ? Math.max(0, 1 - Math.abs(phx - M.kx[j]) / 130) : 0;
       const ex = eIn(p(t, 10.12 + .03 * j, 10.38 + .03 * j));
@@ -902,7 +901,7 @@
     setEye(EYE1, { on: e1On, x: 960, y: 500, a: 220, b: 154, sw: 22, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 66 * eOut(p(t, 4.6, 5.0)), pr: 29 * eOut(p(t, 4.78, 5.1)) });
     // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra: il disco cresce dentro il cerchio a matita
     if (t >= 4.6 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 220, b: 154, sw: 0, col: fg, ir: 66 * eOut(p(t, 4.6, 5.0)), pr: 29 * eOut(p(t, 4.78, 5.1)) });
-    const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
+    const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK), ZC = [lerp(ZP[0], 960, zoomK), lerp(ZP[1], 460, zoomK)];   // la card scivola al centro mentre si ingrandisce
     const giuW = 0;   // la pagina, sotto il titolo, sta più in basso: tutto quello che ci sta dentro scende con lei
     // la tavola del marchio: la camera si inclina e ci gira intorno, gli oggetti con il logo compaiono intorno all'icona
     const bK = eIO(p(t, 5.6, 5.92)) * (1 - eIO(p(t, 6.36, 6.56)));
@@ -926,7 +925,7 @@
       let S = lerp(.35, 1, grow) * lerp(1, .6, eIO(p(t, 5.6, 5.92)));
       S = lerp(S, .1, fly);   // dalla tavola vola dritta nell'header, senza tornare grande
       let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY + giuW, fly);
-      cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
+      cx = ZC[0] + (cx - ZP[0]) * zs; cy = ZC[1] + (cy - ZP[1]) * zs; S *= zs;
       const PT = boardProj(.6 * bK, sway * bK, 1900, [cx, cy]);
       // la faccia davanti sta sul piano dell'occhio e lo spessore va indietro: nessun salto di grandezza
       TL.forEach((r, i) => { const z = 70 * (1 - i / (TL.length - 1)); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
@@ -940,7 +939,7 @@
     const wOn = t >= 6.55 && t < 9.0; show(WEB, wOn);
     if (wOn) {
       const giu = giuW;
-      WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${f1(OY + giu)})`);
+      WEB.setAttribute('transform', `translate(${f1(ZC[0])} ${f1(ZC[1])}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${f1(OY + giu)})`);
       WEB.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
       V2.out.setAttribute('stroke', fg); traccia(V2.out, eOut(p(t, 6.55, 6.95)));
       V2.out.style.opacity = (1 - eIO(p(t, 6.95, 7.1))).toFixed(3);
@@ -959,9 +958,9 @@
       const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY + giuW, 460, z); e2.a = lerp(160, 210, z); e2.b = lerp(112, 147, z);
       e2.sw = lerp(16, 21, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(48 * k0, 63, z); e2.pr = lerp(21 * k0, 27, z);
       // 4 · Motion: l'occhio si stringe nella sua iride e diventa la pallina rosa che corre sulla timeline sotto MOTION
-      const pal = eIO(p(t, 8.9, 9.2)), ritorno = eIO(p(t, 10.3, 10.58));
+      const pal = eIO(p(t, 8.84, 9.1)), ritorno = eIO(p(t, 10.3, 10.58));
       const bx = lerp(560, 1360, p(t, 9.42, 10.32));
-      if (t >= 8.9 && t < 10.58) {
+      if (t >= 8.84 && t < 10.58) {
         const k = pal * (1 - ritorno);
         const rx = t < 10.3 ? (t < 9.42 ? 560 : bx) : lerp(1360, 960, ritorno), ry = t < 10.3 ? 820 : lerp(820, 460, ritorno) - 140 * bump(ritorno);
         e2.x = lerp(e2.x, rx, t < 10.3 ? pal : 1); e2.y = lerp(e2.y, ry, t < 10.3 ? pal : 1);
