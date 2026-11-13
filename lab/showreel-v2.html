@@ -412,7 +412,7 @@
   const CT = [
     { world: 0, word: 'ILLUSTRATION', col: GREEN, tin: 2.2,   tout: 3.15 },
     { world: 1, word: 'BRANDING',     col: BLUE,  tin: 4.35,  tout: 5.2 },
-    { world: 2, word: 'WEB DESIGN',   col: GREEN, tin: 6.75,  tout: 7.6 },
+    { world: 2, word: 'WEB DESIGN',   col: GREEN, tin: 6.75,  tout: 7.6, dy: -70 },   // più in alto: non tocca la finestra del sito
     { world: 3, word: 'MOTION',       col: BLUE,  tin: 9.1,   tout: 9.9 },
     { world: 4, word: 'GEN AI',       col: PINK,  tin: 11.55, tout: 12.3 }
   ];
@@ -453,7 +453,7 @@
       c.el.style.fontSize = '250px';
       const w = [...c.el.children].reduce((a, m) => a + m.getBoundingClientRect().width / S, 0);
       const size = Math.min(250, 1720 / Math.max(1, w) * 250);
-      c.el.style.fontSize = size + 'px'; c.el.style.top = (398 - size * .8 / 2) + 'px';
+      c.el.style.fontSize = size + 'px'; c.el.style.top = (398 - size * .8 / 2 + (c.dy || 0)) + 'px';
     });
     fraseEl.style.fontSize = '130px';
     const fw = [...fraseEl.children].reduce((a, n) => a + n.getBoundingClientRect().width / S, 0);
@@ -480,7 +480,7 @@
   const SC = { k: .58, cy: 720 };   // cy: la scena rimpicciolita finisce sopra le categorie in basso (fondo a circa 940)
   // scambio d'importanza: mentre c'è il titolo la scena è piccola; quando il titolo esce, la scena cresce a piena grandezza
   const sceneA = t => eIO(p(t, 1.6, 2.1)) - eIO(p(t, 3.15, 3.55)) + eIO(p(t, 4.15, 4.4)) - eIO(p(t, 5.2, 5.6))
-                   + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.6, 8)) + eIO(p(t, 8.95, 9.2)) - eIO(p(t, 9.9, 10.3))
+                   + eIO(p(t, 6.55, 6.8)) - eIO(p(t, 7.86, 8.22)) + eIO(p(t, 8.95, 9.2)) - eIO(p(t, 9.9, 10.3))
                    + eIO(p(t, 11.35, 11.6)) - eIO(p(t, 12.3, 12.7));
   const sceneS = t => { const a = sceneA(t); return { k: lerp(1, SC.k, a), cy: lerp(500, SC.cy, a) }; };
   const mapS = (S, x, y) => [960 + (x - 960) * S.k, S.cy + (y - 500) * S.k];
@@ -679,7 +679,7 @@
   }
 
   // 1 · Illustration: lo schizzo a matita (tratti sovrapposti, imperfetti)
-  const SK = mk('g', { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+  const SK = mk('g', { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', transform: 'translate(960 500) scale(.846) translate(-960 -500)' });   // schizzo alla stessa grandezza dell'occhio (a = 220)
   const SKP = [
     'M692 506C820 318 1100 318 1226 498C1100 690 820 690 698 502',
     'M706 492C830 330 1090 322 1214 506C1094 676 826 684 690 510',
@@ -689,14 +689,14 @@
     'M762 560L792 530', 'M782 592L824 548', 'M818 614L862 570'
   ].map(d => mk('path', { d, pathLength: 1 }, SK));
   const SKN = [SKP[0].getAttribute('d'), SKP[1].getAttribute('d')].map(d => d.match(/-?[\d.]+/g).map(Number));
-  const SKTGT = [700, 500, 817, 312.5, 1103, 312.5, 1220, 500, 1103, 687.5, 817, 687.5, 700, 500];
+  const SKTGT = [700, 500, 817, 272.5, 1103, 272.5, 1220, 500, 1103, 727.5, 817, 727.5, 700, 500];   // = occhio a 220 × 154 dopo la scala
   const SKMORPH = (i, k) => { const n = SKN[i].map((v, j) => lerp(v, SKTGT[j], k)); return `M${f1(n[0])} ${f1(n[1])}C${n.slice(2, 8).map(f1).join(' ')}C${n.slice(8, 14).map(f1).join(' ')}`; };
   const SKT = [[2.05, 2.62], [2.62, 3.02], [3.02, 3.36], [3.36, 3.52], [3.54, 3.62], [3.62, 3.7], [3.7, 3.78], [3.8, 3.86], [3.86, 3.92], [3.92, 3.98]];
   const PEN = mk('g');
   PEN.innerHTML = '<path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/><path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/><path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/><path d="M0 0L4 -12L12 -4Z" fill="#121414"/>';
 
   // 2 · Branding: griglia, il segno inchiostrato, il logo 3D che gira, poi il marchio applicato su una tavola in prospettiva
-  const GR = mk('g', { fill: 'none', 'stroke-width': 2 });
+  const GR = mk('g', { fill: 'none', 'stroke-width': 2.4, transform: 'translate(960 500) scale(.846) translate(-960 -500)' });
   const GRP = ['M640 500H1280', 'M960 300V700', 'M700 330L1220 670', 'M1220 330L700 670'].map(d => mk('path', { d, pathLength: 1 }, GR));
   GRP.push(mk('circle', { cx: 960, cy: 500, r: 260, pathLength: 1 }, GR), mk('circle', { cx: 960, cy: 500, r: 78, pathLength: 1 }, GR), mk('rect', { x: 700, y: 350, width: 520, height: 300, pathLength: 1 }, GR));
   const EYE1 = mkEye();   // il segno pulito
@@ -837,9 +837,9 @@
     if (grOn) { GR.setAttribute('stroke', dim); GRP.forEach((n, i) => traccia(n, eOut(p(t, 4.18 + .04 * i, 4.55 + .04 * i)) * (1 - eIn(p(t, 5.0 + .02 * i, 5.3 + .02 * i))))); }
     const tileS = t < 6.2 ? spring(p(t, 5.3, 5.7)) : lerp(1, .1, eIO(p(t, 6.2, 6.6)));
     const e1On = t >= 4.95 && t < 5.5;
-    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 260, b: 150, sw: 26, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
+    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 220, b: 154, sw: 22, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 66 * spring(p(t, 4.85, 5.15)), pr: 29 * spring(p(t, 4.95, 5.2)) });
     // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra
-    if (t >= 4.85 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 260, b: 150, sw: 0, col: fg, ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
+    if (t >= 4.85 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 220, b: 154, sw: 0, col: fg, ir: 66 * spring(p(t, 4.85, 5.15)), pr: 29 * spring(p(t, 4.95, 5.2)) });
     const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
     // la tavola del marchio: la camera si inclina e ci gira intorno, gli oggetti con il logo compaiono intorno all'icona
     const bK = eIO(p(t, 5.6, 5.92)) * (1 - eIO(p(t, 6.36, 6.56)));
@@ -862,20 +862,21 @@
       const grow = spring(p(t, 5.2, 5.5)), fly = eIO(p(t, 6.5, 6.85));
       let S = lerp(.35, 1, grow) * lerp(1, .6, eIO(p(t, 5.6, 5.92)));
       S = lerp(S, .1, fly);   // dalla tavola vola dritta nell'header, senza tornare grande
-      let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY, fly);
+      let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY + 60 * (1 - eIO(p(t, 7.86, 8.22))), fly);
       cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
       const PT = boardProj(.6 * bK, sway * bK, 1900, [cx, cy]);
       TL.forEach((r, i) => { const z = -70 * i / (TL.length - 1); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
       TILE.style.opacity = (Math.min(1, grow * 2) * (1 - eIO(p(t, 8.55, 8.9)))).toFixed(3);
       const ec = '#F5F5F2';
-      setEye(TE, { on: t >= 5.5, x: 320, y: 320, a: 260, b: 150, sw: 26, col: ec, ir: 78, pr: 34 });   // prende il posto del logo che ha appena finito di girare
+      setEye(TE, { on: t >= 5.5, x: 320, y: 320, a: 220, b: 154, sw: 22, col: ec, ir: 66, pr: 29 });   // prende il posto del logo che ha appena finito di girare
       TE.g.setAttribute('transform', PT(0, 0, 640, 640, -70, S).m);
     }
 
     /* 3 · Web Design: la finestra si disegna intorno al logo, la pagina si compone */
     const wOn = t >= 6.55 && t < 9.0; show(WEB, wOn);
     if (wOn) {
-      WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${OY})`);
+      const giu = 60 * (1 - eIO(p(t, 7.86, 8.22)));   // sotto il titolo la pagina scende un po', poi risale quando la scena cresce
+      WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${f1(OY + giu)})`);
       WEB.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
       V2.out.setAttribute('stroke', fg); traccia(V2.out, eOut(p(t, 6.55, 6.95)));
       V2.out.style.opacity = (1 - eIO(p(t, 6.95, 7.1))).toFixed(3);
@@ -888,11 +889,11 @@
     }
     // l'occhio del sito: nasce nella card e, con lo zoom, diventa il protagonista di Motion
     const e2On = t >= 7.4 && t < 11.45;
-    let e2 = { on: e2On, x: 1240, y: 510 + OY, a: 150, b: 86, sw: 14, col: '#F5F5F2', ir: 45, pr: 19, op: 1 };
+    let e2 = { on: e2On, x: 1240, y: 510 + OY, a: 160, b: 112, sw: 16, col: '#F5F5F2', ir: 48, pr: 21, op: 1 };
     if (e2On) {
       const k0 = spring(p(t, 7.4, 7.75)); e2.ir *= k0; e2.pr *= k0; e2.draw = eOut(p(t, 7.4, 7.7));
-      const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY, 460, z); e2.a = lerp(150, 200, z); e2.b = lerp(86, 115, z);
-      e2.sw = lerp(14, 22, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(45 * k0, 60, z); e2.pr = lerp(19 * k0, 26, z);
+      const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY, 460, z); e2.a = lerp(160, 210, z); e2.b = lerp(112, 147, z);
+      e2.sw = lerp(16, 21, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(48 * k0, 63, z); e2.pr = lerp(21 * k0, 27, z);
       // 4 · Motion, tre chiavi sulla timeline. 1: l'occhio strizza la palpebra
       e2.sy = 1 - .94 * bump(p(t, 9.74, 9.94));
       // 2: prende spessore e fa un giro intero su se stesso, come una moneta (com'era prima)
@@ -907,10 +908,10 @@
     }
     if (e2.spin) {
       const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
-      const PJ = boardProj(lift, 0, 1900, [e2.x, e2.y]), scE = e2.a / 260;
+      const PJ = boardProj(lift, 0, 1900, [e2.x, e2.y]), scE = e2.a / 220;
       EXT.map((e, i) => ({ e, i, r: PJ(0, 0, 640, 640, -th * i / (EXT.length - 1), scE, spin) })).sort((a, b) => b.r.d - a.r.d).forEach(({ e, i, r }) => {
         const front = i === EXT.length - 1;
-        setEye(e, { x: 320, y: 320, a: 260, b: 150, sw: 22 / scE, col: front ? fg : mix(fg, TH === THEMES.light ? '#F4EFE7' : '#121414', .5 - .3 * i / EXT.length), ir: front ? 78 : 0, pr: front ? 34 : 0 });
+        setEye(e, { x: 320, y: 320, a: 220, b: 154, sw: e2.sw / scE, col: front ? fg : mix(fg, TH === THEMES.light ? '#F4EFE7' : '#121414', .5 - .3 * i / EXT.length), ir: front ? 66 : 0, pr: front ? 29 : 0 });
         e.g.setAttribute('transform', r.m); EXTG.appendChild(e.g);
       });
       e2.on = false;
@@ -935,7 +936,7 @@
     const barOn = t >= 11.14 && t < 12.5; show(BAR, barOn);   // nasce dall'occhio chiuso
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
-      const m = eIO(p(t, 11.14, 11.46)), w = lerp(400 + 22, 1000, m), h = lerp(22, 96, m), cy = lerp(460, 286, m) - 160 * up;
+      const m = eIO(p(t, 11.14, 11.46)), w = lerp(420 + 21, 1000, m), h = lerp(21, 96, m), cy = lerp(460, 286, m) - 160 * up;
       BAR.setAttribute('x', f1(960 - w / 2)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(11, 48, m)));
       BAR.setAttribute('fill', mix(fg, TH === THEMES.light ? '#EFE9DF' : '#1F2121', eIO(p(t, 11.16, 11.4)))); BAR.setAttribute('stroke', TH === THEMES.light ? '#E2DBCF' : '#282B2B'); BAR.setAttribute('stroke-width', f1(2 * m));
       BAR.style.opacity = (1 - up).toFixed(3);
@@ -965,8 +966,8 @@
     const e3On = t >= 13.78 && t < 14.32;
     if (e3On) {
       const k = spring(p(t, 13.78, 14.0)), m = eIO(p(t, 13.98, 14.3)), w = M.eye.w;
-      setEye(EYE3, { x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: lerp(170 * k, .44 * w, m), b: lerp(98 * k, .376 * w, m),
-        sw: lerp(18, .13 * w, m), col: fg, ir: lerp(52 * k, .22 * w, m), pr: lerp(22 * k, .10 * w, m) });
+      setEye(EYE3, { x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: lerp(210 * k, .44 * w, m), b: lerp(147 * k, .376 * w, m),
+        sw: lerp(21, .13 * w, m), col: fg, ir: lerp(63 * k, .22 * w, m), pr: lerp(27 * k, .10 * w, m) });   // si arrotonda fino alla forma della O
     } else vis(EYE3.g, false);
     // il cursore: clicca "Scopri" nel sito, indica l'occhio, poi preme "Genera"
     const c1 = t >= 7.85 && t < 8.6, c2 = t >= 11.8 && t < 12.4; vis(CUR, c1 || c2);
