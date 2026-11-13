@@ -787,8 +787,8 @@
   const GP = mk('g');
   GP.innerHTML = `<text id="v2pt" x="400" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
     <rect id="v2gen" x="1338" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1448" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
-  if (MG === '3') { const tx = GP.querySelector('#v2pt'); tx.setAttribute('x', 960); tx.setAttribute('text-anchor', 'middle'); }
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
+  const BY = 500;   // la barra del prompt sta al centro dello schermo, dove l'occhio diventa il cursore
   const GPROMPT = 'Create an eye, 24 variations, pop style';
   const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
   const fgOn = bg => [BLUE, INK, '#2A3DCC'].includes(bg) ? '#F5F5F2' : INK;
@@ -930,7 +930,7 @@
       if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
       if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
       if (MG === '3') { const m = eIO(p(t, 11.02, 11.3));   // resta al centro
-        e2.x = lerp(e2.x, 960, m); e2.y = lerp(e2.y, 286, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
+        e2.x = lerp(e2.x, 960, m); e2.y = lerp(e2.y, BY, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
     }
     if (e2.spin) {
       const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
@@ -949,7 +949,7 @@
     const fieldC = TH === THEMES.light ? '#EFE9DF' : '#1F2121', lineC = TH === THEMES.light ? '#E2DBCF' : '#282B2B';
     const m1On = MG === '1' && t >= 11.02 && t < 11.42; show(PMORPH, m1On); show(PIRIS, m1On);
     if (m1On) {   // 1 · il contorno dell'occhio si apre nella barra, l'iride diventa il pulsante, la pupilla il cursore
-      const m = eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, 286, 1240, 96);
+      const m = eIO(p(t, 11.02, 11.4)), A = eye4(eb.x, eb.y, eb.a, eb.b), Bp = pill4(960, BY, 1240, 96);
       PMORPH.setAttribute('d', path4(A.map((v, i) => lerp(v, Bp[i], m))));
       PMORPH.setAttribute('stroke', mix(fg, lineC, m)); PMORPH.setAttribute('stroke-width', f1(lerp(eb.sw, 2, m)));
       PMORPH.setAttribute('fill', fieldC); PMORPH.setAttribute('fill-opacity', (m * m).toFixed(3));
@@ -958,7 +958,7 @@
     const pupOn = (MG === '1' && t >= 11.02 && t < 11.7) || (MG === '3' && t >= 11.28 && t < 11.7); show(PPUP, pupOn);
     if (pupOn) {   // la pupilla diventa il cursore del campo, che lampeggia finché parte il testo
       const m = MG === '1' ? eIO(p(t, 11.02, 11.4)) : 1, r = MG === '1' ? eb.pr : 5, blink = t > 11.42 && ((t * 4) | 0) % 2 === 1 ? 0 : 1;
-      PPUP.setAttribute('x', f1(lerp(eb.x - r, MG === '3' ? 958.5 : 400, m))); PPUP.setAttribute('y', f1(lerp(eb.y - r, 266, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
+      PPUP.setAttribute('x', f1(MG === '3' ? lerp(958.5, 400, eIO(p(t, 11.5, 11.68))) : lerp(eb.x - r, 400, m)));   // 3: nato al centro, scivola all'inizio del campo PPUP.setAttribute('y', f1(lerp(eb.y - r, BY - 20, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
       PPUP.setAttribute('fill', MG === '1' ? mix(INK, fg, m) : fg); PPUP.style.opacity = blink;
     }
     const ovOn = MG === '2' && t >= 11.02 && t < 11.52; show(POVL, ovOn);
@@ -966,7 +966,7 @@
       const g = eIn(p(t, 11.06, 11.26)), o = eOut(p(t, 11.26, 11.5)), R = 2300;
       const cx = eb.x, cy = eb.y, rr = Math.max(.1, lerp(eb.pr * 3, R, g)), hole = lerp(0, R, o);
       POVL.setAttribute('d', t < 11.26 ? `M${f1(cx)} ${f1(cy - rr)}A${f1(rr)} ${f1(rr)} 0 1 0 ${f1(cx)} ${f1(cy + rr)}A${f1(rr)} ${f1(rr)} 0 1 0 ${f1(cx)} ${f1(cy - rr)}Z`
-        : `M-200 -200H2120V1280H-200ZM960 ${f1(286 - hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(286 + hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(286 - hole)}Z`);
+        : `M-200 -200H2120V1280H-200ZM960 ${f1(BY - hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(BY + hole)}A${f1(hole)} ${f1(hole)} 0 1 0 960 ${f1(BY - hole)}Z`);
       POVL.setAttribute('fill', INK);
     }
     GHOST.forEach(gh => vis(gh.g, false));
@@ -989,7 +989,7 @@
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
       // 3: la barra si disegna intorno al cursore; 1 e 2: è già al suo posto
-      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = 960 - lerp(3, 1240, m) / 2, w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = 286 - 160 * up;   // si allarga dal cursore verso i due lati
+      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = 960 - lerp(3, 1240, m) / 2, w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = BY - 160 * up;   // si allarga dal cursore verso i due lati
       BAR.setAttribute('x', f1(MG === '3' ? x0 : 340)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(1.5, 48, m)));
       BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
@@ -999,7 +999,7 @@
     if (gpOn) {
       const k = MG === '1' ? 1 : eOut(p(t, gp0, gp0 + .16));
       GP.style.opacity = (k * (1 - up)).toFixed(3);
-      GP.setAttribute('transform', `translate(0 ${f1(-160 * up)})`);
+      GP.setAttribute('transform', `translate(0 ${f1(BY - 286 - 160 * up)})`);   // testo e pulsante disegnati a 286: spostati al centro
       GPT.textContent = GPROMPT.slice(0, Math.round(GPROMPT.length * p(t, 11.7, 12.04))) + (t < 12.1 && ((t * 4) | 0) % 2 === 0 ? '|' : '');
       const genero = t >= 12.16; GBT.textContent = genero ? 'Generating…' : 'Generate';
       GBR.setAttribute('transform', `translate(1448 286) scale(${(1 - .1 * bump(p(t, 12.14, 12.26))).toFixed(3)}) translate(-1448 -286)`);
@@ -1011,7 +1011,7 @@
       const a0 = 12.36 + q.d / 600 * .22, kOut = spring(p(t, a0, a0 + .42));
       const b0 = 13.36 + (1 - q.d / 600) * .2, kIn = eIn(p(t, b0, b0 + .34));
       const k = kOut * (1 - kIn);
-      const x = lerp(960, q.cx, eOut(p(t, a0, a0 + .42))) , y = lerp(286, q.cy, eOut(p(t, a0, a0 + .42)));   // escono dalla barra del prompt
+      const x = lerp(960, q.cx, eOut(p(t, a0, a0 + .42))) , y = lerp(BY, q.cy, eOut(p(t, a0, a0 + .42)));   // escono dalla barra del prompt
       const ang = 1.4 * kIn, rx0 = x - 960, ry0 = y - 500, fx = 960 + (rx0 * Math.cos(ang) - ry0 * Math.sin(ang)) * (1 - kIn), fy = 500 + (rx0 * Math.sin(ang) + ry0 * Math.cos(ang)) * (1 - kIn);   // si richiudono a spirale
       const fl = 4 * Math.sin(t * 6 + q.cx);
       q.g.setAttribute('transform', `translate(${f1(fx)} ${f1(fy + fl * (1 - kIn))}) rotate(${f1(q.rot * (1 - eOut(p(t, a0, a0 + .42))) + q.rot * .6 * kIn)}) scale(${Math.max(0, k).toFixed(3)})`);
@@ -1031,7 +1031,7 @@
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
     if (c2) {
-      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1640, 1448, a), y = lerp(600, 292, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
+      const a = eOut(p(t, 11.8, 12.1)), x = lerp(1640, 1448, a), y = lerp(820, BY + 6, a), sc = 1 - .2 * bump(p(t, 12.13, 12.25));
       CUR.setAttribute('transform', `translate(${f1(x - 6)} ${f1(y - 4)}) scale(${sc.toFixed(3)})`);
     }
   }
