@@ -765,10 +765,10 @@
   // 5 · Gen AI: il prompt, poi l'esplosione di varianti, poi tutte di nuovo in una
   const BAR = mk('rect', { rx: 3 });   // la timeline che diventa la barra del prompt
   const GP = mk('g');
-  GP.innerHTML = `<text id="v2pt" x="520" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
+  GP.innerHTML = `<text id="v2pt" x="520" y="298" font-family="Cabinet Grotesk" font-weight="500" font-size="32" style="fill:var(--fg)"></text>
     <rect id="v2gen" x="1222" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1332" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
-  const GPROMPT = 'an eye, 24 variations, pop style';
+  const GPROMPT = 'Create an eye, 24 variations, pop style';
   const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
   const fgOn = bg => [BLUE, INK, '#2A3DCC'].includes(bg) ? '#F5F5F2' : INK;
   const pupilla = (k, r, c) => [
