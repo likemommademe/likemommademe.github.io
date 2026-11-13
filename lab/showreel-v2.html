@@ -673,7 +673,7 @@
   // la forma della O della frase (viewBox 100: punte a ±44, alto 35,25), per l'occhio che ci atterra
   const almondO = (x, y, a) => { const k = a / 44, T = 35.25 * k; return `M${f1(x)} ${f1(y - T)}C${f1(x + 19 * k)} ${f1(y - T)} ${f1(x + 38 * k)} ${f1(y - 23.5 * k)} ${f1(x + a)} ${f1(y)}C${f1(x + 38 * k)} ${f1(y + 23.5 * k)} ${f1(x + 19 * k)} ${f1(y + T)} ${f1(x)} ${f1(y + T)}C${f1(x - 19 * k)} ${f1(y + T)} ${f1(x - 38 * k)} ${f1(y + 23.5 * k)} ${f1(x - a)} ${f1(y)}C${f1(x - 38 * k)} ${f1(y - 23.5 * k)} ${f1(x - 19 * k)} ${f1(y - T)} ${f1(x)} ${f1(y - T)}Z`; };
   // passaggio Motion → Gen AI, tre proposte da confrontare: ?mg=1 occhio→barra, ?mg=2 tuffo nella pupilla, ?mg=3 pupilla→cursore
-  const MG = new URLSearchParams(location.search).get('mg') || '1';
+  const MG = new URLSearchParams(location.search).get('mg') || '3';   // scelta dell'utente: la pupilla diventa il cursore
   // l'occhio in 4 curve (alto, destra, basso, sinistra) e la barra con la stessa struttura: così una si trasforma nell'altra
   const eye4 = (x, y, a, b) => [x, y - .9375 * b, x + .3875 * a, y - .9375 * b, x + .775 * a, y - .625 * b, x + a, y, x + .775 * a, y + .625 * b, x + .3875 * a, y + .9375 * b, x, y + .9375 * b,
     x - .3875 * a, y + .9375 * b, x - .775 * a, y + .625 * b, x - a, y, x - .775 * a, y - .625 * b, x - .3875 * a, y - .9375 * b, x, y - .9375 * b];
@@ -701,12 +701,12 @@
   // 1 · Illustration: lo schizzo a matita (tratti sovrapposti, imperfetti)
   const SK = mk('g', { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', transform: 'translate(960 500) scale(.846) translate(-960 -500)' });   // schizzo alla stessa grandezza dell'occhio (a = 220)
   const SKP = [
-    'M692 506C820 318 1100 318 1226 498C1100 690 820 690 698 502',
-    'M706 492C830 330 1090 322 1214 506C1094 676 826 684 690 510',
-    'M1030 500C1030 455 990 425 958 428C918 432 888 466 892 504C896 546 934 572 968 568C1006 563 1034 534 1026 492C1020 470 1000 452 980 448',
-    'M950 488C975 478 985 505 962 515C940 522 938 495 958 490C972 488 976 505 962 508',
-    'M862 374L844 338', 'M960 356L960 314', 'M1058 374L1076 338',
-    'M762 560L792 530', 'M782 592L824 548', 'M818 614L862 570'
+    'M692 506C812 268 1108 278 1226 498C1098 734 820 722 698 502',
+    'M706 492C822 282 1098 266 1214 506C1110 720 812 738 690 510',
+    'M1036 500C1036 456 1000 422 958 424C914 426 882 462 884 504C886 546 920 578 964 576C1006 574 1040 540 1034 496C1030 470 1012 448 988 438',
+    'M944 486C972 470 998 500 978 522C958 540 928 520 936 496C942 480 968 478 976 500',
+    'M846 352L824 312', 'M960 330L960 286', 'M1074 352L1096 312',
+    'M772 586L802 556', 'M794 622L836 580', 'M832 650L876 606'
   ].map(d => mk('path', { d, pathLength: 1 }, SK));
   const SKN = [SKP[0].getAttribute('d'), SKP[1].getAttribute('d')].map(d => d.match(/-?[\d.]+/g).map(Number));
   const SKTGT = [700, 500, 817, 272.5, 1103, 272.5, 1220, 500, 1103, 727.5, 817, 727.5, 700, 500];   // = occhio a 220 × 154 dopo la scala
@@ -768,7 +768,7 @@
     </g>
     <rect id="v2out" x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28" fill="none" stroke-width="3" pathLength="1"/>`;
   ST.appendChild(BOARD); ST.appendChild(TILE); ST.appendChild(EYE1.g);   // tavola e logo sopra la pagina; il segno sopra l'icona che gli cresce dietro
-  const OY = 40;          // tutta la pagina un po' più in basso: lascia spazio al titolo
+  const OY = -30;         // la pagina più in alto: lontana dalle categorie (il titolo ha già il suo spazio)
   const wq = id => WEB.querySelector('#' + id);
   const V2 = { fill: wq('v2fill'), bar: wq('v2bar'), nav: wq('v2nav'), h1: wq('v2h1'), sub: wq('v2sub'), cta: wq('v2cta'), card: wq('v2card'), cards: wq('v2cards'), out: wq('v2out') };
 
@@ -787,6 +787,7 @@
   const GP = mk('g');
   GP.innerHTML = `<text id="v2pt" x="400" y="300" font-family="Cabinet Grotesk" font-weight="500" font-size="36" style="fill:var(--fg)"></text>
     <rect id="v2gen" x="1338" y="250" width="220" height="72" rx="36" fill="#FF3D8B"/><text id="v2gent" x="1448" y="297" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="28" fill="#121414">Generate</text>`;
+  if (MG === '3') { const tx = GP.querySelector('#v2pt'); tx.setAttribute('x', 960); tx.setAttribute('text-anchor', 'middle'); }
   const GPT = GP.querySelector('#v2pt'), GBT = GP.querySelector('#v2gent'), GBR = GP.querySelector('#v2gen');
   const GPROMPT = 'Create an eye, 24 variations, pop style';
   const BGS = [BLUE, '#F4EFE7', PINK, INK, GREEN, '#2A3DCC'];
@@ -928,7 +929,8 @@
       e2.base = { x: e2.x, y: e2.y, a: e2.a, b: e2.b, sw: e2.sw, ir: e2.ir, pr: e2.pr };
       if (MG === '1' && t >= 11.02) e2.on = false;                       // il contorno si apre nella barra (disegnato a parte)
       if (MG === '2') { const z = eIn(p(t, 11.02, 11.24)); e2.sx *= 1 + .7 * z; e2.sy *= 1 + .7 * z; e2.pr *= 1 + 2 * z; if (t >= 11.26) e2.on = false; }   // ci si tuffa nella pupilla
-      if (MG === '3') { const m = eIO(p(t, 11.02, 11.3)); e2.x = lerp(e2.x, 402, m); e2.y = lerp(e2.y, 286, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
+      if (MG === '3') { const m = eIO(p(t, 11.02, 11.3));   // resta al centro
+        e2.x = lerp(e2.x, 960, m); e2.y = lerp(e2.y, 286, m); e2.a = lerp(e2.a, 12, m); e2.b = lerp(e2.b, 8, m); e2.sw = lerp(e2.sw, 1.5, m); e2.ir *= 1 - m; e2.pr = lerp(e2.pr, 5, m); e2.op = 1 - eIn(p(t, 11.22, 11.3)); if (t >= 11.3) e2.on = false; }   // si rimpicciolisce nel cursore
     }
     if (e2.spin) {
       const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
@@ -956,7 +958,7 @@
     const pupOn = (MG === '1' && t >= 11.02 && t < 11.7) || (MG === '3' && t >= 11.28 && t < 11.7); show(PPUP, pupOn);
     if (pupOn) {   // la pupilla diventa il cursore del campo, che lampeggia finché parte il testo
       const m = MG === '1' ? eIO(p(t, 11.02, 11.4)) : 1, r = MG === '1' ? eb.pr : 5, blink = t > 11.42 && ((t * 4) | 0) % 2 === 1 ? 0 : 1;
-      PPUP.setAttribute('x', f1(lerp(eb.x - r, 400, m))); PPUP.setAttribute('y', f1(lerp(eb.y - r, 266, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
+      PPUP.setAttribute('x', f1(lerp(eb.x - r, MG === '3' ? 958.5 : 400, m))); PPUP.setAttribute('y', f1(lerp(eb.y - r, 266, m))); PPUP.setAttribute('width', f1(lerp(2 * r, 3, m))); PPUP.setAttribute('height', f1(lerp(2 * r, 40, m))); PPUP.setAttribute('rx', f1(lerp(r, 1.5, m)));
       PPUP.setAttribute('fill', MG === '1' ? mix(INK, fg, m) : fg); PPUP.style.opacity = blink;
     }
     const ovOn = MG === '2' && t >= 11.02 && t < 11.52; show(POVL, ovOn);
@@ -987,7 +989,7 @@
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
       // 3: la barra si disegna intorno al cursore; 1 e 2: è già al suo posto
-      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = lerp(400, 340, m), w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = 286 - 160 * up;
+      const m = MG === '3' ? eIO(p(t, 11.3, 11.54)) : 1, x0 = 960 - lerp(3, 1240, m) / 2, w = lerp(3, 1240, m), h = lerp(40, 96, m), cy = 286 - 160 * up;   // si allarga dal cursore verso i due lati
       BAR.setAttribute('x', f1(MG === '3' ? x0 : 340)); BAR.setAttribute('y', f1(cy - h / 2)); BAR.setAttribute('width', f1(w)); BAR.setAttribute('height', f1(h)); BAR.setAttribute('rx', f1(lerp(1.5, 48, m)));
       BAR.setAttribute('fill', fieldC); BAR.setAttribute('fill-opacity', (MG === '3' ? m : 1).toFixed(3)); BAR.setAttribute('stroke', lineC); BAR.setAttribute('stroke-width', 2);
       BAR.style.opacity = (1 - up).toFixed(3);
