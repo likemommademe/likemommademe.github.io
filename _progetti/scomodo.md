@@ -86,12 +86,6 @@ galleria:
     didascalia: "Toni più caldi e scuri."
     didascalia_en: "Warmer, darker tones."
     formato: "meta"
-  - type: "foto"
-    immagine: "/assets/uploads/scomodo-08.webp"
-    titolo: "Col pennello"
-    titolo_en: "With a brush"
-    didascalia: "Le lettere appoggiate su un pennello da trucco."
-    didascalia_en: "The letters resting on a make-up brush."
 strumenti:
   - Illustrator
   - Firefly
