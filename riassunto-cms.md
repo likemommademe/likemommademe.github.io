@@ -309,3 +309,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Patch: accanto a ogni patch disegnata c'è la foto della patch ricamata (decollo, lancio, astronauta, pianeta). |
 | 13/11/2026 | Malika Favre: acconciature centrate e ridisegnate in alta risoluzione; «Due donne» e acconciature senza dettaglio accanto (nuovo formato «Da sola» nel pannello). Patch: foto ricamata del lancio ritagliata come le altre, così il disegno non si taglia. |
 | 13/11/2026 | Gallerie: nelle righe da due ogni foto tiene la sua forma e prende una larghezza proporzionale, così nessuna viene più tagliata. Audible: «Riprendi, tre volte» da sola. Malika Favre: acconciature con nome file nuovo (niente cache). Patch: copertina con la patch ricamata. |
+| 13/11/2026 | Chrome Nails: nuove foto in alta risoluzione, la posa (anche copertina) e il dettaglio della maglia con la placca cromata, affiancate. |
