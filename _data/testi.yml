@@ -155,3 +155,13 @@ progetto:
   dq_sezioni_uno: capitolo del progetto
   dq_sezioni: capitoli del progetto
   rec_k: Dicono di questo progetto
+
+cerca:
+  apri: Cerca un progetto
+  titolo: Cerca tra i progetti
+  segnaposto: Cerca un progetto…
+  chiudi: Chiudi la ricerca
+  migliori: I lavori migliori
+  risultati: Risultati
+  vuoto: Niente da fare. Nemmeno mamma l'avrebbe trovato. Prova con un'altra parola.
+  tutti: Vedi tutti i progetti

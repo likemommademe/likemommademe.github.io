@@ -58,11 +58,44 @@
           </div>
           <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>{{ f.chi_sono }}</a>
         </nav>
+        <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
         <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
         <a class="nav__cta" href="#contatti">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
   </header>
+
+  {% comment %} Cerca: un pannello con il campo di ricerca e l'anteprima dei lavori selezionati della home. {% endcomment %}
+  {% assign tc = site.data.testi.cerca %}
+  <dialog class="cerca" id="cerca" aria-label="{{ tc.titolo }}" data-cerca>
+    <div class="cerca__in">
+      <div class="cerca__top">
+        <svg class="cerca__lente" width="22" height="22" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input class="cerca__q" id="cerca-q" type="search" placeholder="{{ tc.segnaposto }}" aria-label="{{ tc.titolo }}" autocomplete="off" spellcheck="false" data-cerca-q>
+        <button class="cerca__x" type="button" data-cerca-chiudi aria-label="{{ tc.chiudi }}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <p class="cs-label cerca__k" data-cerca-k>{{ tc.migliori }}</p>
+      <ul class="cerca__lista" data-cerca-lista>
+        {% assign scelti = site.data.home.progetti %}
+        {% for p in site.progetti %}
+          {% assign cats = "" | split: "" %}
+          {% assign c0 = site.categorie | where: "slug", p.categoria | first %}{% if c0 %}{% assign cats = cats | push: c0.title %}{% endif %}
+          {% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}{% assign cats = cats | push: acc.title %}{% endif %}{% endfor %}
+          {% assign cl = nil %}{% if p.cliente %}{% assign cl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
+          {% assign pos = 999 %}{% for s in scelti %}{% if s == p.slug %}{% assign pos = forloop.index %}{% endif %}{% endfor %}
+        <li data-pos="{{ pos }}" data-testo="{{ p.title }} {{ p.sottotitolo }} {{ cats | join: ' ' }} {{ cl.title }} {{ p.anno }} {{ p.strumenti | join: ' ' }}"{% if pos > 6 %} hidden{% endif %}>
+          <a class="cerca__r" href="{{ p.url | relative_url }}">
+            <span class="cerca__img">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy">{% endif %}</span>
+            <span class="cerca__txt"><span class="cerca__t">{{ p.title }}</span><span class="cerca__s">{{ cats | join: ' · ' }}{% if p.anno %} · {{ p.anno }}{% endif %}</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="cerca__vuoto" data-cerca-vuoto hidden>{{ tc.vuoto }}</p>
+      <a class="lnk cerca__tutti" href="{{ '/work/' | relative_url }}">{{ tc.tutti }}</a>
+    </div>
+  </dialog>
 
   <main id="contenuto">
     {{ content }}
@@ -230,6 +263,32 @@
         riv.forEach(function (e) { io2.observe(e); });
         window.lmmOsserva = function (e) { io2.observe(e); };
       }
+    })();
+    // Cerca: si apre con la lente (o con il tasto /), filtra mentre scrivi, si chiude con Esc o cliccando fuori.
+    (function () {
+      var d = document.querySelector('[data-cerca]'); if (!d || !d.showModal) return;
+      var q = d.querySelector('[data-cerca-q]'), lista = d.querySelector('[data-cerca-lista]'), k = d.querySelector('[data-cerca-k]'), vuoto = d.querySelector('[data-cerca-vuoto]');
+      var righe = [].slice.call(lista.children), K0 = k.textContent, KR = {{ site.data.testi.cerca.risultati | jsonify }};
+      righe.sort(function (a, b) { return a.dataset.pos - b.dataset.pos; }).forEach(function (r) { lista.appendChild(r); });
+      var norm = function (x) { return (x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
+      function filtra() {
+        var v = norm(q.value.trim()), n = 0;
+        righe.forEach(function (r) {
+          var ok = v ? v.split(/\s+/).every(function (w) { return norm(r.dataset.testo).indexOf(w) >= 0; }) : r.dataset.pos <= 6;
+          r.hidden = !ok; if (ok) n++;
+        });
+        k.textContent = v ? KR : K0; vuoto.hidden = n > 0;
+      }
+      q.addEventListener('input', filtra);
+      function apri() { q.value = ''; filtra(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { q.focus(); }, 30); }
+      function chiudi() { d.close(); }
+      d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
+      document.querySelectorAll('[data-cerca-apri]').forEach(function (b) { b.addEventListener('click', apri); });
+      d.querySelector('[data-cerca-chiudi]').addEventListener('click', chiudi);
+      d.addEventListener('click', function (e) { if (e.target === d) chiudi(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && !d.open && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable) { e.preventDefault(); apri(); }
+      });
     })();
   </script>
   <script>
