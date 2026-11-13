@@ -11,14 +11,14 @@ reel: true
 
 <section class="reel" id="reel" aria-label="Showreel: Brand Identity, Illustration, Generative AI, Motion Design, Web Design">
   <div class="reel-sticky">
-    <iframe src="{{ '/lab/showreel.html' | relative_url }}?embed&v={{ site.time | date: '%s' }}" title="Showreel di LIKEMOMMADEME" tabindex="-1"></iframe>
+    <iframe src="{{ '/lab/showreel-principale.html' | relative_url }}?embed&v={{ site.time | date: '%s' }}" title="Showreel di LIKEMOMMADEME" tabindex="-1"></iframe>
   </div>
 </section>
 <script>
   (function () {
     var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
-    // prova della versione "Uno schizzo diventa tutto": la home la carica con ?v2 nell'indirizzo
-    if (/[?&]v2\b/.test(location.search)) { var mg = (location.search.match(/[?&]mg=(\d)/) || [])[1]; frame.src = frame.src.replace('/showreel.html', '/showreel-v2.html') + (mg ? '&mg=' + mg : ''); }
+    // l'animazione secondaria (quella dei mondi separati) è spenta ma salvata: in home si rivede con ?secondaria nell'indirizzo
+    if (/[?&]secondaria\b/.test(location.search)) frame.src = frame.src.replace('/showreel-principale.html', '/showreel-secondaria.html');
     var KEY = 'lmm-intro-fatta', fatta = false;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     // L'intro gira una volta sola. Riparte solo ricaricando la pagina o cliccando HOME / il logo (che riaprono la home);
