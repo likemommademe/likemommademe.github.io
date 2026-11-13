@@ -127,17 +127,6 @@ galleria:
     didascalia: "La timeline anno per anno, fino all’infinito."
     didascalia_en: "The year-by-year timeline, all the way to infinity."
     formato: "meta"
-  - type: "sezione"
-    titolo: "Su telefono"
-    titolo_en: "On mobile"
-    testo: "Tutto il sito funziona anche a 375 pixel di larghezza."
-    testo_en: "The whole site works at 375 pixels wide too."
-  - type: "foto"
-    immagine: "/assets/uploads/portfolio-mobile.webp"
-    titolo: "Su telefono"
-    titolo_en: "On mobile"
-    didascalia: "Un progetto, Works e About me sullo smartphone."
-    didascalia_en: "A project, Works and About me on a smartphone."
 strumenti:
   - Claude
   - Visual Studio Code
