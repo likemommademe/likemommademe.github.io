@@ -339,3 +339,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Accademia dei Romani: insegna più vicina e dettaglio ritagliato senza il muro vuoto sotto, tutte e due della stessa forma. |
 | 13/11/2026 | Portfolio LIKEMOMMADEME: tolta la sezione «Su telefono». |
 | 13/11/2026 | Accademia dei Romani: a sinistra torna la foto originale dell'insegna (anche copertina), a destra resta il dettaglio delle lettere in acciaio. |
+| 14/11/2026 | Accademia dei Romani: nuova copertina, il primo piano della placca e delle lettere in acciaio. |
