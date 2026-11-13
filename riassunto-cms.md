@@ -307,3 +307,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | DCD: il logo nuovo nel confronto Prima/Dopo ora è quadrato, centrato alla stessa altezza del vecchio e senza la striscia blu sul bordo. |
 | 13/11/2026 | DCD: nuova sezione «I social» con il carosello sponsorizzato e i post (dalla pagina Pixell del progetto), più la schermata Instagram. Le metro ora sono a tutta larghezza. |
 | 13/11/2026 | Patch: accanto a ogni patch disegnata c'è la foto della patch ricamata (decollo, lancio, astronauta, pianeta). |
+| 13/11/2026 | Malika Favre: acconciature centrate e ridisegnate in alta risoluzione; «Due donne» e acconciature senza dettaglio accanto (nuovo formato «Da sola» nel pannello). Patch: foto ricamata del lancio ritagliata come le altre, così il disegno non si taglia. |
