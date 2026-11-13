@@ -509,7 +509,7 @@
     const kb = zk(9.38, 9.6, 10.2, 10.45), bxx = lerp(560, 1360, p(t, 9.42, 10.32));
     z += .07 * kb; fx = lerp(fx, 960 + (bxx - 960) * .35, kb); fy = lerp(fy, 640, .4 * kb);           // Motion: segue la pallina
     z += .1 * eIO(p(t, 11.8, 12.3)) * (1 - eIO(p(t, 12.36, 12.9)));                               // Gen AI: vicino alla barra, poi indietro sull'esplosione
-    z += .2 * zk(13.36, 13.85, 13.92, 14.25);                                                     // e dentro, quando le varianti si richiudono
+    z += .2 * zk(13.36, 13.85, 13.9, 14.5);                                                     // e dentro, quando le varianti si richiudono
     const cambio = [2, 4.2, 6.6, 9, 11.4].reduce((a, w) => t >= w ? w : a, -9);   // l'inizio del mondo in corso
     z *= 1 + push + ((t < 1.97 || (t >= 14.4 && t < 16.2)) ? .014 * Math.exp(-12 * (T % BEAT)) : (t >= 2 && t < 14 ? .02 * Math.exp(-9 * (t - cambio)) : 0));   // V2: un colpo solo quando cambia il mondo
     return { z, fx, fy, ax, ay };
@@ -630,7 +630,7 @@
         q.n.style.transform = `translate(${f1((1 - k) * q.dx)}px, ${f1((1 - k) * q.dy)}px) rotate(${f1((1 - k) * q.rot)}deg) scale(${lerp(.5, 1, k).toFixed(3)})`;
         q.n.style.opacity = k.toFixed(3);
       });
-      const qui = t >= 14.3 ? 1 : 0;   // V2: l'occhio della storia è appena atterrato qui
+      const qui = t >= 14.54 ? 1 : 0;   // V2: l'occhio della storia è appena atterrato qui
       traccia(occhio.querySelector('.contorno'), qui);
       occhio.querySelector('.iride').setAttribute('r', 22 * qui);
       occhio.querySelector('.pupilla').setAttribute('r', 10 * qui);
@@ -721,7 +721,7 @@
   const SKN = [SKP[0].getAttribute('d'), SKP[1].getAttribute('d')].map(d => d.match(/-?[\d.]+/g).map(Number));
   const SKTGT = [700, 500, 817, 272.5, 1103, 272.5, 1220, 500, 1103, 727.5, 817, 727.5, 700, 500];   // = occhio a 220 × 154 dopo la scala
   const SKMORPH = (i, k) => { const n = SKN[i].map((v, j) => lerp(v, SKTGT[j], k)); return `M${f1(n[0])} ${f1(n[1])}C${n.slice(2, 8).map(f1).join(' ')}C${n.slice(8, 14).map(f1).join(' ')}`; };
-  const SKT = [[2.05, 2.58], [2.62, 3.0], [3.05, 3.36], [3.4, 3.54], [3.6, 3.71], [3.76, 3.87], [3.92, 4.03], [4.08, 4.13], [4.16, 4.21], [4.24, 4.29]];   // tra un tratto e l'altro la matita ha il tempo di spostarsi
+  const SKT = [[2.05, 2.52], [2.55, 2.9], [2.93, 3.21], [3.24, 3.38], [3.43, 3.54], [3.59, 3.7], [3.75, 3.86], [3.91, 4.02], [4.07, 4.18], [4.23, 4.34]];   // anche i tratti in basso alla stessa velocità di quelli in alto   // tra un tratto e l'altro la matita ha il tempo di spostarsi
   const PEN = mk('g');
   PEN.innerHTML = '<path d="M9 -27L77 -95L95 -77L27 -9Z" fill="#FF3D8B"/><path d="M77 -95L88 -106L106 -88L95 -77Z" fill="#F5F5F2"/><path d="M0 0L9 -27L27 -9Z" fill="#F5F5F2"/><path d="M0 0L4 -12L12 -4Z" fill="#121414"/>';
 
@@ -856,7 +856,7 @@
   }
   function drawStoria(t) {
     drawKin(t);
-    const on = t >= 1.97 && t < 14.32; ST.style.display = on ? '' : 'none';
+    const on = t >= 1.97 && t < 14.56; ST.style.display = on ? '' : 'none';
     if (!on) return;
     const fg = TH.fg, dim = TH === THEMES.light ? '#B9B0A3' : '#4A4D4D';
 
@@ -869,11 +869,11 @@
       SKP.forEach((n, i) => {
         traccia(n, eIO(p(t, SKT[i][0], SKT[i][1])));   // ogni tratto accelera e rallenta, come una mano
         if (i < 2) { n.setAttribute('d', SKMORPH(i, ink)); n.setAttribute('stroke-width', f1(lerp(5, 26, ink))); if (ink > 0) n.style.strokeDasharray = 'none'; }
-        else n.style.opacity = (1 - eIO(p(t, i < 4 ? 4.62 : 4.45, i < 4 ? 4.98 : 4.75))).toFixed(3);   // iride e pupilla a matita restano mentre si riempiono di colore
+        else n.style.opacity = (1 - eIO(p(t, i < 4 ? 4.62 : 4.48, i < 4 ? 4.98 : 4.78))).toFixed(3);   // iride e pupilla a matita restano mentre si riempiono di colore
       });
       show(SK, t < 4.97);
     }
-    const penOn = t >= 1.97 && t < 4.52; vis(PEN, penOn);
+    const penOn = t >= 1.97 && t < 4.58; vis(PEN, penOn);
     if (penOn) {
       // i tratti stanno nel gruppo dello schizzo (scalato): riporto i loro punti sul palco
       const toS = q => ({ x: 960 + (q.x - 960) * .846, y: 500 + (q.y - 500) * .846 });
@@ -887,7 +887,7 @@
         else if (k < SKP.length - 1) { const e = endOf(k), s0 = startOf(k + 1), m = eIO(p(t, SKT[k][1], SKT[k + 1][0])); px = lerp(e.x, s0.x, m); py = lerp(e.y, s0.y, m); lift = bump(m); }   // si alza e va al tratto dopo
         else { const e = endOf(k); px = e.x; py = e.y; }
       }
-      const via = eIO(p(t, 4.3, 4.52)); px += 700 * via; py += 500 * via;
+      const via = eIO(p(t, 4.36, 4.58)); px += 700 * via; py += 500 * via;
       const s0 = spring(p(t, 1.97, 2.12));
       PEN.setAttribute('transform', `translate(${f1(px)} ${f1(py - 16 * lift)}) rotate(${f1(-4 * Math.sin(t * 6) - 6 * lift)}) scale(${(s0 * (1 + .06 * lift)).toFixed(3)})`);
     }
@@ -1099,9 +1099,9 @@
       q.g.setAttribute('transform', `translate(${f1(fx)} ${f1(fy + fl * (1 - kIn))}) rotate(${f1(q.rot * (1 - eOut(p(t, a0, a0 + .42))) + q.rot * .6 * kIn)}) scale(${Math.max(0, k).toFixed(3)})`);
     });
     // l'occhio finale: nasce dove le varianti si sono raccolte e atterra nella O di MORE, con la sua stessa forma
-    const e3On = t >= 13.78 && t < 14.32;
+    const e3On = t >= 13.78 && t < 14.56;
     if (e3On) {
-      const k = spring(p(t, 13.78, 14.0)), m = eIO(p(t, 13.98, 14.3)), w = M.eye.w;
+      const k = spring(p(t, 13.78, 14.0)), m = eIO(p(t, 13.94, 14.54)), w = M.eye.w;   // atterra con calma
       const a3 = lerp(160 * k, .44 * w, m);   // nasce dalle varianti già con la forma e lo spessore della O: atterrando cambia solo grandezza
       setEye(EYE3, { O: true, x: lerp(960, M.eye.x, m), y: lerp(500, M.eye.y, m), a: a3, b: a3 * .8, sw: a3 * 13 / 44, col: fg, ir: a3 * 22 / 44, pr: a3 * 10 / 44 });
     } else vis(EYE3.g, false);
@@ -1390,7 +1390,7 @@
         el.wcard.style.filter = cb > .3 ? `blur(${f1(cb)}px)` : 'none';
       }
     }
-    spegni(t >= 1.97 && t < 14.4);   // V2: i mondi separati restano spenti
+    spegni(t >= 1.97 && t < 14.6);   // V2: i mondi separati restano spenti
     drawStoria(t);
   }
 
