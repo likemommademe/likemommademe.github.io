@@ -211,7 +211,7 @@ html.cerca-aperta { overflow: hidden; }
 .sub { position: absolute; left: 50%; top: 100%; z-index: 70; width: min(720px, 92vw); padding-top: 26px; pointer-events: none; opacity: 0; transform: translate(-50%, 10px); transition: opacity .25s var(--ease), transform .45s var(--ease); }
 .nav__item:is(:hover, :focus-within, .is-open) .sub { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .sub__segno { position: absolute; left: 50%; top: 14px; width: 12px; height: 12px; border-radius: 3px; background: var(--accent-3); transform: translateX(-50%) rotate(45deg); z-index: 1; }
-.sub__in { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 34px 32px 30px; border-radius: 28px; background: #121414; color: #F5F5F2; border: 1px solid rgba(245, 245, 242, .12); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45); --line: rgba(245, 245, 242, .14); }
+.sub__in { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 34px 32px 30px; border-radius: 28px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45); }
 .sub__aside { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: 6px 30px 2px 0; }
 .sub__lead { margin: 0; max-width: 12ch; font-size: clamp(1.6rem, 1.2rem + .9vw, 2.125rem); font-weight: 500; line-height: 1.04; letter-spacing: -.03em; text-wrap: balance; }
 .sub__punto { color: var(--accent-3); }
@@ -219,9 +219,9 @@ html.cerca-aperta { overflow: hidden; }
 .sub__all svg { transition: transform .5s var(--ease); }
 .sub__all:hover svg { transform: translateX(4px); }
 .sub__main { min-width: 0; padding-left: 30px; border-left: 1px solid var(--line); }
-.sub__k { margin: 0; padding: 6px 0 10px; font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(245, 245, 242, .6); }
+.sub__k { margin: 0; padding: 6px 0 10px; font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .sub__list { margin: 0; padding: 0; list-style: none; }
-.sub__list a { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; font-size: 1.125rem; font-weight: 500; }
+.sub__list a { color: var(--fg); display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 0; font-size: 1.125rem; font-weight: 500; }
 .sub__list li + li a { border-top: 1px solid var(--line); }
 .nav__links .sub__list a::after { display: none; }
 .sub__t { position: relative; }
