@@ -159,9 +159,10 @@ progetto:
 cerca:
   apri: Cerca un progetto
   titolo: Cerca tra i progetti
-  segnaposto: Cerca un progetto…
+  segnaposto: Un progetto, un cliente, uno strumento…
   chiudi: Chiudi la ricerca
   migliori: I lavori migliori
+  lead: Cosa stai cercando
   risultati: Risultati
   vuoto: Niente da fare. Nemmeno mamma l'avrebbe trovato. Prova con un'altra parola.
   tutti: Vedi tutti i progetti

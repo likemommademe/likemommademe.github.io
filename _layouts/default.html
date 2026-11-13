@@ -36,6 +36,7 @@
       <a class="nav__logo" href="{{ '/' | relative_url }}" aria-label="{{ info.nome | upcase }}, home">{{ info.nome | upcase }}<i aria-hidden="true"></i></a>
       <div class="nav__right">
         <nav class="nav__links" aria-label="Menu principale">
+          <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
           <div class="nav__item" data-sub>
             <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}</a>
             <button class="nav__sub-btn" type="button" aria-expanded="false" aria-controls="sub-work" aria-label="Apri le categorie di {{ f.progetti }}"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -58,7 +59,7 @@
           </div>
           <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>{{ f.chi_sono }}</a>
         </nav>
-        <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+        <button class="cerca-btn cerca-btn--mob" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
         <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
         <a class="nav__cta" href="#contatti">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
@@ -68,32 +69,34 @@
   {% comment %} Cerca: un pannello con il campo di ricerca e l'anteprima dei lavori selezionati della home. {% endcomment %}
   {% assign tc = site.data.testi.cerca %}
   <dialog class="cerca" id="cerca" aria-label="{{ tc.titolo }}" data-cerca>
-    <div class="cerca__in">
-      <div class="cerca__top">
-        <svg class="cerca__lente" width="22" height="22" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        <input class="cerca__q" id="cerca-q" type="search" placeholder="{{ tc.segnaposto }}" aria-label="{{ tc.titolo }}" autocomplete="off" spellcheck="false" data-cerca-q>
-        <button class="cerca__x" type="button" data-cerca-chiudi aria-label="{{ tc.chiudi }}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <i class="sub__segno cerca__segno" aria-hidden="true"></i>
+    <div class="sub__in cerca__in">
+      <div class="sub__aside">
+        <div class="cerca__campo">
+          <p class="sub__lead">{{ tc.lead }}<span class="sub__punto">.</span></p>
+          <label class="cerca__top">
+            <svg class="cerca__lente" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            <input class="cerca__q" id="cerca-q" type="search" placeholder="{{ tc.segnaposto }}" aria-label="{{ tc.titolo }}" autocomplete="off" spellcheck="false" data-cerca-q>
+          </label>
+        </div>
+        <a class="sub__all" href="{{ '/work/' | relative_url }}">{{ tc.tutti }}<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
-      <p class="cs-label cerca__k" data-cerca-k>{{ tc.migliori }}</p>
-      <ul class="cerca__lista" data-cerca-lista>
-        {% assign scelti = site.data.home.progetti %}
-        {% for p in site.progetti %}
-          {% assign cats = "" | split: "" %}
-          {% assign c0 = site.categorie | where: "slug", p.categoria | first %}{% if c0 %}{% assign cats = cats | push: c0.title %}{% endif %}
-          {% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}{% assign cats = cats | push: acc.title %}{% endif %}{% endfor %}
-          {% assign cl = nil %}{% if p.cliente %}{% assign cl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
-          {% assign pos = 999 %}{% for s in scelti %}{% if s == p.slug %}{% assign pos = forloop.index %}{% endif %}{% endfor %}
-        <li data-pos="{{ pos }}" data-testo="{{ p.title }} {{ p.sottotitolo }} {{ cats | join: ' ' }} {{ cl.title }} {{ p.anno }} {{ p.strumenti | join: ' ' }}"{% if pos > 6 %} hidden{% endif %}>
-          <a class="cerca__r" href="{{ p.url | relative_url }}">
-            <span class="cerca__img">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy">{% endif %}</span>
-            <span class="cerca__txt"><span class="cerca__t">{{ p.title }}</span><span class="cerca__s">{{ cats | join: ' · ' }}{% if p.anno %} · {{ p.anno }}{% endif %}</span></span>
-            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-      <p class="cerca__vuoto" data-cerca-vuoto hidden>{{ tc.vuoto }}</p>
-      <a class="lnk cerca__tutti" href="{{ '/work/' | relative_url }}">{{ tc.tutti }}</a>
+      <div class="sub__main cerca__main">
+        <p class="sub__k" data-cerca-k>{{ tc.migliori }}</p>
+        <ul class="sub__list cerca__lista" data-cerca-lista>
+          {% assign scelti = site.data.home.progetti %}
+          {% for p in site.progetti %}
+            {% assign cats = "" | split: "" %}
+            {% assign c0 = site.categorie | where: "slug", p.categoria | first %}{% if c0 %}{% assign cats = cats | push: c0.title %}{% endif %}
+            {% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}{% assign cats = cats | push: acc.title %}{% endif %}{% endfor %}
+            {% assign cl = nil %}{% if p.cliente %}{% assign cl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
+            {% assign pos = 999 %}{% for s in scelti %}{% if s == p.slug %}{% assign pos = forloop.index %}{% endif %}{% endfor %}
+          <li data-pos="{{ pos }}" data-testo="{{ p.title }} {{ p.sottotitolo }} {{ cats | join: ' ' }} {{ cl.title }} {{ p.anno }} {{ p.strumenti | join: ' ' }}"{% if pos > 5 %} hidden{% endif %}><a href="{{ p.url | relative_url }}"><span class="cerca__txt"><span class="sub__t">{{ p.title }}</span><span class="cerca__s">{{ cats | join: ' · ' }}</span></span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+          {% endfor %}
+        </ul>
+        <p class="cerca__vuoto" data-cerca-vuoto hidden>{{ tc.vuoto }}</p>
+      </div>
+      <button class="cerca__x" type="button" data-cerca-chiudi aria-label="{{ tc.chiudi }}"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
   </dialog>
 
@@ -274,13 +277,13 @@
       function filtra() {
         var v = norm(q.value.trim()), n = 0;
         righe.forEach(function (r) {
-          var ok = v ? v.split(/\s+/).every(function (w) { return norm(r.dataset.testo).indexOf(w) >= 0; }) : r.dataset.pos <= 6;
+          var ok = v ? v.split(/\s+/).every(function (w) { return norm(r.dataset.testo).indexOf(w) >= 0; }) : r.dataset.pos <= 5;
           r.hidden = !ok; if (ok) n++;
         });
         k.textContent = v ? KR : K0; vuoto.hidden = n > 0;
       }
       q.addEventListener('input', filtra);
-      function apri() { q.value = ''; filtra(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { q.focus(); }, 30); }
+      function apri(e) { var b = e && e.currentTarget && e.currentTarget.getBoundingClientRect ? e.currentTarget.getBoundingClientRect() : null; if (b && b.width) d.style.setProperty('--segno-x', (b.left + b.width / 2) + 'px'); else d.style.removeProperty('--segno-x'); q.value = ''; filtra(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { q.focus(); }, 30); }
       function chiudi() { d.close(); }
       d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
       document.querySelectorAll('[data-cerca-apri]').forEach(function (b) { b.addEventListener('click', apri); });
