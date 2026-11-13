@@ -183,6 +183,10 @@ layout: default
       r.style.setProperty('--ar-riga', media.toFixed(4));
       if (veri.length < figs.length - figs.filter(function (f) { return f.classList.contains('cs-media--zoom'); }).length) return; // non ancora tutte caricate
       ar = ar.map(function (a) { return a || media; });
+      // Forme simili (differenza sotto il 30%): righe allineate, stessa larghezza e stessa forma, con un ritaglio minimo.
+      // Forme molto diverse: mosaico, ognuna con la sua larghezza.
+      var mx = Math.max.apply(null, ar), mn = Math.min.apply(null, ar);
+      if (mx / mn < 1.3) ar = ar.map(function () { return media; });
       figs.forEach(function (f, i) { f.style.setProperty('--ar', ar[i].toFixed(4)); });
       r.style.setProperty('--cols', ar.map(function (a) { return 'minmax(0, ' + a.toFixed(4) + 'fr)'; }).join(' '));
     }
