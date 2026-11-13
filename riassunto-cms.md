@@ -311,3 +311,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Gallerie: nelle righe da due ogni foto tiene la sua forma e prende una larghezza proporzionale, così nessuna viene più tagliata. Audible: «Riprendi, tre volte» da sola. Malika Favre: acconciature con nome file nuovo (niente cache). Patch: copertina con la patch ricamata. |
 | 13/11/2026 | Chrome Nails: nuove foto in alta risoluzione, la posa (anche copertina) e il dettaglio della maglia con la placca cromata, affiancate. |
 | 13/11/2026 | Scomodo: tolta la foto «Col pennello» (e il suo dettaglio). |
+| 13/11/2026 | Scomodo: nuova sezione «L'ispirazione» con l'inspo del materiale (lecca lecca sulla pelle). |
