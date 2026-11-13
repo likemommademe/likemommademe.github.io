@@ -1183,8 +1183,8 @@ async function listView(coll) {
   const counts = {};
   if (coll.count) {
     for (const e of await loadCollection(findCollection(coll.count.collection))) {
-      const key = e.data[coll.count.field];
-      counts[key] = (counts[key] || 0) + 1;
+      const keys = [e.data[coll.count.field]].concat(coll.count.alsoField ? (e.data[coll.count.alsoField] || []) : []);
+      new Set(keys.filter(Boolean)).forEach((key) => { counts[key] = (counts[key] || 0) + 1; });
     }
   }
 
@@ -1344,7 +1344,7 @@ async function collectionEditor(coll, slug) {
       };
     },
     remove: !isNew && (async () => {
-      const used = coll.count ? (await loadCollection(findCollection(coll.count.collection))).filter((e) => e.data[coll.count.field] === slug) : [];
+      const used = coll.count ? (await loadCollection(findCollection(coll.count.collection))).filter((e) => e.data[coll.count.field] === slug || (coll.count.alsoField && (e.data[coll.count.alsoField] || []).includes(slug))) : [];
       if (used.length && !confirm(`Attenzione: “${title}” è usato da ${used.length} progetti. Eliminarlo lo stesso?`)) return false;
       if (!used.length && !confirm(`Vuoi eliminare “${title}”? Non si può annullare.`)) return false;
       const changes = [{ path: entry.path, remove: true }];

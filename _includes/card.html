@@ -10,6 +10,7 @@
     <ul class="card-tag">
       {% if cliente %}<li>{{ cliente.title }}</li>{% endif %}
       {% if cat %}<li>{{ cat.title }}</li>{% endif %}
+      {% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}<li>{{ acc.title }}</li>{% endif %}{% endfor %}
       {% if p.anno %}<li>{{ p.anno }}</li>{% endif %}
     </ul>
     <h3>{{ p.title }}</h3>

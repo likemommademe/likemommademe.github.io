@@ -42,7 +42,7 @@ layout: default
       <dl class="cs-facts">
         {% if cliente %}<div><dt>{{ t.cliente }}</dt><dd>{% if cliente.sito %}<a class="lnk" href="{{ cliente.sito }}" target="_blank" rel="noopener">{{ cliente.title }}</a>{% else %}{{ cliente.title }}{% endif %}</dd></div>{% endif %}
         {% if cliente.settore %}<div><dt>{{ t.settore }}</dt><dd>{{ cliente.settore }}</dd></div>{% endif %}
-        {% if cat %}<div><dt>{{ t.categoria }}</dt><dd><a class="lnk" href="{{ cat.url | relative_url }}">{{ cat.title }}</a></dd></div>{% endif %}
+        {% if cat %}<div><dt>{{ t.categoria }}</dt><dd><a class="lnk" href="{{ cat.url | relative_url }}">{{ cat.title }}</a>{% for ac in page.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}, <a class="lnk" href="{{ acc.url | relative_url }}">{{ acc.title }}</a>{% endif %}{% endfor %}</dd></div>{% endif %}
         {% if page.anno %}<div><dt>{{ t.anno }}</dt><dd>{{ page.anno }}</dd></div>{% endif %}
         {% if page.strumenti and page.strumenti.size > 0 %}<div><dt>{{ t.strumenti }}</dt><dd>{% for s in page.strumenti %}<span class="cs-facts__s">{{ s }}</span>{% endfor %}</dd></div>{% endif %}
       </dl>

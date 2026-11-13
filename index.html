@@ -91,7 +91,7 @@ reel: true
   </div>
   <ul class="mondi">
     {% for c in categorie %}
-      {% assign n = site.progetti | where: "categoria", c.slug | size %}
+      {% assign n = 0 %}{% for p in site.progetti %}{% if p.published != false %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% endif %}{% endif %}{% endfor %}
       <li>
         <a class="mondo" href="{{ c.url | relative_url }}">
           <span class="mondo__t">{{ c.title }}</span>
@@ -131,7 +131,7 @@ reel: true
       <a class="pc" href="{{ p.url | relative_url }}">
         <span class="pc__media">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}</span>
         <span class="pc__corpo">
-          <span class="card-tag pc__tag">{% if pcl %}<span>{{ pcl.title }}</span>{% endif %}{% if pc %}<span>{{ pc.title }}</span>{% endif %}{% if p.anno %}<span>{{ p.anno }}</span>{% endif %}</span>
+          <span class="card-tag pc__tag">{% if pcl %}<span>{{ pcl.title }}</span>{% endif %}{% if pc %}<span>{{ pc.title }}</span>{% endif %}{% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}<span>{{ acc.title }}</span>{% endif %}{% endfor %}{% if p.anno %}<span>{{ p.anno }}</span>{% endif %}</span>
           <span class="pc__t">{{ p.title }}</span>
           {% if p.domanda %}<span class="pc__r"><span class="cs-label pc__rl">{{ t.lavori_domanda }}</span><span class="pc__q">{{ p.domanda }}</span></span>{% endif %}
           <span class="pc__go">{{ tl.vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>

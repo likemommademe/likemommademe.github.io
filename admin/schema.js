@@ -76,7 +76,7 @@ window.CMS = {
       sort: ['ordine', 'title'],
       orderField: 'ordine',
       thumb: 'copertina',
-      count: { collection: 'progetti', field: 'categoria' },
+      count: { collection: 'progetti', field: 'categoria', alsoField: 'altre_categorie' },
       fields: [
         { name: 'title', label: 'Nome', type: 'string', required: true, i18n: true },
         { name: 'copertina', label: 'Immagine', type: 'image', hint: 'Compare nella pagina Work.' },
