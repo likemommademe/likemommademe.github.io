@@ -862,6 +862,7 @@
     // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra
     if (t >= 4.85 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 220, b: 154, sw: 0, col: fg, ir: 66 * spring(p(t, 4.85, 5.15)), pr: 29 * spring(p(t, 4.95, 5.2)) });
     const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
+    const giuW = 60 * (1 - eIO(p(t, 7.86, 8.22)));   // la pagina, sotto il titolo, sta più in basso: tutto quello che ci sta dentro scende con lei
     // la tavola del marchio: la camera si inclina e ci gira intorno, gli oggetti con il logo compaiono intorno all'icona
     const bK = eIO(p(t, 5.6, 5.92)) * (1 - eIO(p(t, 6.36, 6.56)));
     const sway = lerp(-.5, .5, eIO(p(t, 5.62, 6.4))), PB = boardProj(.6 * bK, sway * bK);   // pende da un lato, poi dall'altro
@@ -883,7 +884,7 @@
       const grow = spring(p(t, 5.2, 5.5)), fly = eIO(p(t, 6.5, 6.85));
       let S = lerp(.35, 1, grow) * lerp(1, .6, eIO(p(t, 5.6, 5.92)));
       S = lerp(S, .1, fly);   // dalla tavola vola dritta nell'header, senza tornare grande
-      let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY + 60 * (1 - eIO(p(t, 7.86, 8.22))), fly);
+      let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY + giuW, fly);
       cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
       const PT = boardProj(.6 * bK, sway * bK, 1900, [cx, cy]);
       TL.forEach((r, i) => { const z = -70 * i / (TL.length - 1); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
@@ -896,7 +897,7 @@
     /* 3 · Web Design: la finestra si disegna intorno al logo, la pagina si compone */
     const wOn = t >= 6.55 && t < 9.0; show(WEB, wOn);
     if (wOn) {
-      const giu = 60 * (1 - eIO(p(t, 7.86, 8.22)));   // sotto il titolo la pagina scende un po', poi risale quando la scena cresce
+      const giu = giuW;
       WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${f1(OY + giu)})`);
       WEB.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
       V2.out.setAttribute('stroke', fg); traccia(V2.out, eOut(p(t, 6.55, 6.95)));
@@ -910,10 +911,10 @@
     }
     // l'occhio del sito: nasce nella card e, con lo zoom, diventa il protagonista di Motion
     const e2On = t >= 7.4 && t < 11.45;
-    let e2 = { on: e2On, x: 1240, y: 510 + OY, a: 160, b: 112, sw: 16, col: '#F5F5F2', ir: 48, pr: 21, op: 1 };
+    let e2 = { on: e2On, x: 1240, y: 510 + OY + giuW, a: 160, b: 112, sw: 16, col: '#F5F5F2', ir: 48, pr: 21, op: 1 };
     if (e2On) {
       const k0 = spring(p(t, 7.4, 7.75)); e2.ir *= k0; e2.pr *= k0; e2.draw = eOut(p(t, 7.4, 7.7));
-      const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY, 460, z); e2.a = lerp(160, 210, z); e2.b = lerp(112, 147, z);
+      const z = zoomK; e2.x = lerp(1240, 960, z); e2.y = lerp(510 + OY + giuW, 460, z); e2.a = lerp(160, 210, z); e2.b = lerp(112, 147, z);
       e2.sw = lerp(16, 21, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(48 * k0, 63, z); e2.pr = lerp(21 * k0, 27, z);
       // 4 · Motion, tre chiavi sulla timeline. 1: l'occhio strizza la palpebra
       e2.sy = 1 - .94 * bump(p(t, 9.74, 9.94));
