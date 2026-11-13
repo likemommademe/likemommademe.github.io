@@ -342,3 +342,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Accademia dei Romani: a sinistra torna la foto originale dell'insegna (anche copertina), a destra resta il dettaglio delle lettere in acciaio. |
 | 14/11/2026 | Accademia dei Romani: nuova copertina, il primo piano della placca e delle lettere in acciaio. |
 | 14/11/2026 | Nuovo tasto **Cerca** (lente) nel menu, anche da telefono e con il tasto /: apre un pannello con i primi 6 lavori selezionati della home e filtra tutti i progetti per titolo, sottotitolo, categoria, cliente, anno e strumenti. Testi in testi.yml (sezione cerca). |
+| 14/11/2026 | SITUATION: copertina quadrata con la scritta intera; galleria snellita da 17 a 9 immagini (identità 2, app 3, social 2, palestra 2), tutte in coppie della stessa forma o grandi a tutta larghezza, senza tagli. |
