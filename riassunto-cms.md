@@ -349,3 +349,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Pagine progetto: la copertina in cima tiene la sua forma (niente tagli, niente bande). Cerca: la lente sul computer sta a sinistra di Works e apre una tendina nello stile del menu Works (titolo, campo di ricerca, Tutti i progetti; a destra i 5 lavori migliori che si filtrano). SITUATION: copertina originale e, per l'app, la foto con tutte le schermate. |
 | 14/11/2026 | Cerca: torna il pannello di prima (con le miniature), la lente resta accanto a Works. Home: le card dello scorrimento orizzontale sono più larghe. Pagine progetto: la copertina in cima torna quadrata come all'inizio. |
 | 14/11/2026 | Menu Works: la tendina ora è chiara di giorno e scura di notte, come la ricerca. |
+| 14/11/2026 | Work, vista Mosaico: i titoli dei progetti grandi sono più piccoli e vanno a capo, così non escono più dal riquadro. |
