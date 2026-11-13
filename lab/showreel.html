@@ -596,6 +596,16 @@
   /* ---------- Fine: MORE THAN meets THE EYE, poi l'header finale ---------- */
   let IDLE = 0;   // tempo reale a intro finita: il cubo e la forma piccoli continuano a muoversi
   // posizioni degli elementi intorno al logo (spazio del palco 1920 x 1080), con l'ingresso scaglionato
+  // il mouse sulla schermata finale: ogni elemento si scosta morbido dal puntatore, cresce appena e ruota un poco
+  let PTR = { x: -9999, y: -9999, in: false };
+  const REP = {};
+  const repel = (id, x, y, R = 320, F = 80) => {
+    const o = REP[id] || (REP[id] = { x: 0, y: 0, s: 0 });
+    let tx = 0, ty = 0, ts = 0;
+    if (PTR.in) { const dx = x - PTR.x, dy = y - PTR.y, d = Math.hypot(dx, dy) || 1; if (d < R) { const k = 1 - d / R, e = k * k * (3 - 2 * k); tx = dx / d * F * e; ty = dy / d * F * e; ts = e; } }
+    o.x += (tx - o.x) * .1; o.y += (ty - o.y) * .1; o.s += (ts - o.s) * .1;
+    return o;
+  };
   const ORB = { box: [250, 245, 16.05], ill: [1665, 240, 16.15], ai: [640, 215, 16.25], mot: [260, 705, 16.35], web: [1660, 712, 16.45] };
   const FR = { y: 152, k: .42 };   // la frase, a fine intro, sotto il nome (dove all'inizio c'era il ruolo)
   let fraseVia = false;            // a intro finita la frase passa alla pagina, che la porta nella prima sezione
@@ -623,8 +633,8 @@
     const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
     const kb = pop(ORB.box[2]);
     renderBoxes({ th: 50 * Math.PI / 180, yaw: (25 + 20 * Math.sin(IDLE * .6)) * Math.PI / 180, dy: 0,
-      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0], cy: ORB.box[1] + fl(0), sc: .34 * kb, target: el.miniBox });
-    const place = (id, o, extra = '') => { const k = pop(o[2]); E(id).setAttribute('transform', `translate(${o[0]} ${f1(o[1] + fl(o[0]))}) scale(${k.toFixed(3)}) ${extra}`); return k; };
+      hs: H1.map((h, k) => h * (.8 + .2 * Math.sin(IDLE * 1.3 + k))), cx: ORB.box[0] + repel('box', ORB.box[0], ORB.box[1]).x, cy: ORB.box[1] + fl(0) + REP.box.y, sc: .34 * kb * (1 + .08 * REP.box.s), target: el.miniBox });
+    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .1)}) scale(${(k * (1 + .08 * r.s)).toFixed(3)}) ${extra}`); return k; };
     place('oIll', ORB.ill, `rotate(${f1(6 * Math.sin(IDLE * .8))})`);
     E('oIllB').setAttribute('d', shape(0, 0, 92, FL, BL, .5 + .5 * Math.sin(IDLE * .9), IDLE * .3));
     E('oIllB').setAttribute('fill', GREEN);
@@ -686,7 +696,7 @@
         continue;
       }
       // Uscita: le lettere cadono intere (niente maschere che le tagliano), una parola dopo l'altra, con il motion blur
-      m.style.overflow = t < 14 ? 'visible' : 'hidden';
+      m.style.overflow = t < 14 || t > 16.8 ? 'visible' : 'hidden';   // a nome salito niente maschera: al passaggio del mouse le lettere possono crescere
       let x = 0, y = 0, sy = 1, jump = 0, dy = 0, rot = 0, blur = 0;
       if (t < 2) {
         sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
@@ -1010,9 +1020,10 @@
     // accanto alla freccia compare la pillola SCROLL e la segue
     const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920;
     const sx = (ptr.x - r0.left) / SS, sy = (ptr.y - r0.top) / SS;
-    const sopra = ptr.in && !reduced && st < .02 && sy > M.lr[0].t - 60 && sy < M.lr[0].b + 60 && sx > M.lr[0].l - 60 && sx < M.lr[12].r + 60;
+    const fine = st > DUR - .3, quiFermo = st < .02 || fine;   // all'inizio e nella schermata finale
+    const sopra = ptr.in && !reduced && quiFermo && sy > M.lr[0].t - 60 && sy < M.lr[0].b + 60 && sx > M.lr[0].l - 60 && sx < M.lr[12].r + 60;
     amp += ((sopra ? 1 : 0) - amp) * (1 - Math.exp(-dt * (sopra ? 10 : 8)));
-    if (st < .02 && (amp > .002 || hv.some(v => v > .002))) {
+    if (quiFermo && (amp > .002 || hv.some(v => v > .002))) {
       // morbido: la lettera sotto il mouse cresce poco e lentamente; le vicine si scostano quanto serve per non toccarsi
       letters.forEach((c, i) => {
         const L = M.lr[i], cx = (L.l + L.r) / 2, d = Math.abs(sx - cx) / Math.max(1, L.r - L.l);
@@ -1028,7 +1039,8 @@
       });
       lastDrawn = -1;
     }
-    hint.style.opacity = amp.toFixed(3);
+    hint.style.opacity = (st < .02 ? amp : 0).toFixed(3);   // la pillola SCROLL solo all'inizio
+    PTR = { x: sx, y: sy, in: ptr.in && !reduced && fine };
     hint.style.transform = `translate(${f1(ptr.x + 22)}px, ${f1(ptr.y + 18)}px) scale(${(.85 + .15 * amp).toFixed(3)})`;
     requestAnimationFrame(scrollFrame);
   }
