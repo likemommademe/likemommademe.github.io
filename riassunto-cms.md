@@ -316,3 +316,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 13/11/2026 | Audible: nuova foto della pensilina con Il corsaro nero, di notte sotto la pioggia, al posto della vecchia. |
 | 13/11/2026 | IKEA: tolti i dettagli ingranditi accanto alle foto da sole (scrivania, parete galleria, layout, tappa 5, Emotion); la foto finale sul BLÅHAJ è grande a tutta larghezza. Nuovo formato «Grande, a tutta larghezza» nel pannello. |
 | 13/11/2026 | Accademia dei Romani: nuova foto dell'insegna (anche copertina) affiancata dal dettaglio delle lettere in acciaio, al posto della vecchia. |
+| 13/11/2026 | IKEA: le 6 foto di KOMPISHÄNG ora in tre righe da due, nessuna da sola. |
