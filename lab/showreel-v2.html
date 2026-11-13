@@ -669,6 +669,7 @@
   const almond = (x, y, a, b) => `M${f1(x - a)} ${f1(y)}C${f1(x - .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + .55 * a)} ${f1(y - 1.25 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}Z`;
   const almondTop = (x, y, a, b) => `M${f1(x)} ${f1(y - .9375 * b)}C${f1(x + .3 * a)} ${f1(y - .9375 * b)} ${f1(x + .78 * a)} ${f1(y - .6 * b)} ${f1(x + a)} ${f1(y)}C${f1(x + .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - .55 * a)} ${f1(y + 1.25 * b)} ${f1(x - a)} ${f1(y)}C${f1(x - .78 * a)} ${f1(y - .6 * b)} ${f1(x - .3 * a)} ${f1(y - .9375 * b)} ${f1(x)} ${f1(y - .9375 * b)}Z`;   // parte dall'alto: chiusura liscia
   // un occhio riutilizzabile: contorno, iride, pupilla
+  const show = (n, on) => { n.style.display = on ? '' : 'none'; };   // spegne il gruppo e tutto quello che contiene
   function mkEye(parent = ST) {
     const g = mk('g', {}, parent), o = mk('path', { fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round', pathLength: 1 }, g);
     const i = mk('circle', {}, g), pu = mk('circle', {}, g);
@@ -729,12 +730,12 @@
     const F = mk('g', {}, g); F.innerHTML = face; return { g, L, F, w, h };
   }
   const SLABS = [
-    Object.assign(mkSlab(380, 230, 18, `<rect width="380" height="230" rx="18" fill="#FFFFFF"/><path d="${almond(86, 74, 46, 27)}" fill="none" stroke="#121414" stroke-width="9" stroke-linejoin="round"/><circle cx="86" cy="74" r="14" fill="#FF3D8B"/><circle cx="86" cy="74" r="6" fill="#121414"/><text x="40" y="170" font-family="Cabinet Grotesk" font-weight="900" font-size="26" fill="#121414" letter-spacing="-.5">LIKEMOMMADEME</text><rect x="40" y="188" width="150" height="8" rx="4" fill="#C9CED6"/>`, '#D9D4CC'), { ox: -520, oy: 160, th: 10, a: 6.0 }),
-    Object.assign(mkSlab(220, 220, 110, `<rect width="220" height="220" rx="110" fill="#FF3D8B"/><path d="${almond(110, 110, 70, 40)}" fill="none" stroke="#F5F5F2" stroke-width="13" stroke-linejoin="round"/><circle cx="110" cy="110" r="21" fill="#121414"/>`, '#B8235F'), { ox: -540, oy: -190, th: 14, a: 6.06 }),
-    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#3D5AFF"/>`, '#2A3DCC', 2), { ox: 470, oy: -190, th: 8, a: 6.1 }),
-    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#12C08E"/>`, '#0B8F69', 2), { ox: 540, oy: -170, th: 8, a: 6.13 }),
-    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#FF3D8B"/>`, '#B8235F', 2), { ox: 610, oy: -150, th: 8, a: 6.16 }),
-    Object.assign(mkSlab(300, 220, 18, `<rect width="300" height="220" rx="18" fill="#121414"/><text x="34" y="150" font-family="Cabinet Grotesk" font-weight="900" font-size="120" fill="#F5F5F2">Aa</text><text x="36" y="194" font-family="Cabinet Grotesk" font-weight="500" font-size="17" fill="#9A9A9A">Cabinet Grotesk</text>`, '#000000'), { ox: 540, oy: 170, th: 10, a: 6.08 })
+    Object.assign(mkSlab(380, 230, 18, `<rect width="380" height="230" rx="18" fill="#FFFFFF"/><path d="${almond(86, 74, 46, 27)}" fill="none" stroke="#121414" stroke-width="9" stroke-linejoin="round"/><circle cx="86" cy="74" r="14" fill="#FF3D8B"/><circle cx="86" cy="74" r="6" fill="#121414"/><text x="40" y="170" font-family="Cabinet Grotesk" font-weight="900" font-size="26" fill="#121414" letter-spacing="-.5">LIKEMOMMADEME</text><rect x="40" y="188" width="150" height="8" rx="4" fill="#C9CED6"/>`, '#D9D4CC'), { ox: -520, oy: 160, th: 10, a: 5.7 }),
+    Object.assign(mkSlab(220, 220, 110, `<rect width="220" height="220" rx="110" fill="#FF3D8B"/><path d="${almond(110, 110, 70, 40)}" fill="none" stroke="#F5F5F2" stroke-width="13" stroke-linejoin="round"/><circle cx="110" cy="110" r="21" fill="#121414"/>`, '#B8235F'), { ox: -540, oy: -190, th: 14, a: 5.78 }),
+    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#3D5AFF"/>`, '#2A3DCC', 2), { ox: 470, oy: -190, th: 8, a: 5.84 }),
+    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#12C08E"/>`, '#0B8F69', 2), { ox: 540, oy: -170, th: 8, a: 5.88 }),
+    Object.assign(mkSlab(130, 190, 14, `<rect width="130" height="190" rx="14" fill="#FF3D8B"/>`, '#B8235F', 2), { ox: 610, oy: -150, th: 8, a: 5.92 }),
+    Object.assign(mkSlab(300, 220, 18, `<rect width="300" height="220" rx="18" fill="#121414"/><text x="34" y="150" font-family="Cabinet Grotesk" font-weight="900" font-size="120" fill="#F5F5F2">Aa</text><text x="36" y="194" font-family="Cabinet Grotesk" font-weight="500" font-size="17" fill="#9A9A9A">Cabinet Grotesk</text>`, '#000000'), { ox: 540, oy: 170, th: 10, a: 5.8 })
   ];
   const TILE = mk('g'), TL = Array.from({ length: 7 }, () => mk('rect', { width: 640, height: 640, rx: 140 }, TILE));
   const TE = mkEye(TILE);   // l'occhio stampato sulla faccia del blocco
@@ -756,7 +757,7 @@
       <g id="v2cards"><rect x="400" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/><rect x="790" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/><rect x="1180" y="742" width="360" height="120" rx="22" fill="#EEF2F7"/></g>
     </g>
     <rect id="v2out" x="${W2.x}" y="${W2.y}" width="${W2.w}" height="${W2.h}" rx="28" fill="none" stroke-width="3" pathLength="1"/>`;
-  ST.appendChild(BOARD); ST.appendChild(TILE);   // tavola e logo sopra la pagina
+  ST.appendChild(BOARD); ST.appendChild(TILE); ST.appendChild(EYE1.g);   // tavola e logo sopra la pagina; il segno sopra l'icona che gli cresce dietro
   const OY = 40;          // tutta la pagina un po' più in basso: lascia spazio al titolo
   const wq = id => WEB.querySelector('#' + id);
   const V2 = { fill: wq('v2fill'), bar: wq('v2bar'), nav: wq('v2nav'), h1: wq('v2h1'), sub: wq('v2sub'), cta: wq('v2cta'), card: wq('v2card'), cards: wq('v2cards'), out: wq('v2out') };
@@ -769,7 +770,7 @@
   const GHOST = [mkEye(MO), mkEye(MO), mkEye(MO)];
   const EYE2 = mkEye();   // l'occhio del sito che diventa protagonista
   const mBez = (s, P) => { const u1 = 1 - s; return [u1 * u1 * u1 * P[0][0] + 3 * u1 * u1 * s * P[1][0] + 3 * u1 * s * s * P[2][0] + s * s * s * P[3][0], u1 * u1 * u1 * P[0][1] + 3 * u1 * u1 * s * P[1][1] + 3 * u1 * s * s * P[2][1] + s * s * s * P[3][1]]; };
-  const MP = [[760, 460], [900, 460], [1080, 460], [1200, 460]];   // in linea retta: a sinistra e poi a destra
+  const MP = [[960, 460], [1040, 460], [1140, 460], [1220, 460]];   // scatto in linea retta verso destra
 
   // 5 · Gen AI: il prompt, poi l'esplosione di varianti, poi tutte di nuovo in una
   const BAR = mk('rect', { rx: 3 });   // la timeline che diventa la barra del prompt
@@ -815,7 +816,7 @@
     const fg = TH.fg, dim = TH === THEMES.light ? '#B9B0A3' : '#4A4D4D';
 
     /* 1 · lo schizzo: la matita nasce dove si sono raccolti i tre quadratini */
-    const skOn = t < 5; vis(SK, skOn);
+    const skOn = t < 5; show(SK, skOn);
     if (skOn) {
       SK.setAttribute('stroke', fg); SK.setAttribute('stroke-width', 5);
       // i due contorni dello schizzo si inchiostrano: diventano la linea spessa e pulita del segno
@@ -825,7 +826,7 @@
         if (i < 2) { n.setAttribute('d', SKMORPH(i, ink)); n.setAttribute('stroke-width', f1(lerp(5, 26, ink))); if (ink > 0) n.style.strokeDasharray = 'none'; }
         else n.style.opacity = (1 - eIO(p(t, 4.45, 4.75))).toFixed(3);
       });
-      vis(SK, t < 4.97);
+      show(SK, t < 4.97);
     }
     const penOn = t >= 1.97 && t < 4.25; vis(PEN, penOn);
     if (penOn) {
@@ -842,30 +843,18 @@
     }
 
     /* 2 · Branding: la griglia mette ordine, lo schizzo diventa un segno pulito */
-    const grOn = t >= 4.18 && t < 5.35; vis(GR, grOn);
+    const grOn = t >= 4.18 && t < 5.35; show(GR, grOn);
     if (grOn) { GR.setAttribute('stroke', dim); GRP.forEach((n, i) => traccia(n, eOut(p(t, 4.18 + .04 * i, 4.55 + .04 * i)) * (1 - eIn(p(t, 5.0 + .02 * i, 5.3 + .02 * i))))); }
     const tileS = t < 6.2 ? spring(p(t, 5.3, 5.7)) : lerp(1, .1, eIO(p(t, 6.2, 6.6)));
-    const e1On = t >= 4.95 && t < 5.15;
-    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 260, b: 150, sw: 26, col: fg, ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
+    const e1On = t >= 4.95 && t < 5.5;
+    setEye(EYE1, { on: e1On, x: 960, y: 500, a: 260, b: 150, sw: 26, col: mix(fg, '#F5F5F2', eIO(p(t, 5.25, 5.5))), ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
     // l'iride e la pupilla nascono già mentre lo schizzo si inchiostra
     if (t >= 4.85 && t < 4.95) setEye(EYE1, { x: 960, y: 500, a: 260, b: 150, sw: 0, col: fg, ir: 78 * spring(p(t, 4.85, 5.15)), pr: 34 * spring(p(t, 4.95, 5.2)) });
-    // il logo diventa un oggetto 3D: prende spessore e fa un giro intero su se stesso, come una moneta
     const zoomK = eIO(p(t, 8.5, 9.0)), ZP = [1240, 510 + OY], zs = lerp(1, 2.6, zoomK);
-    const extOn = t >= 5.15 && t < 5.92; vis(EXTG, extOn);
-    if (extOn) {
-      const th = 56 * spring(p(t, 5.15, 5.38)), spin = TAU * eIO(p(t, 5.28, 5.9)), lift = .22 * bump(p(t, 5.28, 5.9));
-      const PJ = boardProj(lift, 0);
-      const st = EXT.map((e, i) => { const z = -th * i / (EXT.length - 1); const r = PJ(0, 0, 640, 640, z, 1, spin); return { e, i, r }; }).sort((a, b) => b.r.d - a.r.d);
-      st.forEach(({ e, i, r }) => {
-        const front = i === EXT.length - 1;
-        setEye(e, { x: 320, y: 320, a: 260, b: 150, sw: 26, col: front ? fg : mix(fg, TH === THEMES.light ? '#F4EFE7' : '#121414', .5 - .3 * i / EXT.length), ir: front ? 78 : 0, pr: front ? 34 : 0 });
-        e.g.setAttribute('transform', r.m); EXTG.appendChild(e.g);
-      });
-    }
     // la tavola del marchio: la camera si inclina e ci gira intorno, gli oggetti con il logo compaiono intorno all'icona
-    const bK = eIO(p(t, 5.92, 6.2)) * (1 - eIO(p(t, 6.36, 6.56)));
-    const PB = boardProj(.62 * bK, -.42 * bK + .18 * bK * Math.sin((t - 5.9) * 2.2));
-    const bOn = t >= 5.95 && t < 6.55; vis(BOARD, bOn);
+    const bK = eIO(p(t, 5.6, 5.92)) * (1 - eIO(p(t, 6.36, 6.56)));
+    const PB = boardProj(.62 * bK, -.42 * bK + .2 * bK * Math.sin((t - 5.6) * 2.4));
+    const bOn = t >= 5.65 && t < 6.55; show(BOARD, bOn);
     if (bOn) {
       const items = SLABS.map(o => {
         const k = spring(p(t, o.a, o.a + .3)) * (1 - eIn(p(t, 6.32, 6.5))), sc = Math.max(.001, k);
@@ -878,23 +867,23 @@
       });
     }
     // l'icona dell'app: il logo atterra sul blocco blu; sulla tavola si rimpicciolisce, poi vola nell'header del sito
-    const tOn = t >= 5.82 && t < 9.0; vis(TILE, tOn);
+    const tOn = t >= 5.2 && t < 9.0; show(TILE, tOn);
     if (tOn) {
-      const grow = spring(p(t, 5.82, 6.08)), fly = eIO(p(t, 6.5, 6.85));
-      let S = lerp(.35, 1, grow) * lerp(1, .6, eIO(p(t, 5.95, 6.2)));
+      const grow = spring(p(t, 5.2, 5.5)), fly = eIO(p(t, 6.5, 6.85));
+      let S = lerp(.35, 1, grow) * lerp(1, .6, eIO(p(t, 5.6, 5.92)));
       S = lerp(S, .1, fly);   // dalla tavola vola dritta nell'header, senza tornare grande
       let cx = lerp(960, 400, fly), cy = lerp(500, 280 + OY, fly);
       cx = ZP[0] + (cx - ZP[0]) * zs; cy = ZP[1] + (cy - ZP[1]) * zs; S *= zs;
-      const PT = boardProj(.62 * bK, -.42 * bK + .18 * bK * Math.sin((t - 5.9) * 2.2), 1900, [cx, cy]);
+      const PT = boardProj(.62 * bK, -.42 * bK + .2 * bK * Math.sin((t - 5.6) * 2.4), 1900, [cx, cy]);
       TL.forEach((r, i) => { const z = -70 * i / (TL.length - 1); r.setAttribute('transform', PT(0, 0, 640, 640, z, S).m); r.setAttribute('fill', i === TL.length - 1 ? BLUE : mix(BLUE, INK, .55 - .3 * i / TL.length)); });
       TILE.style.opacity = (Math.min(1, grow * 2) * (1 - eIO(p(t, 8.55, 8.9)))).toFixed(3);
-      const ec = t < 6.0 ? mix(fg, '#F5F5F2', eIO(p(t, 5.84, 6.0))) : '#F5F5F2';
-      setEye(TE, { on: t >= 5.9, x: 320, y: 320, a: 260, b: 150, sw: 26, col: ec, ir: 78, pr: 34 });   // prende il posto del logo che ha appena finito di girare
+      const ec = '#F5F5F2';
+      setEye(TE, { on: t >= 5.5, x: 320, y: 320, a: 260, b: 150, sw: 26, col: ec, ir: 78, pr: 34 });   // prende il posto del logo che ha appena finito di girare
       TE.g.setAttribute('transform', PT(0, 0, 640, 640, -70, S).m);
     }
 
     /* 3 · Web Design: la finestra si disegna intorno al logo, la pagina si compone */
-    const wOn = t >= 6.55 && t < 9.0; vis(WEB, wOn);
+    const wOn = t >= 6.55 && t < 9.0; show(WEB, wOn);
     if (wOn) {
       WEB.setAttribute('transform', `translate(${ZP[0]} ${ZP[1]}) scale(${zs.toFixed(3)}) translate(${-ZP[0]} ${-ZP[1]}) translate(0 ${OY})`);
       WEB.style.opacity = (1 - eIO(p(t, 8.55, 8.9))).toFixed(3);
@@ -916,23 +905,34 @@
       e2.sw = lerp(14, 22, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(45 * k0, 60, z); e2.pr = lerp(19 * k0, 26, z);
       // 4 · Motion: le chiavi della timeline fanno battere le palpebre, muovere l'occhio lungo il tracciato, schiacciarlo all'arrivo
       e2.sy = 1 - .94 * bump(p(t, 9.74, 9.94));
-      const mv = eIO(p(t, 10.22, 10.7)), back = eIO(p(t, 11.0, 11.35));
-      const ant = eIO(p(t, 9.98, 10.22));
-      if (t < 10.22) { e2.x = lerp(960, 760, ant); e2.sx = 1 - .1 * ant; e2.sy *= 1 + .08 * ant; }
-      if (t >= 10.22) {
+      const mv = eIO(p(t, 10.7, 10.92)), back = eIO(p(t, 11.0, 11.38));
+      if (t >= 10.7) {
         const [mx, my] = mBez(mv, MP), [nx, ny] = mBez(Math.min(1, mv + .02), MP), dl = Math.hypot(nx - mx, ny - my) || 1;
         e2.x = mx; e2.y = my; e2.lx = mv < 1 ? (nx - mx) / dl : 0; e2.ly = mv < 1 ? (ny - my) / dl : 0;
       }
-      const sq = bump(p(t, 10.7, 10.95)); e2.sx = (e2.sx ?? 1) * (1 + .2 * sq) * (t >= 10.22 && mv < 1 ? 1 + .35 * bump(mv) : 1); e2.sy *= 1 - .2 * sq;
-      if (t >= 10.7) { e2.x = lerp(1200, 960, eIO(p(t, 10.75, 11.0))); }
+      const sq = bump(p(t, 10.9, 11.05)); e2.sx = (e2.sx ?? 1) * (1 + .22 * sq) * (t >= 10.7 && mv < 1 ? 1 + .3 * bump(mv) : 1); e2.sy *= 1 - .22 * sq;
+      if (t >= 11.0) { e2.x = lerp(1220, 960, back); }
+      // chiave 2: l'occhio prende spessore e fa un giro intero su se stesso, come una moneta (al posto dell'occhio piatto)
+      e2.spin = t >= 10.2 && t < 10.64;
       e2.x = lerp(e2.x, 960, back); e2.y = lerp(e2.y, 560, back); e2.a = lerp(e2.a, 110, back); e2.b = lerp(e2.b, 63, back);
       e2.sw = lerp(e2.sw, 14, back); e2.ir = lerp(e2.ir, 33, back); e2.pr = lerp(e2.pr, 14, back);
       // 5 · Gen AI: l'occhio piccolo sotto il prompt, poi esplode nelle varianti
       const boom = eIn(p(t, 12.3, 12.42)); e2.op = 1 - boom; e2.sx *= 1 + .5 * boom; e2.sy *= 1 + .5 * boom;
       if (t >= 12.42) e2.on = false;
     }
+    if (e2.spin) {
+      const spin = TAU * eIO(p(t, 10.22, 10.62)), th = 44 * bump(p(t, 10.2, 10.64)), lift = .2 * bump(p(t, 10.22, 10.62));
+      const PJ = boardProj(lift, 0, 1900, [e2.x, e2.y]), scE = e2.a / 260;
+      EXT.map((e, i) => ({ e, i, r: PJ(0, 0, 640, 640, -th * i / (EXT.length - 1), scE, spin) })).sort((a, b) => b.r.d - a.r.d).forEach(({ e, i, r }) => {
+        const front = i === EXT.length - 1;
+        setEye(e, { x: 320, y: 320, a: 260, b: 150, sw: 22 / scE, col: front ? fg : mix(fg, TH === THEMES.light ? '#F4EFE7' : '#121414', .5 - .3 * i / EXT.length), ir: front ? 78 : 0, pr: front ? 34 : 0 });
+        e.g.setAttribute('transform', r.m); EXTG.appendChild(e.g);
+      });
+      e2.on = false;
+    }
+    show(EXTG, !!e2.spin);
     setEye(EYE2, e2);
-    const moOn = t >= 9.0 && t < 11.4; vis(MO, moOn);
+    const moOn = t >= 9.0 && t < 11.4; show(MO, moOn);
     if (moOn) {
       const out = 1 - eIn(p(t, 11.0, 11.3));
       TRK.setAttribute('stroke', TH.line2); traccia(TRK, eOut(p(t, 9.0, 9.35)));
@@ -946,16 +946,16 @@
       vis(PH, t >= 9.45 && out > .01); PH.setAttribute('transform', `translate(${f1(phx)} 820)`); PH.setAttribute('stroke', PINK); PH.setAttribute('fill', PINK);
       PH.style.opacity = (eOut(p(t, 9.45, 9.55)) * out).toFixed(3);
       // fantasmi: dove era l'occhio qualche istante prima (onion skin)
-      const mv = eIO(p(t, 10.22, 10.7));
+      const mv = eIO(p(t, 10.7, 10.92));
       GHOST.forEach((gh, i) => {
-        const s2 = mv - .12 * (i + 1), vivo = t >= 10.22 && t < 10.8 && s2 > 0;
+        const s2 = mv - .14 * (i + 1), vivo = t >= 10.7 && t < 11.0 && s2 > 0;
         if (!vivo) { vis(gh.g, false); return; }
         const [gx, gy] = mBez(s2, MP);
         setEye(gh, { x: gx, y: gy, a: 200, b: 115, sw: 22, col: fg, ir: 60, pr: 26, op: .3 - .08 * i });
       });
     }
     // la barra: parte dalla timeline (800 x 6 in basso) e sale fino a diventare il campo del prompt (1000 x 96)
-    const barOn = t >= 11.0 && t < 12.5; vis(BAR, barOn);
+    const barOn = t >= 11.0 && t < 12.5; show(BAR, barOn);
     const up = eIn(p(t, 12.26, 12.48));
     if (barOn) {
       const m = eIO(p(t, 11.0, 11.42)), w = lerp(800, 1000, m), h = lerp(6, 96, m), cy = lerp(820, 286, m) - 160 * up;
@@ -963,7 +963,7 @@
       BAR.setAttribute('fill', mix(TH.line2, TH === THEMES.light ? '#EFE9DF' : '#1F2121', m)); BAR.setAttribute('stroke', TH === THEMES.light ? '#E2DBCF' : '#282B2B'); BAR.setAttribute('stroke-width', f1(2 * m));
       BAR.style.opacity = (1 - up).toFixed(3);
     }
-    const gpOn = t >= 11.38 && t < 12.5; vis(GP, gpOn);
+    const gpOn = t >= 11.38 && t < 12.5; show(GP, gpOn);
     if (gpOn) {
       const k = eOut(p(t, 11.38, 11.55));
       GP.style.opacity = (k * (1 - up)).toFixed(3);
