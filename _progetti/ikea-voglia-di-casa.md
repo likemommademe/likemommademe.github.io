@@ -179,7 +179,7 @@ galleria:
     didascalia_en: "Fika: the Swedish coffee break, with a cinnamon bun."
   - type: "foto"
     immagine: "/assets/uploads/ikea-voglia-di-casa-27.webp"
-    formato: "sola"
+    formato: "grande"
     titolo: "Emotion"
     titolo_en: "Emotion"
     didascalia: "Ogni casa lascia un segno: le tacche dell'altezza sullo stipite e lo scatolone pronto."
