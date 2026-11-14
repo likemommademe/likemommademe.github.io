@@ -355,3 +355,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Work, vista Mosaico: i titoli dei progetti grandi sono più piccoli e vanno a capo, così non escono più dal riquadro. |
 | 14/11/2026 | North Face: tolta la foto delle mani; «Sotto l'insegna» senza dettaglio ingrandito, la campagna ora è in due righe da due. |
 | 14/11/2026 | Audible, lo spot: lo storyboard è una foto sola grande, senza dettaglio accanto. |
+| 14/11/2026 | Titoli con due font: TAN Nimbus ricalibrato (size-adjust 74%) perché le minuscole siano alte come quelle di Cabinet in tutte le frasi; il motto MORE THAN MEETS THE EYE resta identico. |
