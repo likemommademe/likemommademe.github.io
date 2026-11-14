@@ -317,6 +317,8 @@
   const eIO = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
   const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);   // smorzamento critico: niente rimbalzo
   const bump = x => Math.sin(Math.PI * clamp(x));
+  // la corsa della pallina sotto MOTION: parte e arriva morbida (metà lineare, metà con accelerazione), la stessa per pallina, lettere e camera
+  const corsa = t => { const q = p(t, 9.42, 10.32); return (q + (q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2)) / 2; };
   const rgb = h => h.startsWith('rgb') ? h.match(/\d+/g).map(Number) : [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
   const mix = (a, b, k) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], clamp(k)))).join(',')})`; };
   const maskY = (t, a, d, b, e, dir = 1) => {
@@ -513,7 +515,7 @@
     const zk = (a1, b1, c1, d1) => eIO(p(t, a1, b1)) * (1 - eIO(p(t, c1, d1)));
     let k = zk(2.4, 4.0, 4.32, 4.9); z += .12 * k;                                                  // Illustration: si avvicina allo schizzo
     k = zk(5.6, 6.0, 6.3, 6.6); z += .05 * k;                                                      // Branding: spinta sulla tavola
-    const kb = zk(9.38, 9.6, 10.2, 10.45), bxx = lerp(560, 1360, p(t, 9.42, 10.32));
+    const kb = zk(9.38, 9.6, 10.2, 10.45), bxx = lerp(560, 1360, corsa(t));
     z += .07 * kb; fx = lerp(fx, 960 + (bxx - 960) * .35, kb); fy = lerp(fy, 640, .4 * kb);           // Motion: segue la pallina
     z += .1 * eIO(p(t, 11.8, 12.3)) * (1 - eIO(p(t, 12.36, 12.9)));                               // Gen AI: vicino alla barra, poi indietro sull'esplosione
     z += .2 * zk(13.36, 13.85, 13.9, 14.5);                                                     // e dentro, quando le varianti si richiudono
@@ -846,22 +848,24 @@
   // MOTION: la stessa parola cinetica della versione originale. Le lettere entrano veloci da destra con scia e sfocatura,
   // si alzano e diventano rosa quando la testina della timeline ci passa sotto, poi volano nella fine della timeline
   function drawKin(t) {
-    const on = t >= 8.98 && t < 10.75; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
+    const on = t >= 8.98 && t < 10.8; el.kin.style.display = on ? '' : 'none'; vis(el.kin, on);
     if (!on) return;
-    const S = sceneS(t), phx = 960 + (lerp(560, 1360, p(t, 9.42, 10.32)) - 960) * S.k, end = mapS(S, 1360, 820);
+    const S = sceneS(t), phx = 960 + (lerp(560, 1360, corsa(t)) - 960) * S.k, end = mapS(S, 1360, 820);
     kin.forEach((L, j) => {
-      const a = 8.98 + .045 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .42)));   // parte da fuori schermo: si vede quando l'occhio ha già lasciato il centro
+      const a = 8.98 + .05 * j, pos = q => 1100 * (1 - eOut(p(q, a, a + .5)));   // parte da fuori schermo; ingresso un po' più lungo e morbido
       const x = pos(t), v = (pos(t - 1 / 60) - x) * 60;
-      const near = t >= 9.42 && t < 10.32 ? Math.max(0, 1 - Math.abs(phx - M.kx[j]) / 130) : 0;
-      const ex = eIn(p(t, 10.12 + .03 * j, 10.38 + .03 * j));
-      const tx = x + (end[0] - M.kx[j]) * ex, ty = -70 * spring(near) + (end[1] - M.ky) * ex;
-      L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${-Math.min(18, v * .004)}deg) scale(${(1 - ex) * (1 + .12 * near)})`;
-      const blur = Math.min(18, v * .005);
+      // la reazione alla pallina è un'onda continua (curva a campana), che si accende e si spegne piano: niente salti da un fotogramma all'altro
+      const dd = (phx - M.kx[j]) / 150, ramp = p(t, 9.1, 9.8), near = Math.exp(-dd * dd) * ramp * ramp * (3 - 2 * ramp) * (1 - eIO(p(t, 10.3, 10.52)));   // si accende piano: la M (sotto cui parte la pallina) non scatta
+      const ex = eIn(p(t, 10.2 + .035 * j, 10.48 + .035 * j));
+      const lift = -64 * Math.exp(-dd * dd) * ramp * ramp * (3 - 2 * ramp);   // l'altezza non si spegne da sola: la porta via l'uscita, senza gradini
+      const tx = x + (end[0] - M.kx[j]) * ex, ty = lerp(lift, end[1] - M.ky, ex);
+      L.style.transform = `translate(${f1(tx)}px, ${f1(ty)}px) skewX(${f1(-Math.min(12, v * .003))}deg) scale(${((1 - ex) * (1 + .1 * near)).toFixed(4)})`;
+      const blur = Math.min(10, v * .0035);
       L.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
-      const e1 = Math.min(120, v * .05), e2 = Math.min(240, v * .1);
+      const e1 = Math.min(90, v * .04), e2 = Math.min(170, v * .08);
       const ec = TH === THEMES.light ? '18,20,20' : '245,245,242';
       L.style.textShadow = e1 > 2 ? `${f1(e1)}px 0 0 rgba(${ec},.28), ${f1(e2)}px 0 0 rgba(${ec},.12)` : 'none';
-      L.style.color = near > .02 ? mix(TH.fg, PINK, near * 1.6) : TH.fg;
+      L.style.color = near > .01 ? mix(TH.fg, PINK, Math.min(1, near * 1.4)) : TH.fg;
     });
   }
   function drawStoria(t) {
@@ -968,7 +972,7 @@
       e2.sw = lerp(16, 21, z); e2.col = mix('#F5F5F2', fg, z); e2.ir = lerp(48 * k0, 63, z); e2.pr = lerp(21 * k0, 27, z);
       // 4 · Motion: l'occhio si stringe nella sua iride e diventa la pallina rosa che corre sulla timeline sotto MOTION
       const pal = eIO(p(t, 8.84, 9.1)), ritorno = eIO(p(t, 10.3, 10.58));
-      const bx = lerp(560, 1360, p(t, 9.42, 10.32));
+      const bx = lerp(560, 1360, corsa(t));
       if (t >= 8.84 && t < 10.58) {
         const k = pal * (1 - ritorno);
         const rx = t < 10.3 ? (t < 9.42 ? 560 : bx) : lerp(1360, 960, ritorno), ry = t < 10.3 ? 820 : lerp(820, 460, ritorno) - 140 * bump(ritorno);
@@ -1067,7 +1071,7 @@
     if (moOn) {
       const out = 1 - eIn(p(t, 11.26, 11.4));
       TRK.setAttribute('stroke', TH.line2); traccia(TRK, eOut(p(t, 9.0, 9.35)) * out);
-      const bx = lerp(560, 1360, p(t, 9.42, 10.32));
+      const bx = lerp(560, 1360, corsa(t));
       KF.forEach((r, i) => {
         const x = [700, 960, 1220][i], at = 9.42 + (x - 560) / 800 * .9, k = spring(p(t, 9.16 + .06 * i, 9.4 + .06 * i)) * out * (1 + .4 * bump(p(t, at, at + .15)));
         r.setAttribute('transform', `translate(${x} 820) rotate(45) scale(${k.toFixed(3)})`);
