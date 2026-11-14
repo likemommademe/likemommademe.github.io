@@ -158,14 +158,73 @@ reel: true
   <h2 class="rec-home__t rise" id="t-rec"><span>{{ t.rec_titolo }}</span></h2>
   <div class="rec-home__lista">
     {% for p in con_rec %}
-    <figure class="rec-home__item" data-rivela>
-      <blockquote>«{{ p.recensione }}»</blockquote>
-      <figcaption><strong>{{ p.recensione_autore }}</strong>{% if p.recensione_ruolo %}<span>{{ p.recensione_ruolo }}</span>{% endif %}<a class="lnk" href="{{ p.url | relative_url }}">{{ p.title }}</a></figcaption>
+    {% assign rcl = nil %}{% if p.cliente %}{% assign rcl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
+    <figure class="rec" data-rivela>
+      <a class="rec__img" href="{{ p.url | relative_url }}" tabindex="-1" aria-hidden="true">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy">{% endif %}<span class="rec__etichetta">{{ p.title }}</span></a>
+      <div class="rec__corpo">
+        <blockquote class="rec__q"><span class="rec__virg" aria-hidden="true">“</span>{{ p.recensione }}<span class="rec__virg" aria-hidden="true">”</span></blockquote>
+        <figcaption class="rec__chi">
+          {% if rcl.logo %}<img class="rec__logo" src="{{ rcl.logo | relative_url }}" alt="{{ rcl.title }}">{% endif %}
+          <span class="rec__nome"><strong>{{ p.recensione_autore }}</strong>{% if p.recensione_ruolo %}<span>{{ p.recensione_ruolo }}</span>{% endif %}</span>
+          <a class="rec__vedi" href="{{ p.url | relative_url }}">{{ t.rec_vedi }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </figcaption>
+      </div>
     </figure>
     {% endfor %}
   </div>
 </section>
 {% endif %}
+
+{% comment %} News: le ultime quattro, come sulla pagina News {% endcomment %}
+{% assign tn = site.data.testi.news %}{% assign ultime = site.news | sort: "data" | reverse %}
+{% if ultime.size > 0 %}
+<section class="fascia news-home" aria-labelledby="t-news">
+  <p class="cs-label cs-head__k">{{ tn.home_k }}</p>
+  <div class="news-home__head">
+    <h2 class="rise" id="t-news"><span>{{ tn.home_titolo }}</span></h2>
+    <a class="rec__vedi" href="{{ '/news/' | relative_url }}">{{ tn.home_tutte }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="news-griglia news-griglia--home">
+    {% for n in ultime limit: 4 %}{% include news-card.html n=n %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% comment %} Orari nel mondo: l'ora in tempo reale in alcune città, e se a Roma sono sveglio {% endcomment %}
+<section class="fascia orari" aria-labelledby="t-orari">
+  <p class="cs-label cs-head__k">{{ t.orari_k }}</p>
+  <div class="orari__head">
+    <h2 class="rise" id="t-orari"><span>{{ t.orari_titolo }}</span></h2>
+    <p class="orari__p">{{ t.orari_testo }} <strong class="orari__stato" data-orari-stato data-si="{{ t.orari_sveglio }}" data-no="{{ t.orari_dorme }}"></strong></p>
+  </div>
+  <ul class="orari__lista">
+    {% for c in t.orari_citta %}
+    <li class="orari__c{% if c.casa %} is-casa{% endif %}" data-orari-fuso="{{ c.fuso }}">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">{{ c.citta }}{% if c.casa %} <i>· {{ t.orari_casa | default: "io sono qui" }}</i>{% endif %}</span>
+      <span class="orari__giorno"></span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<script>
+  // Orari nel mondo: ogni 20 secondi. Sole o luna a seconda dell'ora locale; a Roma sveglio dalle 8 alle 23.
+  (function () {
+    var cc = document.querySelectorAll('[data-orari-fuso]'), st = document.querySelector('[data-orari-stato]'); if (!cc.length) return;
+    function ora(tz, o) { return new Intl.DateTimeFormat('it-IT', Object.assign({ timeZone: tz }, o)).format(new Date()); }
+    function giro() {
+      cc.forEach(function (c) {
+        var tz = c.dataset.orariFuso, h = +ora(tz, { hour: 'numeric', hourCycle: 'h23' });
+        c.querySelector('.orari__ora').textContent = ora(tz, { hour: '2-digit', minute: '2-digit' });
+        c.querySelector('.orari__giorno').textContent = ora(tz, { weekday: 'long', day: 'numeric', month: 'long' });
+        c.classList.toggle('is-notte', h < 7 || h >= 20);
+      });
+      if (st) { var r = +ora('Europe/Rome', { hour: 'numeric', hourCycle: 'h23' }); st.textContent = r >= 8 && r < 23 ? st.dataset.si : st.dataset.no; st.classList.toggle('is-no', !(r >= 8 && r < 23)); }
+    }
+    giro(); setInterval(giro, 20000);
+  })();
+</script>
 
 <script>
   // Scorrimento orizzontale dei lavori (come bitwip): per ogni pixel di scroll in giù la fila va a sinistra di 1/0,7 px;

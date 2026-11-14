@@ -1,0 +1,33 @@
+---
+layout: default
+title: News
+permalink: /news/
+---
+{% assign t = site.data.testi.news %}
+{% assign tutte = site.news | sort: "data" | reverse %}
+
+<section class="phero">
+  <h1 class="rise"><span>{{ t.titolo }}</span></h1>
+  <p class="lead">{{ t.intro }}</p>
+</section>
+
+<div class="news-pag" data-news>
+  <div class="news-filtri" role="group" aria-label="Categoria">
+    <button type="button" class="news-f" data-f="" aria-pressed="true">{{ t.tutte }} <span>{{ tutte.size }}</span></button>
+    {% for c in t.categorie %}{% assign n = tutte | where: "categoria", c[0] | size %}{% if n > 0 %}<button type="button" class="news-f" data-f="{{ c[0] }}" aria-pressed="false">{{ c[1] }} <span>{{ n }}</span></button>{% endif %}{% endfor %}
+  </div>
+  <div class="news-griglia">
+    {% for n in tutte %}{% include news-card.html n=n %}{% endfor %}
+  </div>
+</div>
+<script>
+  (function () {
+    var w = document.querySelector('[data-news]'); if (!w) return;
+    w.querySelectorAll('.news-f').forEach(function (b) {
+      b.addEventListener('click', function () {
+        w.querySelectorAll('.news-f').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+        w.querySelectorAll('.nc').forEach(function (c) { c.hidden = b.dataset.f && c.dataset.cat !== b.dataset.f; });
+      });
+    });
+  })();
+</script>

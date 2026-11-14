@@ -269,13 +269,15 @@ async function imageSettings() {
 function sortEntries(coll, entries) {
   const value = (e, key) => (key === 'title' ? e.data.title || e.slug : e.data[key]);
   return [...entries].sort((a, b) => {
-    for (const key of coll.sort || ['title']) {
+    for (const k of coll.sort || ['title']) {
+      const desc = k.startsWith('-'), key = desc ? k.slice(1) : k;   // "-data" = dal più recente
       const x = value(a, key);
       const y = value(b, key);
       if (x === y) continue;
       if (x == null) return 1;
       if (y == null) return -1;
-      return typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'it');
+      const d = typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y), 'it');
+      return desc ? -d : d;
     }
     return 0;
   });

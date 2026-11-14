@@ -18,6 +18,27 @@ home:
   # Recensioni in home: compaiono solo se almeno un progetto ne ha una (campo Recensione nel pannello)
   rec_k: Recensioni
   rec_titolo: "Dicono di <em>me</em>"
+  rec_vedi: Vedi il progetto
+  # Orari nel mondo, in home
+  orari_k: In your territory, on your time
+  orari_titolo: "Nel tuo fuso, ai tuoi <em>orari</em>"
+  orari_testo: Lavoro da Roma con clienti ovunque. Guarda che ore sono da te, e se in questo momento sono sveglio.
+  orari_sveglio: Ti rispondo adesso
+  orari_dorme: Ti rispondo domattina
+  orari_citta:
+    - citta: Roma
+      fuso: Europe/Rome
+      casa: true
+    - citta: Londra
+      fuso: Europe/London
+    - citta: New York
+      fuso: America/New_York
+    - citta: Los Angeles
+      fuso: America/Los_Angeles
+    - citta: Dubai
+      fuso: Asia/Dubai
+    - citta: Tokyo
+      fuso: Asia/Tokyo
 
 lavori:
   titolo: Works
@@ -45,6 +66,7 @@ footer:
   home: Home
   progetti: Works
   chi_sono: About me
+  news: News
   privacy: Privacy
   # Sottomenu di Works (si apre passando sopra la voce)
   sub_titolo: Cinque mondi, un solo metodo
@@ -186,3 +208,17 @@ modulo:
   grazie_testo: Grazie! Ti rispondo presto, di solito in giornata. Nel frattempo, mamma dice di stare tranquillo.
   errore: Qualcosa non è andato. Riprova, oppure scrivimi direttamente a
   chiudi: Chiudi
+
+news:
+  titolo: News
+  intro: Siti, grafica e intelligenza artificiale che mi hanno fatto dire «questo lo voglio fare anch'io». Li raccolgo qui.
+  tutte: Tutte
+  categorie:
+    siti: Siti del giorno
+    grafica: Grafica
+    ai: AI
+  leggi: Leggi su
+  home_k: News
+  home_titolo: "Cosa sto <em>guardando</em>"
+  home_tutte: Tutte le news
+  vuoto: Niente qui, per ora.

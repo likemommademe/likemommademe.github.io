@@ -16,6 +16,8 @@ collections:
     permalink: /progetti/:name/
   clienti:
     output: false
+  news:
+    output: false   # le news portano ad articoli su altri siti: niente pagina propria
 
 defaults:
   - scope: { path: "", type: categorie }

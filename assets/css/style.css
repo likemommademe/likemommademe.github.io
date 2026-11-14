@@ -516,7 +516,7 @@ body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 .pied__mot { display: flex; align-items: flex-end; white-space: nowrap; width: max-content; font-weight: 900; font-size: 100px; line-height: .8; letter-spacing: -.04em; color: var(--fg); user-select: none; }
 .pl { display: inline-block; transform-origin: 50% 100%; will-change: transform;
   transform: translate(calc((1 - var(--e)) * var(--dx, 0px) + var(--hx, 0px)), calc((1 - var(--e)) * var(--dy, 0px) + var(--hy, 0px))) rotate(calc((1 - var(--e)) * var(--dr, 0deg) + var(--hr, 0deg))) scale(var(--hs, 1));
-  opacity: calc(.82 + var(--e) * .18); }
+  opacity: 1; color: color-mix(in srgb, var(--fg) calc(55% + var(--e) * 45%), var(--bg)); }
 .pl--segno { width: .17em; height: .17em; margin: 0 0 .02em .05em; border-radius: .035em; background: var(--accent-3); opacity: 1; cursor: grab; touch-action: none;
   transform: scale(calc(1 + (1 - var(--e)) * 3.6)) rotate(calc(45deg + (1 - var(--e)) * -200deg)); }
 .pl--segno:active { cursor: grabbing; }
@@ -736,12 +736,78 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 /* Recensioni in home */
 .rec-home .cs-head__k { margin-bottom: clamp(28px, 3vw, 48px); }
 .rec-home__t { font-size: var(--t-h2); margin-bottom: clamp(40px, 4.4vw, 72px); }
-.rec-home__lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: clamp(40px, 4vw, 64px) var(--gap); }
-.rec-home__item { margin: 0; padding-top: 24px; border-top: 1px solid var(--line-2); }
-.rec-home__item blockquote { margin: 0; font-size: var(--t-h3); font-weight: 500; line-height: 1.2; letter-spacing: -.02em; }
-.rec-home__item figcaption { display: grid; gap: 4px; justify-items: start; margin-top: 22px; }
-.rec-home__item figcaption span { color: var(--muted); font-size: var(--t-small); }
-.rec-home__item .lnk { margin-top: 8px; font-size: var(--t-small); }
+.rec-home__lista { display: grid; gap: clamp(40px, 5vw, 80px); }
+/* Una recensione: a sinistra la copertina del progetto, a destra la frase grande e chi l'ha detta */
+.rec { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 96px); align-items: stretch; margin: 0; padding-bottom: clamp(40px, 5vw, 80px); border-bottom: 1px solid var(--line); }
+.rec__img { position: relative; display: block; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
+.rec__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+.rec:hover .rec__img img { transform: scale(1.04); }
+.rec__etichetta { position: absolute; left: 14px; bottom: 14px; padding: 7px 14px; border-radius: 999px; background: rgba(18, 20, 20, .82); color: #F5F5F2; font-family: var(--f-label); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.rec__corpo { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-width: 0; padding-top: 12px; }
+.rec__q { margin: 0; font-size: clamp(1.25rem, 1rem + .9vw, 1.875rem); font-weight: 400; line-height: 1.38; letter-spacing: -.01em; text-indent: -.45em; }
+.rec__virg { color: var(--accent-3); }
+.rec__chi { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+.rec__logo { height: 36px; width: auto; max-width: 120px; object-fit: contain; padding-right: 22px; border-right: 1px solid var(--line); }
+:root[data-theme="dark"] .rec__logo { filter: invert(1); }
+.rec__nome { display: grid; gap: 2px; }
+.rec__nome span { color: var(--muted); font-size: var(--t-small); }
+.rec__vedi { display: inline-flex; align-items: center; gap: 10px; padding-bottom: 4px; border-bottom: 1.5px solid currentColor; font-weight: 600; font-size: 15px; }
+.rec__vedi svg { transition: transform .5s var(--ease); }
+.rec__vedi:hover svg { transform: translateX(4px); }
+@media (max-width: 720px) { .rec { grid-template-columns: minmax(0, 1fr); } .rec__chi { grid-template-columns: auto minmax(0, 1fr); } .rec__vedi { grid-column: 1 / -1; justify-self: start; } }
+
+/* News: pagina e sezione in home (come bitwip) */
+.news-pag { padding-bottom: var(--sec); }
+.news-filtri { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(28px, 3vw, 48px); }
+.news-f { padding: 9px 16px; border: 1px solid var(--line-2); border-radius: 999px; background: none; color: var(--fg); font: 500 15px var(--f-sans); cursor: pointer; transition: background .2s, color .2s; }
+.news-f span { color: var(--muted); margin-left: 4px; }
+.news-f[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.news-f[aria-pressed="true"] span { color: inherit; opacity: .6; }
+.news-griglia { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(40px, 4vw, 64px) var(--gap); }
+.news-griglia--home { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.nc { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; }
+.nc[hidden] { display: none; }
+.nc__img { position: relative; display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r); overflow: hidden; background: var(--card); margin-bottom: 8px; }
+.nc__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+.nc:hover .nc__img img, .nc:hover .nc__fonte { transform: scale(1.04); }
+.nc__fonte { padding: 0 8%; font-weight: 900; font-size: clamp(1.6rem, 1rem + 1.6vw, 2.6rem); line-height: .95; letter-spacing: -.04em; text-align: center; color: #F5F5F2; transition: transform 1s var(--ease); }
+.nc--siti .nc__img { background: var(--accent-1); }
+.nc--grafica .nc__img { background: var(--accent-3); }
+.nc--ai .nc__img { background: #121414; }
+.nc--ai .nc__fonte { color: var(--accent-2); }
+.nc__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-family: var(--f-label); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.nc__cat { color: var(--fg); }
+.nc__dot { display: inline-flex; align-items: center; gap: 7px; }
+.nc__dot::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-3); }
+.nc__t { font-weight: 500; font-size: clamp(1.25rem, 1.05rem + .6vw, 1.6rem); line-height: 1.12; letter-spacing: -.015em; text-wrap: balance; }
+.nc__p { color: var(--muted); line-height: 1.5; }
+.nc__go { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding-bottom: 3px; border-bottom: 1.5px solid currentColor; font-weight: 600; font-size: 14px; }
+.news-home .cs-head__k { margin-bottom: clamp(20px, 2vw, 32px); }
+.news-home__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: clamp(36px, 4vw, 64px); }
+.news-home__head h2 { margin: 0; font-size: var(--t-h2); }
+@media (max-width: 1100px) { .news-griglia--home { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .news-griglia { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .news-griglia, .news-griglia--home { grid-template-columns: minmax(0, 1fr); } }
+
+/* Orari nel mondo */
+.orari .cs-head__k { margin-bottom: clamp(20px, 2vw, 32px); }
+.orari__head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--gap); align-items: end; margin-bottom: clamp(40px, 4.4vw, 72px); }
+.orari__head h2 { margin: 0; font-size: var(--t-h2); }
+.orari__p { margin: 0; color: var(--muted); font-size: var(--t-lead); line-height: 1.4; max-width: 38ch; }
+.orari__stato { display: inline-flex; align-items: center; gap: 8px; color: var(--fg); font-weight: 500; }
+.orari__stato::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-2) 22%, transparent); }
+.orari__stato.is-no::before { background: var(--muted); box-shadow: none; }
+.orari__lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.orari__c { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "ora ico" "citta citta" "giorno giorno"; gap: 4px 12px; padding: clamp(22px, 2.4vw, 36px) clamp(16px, 2vw, 32px) clamp(22px, 2.4vw, 36px) 0; border-bottom: 1px solid var(--line); }
+.orari__c:not(:nth-child(3n+1)) { padding-left: clamp(16px, 2vw, 32px); border-left: 1px solid var(--line); }
+.orari__ora { grid-area: ora; font-weight: 500; font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem); line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.orari__ico { grid-area: ico; align-self: start; width: 18px; height: 18px; margin-top: 6px; border-radius: 50%; background: #F2B33D; box-shadow: 0 0 0 5px color-mix(in srgb, #F2B33D 22%, transparent); transition: box-shadow .6s var(--ease), background .6s; }
+.orari__c.is-notte .orari__ico { background: var(--fg); box-shadow: inset -5px -2px 0 0 var(--bg); }
+.orari__citta { grid-area: citta; margin-top: 18px; font-size: var(--t-h3); font-weight: 500; letter-spacing: -.02em; }
+.orari__citta i { font-style: normal; font-size: var(--t-small); color: var(--accent-3); letter-spacing: 0; }
+.orari__giorno { grid-area: giorno; color: var(--muted); font-size: var(--t-small); }
+.orari__c.is-casa .orari__ora { color: var(--fg); }
+@media (max-width: 900px) { .orari__head { grid-template-columns: minmax(0, 1fr); } .orari__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } .orari__c:not(:nth-child(3n+1)) { padding-left: 0; border-left: 0; } .orari__c:nth-child(2n) { padding-left: clamp(16px, 2vw, 32px); border-left: 1px solid var(--line); } }
 
 /* About: strisce di foto che scorrono da sole, lente e continue, in direzioni opposte (si fermano passandoci sopra) */
 .vita__pista { animation: vita-scorre 160s linear infinite; }
