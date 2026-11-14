@@ -114,6 +114,16 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Sistema → Immagini**: attivi o spegni la conversione, scegli la qualità (92% consigliata) e la dimensione massima (2560 px consigliata).
 - La conversione funziona da **Chrome**. Da Safari la foto resta nel formato originale.
 
+### Social (gestione dei post)
+- Nel menu **Social → Calendario post**: calendario di due settimane con frecce e **Oggi**. Ogni post ha il colore del suo stato: **Bozza**, **Programmato**, **Pubblicato**, **Eliminato**. Il **+** su un giorno crea un post per quel giorno.
+- **Da portare sui social**: i progetti pubblicati sul sito e mai usati in un post. Ogni progetto nuovo finisce qui da solo.
+- **Nuovo post**: scegli un progetto (ricerca e filtro per categoria; quelli mai usati hanno l'etichetta "Mai sui social") oppure **Carica dal computer** per un post libero.
+- **Grafiche 4:5 (1080 × 1350) rifatte in automatico** dal pannello: clicchi le foto nell'ordine delle slide (al massimo 10), la prima diventa la copertina con etichetta, titolo grande e firma LIKEMOMMADEME; le altre hanno la foto, la firma e il numero. Opzioni: con titolo e firma oppure solo foto, sfondo carta o nero, foto intere o che riempiono la slide. Si possono aggiungere foto dal computer, dai Media o trascinandole dal Finder.
+- **Testo del post** già scritto dal progetto (frase-titolo, descrizione, link al progetto, hashtag della categoria), con il conteggio dei caratteri e **Copia il testo**.
+- **Dove**: Instagram, Facebook, LinkedIn, Threads. **Giorno** e **ora**.
+- **La pubblicazione per ora è a mano**: **Scarica grafiche** salva i JPG, poi pubblichi e segni il post come **Pubblicato**. La pubblicazione automatica richiede di collegare gli account di Meta e LinkedIn (vedi Prossimi passi).
+- I post sono file in `_social/` (non vanno sul sito), le grafiche finite in `assets/social/`. Le foto caricate per un post vanno nei Media, nel gruppo "Post social".
+
 ---
 
 ## 6. File del progetto
@@ -151,9 +161,10 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=20`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=21`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
+| `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
 | `admin/stato.json` | Dice quale versione del sito è online (per "Sito aggiornato / In pubblicazione…") |
 
@@ -207,7 +218,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=20, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=21, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -306,18 +317,20 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Progetti in più categorie: il filtro del pannello li mostra anche nelle categorie in più, con un ordine separato per ognuna, usato anche dal sito |
 | 14/11/2026 | Pannello: modulo del progetto a due colonne (testi a sinistra; pubblicazione, categorie, cliente, anno, copertina e link a destra, con la lingua in cima). Galleria a griglia di miniature: si trascinano per riordinarle, un clic apre titolo, didascalia IT/EN e larghezza. Nuova sezione **Media** con le immagini divise per progetto. Gli strumenti tengono l'ordine in cui li hai messi |
 | 14/11/2026 | "Dietro le quinte": tolti i numeri e la frase generica. Ora mostra **Il mio ruolo** (campo nuovo, IT/EN), gli strumenti e la recensione, e compare solo se c'è almeno una di queste cose. Descrizioni per Google (IT/EN) scritte da Claude per tutti i progetti veri |
+| 14/11/2026 | Nuova **gestione social** nel pannello: calendario dei post, progetti da portare sui social, grafiche 4:5 rifatte in automatico, testo già pronto, foto anche dal computer |
 
 ---
 
 ## 10. Prossimi passi
 
-1. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
-2. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
-3. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
-4. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
-5. **Contenuti che mancano**: i video delle animazioni del PORTFOLIO, lo spot Audible e il video della Sagra caricato su Behance (vanno dati come file o link YouTube/Vimeo); foto di Blue Origin a risoluzione più alta (su Behance arrivano al massimo a 1920 px); gli anni di Accademia dei Romani, Joker, Model sheet e Patch / Malika Favre. Poi si possono eliminare gli esempi (Materia Viva, Progetto di esempio, Cliente di esempio, immagini SVG di prova).
-6. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
-7. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
+1. **Pubblicazione automatica sui social**: collegare Instagram e Facebook (app Meta for Developers con account Instagram professionale collegato a una pagina Facebook) e LinkedIn, poi il server su Cloudflare pubblica i post programmati all'ora giusta. Finché non c'è, i post si pubblicano a mano.
+2. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
+3. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
+4. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
+5. **Sito in inglese**: pagine `/en/` che usano i testi `_en` del pannello, con il selettore di lingua.
+6. **Contenuti che mancano**: i video delle animazioni del PORTFOLIO, lo spot Audible e il video della Sagra caricato su Behance (vanno dati come file o link YouTube/Vimeo); foto di Blue Origin a risoluzione più alta (su Behance arrivano al massimo a 1920 px); gli anni di Accademia dei Romani, Joker, Model sheet e Patch / Malika Favre. Poi si possono eliminare gli esempi (Materia Viva, Progetto di esempio, Cliente di esempio, immagini SVG di prova).
+7. **Grafica del sito pubblico**: partire dalle bozze fatte in Claude Design.
+8. **Consigli su skill e connettori** per Claude e GitHub utili per UI, UX e animazioni del sito (richiesti "alla fine di tutto").
 
 ---
 

@@ -59,6 +59,8 @@ function svg(tag, attrs, ...children) {
 }
 
 const ICONS = {
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  download: '<path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>',
   gauge: '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
   folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
   tag: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
@@ -452,6 +454,8 @@ async function mediaGroups(files) {
     const pg = await loadPage(page);
     push({ key: `g:${page.name}`, kind: 'Pagina', title: page.label, href: `#/p/${page.name}`, paths: find(JSON.stringify(pg.data) + pg.body) });
   }
+  const social = await loadCollection(SOCIAL_COLL);
+  push({ key: 'social', kind: 'Social', title: 'Post social', href: '#/social', paths: [...new Set(social.flatMap((e) => find(JSON.stringify(e.data))))] });
   push({ key: 'unused', kind: '', title: 'Non usate', paths: files.filter((f) => !used.has(f.path)).map((f) => f.path) });
   return groups;
 }
@@ -1046,6 +1050,7 @@ function shell(crumbs, content) {
         ...collections.map((c) => navLink(`#/c/${c.name}`, c.label, c.icon)),
         navLink('#/media', 'Media', 'images'),
       ]),
+      navGroup('social', 'Social', [navLink('#/social', 'Calendario post', 'calendar')]),
       navGroup('pagine', 'Pagine', pages.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon))),
       navGroup('sistema', 'Sistema', settings.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon)))),
     h('div', { class: 'me' },
@@ -1757,6 +1762,7 @@ async function route() {
     if (kind === 'p' && findPage(name)) return await pageEditor(findPage(name));
     if (location.hash === '#/media' || location.hash === '#/immagini') return await libraryView();
     if (location.hash === '#/richieste') return await richiesteView();
+    if (location.hash.startsWith('#/social')) return await socialRoute();
     return await dashboard();
   } catch (e) {
     if (state.session) shell([['Errore']], h('div', { class: 'banner error' }, icon('alert'), h('span', {}, e.message)));
