@@ -204,13 +204,36 @@
       var wm = document.querySelector('[data-compone]');
       if (wm) {
         var mot = wm.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
+        var mezzo = (pls.length - 1) / 2;
         pls.forEach(function (p, i) {
           var h = Math.sin(i * 12.9898 + 4.1) * 43758.5453, r = h - Math.floor(h), r2 = Math.abs(Math.sin(i * 78.233) * 9999) % 1;
-          // come bitwip: lettere piene, appena spostate e inclinate, che si raddrizzano al loro posto
-          p.style.setProperty('--dx', ((r - .5) * .5).toFixed(3) + 'em');
-          p.style.setProperty('--dy', ((r2 - .25) * .35).toFixed(3) + 'em');
-          p.style.setProperty('--dr', ((r - .5) * 9).toFixed(1) + 'deg');
+          // arrivando in fondo la scritta è più larga (le lettere sono distanziate) e si stringe fino al suo posto
+          p.style.setProperty('--dx', ((i - mezzo) * .16 + (r - .5) * .08).toFixed(3) + 'em');
+          p.style.setProperty('--dy', ((r2 - .3) * .12).toFixed(3) + 'em');
+          p.style.setProperty('--dr', ((r - .5) * 6).toFixed(1) + 'deg');
         });
+        // al passaggio del mouse, come nello showreel: la lettera sotto il cursore cresce un poco e le vicine si scostano
+        var hv = [].map.call(pls, function () { return 0; }), cx = [], lw = [], mx = -1e4, dentro = false, hraf = 0, ht = 0;
+        var centri = function () { cx = []; lw = []; pls.forEach(function (p) { var b = p.getBoundingClientRect(); cx.push(b.left + b.width / 2); lw.push(b.width); }); };
+        var muovi = function (t) {
+          var dt = Math.min(.05, (t - (ht || t)) / 1000); ht = t; var vivo = false;
+          pls.forEach(function (p, i) {
+            var goal = dentro ? Math.max(0, 1 - Math.abs(mx - cx[i]) / Math.max(1, lw[i]) * .9) : 0;
+            hv[i] += (goal - hv[i]) * (1 - Math.exp(-dt * 6)); if (Math.abs(goal - hv[i]) > .002 || hv[i] > .002) vivo = true;
+          });
+          pls.forEach(function (p, i) {
+            var dx = 0; for (var j = 0; j < pls.length; j++) if (j !== i) dx += Math.sign(i - j) * hv[j] * .14 * lw[j] * .55;
+            p.style.setProperty('--hx', dx.toFixed(1) + 'px'); p.style.setProperty('--hy', (-.04 * hv[i]).toFixed(3) + 'em');
+            p.style.setProperty('--hs', (1 + .14 * hv[i]).toFixed(3)); p.style.setProperty('--hr', ((i % 2 ? -2 : 2) * hv[i]).toFixed(2) + 'deg');
+          });
+          hraf = vivo ? requestAnimationFrame(muovi) : 0; if (!vivo) ht = 0;
+        };
+        if (!reduce.matches && matchMedia('(hover: hover)').matches) {
+          wm.addEventListener('pointerenter', function () { if (wm.style.getPropertyValue('--e') < .98) return; centri(); dentro = true; });
+          wm.addEventListener('pointermove', function (e) { if (!cx.length) centri(); mx = e.clientX; dentro = +wm.style.getPropertyValue('--e') > .98; if (!hraf) hraf = requestAnimationFrame(muovi); });
+          wm.addEventListener('pointerleave', function () { dentro = false; if (!hraf) hraf = requestAnimationFrame(muovi); });
+          addEventListener('scroll', function () { cx = []; }, { passive: true });
+        }
         var adatta = function () {
           mot.style.fontSize = '100px';
           var w = mot.scrollWidth || 1;
@@ -218,12 +241,13 @@
         };
         var componi = function () {
           if (reduce.matches) { wm.style.setProperty('--e', 1); return; }
-          var r = wm.getBoundingClientRect(), resto = Math.max(0, r.bottom - innerHeight);
-          wm.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .55))).toFixed(3));
+          // si stringe mentre si scorre l'ultimo pezzo di pagina: è al suo posto solo quando si arriva in fondo
+          var resto = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY);
+          wm.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .45))).toFixed(3));
         };
         adatta(); componi();
         if (document.fonts) document.fonts.ready.then(function () { adatta(); componi(); });
-        addEventListener('resize', function () { adatta(); componi(); });
+        addEventListener('resize', function () { adatta(); componi(); if (typeof cx !== 'undefined') cx = []; });
         addEventListener('scroll', componi, { passive: true });
 
         // il segno finale gira come una trottola: si spinge passandoci sopra o trascinandolo

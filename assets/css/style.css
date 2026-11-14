@@ -474,9 +474,10 @@ body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 .pied__cols a:hover { color: var(--accent-1); }
 /* la scritta gigante del footer che si ricompone */
 .pied__logo { margin-top: clamp(64px, 7vw, 112px); --e: 1; overflow: visible; }
+.pied { overflow-x: clip; }   /* le lettere distanziate non allargano la pagina */
 .pied__mot { display: flex; align-items: flex-end; white-space: nowrap; width: max-content; font-weight: 900; font-size: 100px; line-height: .8; letter-spacing: -.04em; color: var(--fg); user-select: none; }
 .pl { display: inline-block; transform-origin: 50% 100%; will-change: transform;
-  transform: translate(calc((1 - var(--e)) * var(--dx, 0px)), calc((1 - var(--e)) * var(--dy, 0px))) rotate(calc((1 - var(--e)) * var(--dr, 0deg)));
+  transform: translate(calc((1 - var(--e)) * var(--dx, 0px) + var(--hx, 0px)), calc((1 - var(--e)) * var(--dy, 0px) + var(--hy, 0px))) rotate(calc((1 - var(--e)) * var(--dr, 0deg) + var(--hr, 0deg))) scale(var(--hs, 1));
   opacity: calc(.82 + var(--e) * .18); }
 .pl--segno { width: .17em; height: .17em; margin: 0 0 .02em .05em; border-radius: .035em; background: var(--accent-3); opacity: 1; cursor: grab; touch-action: none;
   transform: scale(calc(1 + (1 - var(--e)) * 3.6)) rotate(calc(45deg + (1 - var(--e)) * -200deg)); }
@@ -490,11 +491,11 @@ body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 
 /* ---------- Pagine esistenti (categoria, progetto, about) ---------- */
 .pagina-head { padding-bottom: 40px; }
-.cat-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 26%); align-items: end; gap: var(--gap); }
+.cat-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 42%); align-items: center; gap: var(--gap); }
 .cat-head__txt { min-width: 0; }
-.cat-reel { aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; background: var(--bg); border: 1px solid var(--line); }
+.cat-reel { aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }   /* niente riquadro: lo sfondo è quello della pagina */
 .cat-reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; transform: scale(1.25); transform-origin: 50% 45%; }   /* zoom sul mondo, senza la cornice dello showreel */
-@media (max-width: 720px) { .cat-head { grid-template-columns: minmax(0, 1fr); } .cat-reel { width: 70%; justify-self: end; } }
+@media (max-width: 720px) { .cat-head { grid-template-columns: minmax(0, 1fr); } .cat-reel { width: 100%; } }
 .cat-t { font-weight: 900; font-size: clamp(3.5rem, 2rem + 8vw, 10rem); line-height: .86; letter-spacing: -.045em; }
 .briciole { margin-bottom: 16px; color: var(--muted); font-size: var(--t-small); }
 .briciole a:hover { color: var(--fg); }
@@ -788,7 +789,9 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .clienti { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 4vw, 64px); margin: 0; padding: 0; list-style: none; }
 .clienti li { font-size: var(--t-h3); font-weight: 500; color: var(--muted); }
 .clienti img { display: block; height: clamp(34px, 3.4vw, 52px); width: auto; max-width: 220px; object-fit: contain; opacity: .82; transition: opacity .25s var(--ease); }   /* loghi neri su trasparente */
-.clienti li:hover img { opacity: 1; }
+.clienti a { display: block; }
+.clienti li:hover img, .clienti a:focus-visible img { opacity: 1; }
+.clienti a:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 6px; border-radius: 6px; }
 :root[data-theme="dark"] .clienti img { filter: invert(1); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme]) .clienti img { filter: invert(1); } }
 :root[data-theme="dark"] .inv .clienti img, :root:not([data-theme]) .inv .clienti img { filter: none; }

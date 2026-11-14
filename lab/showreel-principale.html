@@ -155,6 +155,7 @@
   body.embed { background: var(--bg); }
   /* ?loop: solo il disegno del mondo, senza titoli, riga dei mondi e marchio (il titolo è già nella pagina) */
   body.loop .ct, body.loop .w, body.loop #markx, body.loop #hint { display: none !important; }
+  body.loop, html:has(body.loop) { background: var(--bg); }
 </style>
 </head>
 <body>
@@ -1550,7 +1551,7 @@
     const tu = nowT();
     if (playing && sound && !inLoop) schedule(tu);
     const L = LOOP[1] - LOOP[0];
-    const t = inLoop ? LOOP[0] + ((((tu - LOOP[0]) % L) + L) % L) : playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
+    const t = inLoop ? LOOP[0] + (((((tu - LOOP[0]) * .45) % L) + L) % L) :   /* nel loop delle categorie: più lento */ playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
     seek(t);
     if (!dragging) scrub.value = t.toFixed(2);
     tc.textContent = t.toFixed(2).padStart(5, '0') + ' / ' + DUR;

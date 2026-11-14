@@ -98,7 +98,7 @@ layout: default
   <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
   <ul class="clienti">
     {% for c in clienti_veri %}
-      <li>{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}</li>
+      <li>{% if c.sito %}<a href="{{ c.sito }}" target="_blank" rel="noopener" aria-label="{{ c.title }}, sito (si apre in una nuova scheda)">{% endif %}{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}{% if c.sito %}</a>{% endif %}</li>
     {% endfor %}
   </ul>
 </section>
