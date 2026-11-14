@@ -57,6 +57,7 @@ galleria:
     testo_en: "Sixteen frames that follow the voice over scene by scene, from the Divine Comedy opening to the closing logo."
   - type: "foto"
     immagine: "/assets/uploads/audible-video-animation-02.webp"
+    formato: "grande"
     titolo: "Storyboard"
     titolo_en: "Storyboard"
     didascalia: "Sedici quadri in sequenza, dal logo iniziale a quello finale."
