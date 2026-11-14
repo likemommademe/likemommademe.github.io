@@ -511,7 +511,7 @@
     z += .1 * eIO(p(t, 11.8, 12.3)) * (1 - eIO(p(t, 12.36, 12.9)));                               // Gen AI: vicino alla barra, poi indietro sull'esplosione
     z += .2 * zk(13.36, 13.85, 13.9, 14.5);                                                     // e dentro, quando le varianti si richiudono
     const cambio = [2, 4.2, 6.6, 9, 11.4].reduce((a, w) => t >= w ? w : a, -9);   // l'inizio del mondo in corso
-    z *= 1 + push + ((t < 1.97 || (t >= 14.4 && t < 16.2)) ? .014 * Math.exp(-12 * (T % BEAT)) : (t >= 2 && t < 14 ? .02 * Math.exp(-9 * (t - cambio)) : 0));   // V2: un colpo solo quando cambia il mondo
+    z *= 1 + push + (t < 1.97 ? .014 * Math.exp(-12 * (T % BEAT)) : (t >= 2 && t < 14 ? .02 * Math.exp(-9 * (t - cambio)) : 0));   // V2: un colpo solo quando cambia il mondo
     return { z, fx, fy, ax, ay };
   }
 
@@ -635,7 +635,10 @@
       occhio.querySelector('.iride').setAttribute('r', 22 * qui);
       occhio.querySelector('.pupilla').setAttribute('r', 10 * qui);
       // l'occhiolino: la palpebra si chiude e si riapre
-      const wk = p(t, 15.26, 15.66), wkK = wk < .4 ? eIO(wk / .4) : 1 - eIO((wk - .4) / .6);
+      const wk = p(t, 15.42, 15.8), wkK = wk < .4 ? eIO(wk / .4) : 1 - eIO((wk - .4) / .6);
+      // appena atterrato si guarda intorno: destra, sinistra, centro; nella schermata finale continua piano
+      const guarda = 12 * (eIO(p(t, 14.7, 14.92)) - 2 * eIO(p(t, 14.98, 15.22)) + eIO(p(t, 15.26, 15.4))) + (t > 16.3 ? 9 * Math.sin(IDLE * .9) * eIO(p(t, 16.3, 16.9)) : 0);
+      occhio.querySelector('.iride').setAttribute('cx', f1(50 + guarda)); occhio.querySelector('.pupilla').setAttribute('cx', f1(50 + guarda * 1.1));
       occhio.querySelector('.palpebra').style.transform = `scaleY(${(1 - .92 * wkK).toFixed(3)})`;
       // la frase scende sotto il nome, che sale grande come all'inizio
       const giu = eIO(p(t, 15.65, 16.25));
