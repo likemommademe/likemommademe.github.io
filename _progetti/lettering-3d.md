@@ -93,7 +93,6 @@ galleria:
     titolo_en: "The logo"
     didascalia: "Tre pesi del lettering, dal più pulito al più carico."
     didascalia_en: "Three weights of the lettering, from clean to loaded."
-    formato: "meta"
   - type: "foto"
     immagine: "/assets/uploads/lettering-topboy-02.webp"
     titolo: "Le versioni"
