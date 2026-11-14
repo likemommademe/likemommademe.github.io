@@ -70,7 +70,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 
 ### Menu
 - **Generale** → Dashboard
-- **Contenuti** → Progetti, Categorie, Clienti, Libreria immagini
+- **Contenuti** → Progetti, Categorie, Clienti, Media
 - **Pagine** → Home, About me
 - **Sistema** → Nome e contatti, Immagini
 
@@ -109,7 +109,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Filtri per settore e paese, e su ogni riga quanti progetti hai fatto con quel cliente.
 
 ### Immagini
-- **Libreria immagini**: tutte le foto caricate, dove sono usate, ed eliminazione di quelle non usate.
+- **Media**: tutte le foto caricate, divise per progetto (copertina e galleria), poi categorie, clienti e pagine, e in fondo quelle **non usate**, che si possono eliminare. I file restano tutti in `assets/uploads`: i gruppi dipendono da dove sono usati, quindi una foto usata in due progetti compare in tutti e due. Ricerca per nome e filtro per progetto. Anche la finestra "Dai media", per scegliere una foto, è divisa per progetto.
 - **Conversione automatica in WebP** di JPG e PNG, mantenendo la trasparenza.
 - **Sistema → Immagini**: attivi o spegni la conversione, scegli la qualità (92% consigliata) e la dimensione massima (2560 px consigliata).
 - La conversione funziona da **Chrome**. Da Safari la foto resta nel formato originale.
@@ -151,7 +151,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=18`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=19`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -207,7 +207,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=18, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=19, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -303,6 +303,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | «LIKEMOMMADEME, questo sito»: nuovo **promo** di 15 s (1080×1080, 120 BPM): il punto rosa del logo chiude la frase «Un portfolio che non sembra un template», diventa la spia di un computer che resta aperto, fa da cursore sul sito vero (showreel, sottomenu di Works, un progetto) e torna punto di LIKEMOMMADEME con «likemommademe.github.io»; musica scritta in codice (Web Audio). File di lavoro nello scratchpad (`promo.html`, `volo/film.html`) |
 | 14/11/2026 | Pannello bloccato da un campo doppio in Lettering 3D: sistemato. Ora un file rotto blocca solo sé stesso. Grafica del pannello rifatta come il sito |
 | 14/11/2026 | Progetti in più categorie: il filtro del pannello li mostra anche nelle categorie in più, con un ordine separato per ognuna, usato anche dal sito |
+| 14/11/2026 | Pannello: modulo del progetto a due colonne (testi a sinistra; pubblicazione, categorie, cliente, anno, copertina e link a destra, con la lingua in cima). Galleria a griglia di miniature: si trascinano per riordinarle, un clic apre titolo, didascalia IT/EN e larghezza. Nuova sezione **Media** con le immagini divise per progetto. Gli strumenti tengono l'ordine in cui li hai messi |
 
 ---
 

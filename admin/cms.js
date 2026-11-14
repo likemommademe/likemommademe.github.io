@@ -432,21 +432,57 @@ function libThumb(path) {
   return h('span', { class: 'lib-img' }, img);
 }
 
+// Media divisi per progetto: le foto restano tutte in assets/uploads, qui si raggruppano secondo dove sono usate.
+// Un'immagine usata in due progetti compare in tutti e due.
+async function mediaGroups(files) {
+  const known = new Set(files.map((f) => f.path));
+  const find = (text) => [...new Set(text.match(/\/assets\/uploads\/[^"'\s)\\]+/g) || [])].filter((p) => known.has(p));
+  const groups = [];
+  const used = new Set();
+  const push = (g) => { if (g.paths.length) { g.paths.forEach((p) => used.add(p)); groups.push(g); } };
+  const prog = findCollection('progetti');
+  for (const e of sortEntries(prog, await loadCollection(prog))) {
+    push({ key: `p:${e.slug}`, kind: 'Progetto', title: e.data.title || e.slug, href: `#/c/progetti/${e.slug}`, draft: isDraft(e), paths: find(JSON.stringify(e.data) + e.body) });
+  }
+  for (const coll of collections.filter((c) => c !== prog)) {
+    const entries = await loadCollection(coll);
+    push({ key: `c:${coll.name}`, kind: 'Sezione', title: coll.label, href: `#/c/${coll.name}`, paths: [...new Set(entries.flatMap((e) => find(JSON.stringify(e.data) + e.body)))] });
+  }
+  for (const page of [...pages, ...settings]) {
+    const pg = await loadPage(page);
+    push({ key: `g:${page.name}`, kind: 'Pagina', title: page.label, href: `#/p/${page.name}`, paths: find(JSON.stringify(pg.data) + pg.body) });
+  }
+  push({ key: 'unused', kind: '', title: 'Non usate', paths: files.filter((f) => !used.has(f.path)).map((f) => f.path) });
+  return groups;
+}
+
 // Finestra per scegliere un'immagine già caricata.
 function pickFromLibrary() {
   return new Promise((resolve) => {
     const grid = h('div', { class: 'lib-grid' }, h('p', { class: 'muted loading' }, 'Caricamento…'));
+    const pickGroup = h('select', { class: 'compact' });
     const overlay = h('div', { class: 'modal' },
       h('div', { class: 'modal-box' },
-        h('div', { class: 'modal-head' }, h('h2', {}, 'Libreria immagini'), h('button', { type: 'button', class: 'icon-btn', onclick: () => close(null) }, icon('x'))),
+        h('div', { class: 'modal-head' }, h('h2', {}, 'Media'), h('span', { class: 'grow' }), pickGroup, h('button', { type: 'button', class: 'icon-btn', onclick: () => close(null) }, icon('x'))),
         grid));
     const close = (value) => { overlay.remove(); resolve(value); };
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
     document.body.append(overlay);
-    loadLibrary().then((files) => {
-      grid.replaceChildren(...(files.length
-        ? files.map((f) => h('button', { type: 'button', class: 'lib-item', onclick: () => close(f.path) }, libThumb(f.path), h('span', {}, f.name)))
-        : [h('p', { class: 'empty-state' }, 'Nessuna immagine caricata.')]));
+    loadLibrary().then(async (files) => {
+      const groups = await mediaGroups(files);
+      const byPath = Object.fromEntries(files.map((f) => [f.path, f]));
+      pickGroup.replaceChildren(h('option', { value: '' }, 'Tutti i progetti'),
+        ...groups.map((g) => h('option', { value: g.key, selected: read('cms.pick') === g.key }, `${g.title} (${g.paths.length})`)));
+      const draw = () => {
+        write('cms.pick', pickGroup.value || null);
+        const shown = groups.filter((g) => !pickGroup.value || g.key === pickGroup.value);
+        grid.replaceChildren(...(shown.length ? shown.flatMap((g) => [
+          h('h3', { class: 'lib-group' }, g.title, h('small', {}, ` · ${g.paths.length}`)),
+          ...g.paths.map((p) => h('button', { type: 'button', class: 'lib-item', onclick: () => close(p) }, libThumb(p), h('span', {}, byPath[p].name))),
+        ]) : [h('p', { class: 'empty-state' }, 'Nessuna immagine caricata.')]));
+      };
+      pickGroup.addEventListener('input', draw);
+      draw();
     }).catch((e) => grid.replaceChildren(h('p', { class: 'empty-state' }, e.message)));
   });
 }
@@ -465,6 +501,20 @@ function sortable(list, onChange) {
     const move = (ev) => {
       if (ev.clientY < 70) window.scrollBy(0, -14);
       else if (ev.clientY > window.innerHeight - 70) window.scrollBy(0, 14);
+      if (list.classList.contains('grid-sort')) {
+        // Griglia: l'elemento va prima o dopo quello sotto il puntatore, a seconda della metà in cui si trova.
+        const over = [...list.children].find((c) => {
+          if (c === item) return false;
+          const r = c.getBoundingClientRect();
+          return ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
+        });
+        if (over) {
+          const r = over.getBoundingClientRect();
+          const after = over.classList.contains('g-sez') ? ev.clientY > r.top + r.height / 2 : ev.clientX > r.left + r.width / 2;
+          list.insertBefore(item, after ? over.nextElementSibling : over);
+        }
+        return;
+      }
       const next = [...list.children].find((c) => c !== item && ev.clientY < c.getBoundingClientRect().top + c.offsetHeight / 2);
       if (next) { if (item.nextElementSibling !== next) list.insertBefore(item, next); } else if (list.lastElementChild !== item) list.append(item);
     };
@@ -612,7 +662,7 @@ function imageWidget(value) {
       draw();
       markDirty();
     },
-  }, icon('images'), h('span', {}, 'Dalla libreria'));
+  }, icon('images'), h('span', {}, 'Dai media'));
   const remove = h('button', { type: 'button', class: 'btn small ghost', onclick: () => { path = ''; prepared = null; note.textContent = ''; draw(); markDirty(); } }, 'Rimuovi');
   dropzone(preview, (files) => pick(files[0]));
 
@@ -627,16 +677,20 @@ function imageWidget(value) {
     }).catch(() => { note.textContent = 'Non riesco a leggere questa immagine.'; });
     return working;
   }
+  const listeners = [];
   function draw() {
     img.hidden = !path;
     empty.hidden = !!path;
     if (path) img.src = prepared ? prepared.preview : mediaUrl(path);
     remove.hidden = !path;
+    listeners.forEach((fn) => fn());
   }
   draw();
   return {
     el: h('div', { class: 'image-field' }, preview, h('div', { class: 'row' }, choose, library, remove), note, input),
     pick,
+    src: () => (path ? (prepared ? prepared.preview : mediaUrl(path)) : ''),
+    onChange: (fn) => listeners.push(fn),
     get: () => path,
     files: async () => {
       await working;
@@ -645,85 +699,140 @@ function imageWidget(value) {
   };
 }
 
+// Finestra sopra la pagina (per i dettagli di un elemento della galleria).
+function openSheet(title, body, onClose) {
+  const done = h('button', { type: 'button', class: 'btn primary' }, h('span', {}, 'Fatto'));
+  const overlay = h('div', { class: 'modal' },
+    h('div', { class: 'modal-box sheet' },
+      h('div', { class: 'modal-head' }, h('h2', {}, title), h('button', { type: 'button', class: 'icon-btn', title: 'Chiudi', onclick: () => close() }, icon('x'))),
+      h('div', { class: 'sheet-body', oninput: markDirty, onchange: markDirty }, body),
+      h('div', { class: 'sheet-foot' }, h('span', { class: 'hint' }, 'Le modifiche vanno online quando salvi il progetto.'), h('span', { class: 'grow' }), done)));
+  const key = (e) => { if (e.key === 'Escape') close(); };
+  function close() { overlay.remove(); document.removeEventListener('keydown', key); onClose?.(); }
+  done.onclick = close;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', key);
+  document.body.append(overlay);
+}
+
+// Galleria: una griglia di miniature. Si trascinano dalla maniglia per riordinarle; un clic apre la scheda
+// con titolo, didascalia (italiano e inglese) e larghezza sul sito.
+const FORMATI = [['intera', 'Tutta larghezza'], ['meta', 'Metà'], ['sola', 'Da sola'], ['grande', 'Grande']];
+
 function galleryWidget(value) {
   const items = new Map();
-  const list = h('div', { class: 'gallery' });
+  const list = h('div', { class: 'g-grid grid-sort' });
+  const counter = h('span', { class: 'hint g-count' });
   const files = h('input', {
     type: 'file', accept: 'image/*', multiple: true, hidden: true,
     onchange: () => { addFiles([...files.files]); files.value = ''; },
   });
   const addFiles = (chosen) => { for (const f of chosen) add({ type: 'foto' }, f); markDirty(); };
+  const count = () => {
+    const n = items.size;
+    counter.textContent = n ? `${n} ${n === 1 ? 'elemento' : 'elementi'} · trascina ⋮⋮ per riordinare, clicca per titolo e didascalia` : '';
+  };
+  const field = (label, input) => h('div', {}, h('label', { class: 'label' }, label), input);
+  const del = (el) => h('button', {
+    type: 'button', class: 'icon-btn danger g-del', title: 'Elimina',
+    onclick: (e) => { e.stopPropagation(); if (!confirm('Togliere questo elemento dalla galleria?')) return; items.delete(el); el.remove(); count(); markDirty(); },
+  }, icon('trash'));
 
   function add(item, file) {
     const entry = { type: item.type };
+    const el = h('div', { class: `g-tile sort-item${item.type === 'sezione' ? ' g-sez' : ''}` });
+    items.set(el, entry);
+    list.append(el);
+
     if (item.type === 'sezione') {
-      // Titolo di sezione: divide la galleria in parti (es. i progetti di un lavoro), con due righe di testo.
-      entry.title = h('input', { type: 'text', class: 'lang-it', value: item.titolo || '', placeholder: 'Titolo della sezione' });
-      entry.titleEn = h('input', { type: 'text', class: 'lang-en', value: item.titolo_en || '', placeholder: item.titolo ? `In italiano: ${item.titolo}` : 'Section title in English' });
-      entry.text = h('textarea', { class: 'lang-it', rows: 2, placeholder: 'Due righe su cosa hai fatto' }, item.testo || '');
-      entry.textEn = h('textarea', { class: 'lang-en', rows: 2, placeholder: item.testo ? `In italiano: ${item.testo}` : 'Two lines on what you did' }, item.testo_en || '');
-      const el = h('div', { class: 'gallery-item sort-item' },
-        h('div', { class: 'gallery-head' },
-          grip(), icon('tag'), h('strong', {}, 'Titolo di sezione'), h('span', { class: 'grow' }),
-          h('button', { type: 'button', class: 'icon-btn danger', title: 'Elimina', onclick: () => { items.delete(el); el.remove(); markDirty(); } }, icon('trash'))),
-        entry.title, entry.titleEn, entry.text, entry.textEn);
-      items.set(el, entry);
-      list.append(el);
+      // Titolo di sezione: divide la galleria in parti, con due righe di testo.
+      entry.title = h('input', { type: 'text', value: item.titolo || '', placeholder: 'Titolo della sezione' });
+      entry.titleEn = h('input', { type: 'text', value: item.titolo_en || '', placeholder: 'Section title in English' });
+      entry.text = h('textarea', { rows: 2, placeholder: 'Due righe su cosa hai fatto' }, item.testo || '');
+      entry.textEn = h('textarea', { rows: 2, placeholder: 'Two lines on what you did' }, item.testo_en || '');
+      const label = h('span', { class: 'g-sez__t' });
+      const draw = () => { label.textContent = entry.title.value.trim() || 'Titolo di sezione senza nome'; };
+      const open = () => openSheet('Titolo di sezione', h('div', { class: 'sheet-fields' },
+        field('Titolo 🇮🇹', entry.title), field('Title 🇬🇧', entry.titleEn),
+        field('Testo 🇮🇹', entry.text), field('Text 🇬🇧', entry.textEn)), draw);
+      el.append(grip(), h('button', { type: 'button', class: 'g-sez__open', onclick: open }, icon('tag'), label, h('span', { class: 'g-sez__k' }, 'Sezione')), del(el));
+      draw();
+      count();
+      if (!item.titolo) open();
       return;
     }
+
     if (item.type === 'foto') {
       entry.image = imageWidget(item.immagine);
       if (file) entry.image.pick(file);
     } else {
       entry.link = h('input', { type: 'url', value: item.link || '', placeholder: 'Link YouTube, Vimeo, prototipo Figma o file .mp4' });
     }
-    // Sotto ogni foto: un titolo e una riga che la spiega.
-    entry.title = h('input', { type: 'text', class: 'lang-it', value: item.titolo || '', placeholder: 'Titolo della foto (facoltativo)' });
-    entry.titleEn = h('input', { type: 'text', class: 'lang-en', value: item.titolo_en || '', placeholder: item.titolo ? `In italiano: ${item.titolo}` : 'Photo title in English (optional)' });
-    entry.caption = h('input', { type: 'text', class: 'lang-it', value: item.didascalia || '', placeholder: 'Una riga che spiega la foto (facoltativa)' });
-    entry.captionEn = h('input', {
-      type: 'text', class: 'lang-en', value: item.didascalia_en || '',
-      placeholder: item.didascalia ? `In italiano: ${item.didascalia}` : 'Caption in English (optional)',
-    });
-    entry.format = h('select', { class: 'compact', title: 'Larghezza sul sito' },
-      h('option', { value: 'intera', selected: !item.formato || item.formato === 'intera' }, 'Tutta larghezza'),
-      h('option', { value: 'meta', selected: item.formato === 'meta' }, 'Metà'),
-      h('option', { value: 'sola', selected: item.formato === 'sola' }, 'Da sola, senza dettaglio'),
-      h('option', { value: 'grande', selected: item.formato === 'grande' }, 'Grande, a tutta larghezza'));
-    const el = h('div', { class: 'gallery-item sort-item' },
-      h('div', { class: 'gallery-head' },
-        grip(),
-        icon(item.type === 'foto' ? 'image' : 'video'),
-        h('strong', {}, item.type === 'foto' ? 'Foto' : 'Video'),
-        h('span', { class: 'grow' }),
-        entry.format,
-        h('button', { type: 'button', class: 'icon-btn danger', title: 'Elimina', onclick: () => { items.delete(el); el.remove(); markDirty(); } }, icon('trash'))),
-      entry.image ? entry.image.el : entry.link,
-      entry.title,
-      entry.titleEn,
-      entry.caption,
-      entry.captionEn);
-    items.set(el, entry);
-    list.append(el);
+    entry.title = h('input', { type: 'text', value: item.titolo || '', placeholder: 'Facoltativo' });
+    entry.titleEn = h('input', { type: 'text', value: item.titolo_en || '', placeholder: item.titolo ? `In italiano: ${item.titolo}` : 'Optional' });
+    entry.caption = h('textarea', { rows: 2, placeholder: 'Una riga che spiega la foto (facoltativa)' }, item.didascalia || '');
+    entry.captionEn = h('textarea', { rows: 2, placeholder: item.didascalia ? `In italiano: ${item.didascalia}` : 'Optional' }, item.didascalia_en || '');
+    entry.format = item.formato && FORMATI.some(([v]) => v === item.formato) ? item.formato : 'intera';
+
+    const media = h('span', { class: 'g-media' });
+    const badge = h('span', { class: 'g-badge' });
+    const cap = h('span', { class: 'g-cap' });
+    const warn = h('span', { class: 'g-warn', title: 'Manca la traduzione inglese' }, 'EN');
+    const segs = FORMATI.map(([v, l]) => h('button', {
+      type: 'button', class: 'seg-btn', 'data-v': v,
+      onclick: () => { entry.format = v; draw(); markDirty(); },
+    }, l));
+
+    function draw() {
+      const src = entry.image?.src();
+      const vid = entry.link && entry.link.value.trim();
+      if (!src && vid && /\.(mp4|webm|mov)$/i.test(vid)) {
+        media.replaceChildren(h('video', { src: `${mediaUrl(vid)}#t=0.5`, muted: true, playsInline: true, preload: 'metadata' }));
+      } else media.replaceChildren(src ? h('img', { src, alt: '', loading: 'lazy', onerror: (e) => { const p = entry.image.get(); if (e.target.src.startsWith(SITE)) e.target.src = RAW + p; } })
+        : h('span', { class: 'g-ph' }, icon(entry.type === 'foto' ? 'image' : 'video'), entry.type === 'video' && h('small', {}, (entry.link.value.match(/\/\/(?:www\.)?([^/]+)/) || [])[1] || 'Video')));
+      badge.textContent = FORMATI.find(([v]) => v === entry.format)[1];
+      el.classList.toggle('g-wide', entry.format === 'intera' || entry.format === 'grande');
+      cap.textContent = entry.title.value.trim() || entry.caption.value.trim() || (entry.type === 'video' ? 'Video' : '');
+      warn.hidden = !((entry.title.value.trim() && !entry.titleEn.value.trim()) || (entry.caption.value.trim() && !entry.captionEn.value.trim()));
+      segs.forEach((b) => b.classList.toggle('active', b.dataset.v === entry.format));
+    }
+    entry.image?.onChange(draw);
+
+    const open = () => openSheet(entry.type === 'foto' ? 'Foto' : 'Video', h('div', { class: 'sheet-grid' },
+      h('div', { class: 'sheet-media' }, entry.image ? entry.image.el : field('Link del video', entry.link)),
+      h('div', { class: 'sheet-fields' },
+        h('div', {}, h('span', { class: 'label' }, 'Larghezza sul sito'), h('div', { class: 'seg' }, segs)),
+        field('Titolo 🇮🇹', entry.title), field('Title 🇬🇧', entry.titleEn),
+        field('Didascalia 🇮🇹', entry.caption), field('Caption 🇬🇧', entry.captionEn))), draw);
+
+    el.append(
+      grip(),
+      h('button', { type: 'button', class: 'g-open', title: 'Titolo, didascalia e larghezza', onclick: open }, media, h('span', { class: 'g-info' }, badge, warn, cap)),
+      del(el));
+    draw();
+    count();
+    if (entry.type === 'video' && !item.link) open();
   }
 
   for (const item of value || []) add(item);
   sortable(list, markDirty);
   const zone = h('div', { class: 'gallery-zone' },
+    counter,
     list,
     h('div', { class: 'gallery-drop' },
       icon('upload'),
-      h('span', {}, 'Trascina qui le foto, anche tante insieme'),
+      h('span', {}, 'Trascina qui le foto dal Finder, anche tante insieme'),
       h('div', { class: 'row' },
-        h('button', { type: 'button', class: 'btn small', onclick: () => files.click() }, icon('plus'), 'Aggiungi foto'),
+        h('button', { type: 'button', class: 'btn small', onclick: () => files.click() }, icon('plus'), 'Foto'),
         h('button', {
           type: 'button', class: 'btn small',
           onclick: async () => { const p = await pickFromLibrary(); if (p) { add({ type: 'foto', immagine: p }); markDirty(); } },
-        }, icon('images'), 'Dalla libreria'),
-        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'video' }); markDirty(); } }, icon('plus'), 'Aggiungi video'),
-        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'sezione' }); markDirty(); } }, icon('plus'), 'Aggiungi titolo di sezione'))),
+        }, icon('images'), 'Dai media'),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'video' }); markDirty(); } }, icon('video'), 'Video'),
+        h('button', { type: 'button', class: 'btn small', onclick: () => { add({ type: 'sezione' }); markDirty(); } }, icon('tag'), 'Titolo di sezione'))),
     files);
   dropzone(zone, addFiles);
+  count();
 
   const clean = (o) => Object.fromEntries(Object.entries(o).filter(([, v]) => !isEmpty(v)));
   const ordered = () => [...list.children].map((el) => items.get(el)).filter(Boolean);
@@ -742,7 +851,7 @@ function galleryWidget(value) {
         titolo_en: i.titleEn.value.trim(),
         didascalia: i.caption.value.trim(),
         didascalia_en: i.captionEn.value.trim(),
-        formato: ['meta', 'sola', 'grande'].indexOf(i.format.value) >= 0 ? i.format.value : undefined,
+        formato: i.format !== 'intera' ? i.format : undefined,
       }))
       .filter((i) => i.immagine || i.link || i.titolo),
     files: async () => (await Promise.all(ordered().filter((i) => i.image).map((i) => i.image.files()))).flat(),
@@ -768,10 +877,14 @@ function checklistWidget(field, value) {
   });
   return {
     el: h('div', { class: 'checklist' }, groups, field.other && h('div', { class: 'check-group' }, h('span', { class: 'check-title' }, 'Altri'), other)),
-    get: () => [
-      ...boxes.filter((b) => b.checked).map((b) => b.value),
-      ...other.value.split(',').map((s) => s.trim()).filter(Boolean),
-    ],
+    // Tiene l'ordine già salvato; quelli spuntati adesso vanno in fondo.
+    get: () => {
+      const now = [
+        ...boxes.filter((b) => b.checked).map((b) => b.value),
+        ...other.value.split(',').map((s) => s.trim()).filter(Boolean),
+      ];
+      return [...(value || []).filter((v) => now.includes(v)), ...now.filter((v) => !(value || []).includes(v))];
+    },
   };
 }
 
@@ -852,26 +965,32 @@ async function buildForm(fields, entry, extra = []) {
   const widgets = [];
   const el = h('div', { class: 'form', oninput: markDirty, onchange: markDirty });
   const all = expandLanguages([...fields, ...extra], entry);
+  // Campi "side": vanno nella colonna a destra (pubblicazione, categoria, cliente, anno, copertina…).
+  const hasSide = all.some((f) => f.side);
+  const main = hasSide ? h('section', { class: 'form-main panel padded' }) : el;
+  const side = hasSide && h('aside', { class: 'form-side' }, h('section', { class: 'panel padded side-card' }));
+  if (hasSide) { el.classList.add('has-side'); el.append(main, side); }
   let group = null;
   for (const field of all) {
     const value = field.name === 'body' ? entry.body : entry.data[field.name];
     const w = await widget(field, value);
     widgets.push([field, w]);
     if (!w.el) continue;
-    if (field.group && field.group !== group) {
+    const box = field.side && side ? side.lastChild : main;
+    if (!field.side && field.group && field.group !== group) {
       group = field.group;
-      el.append(h('h3', { class: 'form-group' }, group));
+      main.append(h('h3', { class: 'form-group' }, group));
     }
     const cls = `field${field.lang ? ` lang-${field.lang}` : ''}`;
     const badge = field.lang && h('span', { class: 'lang-tag' }, field.lang.toUpperCase());
-    el.append(w.inline
+    box.append(w.inline
       ? h('div', { class: cls }, w.el, field.hint && h('p', { class: 'hint' }, field.hint))
       : h('div', { class: cls },
         h('label', { class: 'label' }, field.label, field.required && h('span', { class: 'req' }, ' *'), badge),
         w.el,
         field.hint && h('p', { class: 'hint' }, field.hint)));
   }
-  if (all.some((f) => f.lang)) el.prepend(languageSwitch(el, widgets));
+  if (all.some((f) => f.lang)) (side || main).prepend(languageSwitch(el, widgets));
 
   // Raccoglie i valori, controlla i campi obbligatori e prepara le immagini nuove da caricare.
   async function collect() {
@@ -925,7 +1044,7 @@ function shell(crumbs, content) {
       navGroup('generale', 'Generale', [navLink('#/', 'Dashboard', 'gauge'), navLink('#/richieste', 'Richieste', 'mail')]),
       navGroup('contenuti', 'Contenuti', [
         ...collections.map((c) => navLink(`#/c/${c.name}`, c.label, c.icon)),
-        navLink('#/immagini', 'Libreria immagini', 'images'),
+        navLink('#/media', 'Media', 'images'),
       ]),
       navGroup('pagine', 'Pagine', pages.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon))),
       navGroup('sistema', 'Sistema', settings.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon)))),
@@ -1400,7 +1519,7 @@ async function collectionEditor(coll, slug) {
 
   const homePage = coll.home && findPage('home');
   const home = coll.home ? await homeSlugs() : [];
-  const extra = coll.home ? [{ name: '_home', label: 'Mostra in home', type: 'boolean', virtual: true, hint: 'L’ordine dei progetti in home si decide in Pagine → Home.' }] : [];
+  const extra = coll.home ? [{ side: true, name: '_home', label: 'Mostra in home', type: 'boolean', virtual: true, hint: 'L’ordine dei progetti in home si decide in Pagine → Home.' }] : [];
   const form = { ...entry, data: { ...entry.data, _home: !isNew && home.includes(slug) } };
   const title = isNew ? `Nuovo ${coll.singular}` : entry.data.title || slug;
 
@@ -1537,17 +1656,25 @@ async function editor({ schema, entry, extra, crumbs, title, chips, intro, back,
         back && h('a', { class: 'btn ghost', href: back }, icon('back'), h('span', {}, 'Indietro')),
         duplicate && h('button', { type: 'button', class: 'btn', onclick: duplicate }, icon('copy'), h('span', {}, 'Duplica')),
         view && h('a', { class: 'btn', href: view, target: '_blank', rel: 'noopener' }, icon('external'), h('span', {}, 'Vedi sul sito')))),
-    h('section', { class: 'panel padded' }, form.el),
+    form.el.classList.contains('has-side') ? form.el : h('section', { class: 'panel padded' }, form.el),
     h('div', { class: 'savebar' }, status, h('span', { class: 'grow' }), deleteBtn, saveBtn)));
 }
 
 async function libraryView() {
-  shell([['Libreria immagini']], loading());
-  const [files, usedIn] = await Promise.all([loadLibrary(), usageIndex()]);
-  const filter = h('select', { class: 'compact' }, h('option', { value: '' }, 'Tutte le immagini'), h('option', { value: 'unused' }, 'Solo quelle non usate'));
-  const grid = h('div', { class: 'lib-grid big' });
+  shell([['Media']], loading());
+  const files = await loadLibrary();
+  const groups = await mediaGroups(files);
+  const byPath = Object.fromEntries(files.map((f) => [f.path, f]));
+  const where = {};
+  for (const g of groups) for (const p of g.paths) (where[p] ||= []).push(g);
+
+  const search = h('input', { type: 'text', placeholder: 'Cerca un progetto o un file…' });
+  const pick = h('select', { class: 'compact' }, h('option', { value: '' }, 'Tutti i progetti'),
+    groups.map((g) => h('option', { value: g.key }, `${g.title} (${g.paths.length})`)));
+  const body = h('div', { class: 'media-groups' });
   const status = h('span', { class: 'status' });
   const input = h('input', { type: 'file', accept: 'image/*', multiple: true, hidden: true, onchange: () => upload([...input.files]) });
+  const nProj = groups.filter((g) => g.kind === 'Progetto').length;
 
   async function upload(chosen) {
     if (!chosen.length) return;
@@ -1555,50 +1682,65 @@ async function libraryView() {
     try {
       const prepared = await Promise.all(chosen.map(processImage));
       status.textContent = 'Caricamento…';
-      await commit(await Promise.all(prepared.map(toUpload)), `Carica ${chosen.length} immagini nella libreria`);
-      state.flash = { type: 'ok', text: `${chosen.length === 1 ? 'Immagine caricata' : `${chosen.length} immagini caricate`}. Saranno visibili tra 1–2 minuti.` };
+      await commit(await Promise.all(prepared.map(toUpload)), `Carica ${chosen.length} immagini nei media`);
+      state.flash = { type: 'ok', text: `${chosen.length === 1 ? 'Immagine caricata' : `${chosen.length} immagini caricate`}: le trovi in “Non usate” finché non le metti in un progetto.` };
       route();
     } catch (e) {
       status.textContent = e.message;
     }
   }
 
-  function draw() {
-    const shown = files.filter((f) => !filter.value || !usedIn(f.path).length);
-    grid.replaceChildren(...(shown.length ? shown.map((f) => {
-      const used = usedIn(f.path);
-      return h('div', { class: 'lib-card' },
-        libThumb(f.path),
-        h('div', { class: 'lib-info' },
-          h('strong', { title: f.name }, f.name),
-          h('small', {}, sizeLabel(f.size)),
-          used.length ? h('small', { class: 'used', title: used.join('\n') }, `Usata in: ${used.join(', ')}`) : chip('Non usata', 'amber')),
-        !used.length && h('button', {
-          type: 'button', class: 'icon-btn danger', title: 'Elimina',
-          onclick: async () => {
-            if (!confirm(`Eliminare ${f.name}?`)) return;
-            status.textContent = 'Eliminazione…';
-            try {
-              await commit([{ path: f.path, remove: true }], `Elimina immagine ${f.name}`);
-              files.splice(files.indexOf(f), 1);
-              status.textContent = '';
-              draw();
-            } catch (e) {
-              status.textContent = e.message;
-            }
-          },
-        }, icon('trash')));
-    }) : [h('p', { class: 'empty-state' }, 'Nessuna immagine.')]));
+  function card(path, g) {
+    const f = byPath[path];
+    const others = where[path].filter((x) => x !== g);
+    const unused = g.key === 'unused';
+    return h('div', { class: 'lib-card' },
+      h('a', { href: mediaUrl(path), target: '_blank', rel: 'noopener', title: 'Apri a grandezza piena' }, libThumb(path)),
+      h('div', { class: 'lib-info' },
+        h('strong', { title: f.name }, f.name),
+        h('small', {}, sizeLabel(f.size)),
+        others.length > 0 && h('small', { title: others.map((x) => x.title).join('\n') }, `Anche in: ${others.map((x) => x.title).join(', ')}`)),
+      unused && h('button', {
+        type: 'button', class: 'icon-btn danger', title: 'Elimina',
+        onclick: async () => {
+          if (!confirm(`Eliminare ${f.name}? Non è usata da nessuna parte.`)) return;
+          status.textContent = 'Eliminazione…';
+          try {
+            await commit([{ path: f.path, remove: true }], `Elimina immagine ${f.name}`);
+            g.paths.splice(g.paths.indexOf(path), 1);
+            status.textContent = '';
+            draw();
+          } catch (e) {
+            status.textContent = e.message;
+          }
+        },
+      }, icon('trash')));
   }
 
-  filter.addEventListener('input', draw);
-  const zone = h('section', { class: 'panel padded' }, grid);
-  dropzone(zone, upload);
-  shell([['Libreria immagini']], h('div', {},
-    pageHead('Libreria immagini', `${files.length} immagini · trascina qui le foto per caricarle`,
+  function draw() {
+    const q = search.value.trim().toLowerCase();
+    const shown = groups
+      .filter((g) => !pick.value || g.key === pick.value)
+      .map((g) => ({ g, paths: !q || g.title.toLowerCase().includes(q) ? g.paths : g.paths.filter((p) => byPath[p].name.toLowerCase().includes(q)) }))
+      .filter((x) => x.paths.length);
+    body.replaceChildren(...(shown.length ? shown.map(({ g, paths }) => h('section', { class: `panel media-group${g.key === 'unused' ? ' is-unused' : ''}` },
+      h('div', { class: 'panel-head' },
+        h('div', {},
+          h('div', { class: 'title-row' }, h('h2', {}, g.title), g.draft && chip('Bozza', 'amber'), g.key === 'unused' && chip('Si possono eliminare', 'amber')),
+          h('p', { class: 'muted' }, [g.kind, `${paths.length} ${paths.length === 1 ? 'immagine' : 'immagini'}`].filter(Boolean).join(' · '))),
+        g.href && h('a', { href: g.href }, g.kind === 'Progetto' ? 'Apri il progetto' : 'Apri')),
+      h('div', { class: 'lib-grid' }, paths.map((p) => card(p, g)))))
+      : [h('p', { class: 'empty-state' }, 'Nessuna immagine trovata.')]));
+  }
+
+  search.addEventListener('input', draw);
+  pick.addEventListener('input', draw);
+  dropzone(body, upload);
+  shell([['Media']], h('div', {},
+    pageHead('Media', `${files.length} immagini in ${nProj} progetti · trascina qui le foto per caricarle`,
       h('button', { type: 'button', class: 'btn primary', onclick: () => input.click() }, icon('upload'), h('span', {}, 'Carica foto'))),
-    h('div', { class: 'toolbar' }, filter, status),
-    zone,
+    h('div', { class: 'toolbar' }, h('div', { class: 'input-icon search' }, icon('search'), search), pick, status),
+    body,
     input));
   draw();
 }
@@ -1613,7 +1755,7 @@ async function route() {
       return await (slug ? collectionEditor(findCollection(name), decodeURIComponent(slug)) : listView(findCollection(name)));
     }
     if (kind === 'p' && findPage(name)) return await pageEditor(findPage(name));
-    if (location.hash === '#/immagini') return await libraryView();
+    if (location.hash === '#/media' || location.hash === '#/immagini') return await libraryView();
     if (location.hash === '#/richieste') return await richiesteView();
     return await dashboard();
   } catch (e) {
