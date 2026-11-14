@@ -264,6 +264,7 @@
   <button id="snd" type="button" aria-pressed="false">Suono: no</button>
 </div>
 
+<script src="../assets/js/parole.js"></script>
 <script>
 (() => {
   /* ---------- Costanti ---------- */
@@ -403,6 +404,9 @@
   const fraseEl = E('frase');
   fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', '7', 'H', 'E', ' ', 'E', 'Y', 'E']
     .map(x => x.startsWith('<') ? x : `<span class="fu">${x === ' ' ? '\u00a0' : x}</span>`).join('');
+  // MEETS in vettori (assets/js/parole.js): uguale per tutti, anche senza TAN Nimbus sul computer
+  if (window.LMM_PAROLE && LMM_PAROLE.parole.MEETS) { const m = LMM_PAROLE.meta, p = LMM_PAROLE.parole.MEETS, k = .93 / m.upm, fy = fraseEl.querySelector('.fy');
+    fy.innerHTML = `<svg viewBox="0 0 ${p.w} ${m.h}" style="display:inline-block;height:${(m.h * k).toFixed(4)}em;width:auto;vertical-align:${(m.desc * k).toFixed(4)}em;fill:currentColor;overflow:visible" aria-hidden="true"><path d="${p.d}"/></svg>`; }
   const pezzi = [...fraseEl.children].map((n, i) => {
     const r = Math.abs(Math.sin(i * 12.9898 + 1.7) * 43758.5453) % 1, r2 = Math.abs(Math.sin(i * 78.233 + .3) * 9999) % 1;
     return { n, occhio: n.classList.contains('occhio'), dx: (r - .5) * 640, dy: (r2 - .5) * 420, rot: (r - .5) * 90 };

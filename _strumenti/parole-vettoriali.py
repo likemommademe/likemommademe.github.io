@@ -16,8 +16,8 @@ RADICE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOVE = ['_data', '_layouts', '_includes', '_progetti', '_categorie', 'index.html', 'about.md', 'work.html']
 USCITA = os.path.join(RADICE, 'assets', 'js', 'parole.js')
 
-# 1. le parole: tutto ciò che sta tra <em> e </em> (il motto MORE THAN meets THE EYE resta in testo, come vuole l'animazione)
-parole = set()
+# 1. le parole: tutto ciò che sta tra <em> e </em>, più MEETS in maiuscolo per il motto (in home e nello showreel)
+parole = {'MEETS'}
 for d in DOVE:
     p = os.path.join(RADICE, d)
     file = [p] if os.path.isfile(p) else [os.path.join(r, f) for r, _, fs in os.walk(p) for f in fs if f.endswith(('.yml', '.md', '.html'))]
