@@ -483,6 +483,9 @@ body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 .pl--segno:active { cursor: grabbing; }
 .pied__fine { display: flex; justify-content: space-between; gap: 16px; margin-top: 64px; font-size: 14px; color: var(--muted); }
 .contatti { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.contatti__cv { display: inline-flex; align-items: center; gap: 10px; }
+.contatti__cv svg { transition: transform .25s var(--ease); }
+.contatti__cv:hover svg { transform: translateY(2px); }
 @media (max-width: 720px) { .pied__cols { grid-template-columns: 1fr; } }
 
 /* ---------- Pagine esistenti (categoria, progetto, about) ---------- */

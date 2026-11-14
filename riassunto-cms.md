@@ -361,3 +361,4 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Anche MEETS del motto è in vettori, in home e nei due showreel. |
 | 14/11/2026 | Pagine categoria: in alto a destra, piccolo, il pezzo di showreel di quel mondo in loop (campo `mondo` nelle categorie, showreel con ?loop=a,b). About: tolti i voti; la tappa Pixell racconta cosa facevo, senza clienti; LIKEMOMMADEME nasce nel 2027, poi ∞. |
 | 14/11/2026 | About, Clienti: al posto dei nomi i loghi (assets/clienti, neri su trasparente, bianchi di notte). Accademia dei Romani, DCD ed Etic.a dai materiali dei progetti; IED e IKEA da Wikimedia Commons. Campo **logo** nei clienti. |
+| 14/11/2026 | Footer, Contatti: email, telefono e curriculum scaricabile (PDF in assets/docs). Nuovi campi **telefono** e **curriculum** nelle impostazioni. |
