@@ -17,7 +17,11 @@ collections:
   clienti:
     output: false
   news:
-    output: false   # le news portano ad articoli su altri siti: niente pagina propria
+    output: false
+  esperienze:
+    output: false   # dove ho lavorato e studiato (loghi in About e Contatti)
+  testimonianze:
+    output: false   # parole di chi mi conosce: compaiono solo se pubblicate   # le news portano ad articoli su altri siti: niente pagina propria
 
 defaults:
   - scope: { path: "", type: categorie }

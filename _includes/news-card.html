@@ -1,7 +1,7 @@
 {% comment %} Una news: copertina (immagine o, se manca, la fonte scritta in grande), poi categoria · fonte · data, titolo e il mio commento. Porta all'articolo originale. {% endcomment %}
 {% assign n = include.n %}{% assign tn = site.data.testi.news %}
 <a class="nc nc--{{ n.categoria }}" href="{{ n.link }}" target="_blank" rel="noopener" data-cat="{{ n.categoria }}">
-  <span class="nc__img">{% if n.immagine %}<img src="{{ n.immagine | relative_url }}" alt="" loading="lazy">{% else %}<span class="nc__fonte" aria-hidden="true">{{ n.fonte | split: " · " | first }}</span>{% endif %}</span>
+  <span class="nc__img"><span class="nc__fonte" aria-hidden="true">{{ n.fonte | split: " · " | first }}</span>{% if n.immagine %}<img src="{{ n.immagine | relative_url }}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">{% endif %}</span>
   <span class="nc__meta"><span class="nc__cat">{{ tn.categorie[n.categoria] | default: n.categoria }}</span><span class="nc__dot">{{ n.fonte }}</span><span class="nc__dot">{{ n.data | date: "%-d/%-m/%Y" }}</span></span>
   <span class="nc__t">{{ n.title }}</span>
   <span class="nc__p">{{ n.content | strip_html | strip_newlines }}</span>

@@ -1,0 +1,23 @@
+{% comment %} Parole di chi mi conosce: professori, colleghi, responsabili. Solo quelle pubblicate dal pannello.
+   Se non ce n'è nessuna, la sezione non compare. {% endcomment %}
+{% assign tt = site.data.testi.testimonianze %}{% assign test = site.testimonianze | where: "published", true | sort: "ordine" %}
+{% if test.size > 0 %}
+<section class="fascia testi-chi" aria-labelledby="t-testi">
+  <p class="cs-label cs-head__k">{{ tt.k }}</p>
+  <h2 class="rec-home__t rise" id="t-testi"><span>{{ tt.titolo }}</span></h2>
+  <div class="rec-home__lista">
+    {% for x in test %}
+    <figure class="rec rec--persona" data-rivela>
+      <div class="rec__img">{% if x.foto %}<img src="{{ x.foto | relative_url }}" alt="{{ x.title }}" loading="lazy">{% else %}<span class="rec__iniziali" aria-hidden="true">{% assign parti = x.title | split: " " %}{% for p in parti limit: 2 %}{{ p | slice: 0 }}{% endfor %}</span>{% endif %}{% if x.rapporto %}<span class="rec__etichetta">{{ x.rapporto }}</span>{% endif %}</div>
+      <div class="rec__corpo">
+        <blockquote class="rec__q"><span class="rec__virg" aria-hidden="true">“</span>{{ x.content | strip_html | strip_newlines }}<span class="rec__virg" aria-hidden="true">”</span></blockquote>
+        <figcaption class="rec__chi rec__chi--persona">
+          <span class="rec__nome"><strong>{{ x.title }}</strong>{% if x.ruolo %}<span>{{ x.ruolo }}</span>{% endif %}</span>
+          {% if x.link and x.link != "" %}<a class="rec__vedi" href="{{ x.link }}" target="_blank" rel="noopener">{{ tt.profilo }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
+        </figcaption>
+      </div>
+    </figure>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

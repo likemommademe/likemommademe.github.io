@@ -1,0 +1,22 @@
+{% comment %} Dove ho lavorato e studiato: loghi, ruolo e anni. Dalla raccolta Esperienze del pannello. {% endcomment %}
+{% assign te = site.data.testi.esperienze %}{% assign esp = site.esperienze | sort: "ordine" %}
+{% if esp.size > 0 %}
+<section class="fascia{% if include.inv %} inv{% endif %} esperienze" aria-labelledby="t-esp">
+  <div class="esperienze__head">
+    <h2 class="rise" id="t-esp"><span>{{ te.titolo }}</span></h2>
+    <p class="esperienze__p">{{ te.testo }}</p>
+  </div>
+  <ul class="esperienze__lista">
+    {% for e in esp %}
+    <li class="esp">
+      {% if e.sito and e.sito != "" %}<a class="esp__in" href="{{ e.sito }}" target="_blank" rel="noopener">{% else %}<div class="esp__in">{% endif %}
+        <span class="esp__logo">{% if e.logo %}<img src="{{ e.logo | relative_url }}" alt="{{ e.title }}" loading="lazy">{% else %}{{ e.title }}{% endif %}</span>
+        <span class="esp__tipo">{% if e.tipo == "studio" %}{{ te.studio }}{% else %}{{ te.lavoro }}{% endif %} · {{ e.anni }}</span>
+        <span class="esp__ruolo">{{ e.ruolo }}</span>
+        <span class="esp__nome">{{ e.title }}</span>
+      {% if e.sito and e.sito != "" %}</a>{% else %}</div>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

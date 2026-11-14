@@ -34,17 +34,8 @@ permalink: /contatti/
   </aside>
 </section>
 
-{% comment %} 2. I loghi dei clienti {% endcomment %}
-{% assign clienti_veri = "" | split: "" %}
-{% for c in site.clienti %}{% assign usati = site.progetti | where: "cliente", c.slug %}{% if usati.size > 0 and c.logo %}{% assign clienti_veri = clienti_veri | push: c %}{% endif %}{% endfor %}
-{% if clienti_veri.size > 0 %}
-<section class="fascia inv contatti-loghi">
-  <h2 class="rise"><span>{{ tc.clienti_titolo }}</span></h2>
-  <ul class="clienti">
-    {% for c in clienti_veri %}<li>{% if c.sito %}<a href="{{ c.sito }}" target="_blank" rel="noopener" aria-label="{{ c.title }}">{% endif %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% if c.sito %}</a>{% endif %}</li>{% endfor %}
-  </ul>
-</section>
-{% endif %}
+{% comment %} 2. Dove ho lavorato e studiato {% endcomment %}
+{% include esperienze.html inv=true %}
 
 {% comment %} 3. Gli orari nel mondo {% endcomment %}
 {% include orari.html %}

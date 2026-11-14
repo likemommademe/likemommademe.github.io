@@ -150,30 +150,7 @@ reel: true
   </div>
 </section>
 
-{% comment %} Recensioni: le frasi vere dei clienti, dal campo Recensione di ogni progetto. Se non ce n'è nessuna, la sezione non c'è. {% endcomment %}
-{% assign con_rec = site.progetti | where_exp: "p", "p.recensione" %}
-{% if con_rec.size > 0 %}
-<section class="fascia rec-home" aria-labelledby="t-rec">
-  <p class="cs-label cs-head__k">{{ t.rec_k }}</p>
-  <h2 class="rec-home__t rise" id="t-rec"><span>{{ t.rec_titolo }}</span></h2>
-  <div class="rec-home__lista">
-    {% for p in con_rec %}
-    {% assign rcl = nil %}{% if p.cliente %}{% assign rcl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
-    <figure class="rec" data-rivela>
-      <a class="rec__img" href="{{ p.url | relative_url }}" tabindex="-1" aria-hidden="true">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy">{% endif %}<span class="rec__etichetta">{{ p.title }}</span></a>
-      <div class="rec__corpo">
-        <blockquote class="rec__q"><span class="rec__virg" aria-hidden="true">“</span>{{ p.recensione }}<span class="rec__virg" aria-hidden="true">”</span></blockquote>
-        <figcaption class="rec__chi">
-          {% if rcl.logo %}<img class="rec__logo" src="{{ rcl.logo | relative_url }}" alt="{{ rcl.title }}">{% endif %}
-          <span class="rec__nome"><strong>{{ p.recensione_autore }}</strong>{% if p.recensione_ruolo %}<span>{{ p.recensione_ruolo }}</span>{% endif %}</span>
-          <a class="rec__vedi" href="{{ p.url | relative_url }}">{{ t.rec_vedi }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-        </figcaption>
-      </div>
-    </figure>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
+{% include testimonianze.html %}
 
 {% comment %} News: le ultime quattro, come sulla pagina News {% endcomment %}
 {% assign tn = site.data.testi.news %}{% assign ultime = site.news | sort: "data" | reverse %}

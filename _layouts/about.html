@@ -4,13 +4,22 @@ layout: default
 {% assign a = site.data.testi.about %}
 {% assign tappe = a.tappe %}
 
-{% comment %} 1. Apertura: titolo gigante e una riga {% endcomment %}
+{% comment %} 1. Apertura: a sinistra chi sono (nome, frase, azioni, tre fatti), a destra la foto. Allineati in alto. {% endcomment %}
+{% assign info = site.data.impostazioni %}
 <section class="ahero">
-  <div>
-    <h1 class="rise"><span>{{ page.title }}<i class="segno" aria-hidden="true"></i></span></h1>
-    <p class="lead">{{ a.sottotitolo }}</p>
+  <div class="ahero__txt">
+    <p class="cs-label ahero__k">{{ page.title }}</p>
+    <h1 class="ahero__t rise"><span>{{ a.hero_titolo }}</span></h1>
+    <p class="lead ahero__lead">{{ a.sottotitolo }}</p>
+    <div class="ahero__azioni">
+      <a class="btn" href="{{ '/contatti/' | relative_url }}" data-modulo-apri>{{ a.hero_cta }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      {% if info.curriculum != "" %}<a class="rec__vedi" href="{{ info.curriculum | relative_url }}" download>{{ site.data.testi.footer.curriculum }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
+    </div>
+    <dl class="ahero__fatti">
+      {% for f in a.hero_fatti %}<div><dt>{{ f.k }}</dt><dd>{{ f.v }}</dd></div>{% endfor %}
+    </dl>
   </div>
-  {% if page.foto and page.foto != "" %}<img class="about-foto" src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}">{% endif %}
+  {% if page.foto and page.foto != "" %}<figure class="ahero__foto"><img src="{{ page.foto | relative_url }}" alt="{{ site.data.impostazioni.nome }}" fetchpriority="high"><figcaption class="rec__etichetta">Roma · {{ 'now' | date: '%Y' }}</figcaption></figure>{% endif %}
 </section>
 
 {% comment %} 2. La timeline (come bitwip "through the years"): a sinistra il testo e l'anno gigante che scorre
@@ -90,37 +99,14 @@ layout: default
   </div>
 </section>
 
-{% comment %} 5. Clienti (dal pannello) {% endcomment %}
-{% assign clienti_veri = "" | split: "" %}
-{% for c in site.clienti %}{% assign usati = site.progetti | where: "cliente", c.slug %}{% if usati.size > 0 %}{% assign clienti_veri = clienti_veri | push: c %}{% endif %}{% endfor %}
-{% if page.mostra_clienti and clienti_veri.size > 0 %}
-<section class="fascia">
-  <div class="sec-head"><h2 class="rise"><span>{{ a.clienti_titolo }}</span></h2></div>
-  <ul class="clienti">
-    {% for c in clienti_veri %}
-      <li>{% if c.sito %}<a href="{{ c.sito }}" target="_blank" rel="noopener" aria-label="{{ c.title }}, sito (si apre in una nuova scheda)">{% endif %}{% if c.logo %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% else %}{{ c.title }}{% endif %}{% if c.sito %}</a>{% endif %}</li>
-    {% endfor %}
-  </ul>
-</section>
-{% endif %}
+{% comment %} 5. Dove ho lavorato e studiato {% endcomment %}
+{% include esperienze.html %}
 
-{% comment %} 6. Dove lavoro, con l'ora in tempo reale {% endcomment %}
-<section class="fascia inv">
-  <div class="sec-head">
-    <h2 class="rise"><span>{{ a.dove_titolo }}</span></h2>
-  </div>
-  <p class="lead dove__p">{{ a.dove_testo }}</p>
-  <ul class="dove">
-    {% for d in a.dove %}
-      <li class="dove__c">
-        <span class="dove__sigla">{{ d.sigla }}</span>
-        <span class="dove__ora" {% if d.fuso != "" %}data-fuso="{{ d.fuso }}"{% endif %}>{% if d.fuso != "" %}--:--{% else %}24/7{% endif %}</span>
-        <span class="dove__citta">{{ d.citta }}</span>
-        <span class="dove__det">{{ d.dettaglio }}</span>
-      </li>
-    {% endfor %}
-  </ul>
-</section>
+{% comment %} Chi mi conosce {% endcomment %}
+{% include testimonianze.html %}
+
+{% comment %} 6. Orari nel mondo, uguali a home e contatti {% endcomment %}
+{% include orari.html %}
 
 {% comment %} 7. Domande frequenti: se ne apri una, le altre si chiudono {% endcomment %}
 <section class="fascia">
@@ -140,6 +126,26 @@ layout: default
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+
+    // Strisce di foto: scorrono da sole e accelerano mentre scorri la pagina (in su o in giù, ognuna nella sua direzione).
+    // Le foto si caricano tutte appena la sezione sta per arrivare, così non restano riquadri vuoti.
+    var vita = document.querySelector('[data-vita]');
+    if (vita) {
+      var piste = [].slice.call(vita.querySelectorAll('.vita__pista')), pos = piste.map(function () { return 0; }), spinta = 0, ultimoY = scrollY, ultimoT = 0, attiva = false;
+      var carica = function () { vita.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; }); };
+      new IntersectionObserver(function (es) { es.forEach(function (e) { attiva = e.isIntersecting; if (attiva) { carica(); if (!ultimoT) requestAnimationFrame(passo); } }); }, { rootMargin: '600px 0px' }).observe(vita);
+      addEventListener('scroll', function () { spinta += Math.abs(scrollY - ultimoY); ultimoY = scrollY; }, { passive: true });
+      var passo = function (t) {
+        var dt = Math.min(.05, (t - (ultimoT || t)) / 1000); ultimoT = t;
+        var v = reduce ? 0 : 28 + Math.min(900, spinta * 9); spinta *= Math.pow(.02, dt);
+        piste.forEach(function (p, i) {
+          var giro = p.scrollWidth / 4; if (!giro) return;
+          pos[i] = (pos[i] + v * dt * (i % 2 ? -1 : 1) + giro) % giro;
+          p.style.transform = 'translate3d(' + (-pos[i]).toFixed(1) + 'px, 0, 0)';
+        });
+        if (attiva) requestAnimationFrame(passo); else ultimoT = 0;
+      };
+    }
 
     // Timeline: la tappa attiva è l'ultima il cui centro ha superato il 58% dello schermo
     var frise = document.querySelector('[data-frise]');
@@ -204,14 +210,6 @@ layout: default
     }
 
 
-    // Ora in tempo reale
-    var ore = document.querySelectorAll('[data-fuso]');
-    var orologio = function () {
-      ore.forEach(function (o) {
-        try { o.textContent = new Intl.DateTimeFormat('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: o.dataset.fuso }).format(new Date()); } catch (e) {}
-      });
-    };
-    orologio(); setInterval(orologio, 20000);
 
   })();
 </script>

@@ -772,7 +772,7 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 .nc { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; }
 .nc[hidden] { display: none; }
 .nc__img { position: relative; display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r); overflow: hidden; background: var(--card); margin-bottom: 8px; }
-.nc__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+.nc__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }   /* se l'immagine non arriva, sotto resta il nome della fonte */
 .nc:hover .nc__img img, .nc:hover .nc__fonte { transform: scale(1.04); }
 .nc__fonte { padding: 0 8%; font-weight: 900; font-size: clamp(1.6rem, 1rem + 1.6vw, 2.6rem); line-height: .95; letter-spacing: -.04em; text-align: center; color: #F5F5F2; transition: transform 1s var(--ease); }
 .nc--siti .nc__img { background: var(--accent-1); }
@@ -814,9 +814,6 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 @media (max-width: 900px) { .orari__head { grid-template-columns: minmax(0, 1fr); } .orari__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } .orari__c:not(:nth-child(3n+1)) { padding-left: 0; border-left: 0; } .orari__c:nth-child(2n) { padding-left: clamp(16px, 2vw, 32px); border-left: 1px solid var(--line); } }
 
 /* About: strisce di foto che scorrono da sole, lente e continue, in direzioni opposte (si fermano passandoci sopra) */
-.vita__pista { animation: vita-scorre 160s linear infinite; }
-.vita__striscia:nth-child(2) .vita__pista { animation-direction: reverse; animation-duration: 190s; }
-.vita:hover .vita__pista { animation-play-state: paused; }
 @keyframes vita-scorre { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-25% - var(--gap) / 4), 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .vita__pista { animation: none; } }
 /* About: l'anno infinito, più grande delle cifre */
@@ -864,8 +861,19 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 }
 
 /* ---------- About: titolo, timeline con l'anno gigante (come bitwip "through the years"), clienti ---------- */
-.ahero { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: var(--gap); }
-.ahero h1 { font-size: clamp(3.5rem, 2rem + 8vw, 10rem); font-weight: 900; letter-spacing: -.045em; line-height: .86; }
+/* About: apertura su 12 colonne. Testo a sinistra (7), foto a destra (5), allineati in alto */
+.ahero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 96px); align-items: start; padding-top: clamp(8px, 2vw, 32px); padding-bottom: clamp(48px, 6vw, 96px); }
+.ahero__txt { display: grid; gap: 28px; align-content: start; min-width: 0; padding-top: clamp(8px, 2vw, 40px); }
+.ahero__k { color: var(--muted); }
+.ahero h1.ahero__t { margin: 0; font-weight: 500; font-size: clamp(2.75rem, 1.6rem + 4.4vw, 6.25rem); line-height: .96; letter-spacing: -.04em; text-wrap: balance; }
+.ahero .lead.ahero__lead { margin: 0; max-width: 46ch; }
+.ahero__azioni { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+.ahero__fatti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin: 12px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }
+.ahero__fatti dt { font-family: var(--f-label); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.ahero__fatti dd { margin: 6px 0 0; font-weight: 500; line-height: 1.35; }
+.ahero__foto { position: relative; margin: 0; aspect-ratio: 4 / 5; border-radius: var(--r); overflow: hidden; background: var(--placeholder); }
+.ahero__foto img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 900px) { .ahero { grid-template-columns: minmax(0, 1fr); } .ahero__foto { order: -1; aspect-ratio: 1; } .ahero__fatti { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
 .about-foto { width: 100%; border-radius: var(--r); }
 .anni { padding-top: clamp(64px, 7vw, 120px); padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 .anni__t { font-size: clamp(2.75rem, 1.4rem + 5vw, 7rem); font-weight: 500; line-height: .98; letter-spacing: -.04em; max-width: 18ch; margin-bottom: clamp(48px, 6vw, 104px); }
@@ -907,14 +915,13 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme]) .clienti img { filter: invert(1); } }
 :root[data-theme="dark"] .inv .clienti img, :root:not([data-theme]) .inv .clienti img { filter: none; }
 @media (max-width: 860px) {
-  .ahero, .anni__grid { grid-template-columns: 1fr; }
+  .anni__grid { grid-template-columns: 1fr; }
   .anni__fermo { position: static; }
   .anni__big { display: none; }
 }
 
 /* About: segno accanto al titolo */
 .segno { display: inline-block; width: .16em; height: .16em; margin-left: .06em; border-radius: .03em; background: var(--accent-3); transform: rotate(45deg) translateY(-.1em); }
-.ahero .lead { margin-top: 28px; }
 
 /* About: due strisce di foto che scorrono in direzioni opposte */
 .vita { width: 100vw; margin-left: calc(50% - 50vw); padding-top: var(--sec); padding-bottom: 0; overflow: hidden; display: grid; gap: var(--gap); }
@@ -1006,3 +1013,26 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 /* loghi dei clienti su una fascia scura di giorno: bianchi */
 :root[data-theme="light"] .inv .clienti img { filter: invert(1); }
 @media (prefers-color-scheme: light) { :root:not([data-theme]) .inv .clienti img { filter: invert(1); } }
+
+/* Esperienze: dove ho lavorato e studiato */
+.esperienze__head { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--gap); align-items: end; margin-bottom: clamp(36px, 4vw, 64px); }
+.esperienze__head h2 { margin: 0; font-size: var(--t-h2); }
+.esperienze__p { margin: 0; color: var(--muted); font-size: var(--t-lead); line-height: 1.4; max-width: 38ch; }
+.esperienze__lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.esp { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.esp__in { display: grid; gap: 6px; height: 100%; padding: clamp(22px, 2.4vw, 32px); transition: background .3s; }
+a.esp__in:hover { background: var(--card); }
+.esp__logo { display: flex; align-items: center; height: 64px; margin-bottom: 22px; font-weight: 600; }
+.esp__logo img { max-height: 44px; max-width: 100%; width: auto; object-fit: contain; }
+:root[data-theme="dark"] .esp__logo img { filter: invert(1); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .esp__logo img { filter: invert(1); } }
+:root[data-theme="dark"] .inv .esp__logo img, :root:not([data-theme]) .inv .esp__logo img { filter: none; }
+:root[data-theme="light"] .inv .esp__logo img { filter: invert(1); }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) .inv .esp__logo img { filter: invert(1); } }
+.esp__tipo { font-family: var(--f-label); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.esp__ruolo { font-weight: 500; font-size: 1.125rem; line-height: 1.25; }
+.esp__nome { color: var(--muted); font-size: var(--t-small); }
+@media (max-width: 900px) { .esperienze__head { grid-template-columns: minmax(0, 1fr); } }
+/* Testimonianze: senza foto, le iniziali su un colore */
+.rec__iniziali { display: grid; place-items: center; width: 100%; height: 100%; background: var(--accent-1); color: #F5F5F2; font-weight: 900; font-size: clamp(4rem, 3rem + 4vw, 8rem); letter-spacing: -.04em; }
+.rec__chi--persona { grid-template-columns: minmax(0, 1fr) auto; }

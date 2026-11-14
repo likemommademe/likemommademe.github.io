@@ -75,6 +75,15 @@ footer:
 
 # Testi provvisori della pagina About: li riscriviamo insieme
 about:
+  hero_titolo: "Emanuele Calfa, creative <em>designer</em> a Roma"
+  hero_cta: Lavoriamo insieme
+  hero_fatti:
+    - k: Base
+      v: Roma, e ovunque da remoto
+    - k: Dal
+      v: 2019, tra agenzia e azienda
+    - k: Oggi
+      v: Marketing & Creative Designer
   sottotitolo: Creative designer. Identità visive, brand communication e contenuti per digital, stampa ed eventi, dal concept alla consegna.
   foto_titolo: Dietro le quinte
   anni_titolo: "Come mamma mi ha fatto, anno per <em>anno</em>"
@@ -240,3 +249,13 @@ contatti:
   servizi_titolo: "Cosa <em>faccio</em>"
   faq_intro: Le domande che mi fanno più spesso. Se la tua non c'è, scrivimela.
   faq_cta: Scrivimi
+
+esperienze:
+  titolo: "Dove ho <em>imparato</em>"
+  testo: Le aziende in cui ho lavorato e le scuole che mi hanno formato. Il resto l'ha fatto mamma.
+  lavoro: Lavoro
+  studio: Studio
+testimonianze:
+  k: Chi mi conosce
+  titolo: "Lo dicono <em>loro</em>"
+  profilo: Il profilo
