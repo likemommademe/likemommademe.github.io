@@ -1,0 +1,36 @@
+{% assign t_o = site.data.testi.home %}
+{% comment %} Orari nel mondo: l'ora in tempo reale in alcune città, e se a Roma sono sveglio {% endcomment %}
+<section class="fascia orari" aria-labelledby="t-orari">
+  <p class="cs-label cs-head__k">{{ t_o.orari_k }}</p>
+  <div class="orari__head">
+    <h2 class="rise" id="t-orari"><span>{{ t_o.orari_titolo }}</span></h2>
+    <p class="orari__p">{{ t_o.orari_testo }} <strong class="orari__stato" data-orari-stato data-si="{{ t_o.orari_sveglio }}" data-no="{{ t_o.orari_dorme }}"></strong></p>
+  </div>
+  <ul class="orari__lista">
+    {% for c in t_o.orari_citta %}
+    <li class="orari__c{% if c.casa %} is-casa{% endif %}" data-orari-fuso="{{ c.fuso }}">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">{{ c.citta }}{% if c.casa %} <i>· {{ t_o.orari_casa | default: "io sono qui" }}</i>{% endif %}</span>
+      <span class="orari__giorno"></span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<script>
+  // Orari nel mondo: ogni 20 secondi. Sole o luna a seconda dell'ora locale; a Roma sveglio dalle 8 alle 23.
+  (function () {
+    var cc = document.querySelectorAll('[data-orari-fuso]'), st = document.querySelector('[data-orari-stato]'); if (!cc.length) return;
+    function ora(tz, o) { return new Intl.DateTimeFormat('it-IT', Object.assign({ timeZone: tz }, o)).format(new Date()); }
+    function giro() {
+      cc.forEach(function (c) {
+        var tz = c.dataset.orariFuso, h = +ora(tz, { hour: 'numeric', hourCycle: 'h23' });
+        c.querySelector('.orari__ora').textContent = ora(tz, { hour: '2-digit', minute: '2-digit' });
+        c.querySelector('.orari__giorno').textContent = ora(tz, { weekday: 'long', day: 'numeric', month: 'long' });
+        c.classList.toggle('is-notte', h < 7 || h >= 20);
+      });
+      if (st) { var r = +ora('Europe/Rome', { hour: 'numeric', hourCycle: 'h23' }); st.textContent = r >= 8 && r < 23 ? st.dataset.si : st.dataset.no; st.classList.toggle('is-no', !(r >= 8 && r < 23)); }
+    }
+    giro(); setInterval(giro, 20000);
+  })();
+</script>

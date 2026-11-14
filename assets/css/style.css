@@ -198,6 +198,7 @@ html.cerca-aperta { overflow: hidden; }
 .modulo__in { position: relative; padding: clamp(28px, 4vw, 48px); }
 .modulo__x { position: absolute; top: 20px; right: 20px; z-index: 1; border-color: var(--line); }
 .modulo__f, .modulo__ok { display: grid; gap: 22px; }
+.modulo-box { min-width: 0; }
 .modulo__f[hidden], .modulo__ok[hidden] { display: none; }
 .modulo__head { display: grid; gap: 10px; padding-right: 40px; }
 .modulo__t { margin: 0; font-weight: 500; font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1; letter-spacing: -.03em; text-wrap: balance; }
@@ -223,7 +224,10 @@ html.cerca-aperta { overflow: hidden; }
 .modulo__trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .modulo__err { margin: 0; color: #E0266F; }
 .modulo__err a { text-decoration: underline; }
-.modulo__invia { justify-self: start; border: 0; cursor: pointer; }
+.modulo__fine { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.modulo__privacy { margin: 0; color: var(--muted); font-size: 13px; }
+.modulo__privacy a { text-decoration: underline; }
+.modulo__invia { border: 0; cursor: pointer; }
 .modulo__invia:disabled { opacity: .6; cursor: wait; }
 .modulo__ok { justify-items: start; padding: 24px 0 8px; }
 .modulo__segno { width: 22px; height: 22px; border-radius: 5px; background: var(--accent-3); transform: rotate(45deg); }
@@ -971,3 +975,34 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
   .reel { height: 100vh; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+/* ---------- Pagina Contatti (come bitwip): form e contatti diretti, loghi, orari, servizi, domande ---------- */
+.contatti-pag { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: clamp(40px, 6vw, 112px); align-items: start; padding-bottom: var(--sec); }
+.contatti-pag__t { margin: 0 0 28px; font-weight: 500; font-size: var(--t-h2); line-height: 1; letter-spacing: -.03em; }
+.contatti-pag__lato { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 36px; padding: clamp(24px, 3vw, 40px); border-radius: var(--r); background: var(--card); border: 1px solid var(--line); }
+.contatti-pag__blocco { display: grid; gap: 10px; justify-items: start; }
+.contatti-pag__blocco .cs-label { color: var(--muted); }
+.contatti-pag__grande { font-weight: 500; font-size: clamp(1.25rem, 1rem + .9vw, 1.75rem); letter-spacing: -.02em; overflow-wrap: anywhere; }
+.contatti-pag__grande:hover { color: var(--accent-1); }
+.contatti-pag__p { margin: 0; color: var(--muted); line-height: 1.5; max-width: 40ch; }
+.contatti-loghi h2 { margin: 0 0 clamp(32px, 4vw, 56px); font-size: var(--t-h2); }
+.servizi h2 { margin: 0 0 clamp(32px, 4vw, 56px); font-size: var(--t-h2); }
+.servizi__lista { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.servizi__r { display: grid; grid-template-columns: 64px minmax(0, 1.1fr) minmax(0, 1.4fr) auto; align-items: center; gap: var(--gap); padding: clamp(22px, 2.6vw, 36px) 0; border-bottom: 1px solid var(--line); }
+.servizi__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); }
+.servizi__t { font-weight: 500; font-size: var(--t-h3); letter-spacing: -.02em; }
+.servizi__d { color: var(--muted); }
+.servizi__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, transform .6s var(--ease); }
+.servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
+.faq-cont { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
+.faq-cont__lato { display: grid; gap: 22px; justify-items: start; position: sticky; top: calc(var(--nav-h) + 24px); }
+.faq-cont__lato h2 { margin: 0; font-size: var(--t-h2); }
+@media (max-width: 900px) {
+  .contatti-pag, .faq-cont { grid-template-columns: minmax(0, 1fr); }
+  .contatti-pag__lato, .faq-cont__lato { position: static; }
+  .servizi__r { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .servizi__d { grid-column: 2 / 3; grid-row: 2; }
+}
+/* loghi dei clienti su una fascia scura di giorno: bianchi */
+:root[data-theme="light"] .inv .clienti img { filter: invert(1); }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) .inv .clienti img { filter: invert(1); } }

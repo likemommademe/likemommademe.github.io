@@ -1,0 +1,85 @@
+---
+layout: default
+title: Contatti
+permalink: /contatti/
+---
+{% assign tc = site.data.testi.contatti %}{% assign info = site.data.impostazioni %}{% assign a = site.data.testi.about %}
+
+<section class="phero">
+  <p class="cs-label cs-head__k">{{ tc.k }}</p>
+  <h1 class="rise"><span>{{ tc.titolo }}</span></h1>
+  <p class="lead">{{ tc.intro }}</p>
+</section>
+
+{% comment %} 1. Il form e, di lato, i contatti diretti {% endcomment %}
+<section class="contatti-pag">
+  <div class="contatti-pag__form">
+    <h2 class="contatti-pag__t">{{ site.data.testi.modulo.titolo }}</h2>
+    {% include modulo.html id="p" senza_titolo=true %}
+  </div>
+  <aside class="contatti-pag__lato">
+    <div class="contatti-pag__blocco">
+      <p class="cs-label">{{ tc.diretto }}</p>
+      {% if info.email != "" %}<a class="contatti-pag__grande" href="mailto:{{ info.email }}">{{ info.email }}</a>{% endif %}
+      {% if info.telefono != "" %}<a class="contatti-pag__grande" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a>{% endif %}
+    </div>
+    {% if info.curriculum != "" %}<div class="contatti-pag__blocco">
+      <p class="cs-label">{{ tc.cv_k }}</p>
+      <a class="rec__vedi" href="{{ info.curriculum | relative_url }}" download>{{ site.data.testi.footer.curriculum }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>{% endif %}
+    <div class="contatti-pag__blocco">
+      <p class="cs-label">{{ tc.tempi_k }}</p>
+      <p class="contatti-pag__p">{{ tc.tempi }}</p>
+    </div>
+  </aside>
+</section>
+
+{% comment %} 2. I loghi dei clienti {% endcomment %}
+{% assign clienti_veri = "" | split: "" %}
+{% for c in site.clienti %}{% assign usati = site.progetti | where: "cliente", c.slug %}{% if usati.size > 0 and c.logo %}{% assign clienti_veri = clienti_veri | push: c %}{% endif %}{% endfor %}
+{% if clienti_veri.size > 0 %}
+<section class="fascia inv contatti-loghi">
+  <h2 class="rise"><span>{{ tc.clienti_titolo }}</span></h2>
+  <ul class="clienti">
+    {% for c in clienti_veri %}<li>{% if c.sito %}<a href="{{ c.sito }}" target="_blank" rel="noopener" aria-label="{{ c.title }}">{% endif %}<img src="{{ c.logo | relative_url }}" alt="{{ c.title }}">{% if c.sito %}</a>{% endif %}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% comment %} 3. Gli orari nel mondo {% endcomment %}
+{% include orari.html %}
+
+{% comment %} 4. Cosa faccio: le categorie come servizi {% endcomment %}
+{% assign categorie = site.categorie | sort: "ordine", "last" %}
+<section class="fascia inv servizi">
+  <h2 class="rise"><span>{{ tc.servizi_titolo }}</span></h2>
+  <ol class="servizi__lista">
+    {% for c in categorie %}
+    <li><a class="servizi__r" href="{{ c.url | relative_url }}">
+      <span class="servizi__n">{{ forloop.index | prepend: "0" }}</span>
+      <span class="servizi__t">{{ c.title }}</span>
+      <span class="servizi__d">{{ c.content | strip_html | strip_newlines }}</span>
+      <span class="servizi__go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </a></li>
+    {% endfor %}
+  </ol>
+</section>
+
+{% comment %} 5. Domande frequenti (le stesse dell'About) {% endcomment %}
+<section class="fascia">
+  <div class="faq-cont">
+    <div class="faq-cont__lato">
+      <h2 class="rise"><span>{{ a.faq_titolo }}</span></h2>
+      <p class="contatti-pag__p">{{ tc.faq_intro }}</p>
+      <a class="btn" href="#p-nome">{{ tc.faq_cta }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    </div>
+    <div class="faq">
+      {% for q in a.faq %}
+        <details class="qa" name="faq-contatti"{% if forloop.first %} open{% endif %}>
+          <summary>{{ q.d }}<span class="qa__ico" aria-hidden="true"></span></summary>
+          <div class="qa__a"><p>{{ q.r }}</p></div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>

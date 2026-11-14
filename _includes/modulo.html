@@ -1,0 +1,37 @@
+{% comment %} Il form «Raccontami un progetto»: nel pop-up (Scrivimi) e nella pagina Contatti. include.id evita id doppi. {% endcomment %}
+{% assign tm = site.data.testi.modulo %}{% assign k = include.id | default: "m" %}
+<div class="modulo-box" data-modulo-box>
+  <form class="modulo__f" data-modulo-form novalidate>
+    {% unless include.senza_titolo %}<header class="modulo__head">
+      <h2 class="modulo__t" id="{{ k }}-t">{{ tm.titolo }}</h2>
+      <p class="modulo__intro">{{ tm.intro }}</p>
+    </header>{% endunless %}
+    <div class="modulo__riga">
+      <label class="campo"><span class="campo__k">{{ tm.nome }}</span><input name="nome" id="{{ k }}-nome" autocomplete="name" required maxlength="120"></label>
+      <label class="campo"><span class="campo__k">{{ tm.email }}</span><input name="email" id="{{ k }}-email" type="email" autocomplete="email" required maxlength="160"></label>
+    </div>
+    <label class="campo"><span class="campo__k">{{ tm.telefono }} <i>{{ tm.facoltativo }}</i></span><input name="telefono" id="{{ k }}-tel" type="tel" autocomplete="tel" maxlength="40"></label>
+    <fieldset class="campo campo--scelte">
+      <legend class="campo__k">{{ tm.servizi }} <i>{{ tm.servizi_aiuto }}</i></legend>
+      <div class="scelte">{% for c in site.categorie %}<label class="scelta"><input type="checkbox" name="servizi" value="{{ c.title }}"><span>{{ c.title }}</span></label>{% endfor %}<label class="scelta"><input type="checkbox" name="servizi" value="{{ tm.altro }}"><span>{{ tm.altro }}</span></label></div>
+    </fieldset>
+    <label class="campo"><span class="campo__k">{{ tm.progetto }}</span><textarea name="progetto" id="{{ k }}-progetto" rows="4" required maxlength="3800" placeholder="{{ tm.progetto_aiuto }}"></textarea></label>
+    <fieldset class="campo campo--scelte">
+      <legend class="campo__k">{{ tm.budget }} <i>{{ tm.facoltativo }}</i></legend>
+      <div class="scelte">{% for b in tm.budget_scelte %}<label class="scelta"><input type="radio" name="budget" value="{{ b }}"><span>{{ b }}</span></label>{% endfor %}</div>
+    </fieldset>
+    <label class="campo"><span class="campo__k">{{ tm.reference }} <i>{{ tm.facoltativo }}</i></span><textarea name="reference" id="{{ k }}-ref" rows="2" maxlength="1500" placeholder="{{ tm.reference_aiuto }}"></textarea></label>
+    <label class="modulo__trappola" aria-hidden="true">Sito web<input name="sito_web" tabindex="-1" autocomplete="off"></label>
+    <p class="modulo__err" data-modulo-err role="alert" hidden></p>
+    <div class="modulo__fine">
+      <button class="btn modulo__invia" type="submit" data-modulo-invia><span data-modulo-testo>{{ tm.invia }}</span><span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      <p class="modulo__privacy">{{ tm.privacy }} <a href="{{ '/privacy/' | relative_url }}">Privacy</a></p>
+    </div>
+  </form>
+  <div class="modulo__ok" data-modulo-ok hidden>
+    <span class="modulo__segno" aria-hidden="true"></span>
+    <h2 class="modulo__t">{{ tm.grazie_titolo }}</h2>
+    <p class="modulo__intro">{{ tm.grazie_testo }}</p>
+    {% if include.id == "d" %}<button class="btn" type="button" data-modulo-chiudi>{{ tm.chiudi }}</button>{% else %}<button class="btn" type="button" data-modulo-ancora>{{ tm.ancora }}</button>{% endif %}
+  </div>
+</div>

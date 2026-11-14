@@ -191,6 +191,9 @@ modulo:
   email: Email
   telefono: Telefono
   facoltativo: facoltativo
+  servizi: Cosa ti serve
+  servizi_aiuto: anche più di una cosa
+  altro: Altro
   progetto: Il progetto
   progetto_aiuto: Cosa ti serve, per chi, entro quando.
   budget: Budget indicativo
@@ -208,6 +211,8 @@ modulo:
   grazie_testo: Grazie! Ti rispondo presto, di solito in giornata. Nel frattempo, mamma dice di stare tranquillo.
   errore: Qualcosa non è andato. Riprova, oppure scrivimi direttamente a
   chiudi: Chiudi
+  ancora: Scrivi un'altra richiesta
+  privacy: Uso questi dati solo per risponderti.
 
 news:
   titolo: News
@@ -222,3 +227,16 @@ news:
   home_titolo: "Cosa sto <em>guardando</em>"
   home_tutte: Tutte le news
   vuoto: Niente qui, per ora.
+
+contatti:
+  k: Scrivimi
+  titolo: Contatti
+  intro: Hai un progetto o anche solo una domanda? Lasciami due righe, il resto lo vediamo insieme.
+  diretto: Preferisci scrivermi direttamente?
+  cv_k: Il curriculum
+  tempi_k: Quando rispondo
+  tempi: Di solito in giornata, dal lunedì al venerdì. Il weekend ci provo, mamma permettendo.
+  clienti_titolo: "Hanno già lavorato con me. E tu?"
+  servizi_titolo: "Cosa <em>faccio</em>"
+  faq_intro: Le domande che mi fanno più spesso. Se la tua non c'è, scrivimela.
+  faq_cta: Scrivimi
