@@ -1,0 +1,19 @@
+{% comment %} Domande frequenti (come bitwip): a sinistra titolo, una riga e il link Scrivimi; a destra le domande a fisarmonica {% endcomment %}
+{% assign a = site.data.testi.about %}{% assign tc = site.data.testi.contatti %}
+<section class="fascia{% if include.inv %} inv{% endif %}">
+  <div class="faq-cont">
+    <div class="faq-cont__lato">
+      <h2 class="rise"><span>{{ a.faq_titolo }}</span></h2>
+      <p class="contatti-pag__p">{{ tc.faq_intro }}</p>
+      <a class="rec__vedi" href="{{ '/contatti/' | relative_url }}" data-modulo-apri>{{ tc.faq_cta }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="faq">
+      {% for q in a.faq %}
+        <details class="qa" name="faq-{{ include.id | default: 'd' }}">
+          <summary>{{ q.d }}<span class="qa__ico" aria-hidden="true"></span></summary>
+          <div class="qa__a"><p>{{ q.r }}</p></div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>

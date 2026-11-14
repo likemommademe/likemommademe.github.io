@@ -108,18 +108,8 @@ layout: default
 {% comment %} 6. Orari nel mondo, uguali a home e contatti {% endcomment %}
 {% include orari.html %}
 
-{% comment %} 7. Domande frequenti: se ne apri una, le altre si chiudono {% endcomment %}
-<section class="fascia">
-  <div class="sec-head"><h2 class="rise"><span>{{ a.faq_titolo }}</span></h2></div>
-  <div class="faq">
-    {% for q in a.faq %}
-      <details class="qa" name="faq-about"{% if forloop.first %} open{% endif %}>
-        <summary>{{ q.d }}<span class="qa__ico" aria-hidden="true"></span></summary>
-        <div class="qa__a"><p>{{ q.r }}</p></div>
-      </details>
-    {% endfor %}
-  </div>
-</section>
+{% comment %} 7. Domande frequenti {% endcomment %}
+{% include domande.html id="about" %}
 
 <script>
   (function () {
