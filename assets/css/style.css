@@ -865,7 +865,9 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .ahero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 96px); align-items: start; padding-top: clamp(8px, 2vw, 32px); padding-bottom: clamp(48px, 6vw, 96px); }
 .ahero__txt { display: grid; gap: 28px; align-content: start; min-width: 0; padding-top: clamp(8px, 2vw, 40px); }
 .ahero__k { color: var(--muted); }
-.ahero h1.ahero__t { margin: 0; font-weight: 500; font-size: clamp(2.75rem, 1.6rem + 4.4vw, 6.25rem); line-height: .96; letter-spacing: -.04em; text-wrap: balance; }
+.ahero h1.ahero__t { margin: 0; font-weight: 900; font-size: clamp(3rem, 1.6rem + 5.4vw, 7.5rem); line-height: .9; letter-spacing: -.035em; text-transform: uppercase; text-align: left; }
+.ahero h1.ahero__t > span > span { display: block; }   /* tre righe: MORE THAN / MEETS / THE EYE */
+.ahero h1.ahero__t em { color: var(--accent-3); }
 .ahero .lead.ahero__lead { margin: 0; max-width: 46ch; }
 .ahero__azioni { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
 .ahero__fatti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin: 12px 0 0; padding-top: 24px; border-top: 1px solid var(--line); }

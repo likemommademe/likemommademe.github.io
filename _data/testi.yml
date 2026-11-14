@@ -75,7 +75,7 @@ footer:
 
 # Testi provvisori della pagina About: li riscriviamo insieme
 about:
-  hero_titolo: "Creative designer, come mamma mi ha <em>fatto</em>"
+  hero_titolo: "<span>More than</span><span><em>meets</em></span><span>the eye</span>"
   hero_cta: Lavoriamo insieme
   hero_fatti:
     - k: Base
