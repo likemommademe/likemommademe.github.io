@@ -625,6 +625,16 @@ select.compact { width: auto; padding: 9px 38px 9px 16px; font-size: 15px; borde
 .sp-when { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: var(--r-field); background: var(--surface); color: var(--fg); font: inherit; }
 
+/* Account social */
+.acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+.acc-card { display: flex; flex-direction: column; }
+.acc-head { display: flex; align-items: center; gap: 14px; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+.acc-logo { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: #fff; font-weight: 900; font-size: 20px; }
+.acc-body { flex: 1; padding: 18px 24px 4px; }
+.acc-body p { margin: 0 0 12px; }
+.acc-steps { margin: 6px 0 12px; padding-left: 20px; display: grid; gap: 8px; color: var(--fg); font-size: 15px; }
+.acc-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px 24px 22px; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation: none !important; }
 }

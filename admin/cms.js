@@ -1021,7 +1021,8 @@ async function buildForm(fields, entry, extra = []) {
 // ─── Struttura della pagina ─────────────────────────────────
 
 function navLink(href, label, iconName) {
-  const active = location.hash === href || location.hash.startsWith(`${href}/`) || (href === '#/' && !location.hash);
+  const here = location.hash.split('?')[0];
+  const active = (here === href || here.startsWith(`${href}/`) || (href === '#/' && !location.hash)) && !(href === '#/social' && here === '#/social/account');
   return h('a', { href, class: active ? 'nav-link active' : 'nav-link' }, icon(iconName), h('span', {}, label));
 }
 
@@ -1050,7 +1051,7 @@ function shell(crumbs, content) {
         ...collections.map((c) => navLink(`#/c/${c.name}`, c.label, c.icon)),
         navLink('#/media', 'Media', 'images'),
       ]),
-      navGroup('social', 'Social', [navLink('#/social', 'Calendario post', 'calendar')]),
+      navGroup('social', 'Social', [navLink('#/social', 'Calendario post', 'calendar'), navLink('#/social/account', 'Account social', 'user')]),
       navGroup('pagine', 'Pagine', pages.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon))),
       navGroup('sistema', 'Sistema', settings.map((p) => navLink(`#/p/${p.name}`, p.label, p.icon)))),
     h('div', { class: 'me' },

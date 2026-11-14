@@ -9,7 +9,7 @@
 
 const SOCIAL_COLL = { name: 'social', folder: '_social' };
 const SOCIAL_DIR = 'assets/social';
-const SOCIALS = [['instagram', 'Instagram'], ['facebook', 'Facebook'], ['linkedin', 'LinkedIn'], ['threads', 'Threads']];
+const SOCIALS = [['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['linkedin', 'LinkedIn']];
 const STATI_POST = [['bozza', 'Bozza'], ['programmato', 'Programmato'], ['pubblicato', 'Pubblicato'], ['eliminato', 'Eliminato']];
 const W45 = 1080;
 const H45 = 1350;
@@ -406,7 +406,7 @@ async function socialEditor(slug, params = {}) {
       if (id !== renderId) return;
       slides = out;
       current = Math.min(current, slides.length - 1);
-      previewNote.textContent = `${slides.length} ${slides.length === 1 ? 'grafica' : 'grafiche'} 1080 × 1350 (4:5), pronte per Instagram, Facebook, LinkedIn e Threads.`;
+      previewNote.textContent = `${slides.length} ${slides.length === 1 ? 'grafica' : 'grafiche'} 1080 × 1350 (4:5), pronte per Instagram, TikTok e LinkedIn.`;
       showSlides();
     } catch (e) {
       if (id === renderId) previewNote.textContent = e.message;
@@ -582,9 +582,82 @@ async function socialEditor(slug, params = {}) {
     h('div', { class: 'savebar' }, status, h('span', { class: 'grow' }), delBtn, saveBtn)));
 }
 
+// ─── Account collegati ──────────────────────────────────────
+// Instagram, TikTok e LinkedIn si collegano con le loro API. Serve un'app sviluppatore per ognuno (la si crea una volta,
+// insieme a Claude), con le chiavi salvate sul server su Cloudflare; poi qui si preme "Collega" e si accede al social.
+
+const ACCOUNTS = [
+  {
+    id: 'instagram', nome: 'Instagram', colore: '#E1306C',
+    fa: 'Pubblica da solo, all’ora programmata, foto singole e caroselli fino a 10 grafiche 4:5, con il testo del post.',
+    limiti: 'Serve un account professionale (Business o Creator): è gratis e si cambia dall’app. Fino a 50 post al giorno via API. Il collegamento dura 60 giorni e il server lo rinnova da solo.',
+    passi: [
+      'Nell’app Instagram: Impostazioni → Tipo di account e strumenti → Passa a un account professionale (Creator va bene).',
+      'Su developers.facebook.com crei un account sviluppatore e un’app di tipo Business, con il prodotto “Instagram API with Instagram Login”. Lo facciamo insieme.',
+      'Le chiavi dell’app (App ID e App Secret) vanno salvate su Cloudflare, nelle impostazioni del server, come INSTAGRAM_APP_ID e INSTAGRAM_APP_SECRET.',
+      'Torni qui e premi “Collega”: entri con Instagram e autorizzi la pubblicazione.',
+    ],
+  },
+  {
+    id: 'tiktok', nome: 'TikTok', colore: '#121414',
+    fa: 'Manda le grafiche nelle bozze di TikTok come post di foto: dal telefono aggiungi la musica e pubblichi.',
+    limiti: 'TikTok permette la pubblicazione diretta e pubblica solo alle app che superano la sua revisione (audit); finché non c’è, i post via API possono essere solo privati. Per questo la strada consigliata è mandarli nelle bozze. Per TikTok conviene anche il formato verticale 9:16.',
+    passi: [
+      'Su developers.tiktok.com crei un account sviluppatore e un’app con i prodotti “Login Kit” e “Content Posting API”. Lo facciamo insieme.',
+      'Si verifica il dominio likemommademe.github.io nel portale di TikTok (serve perché TikTok prenda le grafiche dal sito).',
+      'Le chiavi (Client key e Client secret) vanno su Cloudflare come TIKTOK_CLIENT_KEY e TIKTOK_CLIENT_SECRET.',
+      'Torni qui e premi “Collega”: entri con TikTok e autorizzi.',
+    ],
+  },
+  {
+    id: 'linkedin', nome: 'LinkedIn', colore: '#0A66C2',
+    fa: 'Pubblica da solo sul tuo profilo personale, all’ora programmata, il testo e le grafiche (anche più di una).',
+    limiti: 'Va bene il profilo personale, senza revisione. Per creare l’app LinkedIn chiede di collegarla a una pagina aziendale (si può creare la pagina LIKEMOMMADEME). Il collegamento dura 60 giorni: dopo va rifatto, il pannello te lo ricorda.',
+    passi: [
+      'Se non c’è ancora, crei la pagina LinkedIn di LIKEMOMMADEME (anche vuota).',
+      'Su linkedin.com/developers crei un’app collegata a quella pagina e aggiungi i prodotti “Sign In with LinkedIn using OpenID Connect” e “Share on LinkedIn”. Lo facciamo insieme.',
+      'Le chiavi (Client ID e Client Secret) vanno su Cloudflare come LINKEDIN_CLIENT_ID e LINKEDIN_CLIENT_SECRET.',
+      'Torni qui e premi “Collega”: entri con LinkedIn e autorizzi.',
+    ],
+  },
+];
+
+async function socialAccounts() {
+  shell([['Social', '#/social'], ['Account social']], loading());
+  // Il server dirà quali account sono collegati; finché non risponde, risultano tutti da collegare.
+  let stato = {};
+  try { stato = (await request('/social/stato')) || {}; } catch { stato = {}; }
+  const card = (a) => {
+    const s = stato[a.id] || {};
+    const pronto = !!s.configurato;
+    return h('section', { class: 'panel acc-card', style: `--brand:${a.colore}` },
+      h('div', { class: 'acc-head' },
+        h('span', { class: 'acc-logo' }, a.nome[0]),
+        h('div', { class: 'grow' }, h('h2', {}, a.nome), h('p', { class: 'muted' }, s.collegato ? `Collegato come ${s.nome || ''}` : 'Non collegato')),
+        s.collegato ? chip('Collegato', 'st-programmato') : chip(pronto ? 'Pronto da collegare' : 'Da configurare', pronto ? 'st-pubblicato' : 'st-bozza')),
+      h('div', { class: 'acc-body' },
+        h('p', {}, h('strong', {}, 'Cosa farà: '), a.fa),
+        h('p', { class: 'hint' }, a.limiti),
+        h('ol', { class: 'acc-steps' }, a.passi.map((p) => h('li', {}, p)))),
+      h('div', { class: 'acc-foot' },
+        h('button', {
+          type: 'button', class: 'btn primary', disabled: !pronto,
+          title: pronto ? '' : 'Prima vanno fatti i passi 1–3',
+          onclick: () => { location.href = `${API}/social/collega/${a.id}`; },
+        }, h('span', {}, s.collegato ? 'Ricollega' : 'Collega')),
+        !pronto && h('span', { class: 'hint' }, 'Il pulsante si attiva quando le chiavi sono su Cloudflare.')));
+  };
+  shell([['Social', '#/social'], ['Account social']], h('div', {},
+    pageHead('Account social', 'Instagram, TikTok e LinkedIn: si collegano una volta, poi i post programmati partono da soli',
+      h('a', { class: 'btn ghost', href: '#/social' }, icon('back'), h('span', {}, 'Calendario'))),
+    h('div', { class: 'banner info' }, icon('alert'), h('span', {}, 'Finché un account non è collegato, i post di quel social si pubblicano a mano: “Scarica grafiche”, poi segni il post come Pubblicato.')),
+    h('div', { class: 'acc-grid' }, ACCOUNTS.map(card))));
+}
+
 async function socialRoute() {
   const path = location.hash.split('?')[0];
   if (path === '#/social') return socialView();
+  if (path === '#/social/account') return socialAccounts();
   if (path === '#/social/nuovo') return socialPick();
   return socialEditor(decodeURIComponent(path.replace('#/social/', '')));
 }

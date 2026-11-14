@@ -120,7 +120,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Nuovo post**: scegli un progetto (ricerca e filtro per categoria; quelli mai usati hanno l'etichetta "Mai sui social") oppure **Carica dal computer** per un post libero.
 - **Grafiche 4:5 (1080 × 1350) rifatte in automatico** dal pannello: clicchi le foto nell'ordine delle slide (al massimo 10), la prima diventa la copertina con etichetta, titolo grande e firma LIKEMOMMADEME; le altre hanno la foto, la firma e il numero. Opzioni: con titolo e firma oppure solo foto, sfondo carta o nero, foto intere o che riempiono la slide. Si possono aggiungere foto dal computer, dai Media o trascinandole dal Finder.
 - **Testo del post** già scritto dal progetto (frase-titolo, descrizione, link al progetto, hashtag della categoria), con il conteggio dei caratteri e **Copia il testo**.
-- **Dove**: Instagram, Facebook, LinkedIn, Threads. **Giorno** e **ora**.
+- **Dove**: Instagram, TikTok, LinkedIn. **Giorno** e **ora**.
+- **Social → Account social**: una scheda per Instagram, TikTok e LinkedIn, con lo stato del collegamento, cosa farà, i limiti e i passi per collegarlo. Il pulsante **Collega** si attiva quando le chiavi dell'app di quel social sono su Cloudflare.
 - **La pubblicazione per ora è a mano**: **Scarica grafiche** salva i JPG, poi pubblichi e segni il post come **Pubblicato**. La pubblicazione automatica richiede di collegare gli account di Meta e LinkedIn (vedi Prossimi passi).
 - I post sono file in `_social/` (non vanno sul sito), le grafiche finite in `assets/social/`. Le foto caricate per un post vanno nei Media, nel gruppo "Post social".
 
@@ -161,7 +162,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=21`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=22`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
@@ -218,7 +219,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=21, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=22, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -318,12 +319,13 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Pannello: modulo del progetto a due colonne (testi a sinistra; pubblicazione, categorie, cliente, anno, copertina e link a destra, con la lingua in cima). Galleria a griglia di miniature: si trascinano per riordinarle, un clic apre titolo, didascalia IT/EN e larghezza. Nuova sezione **Media** con le immagini divise per progetto. Gli strumenti tengono l'ordine in cui li hai messi |
 | 14/11/2026 | "Dietro le quinte": tolti i numeri e la frase generica. Ora mostra **Il mio ruolo** (campo nuovo, IT/EN), gli strumenti e la recensione, e compare solo se c'è almeno una di queste cose. Descrizioni per Google (IT/EN) scritte da Claude per tutti i progetti veri |
 | 14/11/2026 | Nuova **gestione social** nel pannello: calendario dei post, progetti da portare sui social, grafiche 4:5 rifatte in automatico, testo già pronto, foto anche dal computer |
+| 14/11/2026 | Social: i post vanno su Instagram, TikTok e LinkedIn (tolti Facebook e Threads). Nuova pagina **Account social** con stato e passi per collegare ogni social via API |
 
 ---
 
 ## 10. Prossimi passi
 
-1. **Pubblicazione automatica sui social**: collegare Instagram e Facebook (app Meta for Developers con account Instagram professionale collegato a una pagina Facebook) e LinkedIn, poi il server su Cloudflare pubblica i post programmati all'ora giusta. Finché non c'è, i post si pubblicano a mano.
+1. **Pubblicazione automatica sui social** (i passi sono anche in Social → Account social): creare insieme le app sviluppatore di Instagram (account professionale + app Meta "Instagram API with Instagram Login"), LinkedIn (pagina LIKEMOMMADEME + app con "Share on LinkedIn") e TikTok (app con "Content Posting API" e dominio verificato; senza la revisione di TikTok i post via API vanno nelle bozze o restano privati). Poi Claude scrive la parte del server che collega gli account e pubblica i post programmati all'ora giusta. Finché non c'è, i post si pubblicano a mano.
 2. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 3. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 4. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
