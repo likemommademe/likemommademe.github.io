@@ -242,7 +242,10 @@ async function loadCollection(coll) {
     .filter((f) => f.type === 'file' && f.name.endsWith('.md'))
     .map(async (f) => {
       const text = await readFile(f.path);
-      return { slug: f.name.replace(/\.md$/, ''), path: f.path, ...parse(coll, text) };
+      const slug = f.name.replace(/\.md$/, '');
+      // Un file scritto male blocca solo sé stesso: gli altri si vedono e si modificano lo stesso.
+      try { return { slug, path: f.path, ...parse(coll, text) }; }
+      catch (err) { return { slug, path: f.path, data: { title: slug }, body: '', error: err.message }; }
     }));
   return (state.cache[coll.name] = entries);
 }
@@ -251,7 +254,9 @@ async function loadPage(page) {
   const key = `page:${page.name}`;
   if (state.cache[key]) return state.cache[key];
   const text = await readFile(page.file);
-  return (state.cache[key] = text == null ? { data: {}, body: '' } : parse(page, text));
+  if (text == null) return (state.cache[key] = { data: {}, body: '' });
+  try { return (state.cache[key] = parse(page, text)); }
+  catch (err) { return (state.cache[key] = { data: {}, body: '', error: err.message }); }
 }
 
 async function imageSettings() {
@@ -897,9 +902,9 @@ function navGroup(key, title, links) {
 
 function shell(crumbs, content) {
   const sidebar = h('aside', { class: 'sidebar' },
-    h('div', { class: 'brand' },
-      h('span', { class: 'logo' }, BRAND[0]),
-      h('div', {}, h('strong', {}, BRAND), h('small', {}, 'CMS'))),
+    h('a', { class: 'side-brand', href: '#/' },
+      h('span', { class: 'wordmark' }, BRAND, h('i', { 'aria-hidden': 'true' })),
+      h('small', { class: 'brand-cms' }, 'CMS')),
     h('nav', { class: 'nav' },
       navGroup('generale', 'Generale', [navLink('#/', 'Dashboard', 'gauge')]),
       navGroup('contenuti', 'Contenuti', [
@@ -1116,8 +1121,8 @@ function showLogin(message, type = 'error') {
 
   app.replaceChildren(h('div', { class: 'login' },
     h('div', { class: 'login-brand' },
-      h('span', { class: 'logo big' }, BRAND[0]),
-      h('h1', {}, `${BRAND} CMS`),
+      h('span', { class: 'wordmark big' }, BRAND, h('i', { 'aria-hidden': 'true' })),
+      h('h1', {}, 'Pannello'),
       h('p', { class: 'muted' }, 'Accesso al pannello di amministrazione')),
     banner,
     form,
@@ -1242,7 +1247,7 @@ async function listView(coll) {
           h('span', { class: 'row-text' },
             h('strong', {}, e.data.title || e.slug),
             h('small', {}, [subtitle(coll, e, titles), coll.count && `${counts[e.slug] || 0} progetti`].filter(Boolean).join(' · '))),
-          h('span', { class: 'chips' }, isDraft(e) && chip('Bozza', 'amber'), home.includes(e.slug) && chip('In home', 'rose')),
+          h('span', { class: 'chips' }, e.error && chip('Errore nel file', 'err'), isDraft(e) && chip('Bozza', 'amber'), home.includes(e.slug) && chip('In home', 'rose')),
           icon('right'))))
       : [h('p', { class: 'empty-state' }, entries.length ? 'Nessun risultato con questi filtri.' : `Ancora nessun ${coll.singular}. Clicca “Aggiungi” per crearne uno.`)]));
   }
@@ -1379,6 +1384,15 @@ async function pageEditor(page) {
 }
 
 async function editor({ schema, entry, extra, crumbs, title, chips, intro, back, view, duplicate, save, remove }) {
+  // File rotto: niente modulo, così un salvataggio non può cancellarne il contenuto.
+  if (entry.error) {
+    return shell(crumbs, h('div', { class: 'editor' },
+      pageHead(title, 'Questo file contiene un errore e non si può aprire dal pannello.'),
+      h('div', { class: 'banner error' }, icon('alert'), h('div', {},
+        h('strong', {}, 'Errore nel file'),
+        h('pre', { class: 'err-pre' }, entry.error),
+        h('p', {}, 'Chiedi a Claude di sistemarlo: gli altri contenuti funzionano normalmente.')))));
+  }
   const form = await buildForm(schema.fields, entry, extra);
   const status = h('span', { class: 'status' });
   const saveBtn = h('button', { type: 'button', class: 'btn primary' }, h('span', {}, 'Salva'));

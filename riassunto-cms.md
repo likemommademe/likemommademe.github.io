@@ -32,7 +32,8 @@ Repository, GitHub Pages, pubblicazione dal Mac, chiavi e istruzioni sono in un 
 - **DecapBridge**: dava l'accesso con Google, ma solo insieme a Decap. Scartato insieme a Decap.
 - **Magic link con la "finestrella"** (la prima versione): non funzionava bene, sostituito.
 - **Scelta finale: un CMS fatto su misura**, nello stile del pannello di esempio (login con logo ed email, barra laterale a gruppi, dashboard a riquadri), con accesso Google più magic link e server su Cloudflare.
-- **Grafica del pannello**: accento con sfumatura viola → fucsia → arancio al posto del verde oliva. In alto a sinistra **LIKEMOMMADEME** con sotto **CMS**.
+- **Grafica del pannello** (dal 14/11/2026): uguale al sito. Color carta di giorno e nero di notte, che seguono l'impostazione del computer; font Cabinet Grotesk e Clash Display; pulsanti a pillola blu che si riempiono di nero; in alto a sinistra **LIKEMOMMADEME** con il quadratino rosa e accanto **CMS**. La vecchia sfumatura viola → arancio non c'è più.
+- **File con un errore**: se un file di contenuto è scritto male, nella lista compare **Errore nel file** e solo quel file non si apre. Tutto il resto del pannello funziona. Per sistemarlo si chiede a Claude.
 - **Categorie con i nomi del marketing**: Illustration, Motion Design, Generative AI, Branding, Web Design.
 - **Clienti divisi per settore e paese.**
 - **Niente database a parte per i contenuti**: i file su GitHub sono già il database, con la cronologia di ogni modifica. Un database vero (D1 su Cloudflare) serve solo per le visite al sito.
@@ -149,7 +150,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=16`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=17`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -205,7 +206,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=10, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=17, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -299,6 +300,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Nuovo progetto **LIKEMOMMADEME, questo sito** (Web Design e Motion Design, 2026): fatto con Claude in Visual Studio Code, con lo showreel e le schermate del sito (desktop e telefono). Nuovo campo **Anche in**: un progetto può stare in più categorie (pagine categoria e filtri di Works lo rispettano). Motion Design ora raccoglie anche SITUATION, il portfolio, Il mio vecchio logo, DCD, Etic.a, Juniors e Chrome Nails. Joker: aggiunta la serie animata del 1992 (la carta) e l'HAHAHA a parte; manca la foto di scena. Model sheet tolto dal sito (bozza) |
 | 12/11/2026 | Etic.a: al posto delle schermate un **volo 3D sulla pagina Azienda** del sito (14,5 s, la pagina stesa su un piano chiaro, camera continua, salita, tuffo sull'hero e card finale «Creiamo etichette con un'impronta positiva. *Dress your brand.*»), costruito in HTML con `seek(t)` e registrato fotogramma per fotogramma. Wireframe ridotti a due tavole; Il marchio dallo studio della forma al logo animato; tolti shooting e video (non miei); fiere due foto; social solo il carosello. DCD: costruzione centrata. Gallerie: righe da tre |
 | 12/11/2026 | «LIKEMOMMADEME, questo sito»: nuovo **promo** di 15 s (1080×1080, 120 BPM): il punto rosa del logo chiude la frase «Un portfolio che non sembra un template», diventa la spia di un computer che resta aperto, fa da cursore sul sito vero (showreel, sottomenu di Works, un progetto) e torna punto di LIKEMOMMADEME con «likemommademe.github.io»; musica scritta in codice (Web Audio). File di lavoro nello scratchpad (`promo.html`, `volo/film.html`) |
+| 14/11/2026 | Pannello bloccato da un campo doppio in Lettering 3D: sistemato. Ora un file rotto blocca solo sé stesso. Grafica del pannello rifatta come il sito |
+
 ---
 
 ## 10. Prossimi passi
