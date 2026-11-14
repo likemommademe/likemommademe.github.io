@@ -5,10 +5,23 @@ layout: default
 {% assign tutti_c = site.progetti | sort: "ordine", "last" %}
 {% for p in tutti_c %}{% if p.categoria == page.slug or p.altre_categorie contains page.slug %}{% assign progetti = progetti | push: p %}{% endif %}{% endfor %}
 
-<header class="pagina-head">
-  <nav class="briciole"><a href="{{ '/work/' | relative_url }}">Work</a> /</nav>
-  <h1 class="cat-t">{{ page.title }}</h1>
-  {% if content != "" %}<div class="testo-breve">{{ content }}</div>{% endif %}
+<header class="pagina-head{% if page.mondo %} cat-head{% endif %}">
+  <div class="cat-head__txt">
+    <nav class="briciole"><a href="{{ '/work/' | relative_url }}">Work</a> /</nav>
+    <h1 class="cat-t">{{ page.title }}</h1>
+    {% if content != "" %}<div class="testo-breve">{{ content }}</div>{% endif %}
+  </div>
+  {% if page.mondo %}
+  {% comment %} Il pezzo di showreel di questo mondo, in loop: richiama l'animazione della home. {% endcomment %}
+  <div class="cat-reel" aria-hidden="true"><iframe data-src="{{ '/lab/showreel-principale.html' | relative_url }}?loop={{ page.mondo }}&v={{ site.time | date: '%s' }}" title="" tabindex="-1" loading="lazy" data-cat-reel></iframe></div>
+  <script>
+    (function () {
+      var f = document.querySelector('[data-cat-reel]'); if (!f) return;
+      f.src = f.dataset.src + '&theme=' + (document.documentElement.dataset.theme || 'dark');
+      addEventListener('themechange', function () { try { f.contentWindow.lmmTheme(document.documentElement.dataset.theme); } catch (e) {} });
+    })();
+  </script>
+  {% endif %}
 </header>
 
 {% if progetti.size > 0 %}

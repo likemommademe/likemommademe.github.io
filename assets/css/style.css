@@ -487,6 +487,11 @@ body.no-reel main { padding-bottom: calc(var(--sec) + var(--r-fascia)); }
 
 /* ---------- Pagine esistenti (categoria, progetto, about) ---------- */
 .pagina-head { padding-bottom: 40px; }
+.cat-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 26%); align-items: end; gap: var(--gap); }
+.cat-head__txt { min-width: 0; }
+.cat-reel { aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; background: var(--bg); border: 1px solid var(--line); }
+.cat-reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; transform: scale(1.25); transform-origin: 50% 45%; }   /* zoom sul mondo, senza la cornice dello showreel */
+@media (max-width: 720px) { .cat-head { grid-template-columns: minmax(0, 1fr); } .cat-reel { width: 70%; justify-self: end; } }
 .cat-t { font-weight: 900; font-size: clamp(3.5rem, 2rem + 8vw, 10rem); line-height: .86; letter-spacing: -.045em; }
 .briciole { margin-bottom: 16px; color: var(--muted); font-size: var(--t-small); }
 .briciole a:hover { color: var(--fg); }

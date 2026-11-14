@@ -153,6 +153,8 @@
   @media (prefers-reduced-motion: reduce) { .pillola__sq, .pillola__mq > span { animation: none; } }
   body.scroll #hint, body.embed #hint { display: flex; }
   body.embed { background: var(--bg); }
+  /* ?loop: solo il disegno del mondo, senza titoli, riga dei mondi e marchio (il titolo è già nella pagina) */
+  body.loop .ct, body.loop .w, body.loop #markx, body.loop #hint { display: none !important; }
 </style>
 </head>
 <body>
@@ -1406,12 +1408,16 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (qs.has('clean')) document.body.classList.add('clean');
   const embed = qs.has('embed');   // dentro l'header del sito: il tempo arriva dalla pagina che lo contiene
-  const scrollMode = embed || (!qs.has('play') && !qs.has('t') && !reduced);
+  // ?loop=a,b: gira solo il pezzo tra a e b secondi (il mondo di una categoria, nelle pagine delle categorie)
+  const LOOP = (qs.get('loop') || '').split(',').map(Number).filter(n => !isNaN(n));
+  const inLoop = LOOP.length === 2 && LOOP[1] > LOOP[0];
+  if (inLoop) document.body.classList.add('clean', 'loop');
+  const scrollMode = !inLoop && (embed || (!qs.has('play') && !qs.has('t') && !reduced));
   if (embed) document.body.classList.add('embed');
   else if (scrollMode) { document.body.classList.add('scroll'); document.documentElement.classList.add('scroll'); }
   let embedTarget = 0, done = false, vede = true;
   setTheme(qs.get('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
-  if (embed) addEventListener('message', e => {
+  if (embed || inLoop) addEventListener('message', e => {
     if (e.origin !== location.origin || !e.data) return;
     if (e.data.theme && (e.data.theme === 'light') !== (TH === THEMES.light)) { setTheme(e.data.theme); lastDrawn = -1; }
     if (e.data.done) done = true;
@@ -1420,7 +1426,7 @@
     if (typeof e.data.mx === 'number') { ptr.x = e.data.mx; ptr.y = e.data.my; ptr.in = !!e.data.dentro; }
   });
   let playing = !(reduced || qs.has('t')) && !scrollMode, sound = false, ctx = null, master = null, noise = null;
-  let base = qs.has('t') ? parseFloat(qs.get('t')) || 0 : 0, ref = 0, nextBeat = 0, dragging = false;
+  let base = inLoop ? LOOP[0] + (reduced ? (LOOP[1] - LOOP[0]) * .6 : 0) : qs.has('t') ? parseFloat(qs.get('t')) || 0 : 0, ref = 0, nextBeat = 0, dragging = false;
   const clock = () => sound && ctx ? ctx.currentTime : performance.now() / 1000;
   const nowT = () => playing ? base + (clock() - ref) : base;
   const rebase = t => { base = t; ref = clock(); nextBeat = Math.ceil((t - 1e-6) / BEAT) * BEAT; };
@@ -1542,8 +1548,9 @@
   }
   function frame() {
     const tu = nowT();
-    if (playing && sound) schedule(tu);
-    const t = playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
+    if (playing && sound && !inLoop) schedule(tu);
+    const L = LOOP[1] - LOOP[0];
+    const t = inLoop ? LOOP[0] + ((((tu - LOOP[0]) % L) + L) % L) : playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
     seek(t);
     if (!dragging) scrub.value = t.toFixed(2);
     tc.textContent = t.toFixed(2).padStart(5, '0') + ' / ' + DUR;

@@ -1,4 +1,5 @@
 ---
+mondo: "11.4,14"
 title: Generative AI
 ordine: 2
 ---
