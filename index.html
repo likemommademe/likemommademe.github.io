@@ -133,10 +133,10 @@ reel: true
       <a class="pc" href="{{ p.url | relative_url }}">
         <span class="pc__media">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}</span>
         <span class="pc__corpo">
-          <span class="card-tag pc__tag">{% if pcl %}<span>{{ pcl.title }}</span>{% endif %}{% if pc %}<span>{{ pc.title }}</span>{% endif %}{% for ac in p.altre_categorie %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}<span>{{ acc.title }}</span>{% endif %}{% endfor %}{% if p.anno %}<span>{{ p.anno }}</span>{% endif %}</span>
+          <span class="pc__tag">{% if pc %}<span class="pc__tag-cat">{{ pc.title }}</span>{% endif %}{% if pcl %}<span class="pc__tag-dot">{{ pcl.title }}</span>{% elsif p.anno %}<span class="pc__tag-dot">{{ p.anno }}</span>{% endif %}{% for ac in p.altre_categorie limit: 1 %}{% assign acc = site.categorie | where: "slug", ac | first %}{% if acc %}<span class="pc__tag-fiore">{{ acc.title }}</span>{% endif %}{% endfor %}</span>
           <span class="pc__t">{{ p.title }}</span>
-          {% if p.domanda %}<span class="pc__r"><span class="cs-label pc__rl">{{ t.lavori_domanda }}</span><span class="pc__q">{{ p.domanda }}</span></span>{% endif %}
-          <span class="pc__go">{{ tl.vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+          {% if p.domanda %}<span class="pc__q">{{ p.domanda }}</span>{% elsif p.sottotitolo %}<span class="pc__q">{{ p.sottotitolo }}</span>{% endif %}
+          <span class="pc__go">{{ tl.vedi }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </span>
       </a>
         {% endif %}
