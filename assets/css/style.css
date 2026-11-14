@@ -210,6 +210,8 @@ html.cerca-aperta { overflow: hidden; }
 .campo textarea { min-height: 2.8em; }
 .campo :is(input, textarea)::placeholder { color: var(--muted); opacity: .7; }
 .campo :is(input, textarea):focus { border-color: var(--accent-3); }
+/* il riempimento automatico del browser non deve colorare i campi */
+.campo input:is(:-webkit-autofill, :autofill) { -webkit-text-fill-color: var(--fg); -webkit-box-shadow: 0 0 0 100px var(--bg) inset; box-shadow: 0 0 0 100px var(--bg) inset; caret-color: var(--fg); transition: background-color 9999s; }
 .campo.is-err :is(input, textarea) { border-color: #E0266F; }
 .scelte { display: flex; flex-wrap: wrap; gap: 8px; }
 .scelta { position: relative; cursor: pointer; }
