@@ -88,5 +88,7 @@ crediti: |
 crediti_en: |
   Personal project. All trademarks belong to their respective owners.
 ordine: 3
+seo_descrizione: "The North Face a Tokyo: una campagna immaginata tra i vicoli al neon, di notte, interamente generata con l'AI. Un esercizio di art direction."
+seo_descrizione_en: "The North Face in Tokyo: a campaign imagined in neon-lit alleys at night, entirely generated with AI. An art direction exercise."
 ---
 Una campagna immaginata per **The North Face**, interamente generata con l'AI. Un esercizio di art direction: fin dove posso portare un brand dirigendo solo le immagini?

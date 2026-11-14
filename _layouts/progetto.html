@@ -140,9 +140,11 @@ layout: default
 {% endif %}
 
 {% comment %} Dietro le quinte: colore opposto all'ultima banda della galleria {% endcomment %}
+{% if page.ruolo or page.strumenti.size > 0 or page.recensione %}
 {% assign pari_dq = banda | modulo: 2 %}
 {% if pari_dq == 1 %}{% include progetto-dietro.html inv=true %}{% else %}{% include progetto-dietro.html %}{% endif %}
 {% assign banda = banda | plus: 1 %}
+{% endif %}
 
 {% comment %} Precedente e successivo: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; si gira in tondo. {% endcomment %}
 {% assign tutti = "" | split: "" %}

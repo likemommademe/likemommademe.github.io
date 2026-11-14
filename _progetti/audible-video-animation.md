@@ -67,5 +67,7 @@ crediti: |
 crediti_en: |
   IED project
 ordine: 1
+seo_descrizione: "Spot animato di 30 secondi per l'app Audible e la collana Classici Italiani, a partire dalla Divina Commedia. Motion design di LIKEMOMMADEME."
+seo_descrizione_en: "A 30-second animated spot for the Audible app and its Italian Classics series, starting with the Divine Comedy. Motion design by LIKEMOMMADEME."
 ---
 Uno spot TV di 30 secondi, in 1920 × 1080, per pubblicizzare l'app Audible e la collana Classici Italiani, a partire dalla *Divina Commedia*. Target: 18–35 anni. Tono: moderno, contemporaneo.

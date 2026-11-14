@@ -295,5 +295,7 @@ crediti: |
 crediti_en: |
   Personal project.
 ordine: 6
+seo_descrizione: "Lettering 3D: parole di cromo, gelatina, pelle e palloncino. Esperimenti tipografici generativi di LIKEMOMMADEME, con il tutorial del logo Topboy."
+seo_descrizione_en: "3D lettering: words in chrome, jelly, leather and balloon. Generative typographic experiments by LIKEMOMMADEME, with the Topboy logo tutorial."
 ---
 Una raccolta di esperimenti tipografici. Ogni parola ha la sua consistenza, e io ho voluto scoprirla toccandola, una materia alla volta.

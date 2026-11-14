@@ -147,16 +147,8 @@ progetto:
   # Banda "dietro le quinte" in fondo a ogni progetto
   dq_k: Dietro le quinte
   dq_titolo: "Quello che non si <em>vede</em>"
-  dq_testo: "Strumenti, file, prove e scarti: tutto il lavoro che c'è prima di un'immagine finita."
+  dq_ruolo: Il mio ruolo
   dq_strumenti: Gli strumenti
-  dq_foto_uno: immagine nella galleria
-  dq_foto: immagini nella galleria
-  dq_video_uno: video
-  dq_video: video
-  dq_strumenti_uno: strumento
-  dq_strumenti_n: strumenti
-  dq_sezioni_uno: capitolo del progetto
-  dq_sezioni: capitoli del progetto
   rec_k: Dicono di questo progetto
 
 cerca:

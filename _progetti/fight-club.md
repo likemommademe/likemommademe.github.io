@@ -150,5 +150,7 @@ crediti: |
 crediti_en: |
   Personal project. All trademarks belong to their respective owners.
 ordine: 4
+seo_descrizione: "La saponetta di Fight Club reinventata in tutti i materiali che non dovrebbe avere: un esercizio di still life generativo di LIKEMOMMADEME."
+seo_descrizione_en: "The Fight Club soap bar reinvented in every material it shouldn't be made of: a generative still life exercise by LIKEMOMMADEME."
 ---
 Un esercizio di still life generativo: un solo oggetto iconico, la saponetta di **Fight Club**, reinventato in tutti i materiali che non dovrebbe avere.

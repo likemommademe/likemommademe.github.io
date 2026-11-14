@@ -198,5 +198,7 @@ crediti: |
 crediti_en: |
   Images: generative AI, photo compositing and post-production
 ordine: 1
+seo_descrizione: "IKEA, voglia di casa: uno spazio di lavoro da sogno, un temporary store per KOMPISHÄNG e nove vetrine, per sentirsi a casa al primo sguardo."
+seo_descrizione_en: "IKEA, feeling at home: a dream workspace, a temporary store for KOMPISHÄNG and nine displays, all about feeling at home at first sight."
 ---
 Tre progetti per IKEA e una sola promessa: **sentirsi a casa al primo sguardo**. Uno spazio di lavoro da sogno, un temporary store per la collezione KOMPISHÄNG e una serie di visual display.

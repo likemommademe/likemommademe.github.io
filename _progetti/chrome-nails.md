@@ -77,5 +77,7 @@ crediti: |
 crediti_en: |
   Personal project. Any visible trademarks belong to their respective owners.
 ordine: 9
+seo_descrizione: "Chrome Nails: un editoriale moda avant-garde generato con l'AI, dallo scatto al video, dove le unghie cromate diventano artigli."
+seo_descrizione_en: "Chrome Nails: an avant-garde fashion editorial generated with AI, from still to video, where chrome nails become claws."
 ---
 Un editoriale moda avant-garde generato con l'AI, dallo scatto al video. Al centro un dettaglio che di solito passa in secondo piano: le unghie.

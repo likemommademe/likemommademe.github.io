@@ -56,5 +56,7 @@ galleria:
 strumenti:
   - Illustrator
 ordine: 1
+seo_descrizione: "Omaggio a Malika Favre: illustrazioni fatte di pieni e vuoti nel suo stile, nate durante il Master in Digital Art Direction allo IED."
+seo_descrizione_en: "A tribute to Malika Favre: illustrations made of positive and negative space in her style, created during the Master in Digital Art Direction at IED."
 ---
 Progetto nato durante il **Master in Digital Art Direction** allo IED. L'obiettivo era ispirarsi ai lavori di **Malika Favre** e realizzare illustrazioni che riprendessero il suo stile.

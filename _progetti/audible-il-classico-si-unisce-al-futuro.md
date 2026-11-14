@@ -183,5 +183,7 @@ crediti: |
 crediti_en: |
   IED project
 ordine: 1
+seo_descrizione: "Audible, il classico si unisce al futuro: progetto IED per lanciare la collana Audible Original dei classici italiani, dalla Divina Commedia a Salgari."
+seo_descrizione_en: "Audible, the classic meets the future: an IED project launching the Audible Original series of Italian classics, from the Divine Comedy to Salgari."
 ---
 Un progetto IED per lanciare la collana Audible Original dedicata ai grandi classici italiani, dalla *Divina Commedia* ai romanzi di Salgari, e farla arrivare a chi i classici li ha lasciati sui banchi di scuola.

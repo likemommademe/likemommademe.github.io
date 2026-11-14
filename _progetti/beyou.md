@@ -115,5 +115,7 @@ crediti: |
 crediti_en: |
   Images: generative AI, photo compositing and post-production
 ordine: 4
+seo_descrizione: "BeYOU: logo e communication package per una catena di hotel di lusso accessibile. Ottone, verde notte e travertino. Brand identity di LIKEMOMMADEME."
+seo_descrizione_en: "BeYOU: logo and communication package for a chain of affordable luxury hotels. Brass, night green and travertine. Brand identity by LIKEMOMMADEME."
 ---
 Il logo e il communication package per **BeYOU**, una catena di *affordable luxury hotels*: un lusso che si sente nei materiali, non nel prezzo.

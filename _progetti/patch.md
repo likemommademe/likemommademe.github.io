@@ -75,5 +75,7 @@ strumenti:
   - Illustrator
   - Procreate
 ordine: 3
+seo_descrizione: "Patch a tema spaziale per il Master in Digital Art Direction allo IED: una missione nello spazio da cucire sul braccio. Illustrazioni di LIKEMOMMADEME."
+seo_descrizione_en: "Space-themed patches for the Master in Digital Art Direction at IED: a space mission to sew on your sleeve. Illustrations by LIKEMOMMADEME."
 ---
 Progetto nato durante il **Master in Digital Art Direction** allo IED. L'obiettivo era realizzare **patch** a tema spaziale che mettessero in evidenza lo scopo e il tema del Master, cioè la parte **digital**.

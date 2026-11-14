@@ -112,5 +112,7 @@ crediti_en: |
   Design: Emanuele Calfa, Arianna Condemi, Francesca Prencipe  
   IED Rome, 2021
 ordine: 1
+seo_descrizione: "Blue Origin: il nuovo sito e lo Space Pass per il volo della New Shepard, con un posto all'asta online. Progetto di web design IED di LIKEMOMMADEME."
+seo_descrizione_en: "Blue Origin: the new website and the Space Pass for the New Shepard flight, with one seat auctioned online. An IED web design project by LIKEMOMMADEME."
 ---
 Il lancio del nuovo sito e il rebranding dell'intero progetto Blue Origin, in occasione del volo nello spazio del vettore suborbitale **New Shepard**: il primo equipaggio di astronauti, con un posto riservato a chi vince un'asta online.

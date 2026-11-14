@@ -106,5 +106,7 @@ crediti_en: |
   Design: Emanuele Calfa, Arianna Condemi, Francesca Prencipe  
   IED project
 ordine: 3
+seo_descrizione: "Sagra dei Stringozzi: experience design per una sagra di paese, con un concept creativo user-centered declinato nei principali touchpoint."
+seo_descrizione_en: "Sagra dei Stringozzi: experience design for a village food festival, with a user-centred creative concept rolled out across the main touchpoints."
 ---
 Riprogettare l'esperienza di una sagra di paese in ottica **user-centered e multicanale**: definire il concept creativo e declinarlo nei principali touchpoint.

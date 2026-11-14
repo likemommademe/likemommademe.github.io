@@ -151,7 +151,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=19`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=20`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -207,7 +207,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=19, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=20, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -305,6 +305,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Pannello bloccato da un campo doppio in Lettering 3D: sistemato. Ora un file rotto blocca solo sé stesso. Grafica del pannello rifatta come il sito |
 | 14/11/2026 | Progetti in più categorie: il filtro del pannello li mostra anche nelle categorie in più, con un ordine separato per ognuna, usato anche dal sito |
 | 14/11/2026 | Pannello: modulo del progetto a due colonne (testi a sinistra; pubblicazione, categorie, cliente, anno, copertina e link a destra, con la lingua in cima). Galleria a griglia di miniature: si trascinano per riordinarle, un clic apre titolo, didascalia IT/EN e larghezza. Nuova sezione **Media** con le immagini divise per progetto. Gli strumenti tengono l'ordine in cui li hai messi |
+| 14/11/2026 | "Dietro le quinte": tolti i numeri e la frase generica. Ora mostra **Il mio ruolo** (campo nuovo, IT/EN), gli strumenti e la recensione, e compare solo se c'è almeno una di queste cose. Descrizioni per Google (IT/EN) scritte da Claude per tutti i progetti veri |
 
 ---
 

@@ -133,5 +133,7 @@ crediti: |
 crediti_en: |
   Thesis for the Master in Digital Art Direction, IED Rome
 ordine: 2
+seo_descrizione: "SITUATION, «Allena come mai prima d'ora»: l'app per gli allenatori di pallavolo, dall'idea alla campagna di lancio. Tesi del Master IED di Roma."
+seo_descrizione_en: "SITUATION, “Coach like never before”: an app for volleyball coaches, from the first idea to the launch campaign. Master's thesis at IED Rome."
 ---
 La mia tesi del **Master in Digital Art Direction** allo IED di Roma: un'app per gli allenatori di pallavolo, dalla prima idea alla campagna di lancio. Identità, interfacce e pubblicità, con il claim **«Allena come mai prima d'ora»**.

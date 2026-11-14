@@ -193,5 +193,7 @@ crediti_en: |
   Agency: Pixell  
   Store restyling with Studio Loft Canova
 ordine: 2
+seo_descrizione: "DCD Studi Estetici: il restyling del marchio e il brand identity manual di una catena di centri estetici attiva dal 1980 in tutta Italia."
+seo_descrizione_en: "DCD Studi Estetici: the logo restyling and brand identity manual for a chain of beauty centres operating across Italy since 1980."
 ---
 DCD Studi Estetici è una catena di centri specializzati in dimagrimento, modellamento e trattamento della cellulite, **dal 1980**, con affiliati in tutta Italia. L'obiettivo era rinnovare il marchio e dare a tutti i centri un'identità unica e riconoscibile.

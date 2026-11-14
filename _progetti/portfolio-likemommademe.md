@@ -135,5 +135,7 @@ crediti: |
 crediti_en: |
   Designed and built with Claude in Visual Studio Code.
 ordine: 0
+seo_descrizione: "Il portfolio di LIKEMOMMADEME, progettato e costruito con Claude in Visual Studio Code: showreel, CMS su misura e progetti da trovare in un clic."
+seo_descrizione_en: "LIKEMOMMADEME's portfolio, designed and built with Claude in Visual Studio Code: a showreel, a custom CMS and projects you find in one click."
 ---
 Il portfolio di LIKEMOMMADEME: il sito che stai guardando. Volevo un posto dove i progetti si vedessero bene, si trovassero in un clic e si potessero aggiornare da solo, senza dipendere da nessuno.

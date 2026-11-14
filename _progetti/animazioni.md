@@ -75,5 +75,7 @@ crediti: |
 crediti_en: |
   Motion design exercises. All trademarks belong to their respective owners.
 ordine: 2
+seo_descrizione: "Loghi famosi che prendono vita, icone marine, un sushi che si serve da solo e lo showreel di questo sito: le animazioni di LIKEMOMMADEME."
+seo_descrizione_en: "Famous logos brought to life, sea icons, sushi that serves itself and this site's showreel: motion design by LIKEMOMMADEME."
 ---
 Una raccolta di animazioni del 2021: tre loghi famosi rianimati per esercizio e due illustrazioni animate.

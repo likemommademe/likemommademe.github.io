@@ -66,5 +66,7 @@ strumenti:
   - Illustrator
   - After Effects
 ordine: 5
+seo_descrizione: "Il monogramma CE, il vecchio marchio personale di LIKEMOMMADEME: una griglia di 6 × 6 quadrati, dal disegno geometrico alla stationery."
+seo_descrizione_en: "The CE monogram, LIKEMOMMADEME's old personal logo: a 6 × 6 square grid, from the geometric drawing to the stationery."
 ---
 Il mio marchio personale. Prima di disegnarlo ho fatto una ricerca di stili e gusti, analizzando reference trovate su siti diversi, e mi sono dato cinque regole: **semplice, elegante, geometrico, moderno, monocolore**.

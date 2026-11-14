@@ -84,5 +84,7 @@ crediti: |
 crediti_en: |
   Personal project.
 ordine: 5
+seo_descrizione: "Architecture: la stessa piccola scultura ripetuta in sette materiali diversi. Una ricerca di immagini generative di LIKEMOMMADEME sulla materia."
+seo_descrizione_en: "Architecture: the same small sculpture repeated in seven different materials. A generative imagery study on matter by LIKEMOMMADEME."
 ---
 Una ricerca sui materiali: la stessa piccola scultura, ripetuta identica sette volte. Il soggetto resta fermo, il materiale decide il carattere.

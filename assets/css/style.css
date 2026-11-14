@@ -708,7 +708,10 @@ html.js .cs-media[data-rivela].is-in > img, html.js .cs-media[data-rivela].is-in
 .cs-dq .cs-head__k { margin-bottom: clamp(28px, 3vw, 48px); }
 .cs-dq__t { font-size: var(--t-h2); max-width: 16ch; }
 .cs-dq__p { max-width: 60ch; margin: clamp(20px, 2vw, 32px) 0 clamp(40px, 4.4vw, 72px); color: var(--muted); font-size: var(--t-lead); line-height: 1.4; }
-.cs-dq__strumenti { margin: 0 0 clamp(48px, 5vw, 88px); }
+.cs-dq__ruolo { max-width: 60ch; margin: clamp(28px, 3vw, 48px) 0 clamp(40px, 4.4vw, 72px); }
+.cs-dq__ruolo .cs-dq__p { margin: 14px 0 0; color: var(--fg); }
+.cs-dq__strumenti { margin: clamp(28px, 3vw, 48px) 0 clamp(48px, 5vw, 88px); }
+.cs-dq__fc { margin-bottom: 28px; color: var(--muted); }
 .cs-dq__strumenti ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 32px var(--gap); margin: 0; padding: 0; list-style: none; }
 .cs-dq__strumenti li { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
 .cs-dq__anello { position: relative; width: 64px; aspect-ratio: 1; }

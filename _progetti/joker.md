@@ -140,5 +140,7 @@ crediti: |
 crediti_en: |
   Personal project. Film stills used only as references; all rights belong to their respective owners.
 ordine: 2
+seo_descrizione: "Sei Joker tra cinema e cartoni, dal 1966 al 2019, ridisegnati solo con le linee accanto alla foto di scena. Illustrazioni di LIKEMOMMADEME."
+seo_descrizione_en: "Six Jokers from film and cartoons, 1966 to 2019, redrawn in lines only next to their film stills. Illustrations by LIKEMOMMADEME."
 ---
 Sei **Joker** tra cinema e cartoni, dal 1966 al 2019, ognuno ridisegnato solo con le linee e messo accanto alla foto di scena da cui è nato.

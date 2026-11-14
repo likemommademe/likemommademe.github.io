@@ -186,5 +186,7 @@ crediti_en: |
   Wireframes, web design and communication: Emanuele Calfa, with the Pixell design team  
   Development: IT department
 ordine: 1
+seo_descrizione: "Etic.a Labels: il sito, il nuovo marchio e la comunicazione di un'azienda che stampa etichette per food, beverage, cosmetica e farmaceutica dal 2009."
+seo_descrizione_en: "Etic.a Labels: the website, new logo and communication for a company printing labels for food, beverage, cosmetics and pharma since 2009."
 ---
 Etic.a stampa etichette per food, beverage, cosmetica, farmaceutica, casa e automotive, dal 2009. Serviva un'identità nuova e un sito capace di raccontare le lavorazioni, i settori e i progetti, e di trasformare le visite in richieste.

@@ -79,5 +79,7 @@ crediti: |
 crediti_en: |
   Diploma thesis
 ordine: 2
+seo_descrizione: "Il manuale d'immagine coordinata dell'Accademia dei Romani, tesi di diploma di LIKEMOMMADEME: dal restyling del marchio alla campagna pubblicitaria."
+seo_descrizione_en: "The brand identity manual for the Accademia dei Romani, LIKEMOMMADEME's diploma thesis: from the logo restyling to the advertising campaign."
 ---
 La tesi del mio diploma accademico: il **manuale dell'immagine coordinata dell'Accademia dei Romani**. Il manuale d'immagine coordinata è una delle basi del mestiere del grafico, e volevo farlo per un'istituzione che non avesse ancora un'identità ben chiara. Quale modo migliore di chiudere il percorso accademico, se non dimostrare di saper realizzare un progetto così?

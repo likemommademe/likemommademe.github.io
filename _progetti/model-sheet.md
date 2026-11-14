@@ -78,5 +78,7 @@ galleria:
 strumenti:
   - Procreate
 ordine: 4
+seo_descrizione: "Model sheet di un personaggio: fronte, retro, profilo, movimenti ed espressioni, fino a una tuta robotica. Progetto d'esame di Illustrazione."
+seo_descrizione_en: "A character model sheet: front, back, profile, movements and expressions, all the way to a robotic suit. An Illustration exam project."
 ---
 Progetto per un esame di Illustrazione: realizzare il **model sheet** di un personaggio in tutte le prospettive, i movimenti, la struttura fisica e le espressioni tipiche.
