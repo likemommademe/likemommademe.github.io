@@ -75,7 +75,7 @@ footer:
 
 # Testi provvisori della pagina About: li riscriviamo insieme
 about:
-  hero_titolo: "Emanuele Calfa, creative <em>designer</em> a Roma"
+  hero_titolo: "Creative designer, come mamma mi ha <em>fatto</em>"
   hero_cta: Lavoriamo insieme
   hero_fatti:
     - k: Base
@@ -84,7 +84,7 @@ about:
       v: 2019, tra agenzia e azienda
     - k: Oggi
       v: Marketing & Creative Designer
-  sottotitolo: Creative designer. Identità visive, brand communication e contenuti per digital, stampa ed eventi, dal concept alla consegna.
+  sottotitolo: Identità visive, brand communication e contenuti per digital, stampa ed eventi, dal concept alla consegna.
   foto_titolo: Dietro le quinte
   anni_titolo: "Come mamma mi ha fatto, anno per <em>anno</em>"
   anni_lead: Progetto, produco e coordino. Senza perdere di vista i dettagli.
