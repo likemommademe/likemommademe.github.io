@@ -87,7 +87,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, prototipi Figma (link `figma.com/proto/...`) e file video `.mp4` caricati sul sito (partono da soli, muti e in loop, quando sono sullo schermo; l'anteprima è un'immagine `.webp` con lo stesso nome), e **titoli di sezione** (titolo + due righe) per dividere la galleria in parti. Ogni foto ha un **titolo** e **una riga** che la spiega: su computer compaiono sopra la foto al passaggio del mouse, su telefono restano sotto, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
 - **Testo con pulsanti**: grassetto, corsivo, titolo, elenco, link.
 - Pulsanti **Duplica**, **Vedi sul sito**, **Elimina**.
-- **Ordine dentro ogni categoria**: nella lista scegli la categoria nel filtro e trascini le righe.
+- **Più categorie**: la categoria principale più quelle in **Anche in**. Il progetto compare in tutte, con il suo posto in ognuna.
+- **Ordine dentro ogni categoria**: nella lista scegli la categoria nel filtro e trascini le righe. Vale anche per le categorie in più: i progetti che ci stanno con **Anche in** hanno l'etichetta "Anche in questa categoria" e un ordine separato (`ordini` nel file). Finché non li riordini, vanno in fondo in ordine alfabetico.
 - **Ricerca e filtri** per categoria, cliente e stato.
 
 ### Lingue (italiano e inglese)
@@ -150,7 +151,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=17`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=18`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/schema.js` | Elenco di sezioni e campi: per aggiungere un campo si parte da qui |
@@ -206,7 +207,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=17, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=18, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -301,6 +302,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 12/11/2026 | Etic.a: al posto delle schermate un **volo 3D sulla pagina Azienda** del sito (14,5 s, la pagina stesa su un piano chiaro, camera continua, salita, tuffo sull'hero e card finale «Creiamo etichette con un'impronta positiva. *Dress your brand.*»), costruito in HTML con `seek(t)` e registrato fotogramma per fotogramma. Wireframe ridotti a due tavole; Il marchio dallo studio della forma al logo animato; tolti shooting e video (non miei); fiere due foto; social solo il carosello. DCD: costruzione centrata. Gallerie: righe da tre |
 | 12/11/2026 | «LIKEMOMMADEME, questo sito»: nuovo **promo** di 15 s (1080×1080, 120 BPM): il punto rosa del logo chiude la frase «Un portfolio che non sembra un template», diventa la spia di un computer che resta aperto, fa da cursore sul sito vero (showreel, sottomenu di Works, un progetto) e torna punto di LIKEMOMMADEME con «likemommademe.github.io»; musica scritta in codice (Web Audio). File di lavoro nello scratchpad (`promo.html`, `volo/film.html`) |
 | 14/11/2026 | Pannello bloccato da un campo doppio in Lettering 3D: sistemato. Ora un file rotto blocca solo sé stesso. Grafica del pannello rifatta come il sito |
+| 14/11/2026 | Progetti in più categorie: il filtro del pannello li mostra anche nelle categorie in più, con un ordine separato per ognuna, usato anche dal sito |
 
 ---
 

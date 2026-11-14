@@ -1,9 +1,25 @@
 ---
 layout: default
 ---
+{% comment %}
+  Progetti della categoria: quelli che ce l'hanno come principale e quelli che la hanno in "Anche in".
+  Ordine deciso nel pannello: "ordine" per la categoria principale, "ordini.<categoria>" per le altre.
+  Chi non ha ancora un ordine va in fondo, in ordine alfabetico.
+{% endcomment %}
+{% assign chiavi = "" | split: "" %}
+{% for p in site.progetti %}
+  {% assign dentro = false %}{% assign n = nil %}
+  {% if p.categoria == page.slug %}{% assign dentro = true %}{% assign n = p.ordine %}
+  {% elsif p.altre_categorie contains page.slug %}{% assign dentro = true %}{% if p.ordini %}{% assign n = p.ordini[page.slug] %}{% endif %}{% endif %}
+  {% if dentro %}
+    {% if n == nil %}{% assign n = 9999 %}{% endif %}
+    {% assign k = n | plus: 10000 | append: "|" | append: p.title | append: "|" | append: p.slug %}
+    {% assign chiavi = chiavi | push: k %}
+  {% endif %}
+{% endfor %}
+{% assign chiavi = chiavi | sort %}
 {% assign progetti = "" | split: "" %}
-{% assign tutti_c = site.progetti | sort: "ordine", "last" %}
-{% for p in tutti_c %}{% if p.categoria == page.slug or p.altre_categorie contains page.slug %}{% assign progetti = progetti | push: p %}{% endif %}{% endfor %}
+{% for k in chiavi %}{% assign s = k | split: "|" | last %}{% assign p = site.progetti | where: "slug", s | first %}{% assign progetti = progetti | push: p %}{% endfor %}
 
 <header class="pagina-head{% if page.mondo %} cat-head{% endif %}">
   <div class="cat-head__txt">

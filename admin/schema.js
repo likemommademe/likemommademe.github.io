@@ -18,6 +18,8 @@ window.CMS = {
       sort: ['categoria', 'ordine', 'title'],
       orderField: 'ordine',
       orderWithin: 'categoria',
+      alsoIn: 'altre_categorie',   // categorie in più: il progetto compare anche lì
+      orderMap: 'ordini',          // ordine del progetto dentro ogni categoria in più
       filters: ['categoria', 'cliente'],
       thumb: 'copertina',
       subtitle: ['categoria', 'cliente', 'anno'],
