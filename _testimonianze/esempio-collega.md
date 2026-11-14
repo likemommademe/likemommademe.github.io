@@ -1,8 +1,8 @@
 ---
-title: "ESEMPIO · Nome Cognome"
+title: "BOZZA · Nome del responsabile in Pixell"
 published: false
-ruolo: "Art Director, Pixell"
+ruolo: "Responsabile creativo, Pixell"
 rapporto: "Mio responsabile in Pixell"
 ordine: 2
 ---
-ESEMPIO DA SOSTITUIRE con le parole vere di un collega o di chi ti ha seguito. Due o tre righe su cosa ti rende affidabile in un team. Pubblicala solo dopo il suo ok.
+In Pixell Emanuele ha seguito marchi, siti e fiere per clienti molto diversi, sempre con lo stesso metodo: ascolta, propone, consegna. È la persona a cui affidi un progetto sapendo che non dovrai ricontrollarlo.
