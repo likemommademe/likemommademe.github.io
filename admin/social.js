@@ -525,7 +525,7 @@ async function socialEditor(slug, params = {}) {
   stato.addEventListener('change', saveLabel);
   saveLabel();
   const pubBtn = h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, 'Pubblica ora'));
-  const dlBtn = h('button', { type: 'button', class: 'btn' }, icon('download'), h('span', {}, 'Scarica'));
+  const dlBtn = h('button', { type: 'button', class: 'btn' }, icon('download'), h('span', {}, 'Esporta (ZIP)'));
   const copyBtn = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
   copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(testo.value); copyBtn.lastChild.textContent = 'Copiato!'; setTimeout(() => { copyBtn.lastChild.textContent = 'Copia il testo'; }, 1600); } catch { testo.select(); } };
   const baseName = () => slugify(titolo.value || d.titolo || 'post') || 'post';
@@ -550,7 +550,35 @@ async function socialEditor(slug, params = {}) {
       await new Promise((r) => setTimeout(r, 350));
     }
   }
-  dlBtn.onclick = async () => downloadAll(await mediaFiles());
+  // Esporta tutto in un file solo: le grafiche numerate (o il video) e il testo del post in testo.txt.
+  async function exportZip(btn) {
+    const label = btn?.lastChild;
+    const prima = label?.textContent;
+    try {
+      if (label) label.textContent = 'Preparo lo ZIP…';
+      const files = await mediaFiles();
+      if (!files.length) throw new Error(tipo === 'video' ? 'Scegli un video.' : 'Scegli almeno una foto.');
+      const zip = new JSZip();
+      for (const f of files) zip.file(f.name, f);
+      const reti = scelti().map(nomeRete).join(', ');
+      zip.file('testo.txt', `${testo.value.replace(/\s+$/, '')}\n`);
+      zip.file('leggimi.txt', [
+        titolo.value || d.titolo || 'Post',
+        reti && `Social: ${reti}`,
+        dataIn.value && `Quando: ${dayLabel(dataIn.value)}${oraIn.value ? ` alle ${oraIn.value}` : ''}`,
+        tipo === 'video' ? 'Video: carica il file video.' : `Grafiche: ${files.length}, 1080 × 1350 (4:5). Caricale nell’ordine dei numeri.`,
+        'Il testo del post è in testo.txt.',
+      ].filter(Boolean).join('\n'));
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+      const a = h('a', { href: URL.createObjectURL(blob), download: `${baseName()}.zip` });
+      document.body.append(a); a.click(); a.remove();
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      if (label) label.textContent = prima;
+    }
+  }
+  dlBtn.onclick = () => exportZip(dlBtn);
 
   // Salva il post su GitHub (file del post + grafiche o video). Lo usano "Salva" e "Pubblica ora".
   let saved = isNew ? null : { id: slug, path: entry.path, data: entry.data };
@@ -717,7 +745,7 @@ async function socialEditor(slug, params = {}) {
         h('p', {}, 'Account collegati: ', auto.map((r) => `${nomeRete(r)}${acc[r].nome ? ` (${acc[r].nome})` : ''}`).join(', '), '.'),
         goBtn, autoMsg, esitiBox,
         auto.includes('tiktok') && h('p', { class: 'hint' }, 'Su TikTok il post arriva nelle bozze: dall’app aggiungi la musica e pubblichi.'))
-      : h('div', { class: 'banner info' }, icon('alert'), h('span', {}, 'Nessuno dei social scelti è collegato, quindi qui sotto puoi pubblicare solo a mano. ', h('a', { class: 'lnk', href: '#/social/account' }, 'Collega gli account'), ' per pubblicare con un clic.'));
+      : null;
 
     // A mano
     const files = await mediaFiles();
@@ -725,7 +753,9 @@ async function socialEditor(slug, params = {}) {
     const copy = async (btn) => { try { await navigator.clipboard.writeText(testo.value); if (btn) btn.lastChild.textContent = 'Testo copiato!'; return true; } catch { return false; } };
     const copyB = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
     copyB.onclick = () => copy(copyB);
-    const dlB = h('button', { type: 'button', class: 'btn small' }, icon('download'), h('span', {}, tipo === 'video' ? 'Scarica il video' : `Scarica ${files.length === 1 ? 'la grafica' : `le ${files.length} grafiche`}`));
+    const zipB = h('button', { type: 'button', class: 'btn primary' }, icon('download'), h('span', {}, 'Esporta tutto (ZIP)'));
+    zipB.onclick = () => exportZip(zipB);
+    const dlB = h('button', { type: 'button', class: 'btn small' }, icon('download'), h('span', {}, tipo === 'video' ? 'Solo il video' : `Solo ${files.length === 1 ? 'la grafica' : `le ${files.length} grafiche`}`));
     dlB.onclick = () => downloadAll(files);
     const shareB = canShare && h('button', { type: 'button', class: 'btn small' }, icon('send'), h('span', {}, 'Condividi dal telefono'));
     if (shareB) shareB.onclick = async () => { await copy(); try { await navigator.share({ files, text: testo.value, title: titolo.value || 'Post' }); } catch { /* annullato */ } };
@@ -743,18 +773,17 @@ async function socialEditor(slug, params = {}) {
     };
     const manoReti = mano.length ? mano : reti;
     const manual = h('details', { class: 'pub-mano', open: !auto.length },
-      h('summary', {}, mano.length && auto.length ? `A mano su ${mano.map(nomeRete).join(', ')} (non collegati)` : 'Pubblica a mano: scarica, copia, condividi'),
+      h('summary', {}, auto.length ? `A mano su ${mano.length ? mano.map(nomeRete).join(', ') : 'tutti i social'}` : 'Esporta e pubblica'),
       h('div', { class: 'pub' },
-        shareB && h('p', { class: 'hint' }, 'Dal telefono: ', shareB, ' apre il menu di condivisione (il testo è già copiato).'),
-        step(1, 'Copia il testo', h('div', { class: 'row' }, copyB)),
-        step(2, tipo === 'video' ? 'Scarica il video' : 'Scarica le grafiche', h('div', { class: 'row' }, dlB)),
+        step(1, 'Esporta', h('div', { class: 'row' }, zipB, dlB, copyB), h('p', { class: 'hint' }, `Lo ZIP contiene ${tipo === 'video' ? 'il video' : 'le grafiche numerate in ordine'} e il testo del post (testo.txt).`)),
+        step(2, 'Dal telefono', shareB ? h('div', { class: 'row' }, shareB) : h('p', { class: 'hint' }, 'Apri questo post dal telefono e premi “Condividi dal telefono”: le grafiche vanno dritte nell’app del social, con il testo già copiato.')),
         step(3, 'Apri il social e crea il post',
           h('div', { class: 'pub-links' }, manoReti.map((v) => h('a', { class: 'btn small', href: SOCIAL_WEB[v][0], target: '_blank', rel: 'noopener' }, icon('external'), h('span', {}, nomeRete(v))))),
           ...manoReti.map((v) => h('p', { class: 'hint' }, SOCIAL_WEB[v][1]))),
         step(4, 'Quando è online', h('div', { class: 'row' }, done))));
 
     const closeSheet = openSheet(`Pubblica su ${reti.map(nomeRete).join(', ')}`, h('div', { class: 'pub' }, autoBlock, manual), () => { if (saved && isNew) location.hash = `#/social/${saved.id}`; else if (saved) route(); },
-      'I post programmati partiranno da soli quando sarà attiva la pubblicazione all’ora scelta.', 'Chiudi');
+      auto.length ? 'I post programmati partiranno da soli quando sarà attiva la pubblicazione all’ora scelta.' : 'Pubblicazione automatica non attiva: si accende collegando gli account in Social → Account social.', 'Chiudi');
   };
 
   const delBtn = !isNew && h('button', {
@@ -787,7 +816,6 @@ async function socialEditor(slug, params = {}) {
   function showMode() {
     fotoParts.forEach((el) => { el.hidden = tipo !== 'foto'; });
     videoParts.forEach((el) => { el.hidden = tipo !== 'video'; });
-    dlBtn.lastChild.textContent = tipo === 'video' ? 'Scarica il video' : 'Scarica grafiche';
     drawVids();
     renderAll();
   }

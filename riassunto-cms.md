@@ -123,7 +123,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Dove**: Instagram, TikTok, LinkedIn. **Giorno** e **ora**.
 - **Social → Account social**: una scheda per Instagram, TikTok e LinkedIn con stato, cosa fa, limiti, passi e l'**indirizzo di ritorno** da incollare nell'app sviluppatore del social. **Collega** (si attiva quando le chiavi sono su Cloudflare) porta al login del social e torna nel pannello; **Scollega** lo toglie. Le chiavi degli account collegati stanno nel database D1 (tabella `social_account`), mai su GitHub. Se compare l'avviso rosso "Il server su Cloudflare non ha ancora il codice dei social", va incollato il nuovo `cms-server/worker.js`.
 - **Tipo di post**: **Foto** (carosello di grafiche 4:5) oppure **Video** (dai video .mp4 del progetto o dal computer, fino a 95 MB; meglio verticale 9:16).
-- In fondo all'editor: **Salva bozza** (o **Salva e programma**), **Pubblica ora**, e in alto **Scarica** (grafiche o video).
+- In fondo all'editor: **Salva bozza** (o **Salva e programma**) e **Pubblica ora**. In alto **Esporta (ZIP)**: un file con le grafiche numerate in ordine (o il video), `testo.txt` con il testo del post e `leggimi.txt` con social e data.
+- **Decisione del 14/11/2026: per ora gli account NON si collegano.** Si usa il gestionale per preparare ed esportare i post e si pubblica a mano (ZIP o "Condividi dal telefono"). Il codice per la pubblicazione automatica resta pronto: per accenderlo basta collegare gli account in Social → Account social.
 - **Pubblica ora**: sui social **collegati** pubblica davvero tramite le API, dal server su Cloudflare. Prima salva il post, poi aspetta che grafiche o video siano online sul sito (1–2 minuti, perché i social li prendono da lì), poi pubblica un social per volta e mostra l'esito con il link al post. Il post diventa **Pubblicato**, oppure **Non riuscito** con il messaggio del social. Instagram: foto, caroselli e video come Reel. LinkedIn: foto, più foto o video sul profilo personale. TikTok: nelle bozze dell'app (musica e pubblicazione dal telefono).
 - Nella stessa finestra restano gli **strumenti a mano** (per i social non collegati o se preferisci): condividi dal telefono, copia il testo, scarica, apri il social, **Segna come pubblicato**.
 - I post sono file in `_social/` (non vanno sul sito), le grafiche finite in `assets/social/`. Le foto caricate per un post vanno nei Media, nel gruppo "Post social".
@@ -165,7 +166,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=24`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=25`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
@@ -222,7 +223,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=24, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=25, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -325,12 +326,13 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Social: i post vanno su Instagram, TikTok e LinkedIn (tolti Facebook e Threads). Nuova pagina **Account social** con stato e passi per collegare ogni social via API |
 | 14/11/2026 | Social: pulsante **Pubblica ora** (condivisione dal telefono, oppure testo + grafiche + link al social dal computer, poi "segna come pubblicato") e pulsante di salvataggio più chiaro |
 | 14/11/2026 | Social: **pubblicazione vera** tramite le API (Instagram, LinkedIn, TikTok nelle bozze) dal pulsante Pubblica ora, collegamento degli account da Account social, **post video**. Server aggiornato (`cms-server/worker.js`, da incollare su Cloudflare) |
+| 14/11/2026 | Social: **Esporta (ZIP)** con grafiche o video e testo; la pubblicazione automatica resta pronta ma gli account per ora non si collegano |
 
 ---
 
 ## 10. Prossimi passi
 
-1. **Pubblicazione automatica sui social** (i passi sono anche in Social → Account social): creare insieme le app sviluppatore di Instagram (account professionale + app Meta "Instagram API with Instagram Login"), LinkedIn (pagina LIKEMOMMADEME + app con "Share on LinkedIn") e TikTok (app con "Content Posting API" e dominio verificato; senza la revisione di TikTok i post via API vanno nelle bozze o restano privati). Poi Claude scrive la parte del server che collega gli account e pubblica i post programmati all'ora giusta. Finché non c'è, i post si pubblicano a mano.
+1. **Facoltativo, deciso di rimandarlo: pubblicazione automatica sui social** (i passi sono anche in Social → Account social; l'account Meta for Developers era bloccato per sicurezza il 14/11, da riprovare dal telefono o dopo qualche giorno): creare insieme le app sviluppatore di Instagram (account professionale + app Meta "Instagram API with Instagram Login"), LinkedIn (pagina LIKEMOMMADEME + app con "Share on LinkedIn") e TikTok (app con "Content Posting API" e dominio verificato; senza la revisione di TikTok i post via API vanno nelle bozze o restano privati). Poi Claude scrive la parte del server che collega gli account e pubblica i post programmati all'ora giusta. Finché non c'è, i post si pubblicano a mano.
 2. **Verificare che su Cloudflare ci sia il codice più recente del server**, quello con le statistiche e il salvataggio nuovo. Se il pannello non salva o le visite non compaiono, va rincollato (vedi "Come si fa").
 3. **Facoltativo**: eliminare il sito del portfolio su DecapBridge (https://decapbridge.com). La chiave **decapbridge** su GitHub non esiste più e il KV **login** su Cloudflare è già cancellato.
 4. **Facoltativo**: sul client Google creare un client secret nuovo ed eliminare quello vecchio, finito in chat per errore. Non lo usiamo, quindi non è urgente.
