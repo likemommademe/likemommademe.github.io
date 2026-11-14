@@ -122,7 +122,8 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Testo del post** già scritto dal progetto (frase-titolo, descrizione, link al progetto, hashtag della categoria), con il conteggio dei caratteri e **Copia il testo**.
 - **Dove**: Instagram, TikTok, LinkedIn. **Giorno** e **ora**.
 - **Social → Account social**: una scheda per Instagram, TikTok e LinkedIn, con lo stato del collegamento, cosa farà, i limiti e i passi per collegarlo. Il pulsante **Collega** si attiva quando le chiavi dell'app di quel social sono su Cloudflare.
-- **La pubblicazione per ora è a mano**: **Scarica grafiche** salva i JPG, poi pubblichi e segni il post come **Pubblicato**. La pubblicazione automatica richiede di collegare gli account di Meta e LinkedIn (vedi Prossimi passi).
+- In fondo all'editor: **Salva bozza** (o **Salva e programma**, se lo stato è Programmato) e **Pubblica ora**.
+- **Pubblica ora**, finché gli account non sono collegati: dal telefono **Condividi grafiche e testo** apre il menu di condivisione (scegli Instagram, TikTok o LinkedIn; il testo è già copiato da incollare); dal computer 1) copia il testo, 2) scarica le grafiche, 3) apri il social con il pulsante, 4) **Fatto: segna come pubblicato**, che salva il post come Pubblicato con giorno e ora di adesso. Quando gli account saranno collegati, i post programmati partiranno da soli (vedi Prossimi passi).
 - I post sono file in `_social/` (non vanno sul sito), le grafiche finite in `assets/social/`. Le foto caricate per un post vanno nei Media, nel gruppo "Post social".
 
 ---
@@ -162,7 +163,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=22`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=23`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
@@ -219,7 +220,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=22, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=23, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -320,6 +321,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | "Dietro le quinte": tolti i numeri e la frase generica. Ora mostra **Il mio ruolo** (campo nuovo, IT/EN), gli strumenti e la recensione, e compare solo se c'è almeno una di queste cose. Descrizioni per Google (IT/EN) scritte da Claude per tutti i progetti veri |
 | 14/11/2026 | Nuova **gestione social** nel pannello: calendario dei post, progetti da portare sui social, grafiche 4:5 rifatte in automatico, testo già pronto, foto anche dal computer |
 | 14/11/2026 | Social: i post vanno su Instagram, TikTok e LinkedIn (tolti Facebook e Threads). Nuova pagina **Account social** con stato e passi per collegare ogni social via API |
+| 14/11/2026 | Social: pulsante **Pubblica ora** (condivisione dal telefono, oppure testo + grafiche + link al social dal computer, poi "segna come pubblicato") e pulsante di salvataggio più chiaro |
 
 ---
 

@@ -10,6 +10,12 @@
 const SOCIAL_COLL = { name: 'social', folder: '_social' };
 const SOCIAL_DIR = 'assets/social';
 const SOCIALS = [['instagram', 'Instagram'], ['tiktok', 'TikTok'], ['linkedin', 'LinkedIn']];
+// Dove si crea un post a mano, dal computer.
+const SOCIAL_WEB = {
+  instagram: ['https://www.instagram.com/', 'Su Instagram premi + (Crea) e trascina le grafiche nell’ordine.'],
+  tiktok: ['https://www.tiktok.com/tiktokstudio/upload', 'Su TikTok Studio scegli “Foto”, carica le grafiche e aggiungi la musica.'],
+  linkedin: ['https://www.linkedin.com/feed/?shareActive=true', 'Su LinkedIn aggiungi le immagini con l’icona della foto e incolla il testo.'],
+};
 const STATI_POST = [['bozza', 'Bozza'], ['programmato', 'Programmato'], ['pubblicato', 'Pubblicato'], ['eliminato', 'Eliminato']];
 const W45 = 1080;
 const H45 = 1350;
@@ -464,7 +470,11 @@ async function socialEditor(slug, params = {}) {
   for (const el of [titolo, etichetta]) el.addEventListener('input', schedule);
 
   const status = h('span', { class: 'status' });
-  const saveBtn = h('button', { type: 'button', class: 'btn primary' }, h('span', {}, 'Salva'));
+  const saveBtn = h('button', { type: 'button', class: 'btn' }, h('span', {}, 'Salva'));
+  const saveLabel = () => { saveBtn.firstChild.textContent = { bozza: 'Salva bozza', programmato: 'Salva e programma', pubblicato: 'Salva', eliminato: 'Salva' }[stato.value] || 'Salva'; };
+  stato.addEventListener('change', saveLabel);
+  saveLabel();
+  const pubBtn = h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, 'Pubblica ora'));
   const dlBtn = h('button', { type: 'button', class: 'btn' }, icon('download'), h('span', {}, 'Scarica grafiche'));
   const copyBtn = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
   copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(testo.value); copyBtn.lastChild.textContent = 'Copiato!'; setTimeout(() => { copyBtn.lastChild.textContent = 'Copia il testo'; }, 1600); } catch { testo.select(); } };
@@ -477,6 +487,51 @@ async function socialEditor(slug, params = {}) {
       document.body.append(a); a.click(); a.remove();
       await new Promise((r) => setTimeout(r, 350));
     }
+  };
+
+  // Pubblicazione a mano, finché gli account non sono collegati: condividi dal telefono,
+  // oppure dal computer copia il testo, scarica le grafiche e apri il social. Poi si segna "Pubblicato".
+  pubBtn.onclick = async () => {
+    const scelti = socialBoxes.filter(([b]) => b.checked).map(([b]) => b.value);
+    if (!chosen.length) { alert('Scegli almeno una foto.'); return; }
+    if (!scelti.length) { alert('Scegli almeno un social in “Dove”.'); return; }
+    await renderAll();
+    const files = await Promise.all(slides.map(async (c, i) => new File([await canvasToBlob(c)], `${baseName()}-${i + 1}.jpg`, { type: 'image/jpeg' })));
+    const canShare = !!(navigator.canShare && navigator.canShare({ files }));
+    const copy = async (btn) => { try { await navigator.clipboard.writeText(testo.value); if (btn) btn.lastChild.textContent = 'Testo copiato!'; return true; } catch { return false; } };
+    const step = (n, title, ...body) => h('div', { class: 'pub-step' }, h('b', { class: 'pub-n' }, n), h('div', {}, h('strong', {}, title), ...body));
+    const copyB = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
+    copyB.onclick = () => copy(copyB);
+    const dlB = h('button', { type: 'button', class: 'btn small' }, icon('download'), h('span', {}, `Scarica ${files.length === 1 ? 'la grafica' : `le ${files.length} grafiche`}`));
+    dlB.onclick = async () => {
+      for (const f of files) {
+        const a = h('a', { href: URL.createObjectURL(f), download: f.name });
+        document.body.append(a); a.click(); a.remove();
+        await new Promise((r) => setTimeout(r, 350));
+      }
+    };
+    const shareB = canShare && h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, 'Condividi grafiche e testo'));
+    if (shareB) shareB.onclick = async () => { await copy(); try { await navigator.share({ files, text: testo.value, title: titolo.value || 'Post' }); } catch { /* condivisione annullata */ } };
+    const done = h('button', { type: 'button', class: 'btn primary' }, icon('ok'), h('span', {}, 'Fatto: segna come pubblicato'));
+    const body = h('div', { class: 'pub' },
+      shareB && h('div', { class: 'pub-share' }, shareB, h('p', { class: 'hint' }, 'Si apre il menu di condivisione: scegli Instagram, TikTok o LinkedIn. Il testo è già copiato: incollalo nella didascalia.')),
+      step(1, 'Copia il testo', h('div', { class: 'row' }, copyB)),
+      step(2, 'Scarica le grafiche', h('div', { class: 'row' }, dlB)),
+      step(3, 'Apri il social e crea il post',
+        h('div', { class: 'pub-links' }, scelti.map((v) => h('a', { class: 'btn small', href: SOCIAL_WEB[v][0], target: '_blank', rel: 'noopener' }, icon('external'), h('span', {}, SOCIALS.find(([k]) => k === v)[1])))),
+        ...scelti.map((v) => h('p', { class: 'hint' }, SOCIAL_WEB[v][1]))),
+      step(4, 'Quando è online', h('p', { class: 'hint' }, 'Segna il post come pubblicato: nel calendario diventa blu, con il giorno e l’ora di adesso.'), h('div', { class: 'row' }, done)));
+    done.onclick = () => {
+      const now = new Date();
+      stato.value = 'pubblicato';
+      dataIn.value = isoDay(now);
+      oraIn.value = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+      saveLabel();
+      closeSheet();
+      saveBtn.click();
+    };
+    const closeSheet = openSheet(`Pubblica su ${scelti.map((v) => SOCIALS.find(([k]) => k === v)[1]).join(', ')}`, body, null,
+      'Quando gli account saranno collegati (Social → Account social), il post partirà da solo all’ora programmata.', 'Chiudi');
   };
 
   saveBtn.onclick = async () => {
@@ -579,7 +634,7 @@ async function socialEditor(slug, params = {}) {
         h('p', { class: 'muted' }, project ? `Dal progetto ${project.data.title}` : 'Post libero, con foto dal computer')),
       h('div', { class: 'actions' }, h('a', { class: 'btn ghost', href: '#/social' }, icon('back'), h('span', {}, 'Calendario')), dlBtn)),
     form,
-    h('div', { class: 'savebar' }, status, h('span', { class: 'grow' }), delBtn, saveBtn)));
+    h('div', { class: 'savebar' }, status, h('span', { class: 'grow' }), delBtn, saveBtn, pubBtn)));
 }
 
 // ─── Account collegati ──────────────────────────────────────

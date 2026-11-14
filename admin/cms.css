@@ -625,6 +625,16 @@ select.compact { width: auto; padding: 9px 38px 9px 16px; font-size: 15px; borde
 .sp-when { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: var(--r-field); background: var(--surface); color: var(--fg); font: inherit; }
 
+/* Pubblica ora */
+.pub { display: grid; gap: 18px; }
+.pub-share { display: grid; gap: 8px; padding: 16px; border-radius: 18px; background: var(--accent-soft); }
+.pub-share .btn { justify-self: start; }
+.pub-step { display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start; }
+.pub-step strong { display: block; margin: 4px 0 8px; }
+.pub-step .hint { margin: 6px 0 0; }
+.pub-n { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: 14px; }
+.pub-links { display: flex; gap: 8px; flex-wrap: wrap; }
+
 /* Account social */
 .acc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
 .acc-card { display: flex; flex-direction: column; }

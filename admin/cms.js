@@ -704,19 +704,20 @@ function imageWidget(value) {
 }
 
 // Finestra sopra la pagina (per i dettagli di un elemento della galleria).
-function openSheet(title, body, onClose) {
-  const done = h('button', { type: 'button', class: 'btn primary' }, h('span', {}, 'Fatto'));
+function openSheet(title, body, onClose, note = 'Le modifiche vanno online quando salvi il progetto.', doneLabel = 'Fatto') {
+  const done = h('button', { type: 'button', class: doneLabel === 'Fatto' ? 'btn primary' : 'btn' }, h('span', {}, doneLabel));
   const overlay = h('div', { class: 'modal' },
     h('div', { class: 'modal-box sheet' },
       h('div', { class: 'modal-head' }, h('h2', {}, title), h('button', { type: 'button', class: 'icon-btn', title: 'Chiudi', onclick: () => close() }, icon('x'))),
       h('div', { class: 'sheet-body', oninput: markDirty, onchange: markDirty }, body),
-      h('div', { class: 'sheet-foot' }, h('span', { class: 'hint' }, 'Le modifiche vanno online quando salvi il progetto.'), h('span', { class: 'grow' }), done)));
+      h('div', { class: 'sheet-foot' }, h('span', { class: 'hint' }, note), h('span', { class: 'grow' }), done)));
   const key = (e) => { if (e.key === 'Escape') close(); };
   function close() { overlay.remove(); document.removeEventListener('keydown', key); onClose?.(); }
   done.onclick = close;
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   document.addEventListener('keydown', key);
   document.body.append(overlay);
+  return close;
 }
 
 // Galleria: una griglia di miniature. Si trascinano dalla maniglia per riordinarle; un clic apre la scheda
