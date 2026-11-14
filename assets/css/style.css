@@ -94,6 +94,9 @@ html.js .rise.is-in > span { transform: none; }
 /* Il font creativo: yink solo su UNA parola (o sulla punteggiatura) dentro un titolo, come bitwip con Baila */
 /* la parola speciale, come Baila su bitwip: scritta com'è, al 94% del titolo, spaziatura 0, senza allargare la riga */
 :is(h1, h2, h3, .manifesto) em { font-family: var(--f-yink); font-style: normal; font-weight: 400; letter-spacing: 0; font-size: .94em; line-height: 0; }
+/* La parola in vettori (vedi assets/js/parole.js): stessa misura della parola in TAN Nimbus, colore del testo */
+em.vet svg { display: inline-block; width: auto; overflow: visible; fill: currentColor; }
+em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 :is(h1, h2, h3) em.p { color: var(--accent-3); font-size: 1.15em; }
 .rise { padding-top: .12em; margin-top: -.12em; }
 

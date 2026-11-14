@@ -140,6 +140,21 @@
     </div>
   </footer>
 
+  <script src="{{ '/assets/js/parole.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+  <script>
+    // Parole speciali dei titoli: al posto del testo in TAN Nimbus, la stessa parola disegnata in vettori (assets/js/parole.js).
+    // Il testo resta nascosto sotto il disegno, per Google e per chi usa uno screen reader. Il motto animato resta in testo.
+    (function () {
+      var P = window.LMM_PAROLE; if (!P) return;
+      var m = P.meta, k = m.scala / m.upm;
+      document.querySelectorAll(':is(h1, h2, h3, .manifesto) em').forEach(function (em) {
+        if (em.closest('.motto, .motto-volo')) return;
+        var w = em.textContent.trim(), p = P.parole[w]; if (!p) return;
+        em.classList.add('vet');
+        em.innerHTML = '<svg viewBox="0 0 ' + p.w + ' ' + m.h + '" style="height:' + (m.h * k).toFixed(4) + 'em;vertical-align:' + (m.desc * k).toFixed(4) + 'em" aria-hidden="true" focusable="false"><path d="' + p.d + '"/></svg><span class="vet__t">' + em.innerHTML + '</span>';
+      });
+    })();
+  </script>
   <script>
     (function () {
       var html = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)');
