@@ -16,7 +16,7 @@ const SOCIAL_WEB = {
   tiktok: ['https://www.tiktok.com/tiktokstudio/upload', 'Su TikTok Studio scegli “Foto”, carica le grafiche e aggiungi la musica.'],
   linkedin: ['https://www.linkedin.com/feed/?shareActive=true', 'Su LinkedIn aggiungi le immagini con l’icona della foto e incolla il testo.'],
 };
-const STATI_POST = [['bozza', 'Bozza'], ['programmato', 'Programmato'], ['pubblicato', 'Pubblicato'], ['eliminato', 'Eliminato']];
+const STATI_POST = [['bozza', 'Bozza'], ['programmato', 'Programmato'], ['pubblicato', 'Pubblicato'], ['fallito', 'Non riuscito'], ['eliminato', 'Eliminato']];
 const W45 = 1080;
 const H45 = 1350;
 const MAX_SLIDE = 10;
@@ -53,6 +53,11 @@ async function loadPosts() {
 function projectImages(e) {
   const list = [e.data.copertina, ...(e.data.galleria || []).filter((g) => g.type === 'foto').map((g) => g.immagine)];
   return [...new Set(list.filter(Boolean))];
+}
+
+// I video del progetto caricati sul sito (file .mp4/.mov/.webm nella galleria).
+function projectVideos(e) {
+  return [...new Set((e.data.galleria || []).filter((g) => g.type === 'video' && /^\/assets\/.+\.(mp4|mov|webm)$/i.test(g.link || '')).map((g) => g.link))];
 }
 
 function defaultCaption(e, catTitle) {
@@ -231,7 +236,7 @@ async function socialView() {
   function chipFor(p) {
     const d = p.data;
     return h('a', { class: `cal-post st-${d.stato || 'bozza'}`, href: `#/social/${p.slug}`, title: `${d.titolo || 'Post'} · ${(STATI_POST.find(([v]) => v === d.stato) || STATI_POST[0])[1]}` },
-      d.grafiche?.[0] ? h('img', { src: mediaUrl(d.grafiche[0]), alt: '', loading: 'lazy' }) : h('span', { class: 'cal-post__ph' }, icon('image')),
+      d.grafiche?.[0] ? h('img', { src: mediaUrl(d.grafiche[0]), alt: '', loading: 'lazy' }) : h('span', { class: 'cal-post__ph' }, icon(d.tipo === 'video' ? 'video' : 'image')),
       h('span', { class: 'cal-post__t' }, h('b', {}, d.ora || ''), ' ', d.titolo || 'Post'));
   }
 
@@ -352,6 +357,7 @@ async function socialEditor(slug, params = {}) {
     etichetta: project ? catTitle[project.data.categoria] || '' : '',
     testo: project ? defaultCaption(project, catTitle) : '',
     sorgenti: project ? projectImages(project).slice(0, 5) : [],
+    tipo: 'foto',
   } : { ...entry.data };
 
   // Foto disponibili: quelle del progetto più quelle caricate dal computer.
@@ -360,8 +366,14 @@ async function socialEditor(slug, params = {}) {
   let chosen = [...(d.sorgenti || [])];
   const srcOf = (p) => (local.has(p) ? local.get(p).blob : p);
 
+  // Video: quelli del progetto (file .mp4 sul sito) più uno dal computer.
+  let tipo = d.tipo || 'foto';
+  const videos = [...new Set([...(project ? projectVideos(project) : []), ...(d.video ? [d.video] : [])])];
+  let video = d.video || (tipo === 'video' ? videos[0] : '') || '';
+  let localVideo = null;   // { file, url }
+
   // Campi
-  const titolo = h('input', { type: 'text', value: d.titolo_grafica || '' , placeholder: 'Il titolo grande sulla prima slide' });
+  const titolo = h('input', { type: 'text', value: d.titolo_grafica || d.titolo || '', placeholder: 'Il titolo grande sulla prima slide' });
   const etichetta = h('input', { type: 'text', value: d.etichetta || '', placeholder: 'Es. Branding' });
   const testo = h('textarea', { rows: 12, placeholder: 'Il testo del post' }, d.testo || '');
   const conta = h('span', { class: 'hint' });
@@ -381,6 +393,7 @@ async function socialEditor(slug, params = {}) {
     paint();
     return h('div', { class: 'seg' }, btns);
   };
+  const tipoSeg = segs([['foto', 'Foto (carosello)'], ['video', 'Video']], () => tipo, (v) => { tipo = v; if (v === 'video' && !video && !localVideo) video = videos[0] || ''; showMode(); });
   const stileSeg = segs([['cornice', 'Con titolo e firma'], ['foto', 'Solo foto']], () => stile, (v) => { stile = v; });
   const taglioSeg = segs([['intera', 'Foto intere'], ['riempi', 'Riempi la slide']], () => taglio, (v) => { taglio = v; });
   const sfondoSeg = segs([['carta', 'Carta'], ['nero', 'Nero']], () => sfondo, (v) => { sfondo = v; });
@@ -395,9 +408,19 @@ async function socialEditor(slug, params = {}) {
   let timer = null;
   const schedule = () => { clearTimeout(timer); timer = setTimeout(renderAll, 250); };
   const opts = (i) => ({ stile, sfondo, taglio, titolo: titolo.value.trim(), etichetta: etichetta.value.trim(), i, n: chosen.length });
+  const videoSrc = () => (localVideo ? localVideo.url : video ? mediaUrl(video) : '');
 
   async function renderAll() {
     const id = ++renderId;
+    if (tipo === 'video') {
+      slides = [];
+      strip.replaceChildren();
+      const src = videoSrc();
+      big.replaceChildren(src ? h('video', { src, controls: true, playsInline: true, preload: 'metadata' })
+        : h('div', { class: 'sp-empty' }, icon('video'), h('span', {}, 'Scegli un video qui sotto')));
+      previewNote.textContent = src ? 'Il video va com’è. Per Instagram e TikTok rende meglio verticale (9:16).' : '';
+      return;
+    }
     if (!chosen.length) {
       slides = [];
       big.replaceChildren(h('div', { class: 'sp-empty' }, icon('image'), h('span', {}, 'Scegli almeno una foto qui sotto')));
@@ -464,6 +487,33 @@ async function socialEditor(slug, params = {}) {
     fileIn);
   dropzone(pickZone, addLocal);
 
+  // Scelta del video
+  const vidGrid = h('div', { class: 'sp-pick sp-vids' });
+  function drawVids() {
+    const tiles = videos.map((p) => h('button', {
+      type: 'button', class: `sp-photo${!localVideo && video === p ? ' on' : ''}`, title: p.split('/').pop(),
+      onclick: () => { video = p; localVideo = null; markDirty(); drawVids(); renderAll(); },
+    }, h('video', { src: `${mediaUrl(p)}#t=0.5`, muted: true, playsInline: true, preload: 'metadata' })));
+    if (localVideo) tiles.push(h('button', { type: 'button', class: 'sp-photo on', title: localVideo.file.name }, h('video', { src: `${localVideo.url}#t=0.5`, muted: true, preload: 'metadata' })));
+    vidGrid.replaceChildren(...tiles);
+    if (!tiles.length) vidGrid.replaceChildren(h('p', { class: 'hint' }, project ? 'Questo progetto non ha video caricati sul sito: caricane uno dal computer.' : 'Carica un video dal computer.'));
+  }
+  const vidIn = h('input', { type: 'file', accept: 'video/mp4,video/quicktime,video/*', hidden: true, onchange: () => { if (vidIn.files[0]) pickVideo(vidIn.files[0]); vidIn.value = ''; } });
+  function pickVideo(file) {
+    if (file.size > 95e6) { alert('Il video è troppo pesante: massimo 95 MB (limite di GitHub). Esportalo più leggero, per esempio 1080p H.264.'); return; }
+    if (localVideo) URL.revokeObjectURL(localVideo.url);
+    localVideo = { file, url: URL.createObjectURL(file) };
+    markDirty(); drawVids(); renderAll();
+  }
+  const vidZone = h('div', { class: 'sp-pickzone' },
+    vidGrid,
+    h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn small', onclick: () => vidIn.click() }, icon('upload'), h('span', {}, 'Video dal computer'))),
+    h('p', { class: 'hint' }, 'MP4 (H.264), meglio verticale 9:16, fino a 95 MB. Su Instagram va come Reel, su TikTok nelle bozze, su LinkedIn come video.'),
+    vidIn);
+  vidZone.addEventListener('dragover', (e) => { if ([...e.dataTransfer.types].includes('Files')) { e.preventDefault(); vidZone.classList.add('drop'); } });
+  vidZone.addEventListener('dragleave', () => vidZone.classList.remove('drop'));
+  vidZone.addEventListener('drop', (e) => { vidZone.classList.remove('drop'); const f = [...e.dataTransfer.files].find((x) => x.type.startsWith('video/')); if (f) { e.preventDefault(); pickVideo(f); } });
+
   const countChars = () => { conta.textContent = `${testo.value.length} / 2200 caratteri (limite di Instagram)`; };
   testo.addEventListener('input', countChars);
   countChars();
@@ -471,81 +521,63 @@ async function socialEditor(slug, params = {}) {
 
   const status = h('span', { class: 'status' });
   const saveBtn = h('button', { type: 'button', class: 'btn' }, h('span', {}, 'Salva'));
-  const saveLabel = () => { saveBtn.firstChild.textContent = { bozza: 'Salva bozza', programmato: 'Salva e programma', pubblicato: 'Salva', eliminato: 'Salva' }[stato.value] || 'Salva'; };
+  const saveLabel = () => { saveBtn.firstChild.textContent = { bozza: 'Salva bozza', programmato: 'Salva e programma' }[stato.value] || 'Salva'; };
   stato.addEventListener('change', saveLabel);
   saveLabel();
   const pubBtn = h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, 'Pubblica ora'));
-  const dlBtn = h('button', { type: 'button', class: 'btn' }, icon('download'), h('span', {}, 'Scarica grafiche'));
+  const dlBtn = h('button', { type: 'button', class: 'btn' }, icon('download'), h('span', {}, 'Scarica'));
   const copyBtn = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
   copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(testo.value); copyBtn.lastChild.textContent = 'Copiato!'; setTimeout(() => { copyBtn.lastChild.textContent = 'Copia il testo'; }, 1600); } catch { testo.select(); } };
   const baseName = () => slugify(titolo.value || d.titolo || 'post') || 'post';
-  dlBtn.onclick = async () => {
+  const scelti = () => socialBoxes.filter(([b]) => b.checked).map(([b]) => b.value);
+  const nomeRete = (v) => SOCIALS.find(([k]) => k === v)[1];
+
+  // I file del post, pronti da scaricare o condividere: le grafiche, oppure il video.
+  async function mediaFiles() {
+    if (tipo === 'video') {
+      if (localVideo) return [localVideo.file];
+      if (!video) return [];
+      const blob = await (await fetch(mediaUrl(video))).blob();
+      return [new File([blob], video.split('/').pop(), { type: blob.type || 'video/mp4' })];
+    }
     await renderAll();
-    for (let i = 0; i < slides.length; i++) {
-      const blob = await canvasToBlob(slides[i]);
-      const a = h('a', { href: URL.createObjectURL(blob), download: `${baseName()}-${i + 1}.jpg` });
+    return Promise.all(slides.map(async (c, i) => new File([await canvasToBlob(c)], `${baseName()}-${i + 1}.jpg`, { type: 'image/jpeg' })));
+  }
+  async function downloadAll(files) {
+    for (const f of files) {
+      const a = h('a', { href: URL.createObjectURL(f), download: f.name });
       document.body.append(a); a.click(); a.remove();
       await new Promise((r) => setTimeout(r, 350));
     }
-  };
+  }
+  dlBtn.onclick = async () => downloadAll(await mediaFiles());
 
-  // Pubblicazione a mano, finché gli account non sono collegati: condividi dal telefono,
-  // oppure dal computer copia il testo, scarica le grafiche e apri il social. Poi si segna "Pubblicato".
-  pubBtn.onclick = async () => {
-    const scelti = socialBoxes.filter(([b]) => b.checked).map(([b]) => b.value);
-    if (!chosen.length) { alert('Scegli almeno una foto.'); return; }
-    if (!scelti.length) { alert('Scegli almeno un social in “Dove”.'); return; }
-    await renderAll();
-    const files = await Promise.all(slides.map(async (c, i) => new File([await canvasToBlob(c)], `${baseName()}-${i + 1}.jpg`, { type: 'image/jpeg' })));
-    const canShare = !!(navigator.canShare && navigator.canShare({ files }));
-    const copy = async (btn) => { try { await navigator.clipboard.writeText(testo.value); if (btn) btn.lastChild.textContent = 'Testo copiato!'; return true; } catch { return false; } };
-    const step = (n, title, ...body) => h('div', { class: 'pub-step' }, h('b', { class: 'pub-n' }, n), h('div', {}, h('strong', {}, title), ...body));
-    const copyB = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
-    copyB.onclick = () => copy(copyB);
-    const dlB = h('button', { type: 'button', class: 'btn small' }, icon('download'), h('span', {}, `Scarica ${files.length === 1 ? 'la grafica' : `le ${files.length} grafiche`}`));
-    dlB.onclick = async () => {
-      for (const f of files) {
-        const a = h('a', { href: URL.createObjectURL(f), download: f.name });
-        document.body.append(a); a.click(); a.remove();
-        await new Promise((r) => setTimeout(r, 350));
-      }
+  // Salva il post su GitHub (file del post + grafiche o video). Lo usano "Salva" e "Pubblica ora".
+  let saved = isNew ? null : { id: slug, path: entry.path, data: entry.data };
+  async function persist(overrides = {}) {
+    const social = scelti();
+    if (tipo === 'foto' && !chosen.length) throw new Error('Scegli almeno una foto.');
+    if (tipo === 'video' && !video && !localVideo) throw new Error('Scegli un video.');
+    const id = saved ? saved.id : `${dataIn.value || isoDay(new Date())}-${baseName()}`.slice(0, 80);
+    if (!saved && posts.some((p) => p.slug === id)) throw new Error('Esiste già un post con questo titolo in questo giorno: cambia il titolo.');
+    const prev = saved ? saved.data : {};
+    const stamp = Date.now().toString(36);
+    const changes = [];
+    const data = {
+      titolo: titolo.value.trim() || d.titolo || 'Post',
+      tipo,
+      progetto: project?.slug,
+      social,
+      data: dataIn.value || undefined,
+      ora: oraIn.value || undefined,
+      stato: stato.value,
+      testo: testo.value.replace(/\s+$/, ''),
+      ...overrides,
     };
-    const shareB = canShare && h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, 'Condividi grafiche e testo'));
-    if (shareB) shareB.onclick = async () => { await copy(); try { await navigator.share({ files, text: testo.value, title: titolo.value || 'Post' }); } catch { /* condivisione annullata */ } };
-    const done = h('button', { type: 'button', class: 'btn primary' }, icon('ok'), h('span', {}, 'Fatto: segna come pubblicato'));
-    const body = h('div', { class: 'pub' },
-      shareB && h('div', { class: 'pub-share' }, shareB, h('p', { class: 'hint' }, 'Si apre il menu di condivisione: scegli Instagram, TikTok o LinkedIn. Il testo è già copiato: incollalo nella didascalia.')),
-      step(1, 'Copia il testo', h('div', { class: 'row' }, copyB)),
-      step(2, 'Scarica le grafiche', h('div', { class: 'row' }, dlB)),
-      step(3, 'Apri il social e crea il post',
-        h('div', { class: 'pub-links' }, scelti.map((v) => h('a', { class: 'btn small', href: SOCIAL_WEB[v][0], target: '_blank', rel: 'noopener' }, icon('external'), h('span', {}, SOCIALS.find(([k]) => k === v)[1])))),
-        ...scelti.map((v) => h('p', { class: 'hint' }, SOCIAL_WEB[v][1]))),
-      step(4, 'Quando è online', h('p', { class: 'hint' }, 'Segna il post come pubblicato: nel calendario diventa blu, con il giorno e l’ora di adesso.'), h('div', { class: 'row' }, done)));
-    done.onclick = () => {
-      const now = new Date();
-      stato.value = 'pubblicato';
-      dataIn.value = isoDay(now);
-      oraIn.value = `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
-      saveLabel();
-      closeSheet();
-      saveBtn.click();
-    };
-    const closeSheet = openSheet(`Pubblica su ${scelti.map((v) => SOCIALS.find(([k]) => k === v)[1]).join(', ')}`, body, null,
-      'Quando gli account saranno collegati (Social → Account social), il post partirà da solo all’ora programmata.', 'Chiudi');
-  };
-
-  saveBtn.onclick = async () => {
-    saveBtn.disabled = true;
-    try {
-      const social = socialBoxes.filter(([b]) => b.checked).map(([b]) => b.value);
-      if (!chosen.length) throw new Error('Scegli almeno una foto.');
+    const ownVideo = (v) => v && v.startsWith(`/${SOCIAL_DIR}/`);
+    if (tipo === 'foto') {
       status.textContent = 'Preparo le grafiche…';
       await renderAll();
-      const id = isNew ? `${dataIn.value || isoDay(new Date())}-${baseName()}`.slice(0, 80) : slug;
-      if (isNew && posts.some((p) => p.slug === id)) throw new Error('Esiste già un post con questo titolo in questo giorno: cambia il titolo.');
-      const stamp = Date.now().toString(36);
-      const changes = [];
-      // Foto caricate dal computer e usate: vanno in assets/uploads come le altre.
       for (const p of chosen) if (local.has(p)) changes.push(await toUpload(local.get(p)));
       const grafiche = [];
       for (let i = 0; i < slides.length; i++) {
@@ -554,46 +586,184 @@ async function socialEditor(slug, params = {}) {
         changes.push({ path, base64: bytesToB64(new Uint8Array(await blob.arrayBuffer())) });
         grafiche.push(`/${path}`);
       }
-      for (const old of (isNew ? [] : entry.data.grafiche || [])) changes.push({ path: old.replace(/^\//, ''), remove: true });
-      const data = {
-        titolo: titolo.value.trim() || d.titolo || 'Post',
-        progetto: project?.slug,
-        social,
-        data: dataIn.value || undefined,
-        ora: oraIn.value || undefined,
-        stato: stato.value,
-        stile,
-        sfondo,
-        taglio,
+      Object.assign(data, {
+        stile, sfondo, taglio,
         titolo_grafica: titolo.value.trim() || undefined,
         etichetta: etichetta.value.trim() || undefined,
-        testo: testo.value.replace(/\s+$/, ''),
         sorgenti: [...chosen],
         grafiche,
-      };
-      Object.keys(data).forEach((k) => (data[k] === undefined || data[k] === '') && delete data[k]);
-      const path = `${SOCIAL_COLL.folder}/${id}.md`;
-      changes.push({ path, text: serialize(SOCIAL_COLL, data, '') });
-      status.textContent = 'Salvataggio…';
-      await commit(changes, `${isNew ? 'Nuovo' : 'Aggiorna'} post social “${data.titolo}”`);
-      if (isNew) state.cache.social?.push({ slug: id, path, data, body: '' });
-      else Object.assign(entry, { data });
+      });
+      if (ownVideo(prev.video)) changes.push({ path: prev.video.slice(1), remove: true });
+    } else {
+      let path = video;
+      if (localVideo) {
+        status.textContent = 'Preparo il video…';
+        const ext = (localVideo.file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '') || 'mp4';
+        const rel = `${SOCIAL_DIR}/${id}-${stamp}.${ext}`;
+        changes.push({ path: rel, base64: bytesToB64(new Uint8Array(await localVideo.file.arrayBuffer())) });
+        path = `/${rel}`;
+      }
+      data.video = path;
+      if (ownVideo(prev.video) && prev.video !== path) changes.push({ path: prev.video.slice(1), remove: true });
+    }
+    for (const old of prev.grafiche || []) changes.push({ path: old.replace(/^\//, ''), remove: true });
+    Object.keys(data).forEach((k) => (data[k] === undefined || data[k] === '') && delete data[k]);
+    const path = `${SOCIAL_COLL.folder}/${id}.md`;
+    changes.push({ path, text: serialize(SOCIAL_COLL, data, '') });
+    status.textContent = 'Salvataggio…';
+    await commit(changes, `${saved ? 'Aggiorna' : 'Nuovo'} post social “${data.titolo}”`);
+    const cache = state.cache.social;
+    const hit = cache && cache.find((p) => p.slug === id);
+    if (hit) Object.assign(hit, { data }); else if (cache) cache.push({ slug: id, path, data, body: '' });
+    if (localVideo) { video = data.video; videos.push(video); localVideo = null; }
+    saved = { id, path, data };
+    return saved;
+  }
+  // Aggiorna solo il file del post (stato, esiti), senza rifare le grafiche.
+  async function updatePost(extra) {
+    const data = { ...saved.data, ...extra };
+    await commit([{ path: saved.path, text: serialize(SOCIAL_COLL, data, '') }], `Post social “${data.titolo}”: ${data.stato}`);
+    saved.data = data;
+    const hit = state.cache.social?.find((p) => p.slug === saved.id);
+    if (hit) hit.data = data;
+  }
+  // Le grafiche appena salvate vanno online sul sito in 1–2 minuti: i social le prendono da lì.
+  async function waitOnline(paths, show) {
+    for (let i = 0; i < 40; i++) {
+      const ok = await Promise.all(paths.map((p) => fetch(`${mediaUrl(p)}?t=${Date.now()}`, { method: 'HEAD', cache: 'no-store' }).then((r) => r.ok).catch(() => false)));
+      if (ok.every(Boolean)) return;
+      show(`Aspetto che ${paths.length === 1 ? 'il file sia online' : 'i file siano online'} sul sito… (di solito 1–2 minuti)`);
+      await new Promise((r) => setTimeout(r, 8000));
+    }
+    throw new Error('Il sito ci mette troppo ad aggiornarsi: riprova tra qualche minuto.');
+  }
+
+  saveBtn.onclick = async () => {
+    saveBtn.disabled = true;
+    pubBtn.disabled = true;
+    try {
+      const out = await persist();
       state.dirty = false;
-      state.flash = { type: 'ok', text: 'Post salvato. Scarica le grafiche e copia il testo quando lo pubblichi, poi segnalo come “Pubblicato”.' };
-      if (isNew) location.hash = `#/social/${id}`; else route();
+      state.flash = { type: 'ok', text: out.data.stato === 'programmato' ? 'Post salvato e programmato.' : 'Post salvato.' };
+      if (isNew) location.hash = `#/social/${out.id}`; else route();
     } catch (e) {
       status.textContent = e.message;
       status.className = 'status error';
       saveBtn.disabled = false;
+      pubBtn.disabled = false;
     }
+  };
+
+  // Pubblica ora: sugli account collegati pubblica davvero (tramite il server); per gli altri restano gli strumenti a mano.
+  pubBtn.onclick = async () => {
+    const reti = scelti();
+    if (!reti.length) { alert('Scegli almeno un social in “Dove”.'); return; }
+    if (tipo === 'foto' && !chosen.length) { alert('Scegli almeno una foto.'); return; }
+    if (tipo === 'video' && !video && !localVideo) { alert('Scegli un video.'); return; }
+    let acc = {};
+    try { acc = (await request('/social/stato')) || {}; } catch { acc = {}; }
+    const auto = reti.filter((r) => acc[r]?.collegato);
+    const mano = reti.filter((r) => !acc[r]?.collegato);
+    const step = (n, title, ...body) => h('div', { class: 'pub-step' }, h('b', { class: 'pub-n' }, n), h('div', {}, h('strong', {}, title), ...body));
+
+    // Automatico
+    const autoMsg = h('p', { class: 'hint pub-msg' });
+    const esitiBox = h('div', { class: 'pub-esiti' });
+    const goBtn = h('button', { type: 'button', class: 'btn primary' }, icon('send'), h('span', {}, `Pubblica adesso su ${auto.map(nomeRete).join(' e ')}`));
+    goBtn.onclick = async () => {
+      goBtn.disabled = true; saveBtn.disabled = true; pubBtn.disabled = true;
+      const show = (t) => { autoMsg.textContent = t; };
+      try {
+        show('Salvo il post…');
+        const out = await persist();
+        state.dirty = false;
+        await waitOnline(out.data.tipo === 'video' ? [out.data.video] : out.data.grafiche, show);
+        // Un social per volta (limite del server gratuito).
+        const esiti = {};
+        for (const r of auto) {
+          show(`Pubblico su ${nomeRete(r)}…${out.data.tipo === 'video' ? ' (i video possono metterci qualche minuto)' : ''}`);
+          try {
+            const res = await request('/social/pubblica', { method: 'POST', body: {
+              reti: [r], immagini: out.data.grafiche || [], video: out.data.video, testo: out.data.testo, titolo: out.data.titolo,
+            } });
+            esiti[r] = res.esiti?.[r] || { ok: false, errore: 'Nessuna risposta.' };
+          } catch (e) { esiti[r] = { ok: false, errore: e.message }; }
+        }
+        esitiBox.replaceChildren(...auto.map((r) => {
+          const e = esiti[r] || { ok: false, errore: 'Nessuna risposta.' };
+          return h('div', { class: `pub-esito ${e.ok ? 'ok' : 'ko'}` }, icon(e.ok ? 'ok' : 'alert'),
+            h('div', {}, h('strong', {}, nomeRete(r)), h('p', {}, e.ok ? e.nota : e.errore),
+              e.ok && e.link && h('a', { class: 'lnk', href: e.link, target: '_blank', rel: 'noopener' }, 'Apri il post')));
+        }));
+        const tuttiOk = auto.every((r) => esiti[r]?.ok);
+        const nessuno = auto.every((r) => !esiti[r]?.ok);
+        const now = new Date();
+        await updatePost({
+          stato: nessuno ? 'fallito' : 'pubblicato',
+          data: isoDay(now), ora: `${pad2(now.getHours())}:${pad2(now.getMinutes())}`,
+          esiti: Object.fromEntries(auto.map((r) => [r, esiti[r]?.ok ? (esiti[r].link || 'ok') : `errore: ${esiti[r]?.errore || ''}`])),
+        });
+        show(tuttiOk ? 'Fatto!' : nessuno ? 'Non è andato: leggi qui sotto cosa dice il social.' : 'Fatto in parte: leggi qui sotto.');
+        state.flash = { type: nessuno ? 'error' : 'ok', text: tuttiOk ? `Pubblicato su ${auto.map(nomeRete).join(', ')}.` : 'Pubblicazione non riuscita su tutti i social: i dettagli sono nel post.' };
+      } catch (e) {
+        show(e.message);
+        goBtn.disabled = false;
+      } finally {
+        saveBtn.disabled = false; pubBtn.disabled = false;
+      }
+    };
+    const autoBlock = auto.length
+      ? h('div', { class: 'pub-share' },
+        h('p', {}, 'Account collegati: ', auto.map((r) => `${nomeRete(r)}${acc[r].nome ? ` (${acc[r].nome})` : ''}`).join(', '), '.'),
+        goBtn, autoMsg, esitiBox,
+        auto.includes('tiktok') && h('p', { class: 'hint' }, 'Su TikTok il post arriva nelle bozze: dall’app aggiungi la musica e pubblichi.'))
+      : h('div', { class: 'banner info' }, icon('alert'), h('span', {}, 'Nessuno dei social scelti è collegato, quindi qui sotto puoi pubblicare solo a mano. ', h('a', { class: 'lnk', href: '#/social/account' }, 'Collega gli account'), ' per pubblicare con un clic.'));
+
+    // A mano
+    const files = await mediaFiles();
+    const canShare = !!(navigator.canShare && files.length && navigator.canShare({ files }));
+    const copy = async (btn) => { try { await navigator.clipboard.writeText(testo.value); if (btn) btn.lastChild.textContent = 'Testo copiato!'; return true; } catch { return false; } };
+    const copyB = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia il testo'));
+    copyB.onclick = () => copy(copyB);
+    const dlB = h('button', { type: 'button', class: 'btn small' }, icon('download'), h('span', {}, tipo === 'video' ? 'Scarica il video' : `Scarica ${files.length === 1 ? 'la grafica' : `le ${files.length} grafiche`}`));
+    dlB.onclick = () => downloadAll(files);
+    const shareB = canShare && h('button', { type: 'button', class: 'btn small' }, icon('send'), h('span', {}, 'Condividi dal telefono'));
+    if (shareB) shareB.onclick = async () => { await copy(); try { await navigator.share({ files, text: testo.value, title: titolo.value || 'Post' }); } catch { /* annullato */ } };
+    const done = h('button', { type: 'button', class: 'btn small' }, icon('ok'), h('span', {}, 'Segna come pubblicato'));
+    done.onclick = async () => {
+      done.disabled = true;
+      try {
+        if (!saved) await persist();
+        const now = new Date();
+        await updatePost({ stato: 'pubblicato', data: isoDay(now), ora: `${pad2(now.getHours())}:${pad2(now.getMinutes())}` });
+        state.dirty = false;
+        state.flash = { type: 'ok', text: 'Post segnato come pubblicato.' };
+        closeSheet();
+      } catch (e) { done.disabled = false; alert(e.message); }
+    };
+    const manoReti = mano.length ? mano : reti;
+    const manual = h('details', { class: 'pub-mano', open: !auto.length },
+      h('summary', {}, mano.length && auto.length ? `A mano su ${mano.map(nomeRete).join(', ')} (non collegati)` : 'Pubblica a mano: scarica, copia, condividi'),
+      h('div', { class: 'pub' },
+        shareB && h('p', { class: 'hint' }, 'Dal telefono: ', shareB, ' apre il menu di condivisione (il testo è già copiato).'),
+        step(1, 'Copia il testo', h('div', { class: 'row' }, copyB)),
+        step(2, tipo === 'video' ? 'Scarica il video' : 'Scarica le grafiche', h('div', { class: 'row' }, dlB)),
+        step(3, 'Apri il social e crea il post',
+          h('div', { class: 'pub-links' }, manoReti.map((v) => h('a', { class: 'btn small', href: SOCIAL_WEB[v][0], target: '_blank', rel: 'noopener' }, icon('external'), h('span', {}, nomeRete(v))))),
+          ...manoReti.map((v) => h('p', { class: 'hint' }, SOCIAL_WEB[v][1]))),
+        step(4, 'Quando è online', h('div', { class: 'row' }, done))));
+
+    const closeSheet = openSheet(`Pubblica su ${reti.map(nomeRete).join(', ')}`, h('div', { class: 'pub' }, autoBlock, manual), () => { if (saved && isNew) location.hash = `#/social/${saved.id}`; else if (saved) route(); },
+      'I post programmati partiranno da soli quando sarà attiva la pubblicazione all’ora scelta.', 'Chiudi');
   };
 
   const delBtn = !isNew && h('button', {
     type: 'button', class: 'btn ghost danger',
     onclick: async () => {
-      if (!confirm('Eliminare questo post e le sue grafiche? Non si può annullare.')) return;
+      if (!confirm('Eliminare questo post e i suoi file? Non si può annullare. (Sui social, se era già pubblicato, resta.)')) return;
       try {
-        await commit([{ path: entry.path, remove: true }, ...(entry.data.grafiche || []).map((g) => ({ path: g.replace(/^\//, ''), remove: true }))], `Elimina post social “${entry.data.titolo}”`);
+        const own = [...(entry.data.grafiche || []), ...(entry.data.video?.startsWith(`/${SOCIAL_DIR}/`) ? [entry.data.video] : [])];
+        await commit([{ path: entry.path, remove: true }, ...own.map((g) => ({ path: g.replace(/^\//, ''), remove: true }))], `Elimina post social “${entry.data.titolo}”`);
         state.cache.social = (state.cache.social || []).filter((p) => p !== entry);
         state.dirty = false;
         state.flash = { type: 'ok', text: 'Post eliminato.' };
@@ -603,35 +773,54 @@ async function socialEditor(slug, params = {}) {
   }, icon('trash'), h('span', {}, 'Elimina'));
 
   const field = (label, el, hint) => h('div', {}, h('label', { class: 'label' }, label), el, hint && h('p', { class: 'hint' }, hint));
+  const fotoParts = [
+    h('h3', { class: 'form-group' }, 'Foto del post'),
+    pickZone,
+    h('h3', { class: 'form-group' }, 'Grafica'),
+    field('Stile', stileSeg),
+    field('Sfondo', sfondoSeg),
+    field('Foto nelle slide interne', taglioSeg, 'Intere: si vede tutta la foto, con il margine. Riempi: la foto occupa tutto il riquadro e si taglia ai bordi.'),
+    field('Titolo sulla copertina', titolo),
+    field('Etichetta sopra il titolo', etichetta, 'Di solito la categoria del progetto.'),
+  ];
+  const videoParts = [h('h3', { class: 'form-group' }, 'Video del post'), vidZone];
+  function showMode() {
+    fotoParts.forEach((el) => { el.hidden = tipo !== 'foto'; });
+    videoParts.forEach((el) => { el.hidden = tipo !== 'video'; });
+    dlBtn.lastChild.textContent = tipo === 'video' ? 'Scarica il video' : 'Scarica grafiche';
+    drawVids();
+    renderAll();
+  }
+  const esiti = d.esiti && h('section', { class: 'panel padded side-card' },
+    h('span', { class: 'label' }, 'Ultima pubblicazione'),
+    Object.entries(d.esiti).map(([r, v]) => h('p', { class: 'hint' }, h('strong', {}, `${nomeRete(r) || r}: `),
+      String(v).startsWith('http') ? h('a', { class: 'lnk', href: v, target: '_blank', rel: 'noopener' }, 'apri il post') : String(v))));
   const form = h('div', { class: 'form has-side', oninput: markDirty, onchange: markDirty },
     h('section', { class: 'form-main panel padded' },
+      field('Tipo di post', tipoSeg),
       h('div', { class: 'sp-preview' }, big, strip, previewNote),
-      h('h3', { class: 'form-group' }, 'Foto del post'),
-      pickZone,
-      h('h3', { class: 'form-group' }, 'Grafica'),
-      field('Stile', stileSeg),
-      field('Sfondo', sfondoSeg),
-      field('Foto nelle slide interne', taglioSeg, 'Intere: si vede tutta la foto, con il margine. Riempi: la foto occupa tutto il riquadro e si taglia ai bordi.'),
-      field('Titolo sulla copertina', titolo),
-      field('Etichetta sopra il titolo', etichetta, 'Di solito la categoria del progetto.')),
+      ...videoParts,
+      ...fotoParts),
     h('aside', { class: 'form-side' },
       h('section', { class: 'panel padded side-card' },
         field('Stato', stato),
         h('div', { class: 'sp-when' }, field('Giorno', dataIn), field('Ora', oraIn)),
         h('div', {}, h('span', { class: 'label' }, 'Dove'), h('div', { class: 'check-items' }, socialBoxes.map(([, l]) => l))),
+        h('p', { class: 'hint' }, h('a', { class: 'lnk', href: '#/social/account' }, 'Account collegati')),
         project && h('p', { class: 'hint' }, 'Progetto: ', h('a', { class: 'lnk', href: `#/c/progetti/${project.slug}` }, project.data.title))),
+      esiti,
       h('section', { class: 'panel padded side-card' },
         field('Testo del post', testo),
         conta,
         h('div', { class: 'row' }, copyBtn))));
 
   drawPick();
-  renderAll();
+  showMode();
   const title = isNew ? 'Nuovo post' : d.titolo || 'Post';
   shell([['Social', '#/social'], [title]], h('div', { class: 'editor' },
     h('div', { class: 'page-head' },
       h('div', {}, h('div', { class: 'title-row' }, h('h1', {}, title), !isNew && chip((STATI_POST.find(([v]) => v === d.stato) || STATI_POST[0])[1], `st-${d.stato || 'bozza'}`)),
-        h('p', { class: 'muted' }, project ? `Dal progetto ${project.data.title}` : 'Post libero, con foto dal computer')),
+        h('p', { class: 'muted' }, project ? `Dal progetto ${project.data.title}` : 'Post libero, con foto o video dal computer')),
       h('div', { class: 'actions' }, h('a', { class: 'btn ghost', href: '#/social' }, icon('back'), h('span', {}, 'Calendario')), dlBtn)),
     form,
     h('div', { class: 'savebar' }, status, h('span', { class: 'grow' }), delBtn, saveBtn, pubBtn)));
@@ -644,68 +833,85 @@ async function socialEditor(slug, params = {}) {
 const ACCOUNTS = [
   {
     id: 'instagram', nome: 'Instagram', colore: '#E1306C',
-    fa: 'Pubblica da solo, all’ora programmata, foto singole e caroselli fino a 10 grafiche 4:5, con il testo del post.',
+    fa: 'Pubblica foto singole, caroselli fino a 10 grafiche 4:5 e video (come Reel), con il testo del post.',
     limiti: 'Serve un account professionale (Business o Creator): è gratis e si cambia dall’app. Fino a 50 post al giorno via API. Il collegamento dura 60 giorni e il server lo rinnova da solo.',
     passi: [
       'Nell’app Instagram: Impostazioni → Tipo di account e strumenti → Passa a un account professionale (Creator va bene).',
       'Su developers.facebook.com crei un account sviluppatore e un’app di tipo Business, con il prodotto “Instagram API with Instagram Login”. Lo facciamo insieme.',
       'Le chiavi dell’app (App ID e App Secret) vanno salvate su Cloudflare, nelle impostazioni del server, come INSTAGRAM_APP_ID e INSTAGRAM_APP_SECRET.',
-      'Torni qui e premi “Collega”: entri con Instagram e autorizzi la pubblicazione.',
+      'Nell’app Meta, alla voce dell’accesso con Instagram, incolli l’indirizzo di ritorno qui sotto. Poi premi “Collega”, entri con Instagram e autorizzi.',
     ],
   },
   {
     id: 'tiktok', nome: 'TikTok', colore: '#121414',
-    fa: 'Manda le grafiche nelle bozze di TikTok come post di foto: dal telefono aggiungi la musica e pubblichi.',
+    fa: 'Manda grafiche (post di foto) o video nelle bozze di TikTok: dal telefono aggiungi la musica e pubblichi.',
     limiti: 'TikTok permette la pubblicazione diretta e pubblica solo alle app che superano la sua revisione (audit); finché non c’è, i post via API possono essere solo privati. Per questo la strada consigliata è mandarli nelle bozze. Per TikTok conviene anche il formato verticale 9:16.',
     passi: [
       'Su developers.tiktok.com crei un account sviluppatore e un’app con i prodotti “Login Kit” e “Content Posting API”. Lo facciamo insieme.',
       'Si verifica il dominio likemommademe.github.io nel portale di TikTok (serve perché TikTok prenda le grafiche dal sito).',
       'Le chiavi (Client key e Client secret) vanno su Cloudflare come TIKTOK_CLIENT_KEY e TIKTOK_CLIENT_SECRET.',
-      'Torni qui e premi “Collega”: entri con TikTok e autorizzi.',
+      'Nell’app TikTok incolli l’indirizzo di ritorno qui sotto (Login Kit → Redirect URI). Poi premi “Collega”, entri con TikTok e autorizzi.',
     ],
   },
   {
     id: 'linkedin', nome: 'LinkedIn', colore: '#0A66C2',
-    fa: 'Pubblica da solo sul tuo profilo personale, all’ora programmata, il testo e le grafiche (anche più di una).',
+    fa: 'Pubblica sul tuo profilo personale il testo con le grafiche (anche più di una) o con un video.',
     limiti: 'Va bene il profilo personale, senza revisione. Per creare l’app LinkedIn chiede di collegarla a una pagina aziendale (si può creare la pagina LIKEMOMMADEME). Il collegamento dura 60 giorni: dopo va rifatto, il pannello te lo ricorda.',
     passi: [
       'Se non c’è ancora, crei la pagina LinkedIn di LIKEMOMMADEME (anche vuota).',
       'Su linkedin.com/developers crei un’app collegata a quella pagina e aggiungi i prodotti “Sign In with LinkedIn using OpenID Connect” e “Share on LinkedIn”. Lo facciamo insieme.',
       'Le chiavi (Client ID e Client Secret) vanno su Cloudflare come LINKEDIN_CLIENT_ID e LINKEDIN_CLIENT_SECRET.',
-      'Torni qui e premi “Collega”: entri con LinkedIn e autorizzi.',
+      'Nell’app LinkedIn (Auth → Authorized redirect URLs) incolli l’indirizzo di ritorno qui sotto. Poi premi “Collega”, entri con LinkedIn e autorizzi.',
     ],
   },
 ];
 
 async function socialAccounts() {
   shell([['Social', '#/social'], ['Account social']], loading());
-  // Il server dirà quali account sono collegati; finché non risponde, risultano tutti da collegare.
+  const params = hashParams();
   let stato = {};
-  try { stato = (await request('/social/stato')) || {}; } catch { stato = {}; }
+  let problema = '';
+  try { stato = (await request('/social/stato')) || {}; } catch (e) { problema = e.message; }
+  // Server non ancora aggiornato su Cloudflare: la pagina lo dice invece di far finta di niente.
+  const serverVecchio = !problema && !Object.keys(stato).length;
   const card = (a) => {
     const s = stato[a.id] || {};
     const pronto = !!s.configurato;
+    const ritorno = s.ritorno || `${API}/social/callback/${a.id}`;
+    const collega = h('button', { type: 'button', class: 'btn primary', disabled: !pronto, title: pronto ? '' : 'Prima vanno fatti i passi 1–3' }, h('span', {}, s.collegato ? 'Ricollega' : 'Collega'));
+    collega.onclick = async () => {
+      collega.disabled = true;
+      try { location.href = (await request(`/social/inizia/${a.id}`, { method: 'POST' })).url; } catch (e) { alert(e.message); collega.disabled = false; }
+    };
+    const scollega = s.collegato && h('button', { type: 'button', class: 'btn ghost danger' }, h('span', {}, 'Scollega'));
+    if (scollega) scollega.onclick = async () => {
+      if (!confirm(`Scollegare ${a.nome}? I post non partiranno più da soli finché non lo ricolleghi.`)) return;
+      await request(`/social/scollega/${a.id}`, { method: 'POST' });
+      route();
+    };
+    const copia = h('button', { type: 'button', class: 'btn small' }, icon('copy'), h('span', {}, 'Copia'));
+    copia.onclick = async () => { try { await navigator.clipboard.writeText(ritorno); copia.lastChild.textContent = 'Copiato!'; } catch { /* niente */ } };
+    const scade = s.collegato && s.scade && a.id === 'linkedin' ? ` · da ricollegare entro il ${new Date(s.scade).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })}` : '';
     return h('section', { class: 'panel acc-card', style: `--brand:${a.colore}` },
       h('div', { class: 'acc-head' },
         h('span', { class: 'acc-logo' }, a.nome[0]),
-        h('div', { class: 'grow' }, h('h2', {}, a.nome), h('p', { class: 'muted' }, s.collegato ? `Collegato come ${s.nome || ''}` : 'Non collegato')),
+        h('div', { class: 'grow' }, h('h2', {}, a.nome), h('p', { class: 'muted' }, s.collegato ? `Collegato: ${s.nome || ''}${scade}` : 'Non collegato')),
         s.collegato ? chip('Collegato', 'st-programmato') : chip(pronto ? 'Pronto da collegare' : 'Da configurare', pronto ? 'st-pubblicato' : 'st-bozza')),
       h('div', { class: 'acc-body' },
-        h('p', {}, h('strong', {}, 'Cosa farà: '), a.fa),
+        h('p', {}, h('strong', {}, 'Cosa fa: '), a.fa),
         h('p', { class: 'hint' }, a.limiti),
-        h('ol', { class: 'acc-steps' }, a.passi.map((p) => h('li', {}, p)))),
-      h('div', { class: 'acc-foot' },
-        h('button', {
-          type: 'button', class: 'btn primary', disabled: !pronto,
-          title: pronto ? '' : 'Prima vanno fatti i passi 1–3',
-          onclick: () => { location.href = `${API}/social/collega/${a.id}`; },
-        }, h('span', {}, s.collegato ? 'Ricollega' : 'Collega')),
+        !s.collegato && h('ol', { class: 'acc-steps' }, a.passi.map((p) => h('li', {}, p))),
+        !s.collegato && h('div', { class: 'acc-uri' }, h('span', { class: 'label' }, 'Indirizzo di ritorno (da incollare nell’app del social)'), h('code', {}, ritorno), copia)),
+      h('div', { class: 'acc-foot' }, collega, scollega,
         !pronto && h('span', { class: 'hint' }, 'Il pulsante si attiva quando le chiavi sono su Cloudflare.')));
   };
   shell([['Social', '#/social'], ['Account social']], h('div', {},
-    pageHead('Account social', 'Instagram, TikTok e LinkedIn: si collegano una volta, poi i post programmati partono da soli',
+    pageHead('Account social', 'Collega Instagram, TikTok e LinkedIn: poi “Pubblica ora” pubblica davvero',
       h('a', { class: 'btn ghost', href: '#/social' }, icon('back'), h('span', {}, 'Calendario'))),
-    h('div', { class: 'banner info' }, icon('alert'), h('span', {}, 'Finché un account non è collegato, i post di quel social si pubblicano a mano: “Scarica grafiche”, poi segni il post come Pubblicato.')),
+    params.collegato && h('div', { class: 'banner ok' }, icon('ok'), h('span', {}, `${(ACCOUNTS.find((x) => x.id === params.collegato) || {}).nome || 'Account'} collegato! Da ora “Pubblica ora” pubblica davvero.`)),
+    params.errore && h('div', { class: 'banner error' }, icon('alert'), h('span', {}, `Collegamento non riuscito: ${params.errore}`)),
+    problema && h('div', { class: 'banner error' }, icon('alert'), h('span', {}, problema)),
+    serverVecchio && h('div', { class: 'banner error' }, icon('alert'), h('span', {}, 'Il server su Cloudflare non ha ancora il codice dei social: va incollato il nuovo cms-server/worker.js (vedi il riassunto, “aggiornare il codice del server”).')),
     h('div', { class: 'acc-grid' }, ACCOUNTS.map(card))));
 }
 

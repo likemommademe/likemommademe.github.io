@@ -51,7 +51,7 @@ Il pannello (CMS), il server su Cloudflare e il resto del sito sono descritti in
 1. `git pull` per scaricare le modifiche fatte dal pannello.
 2. Modifiche ai file.
 3. Commit e push su `main`. Il sito si aggiorna in 1–2 minuti.
-4. Se sono cambiati i file del pannello (`admin/cms.js`, `admin/cms.css`, `admin/schema.js`), aumentare il numero `?v=` in `admin/index.html` (ora è `?v=23`).
+4. Se sono cambiati i file del pannello (`admin/cms.js`, `admin/cms.css`, `admin/schema.js`), aumentare il numero `?v=` in `admin/index.html` (ora è `?v=24`).
 
 Per provare il sito prima di pubblicarlo, Claude usa una copia temporanea di Jekyll, che non resta installata sul Mac.
 

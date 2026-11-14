@@ -643,6 +643,25 @@ input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1p
 .acc-body { flex: 1; padding: 18px 24px 4px; }
 .acc-body p { margin: 0 0 12px; }
 .acc-steps { margin: 6px 0 12px; padding-left: 20px; display: grid; gap: 8px; color: var(--fg); font-size: 15px; }
+.acc-uri { display: grid; gap: 6px; margin: 4px 0 12px; }
+.acc-uri .label { font-size: 13px; margin: 0; }
+.acc-uri code { display: block; padding: 10px 12px; border-radius: 12px; background: var(--soft); font: 13px/1.4 ui-monospace, Menlo, monospace; word-break: break-all; }
+.acc-uri .btn { justify-self: start; }
+.pub-msg { margin: 8px 0 0; }
+.pub-esiti { display: grid; gap: 8px; margin-top: 10px; }
+.pub-esito { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.pub-esito.ok { border-color: var(--ok-line); }
+.pub-esito.ok > .icon { color: var(--ok); }
+.pub-esito.ko { border-color: var(--err-line); }
+.pub-esito.ko > .icon { color: var(--err); }
+.pub-esito p { margin: 2px 0 4px; }
+.pub-mano { border: 1px solid var(--line); border-radius: 18px; padding: 14px 18px; }
+.pub-mano summary { cursor: pointer; font-weight: 700; }
+.pub-mano[open] summary { margin-bottom: 16px; }
+.st-fallito { --st: #8A5CFF; }
+.chip.st-fallito { background: color-mix(in srgb, var(--st) 16%, transparent); color: var(--st); }
+.sp-big video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.sp-photo video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .acc-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px 24px 22px; }
 
 @media (prefers-reduced-motion: reduce) {

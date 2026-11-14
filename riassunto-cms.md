@@ -121,9 +121,11 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Grafiche 4:5 (1080 × 1350) rifatte in automatico** dal pannello: clicchi le foto nell'ordine delle slide (al massimo 10), la prima diventa la copertina con etichetta, titolo grande e firma LIKEMOMMADEME; le altre hanno la foto, la firma e il numero. Opzioni: con titolo e firma oppure solo foto, sfondo carta o nero, foto intere o che riempiono la slide. Si possono aggiungere foto dal computer, dai Media o trascinandole dal Finder.
 - **Testo del post** già scritto dal progetto (frase-titolo, descrizione, link al progetto, hashtag della categoria), con il conteggio dei caratteri e **Copia il testo**.
 - **Dove**: Instagram, TikTok, LinkedIn. **Giorno** e **ora**.
-- **Social → Account social**: una scheda per Instagram, TikTok e LinkedIn, con lo stato del collegamento, cosa farà, i limiti e i passi per collegarlo. Il pulsante **Collega** si attiva quando le chiavi dell'app di quel social sono su Cloudflare.
-- In fondo all'editor: **Salva bozza** (o **Salva e programma**, se lo stato è Programmato) e **Pubblica ora**.
-- **Pubblica ora**, finché gli account non sono collegati: dal telefono **Condividi grafiche e testo** apre il menu di condivisione (scegli Instagram, TikTok o LinkedIn; il testo è già copiato da incollare); dal computer 1) copia il testo, 2) scarica le grafiche, 3) apri il social con il pulsante, 4) **Fatto: segna come pubblicato**, che salva il post come Pubblicato con giorno e ora di adesso. Quando gli account saranno collegati, i post programmati partiranno da soli (vedi Prossimi passi).
+- **Social → Account social**: una scheda per Instagram, TikTok e LinkedIn con stato, cosa fa, limiti, passi e l'**indirizzo di ritorno** da incollare nell'app sviluppatore del social. **Collega** (si attiva quando le chiavi sono su Cloudflare) porta al login del social e torna nel pannello; **Scollega** lo toglie. Le chiavi degli account collegati stanno nel database D1 (tabella `social_account`), mai su GitHub. Se compare l'avviso rosso "Il server su Cloudflare non ha ancora il codice dei social", va incollato il nuovo `cms-server/worker.js`.
+- **Tipo di post**: **Foto** (carosello di grafiche 4:5) oppure **Video** (dai video .mp4 del progetto o dal computer, fino a 95 MB; meglio verticale 9:16).
+- In fondo all'editor: **Salva bozza** (o **Salva e programma**), **Pubblica ora**, e in alto **Scarica** (grafiche o video).
+- **Pubblica ora**: sui social **collegati** pubblica davvero tramite le API, dal server su Cloudflare. Prima salva il post, poi aspetta che grafiche o video siano online sul sito (1–2 minuti, perché i social li prendono da lì), poi pubblica un social per volta e mostra l'esito con il link al post. Il post diventa **Pubblicato**, oppure **Non riuscito** con il messaggio del social. Instagram: foto, caroselli e video come Reel. LinkedIn: foto, più foto o video sul profilo personale. TikTok: nelle bozze dell'app (musica e pubblicazione dal telefono).
+- Nella stessa finestra restano gli **strumenti a mano** (per i social non collegati o se preferisci): condividi dal telefono, copia il testo, scarica, apri il social, **Segna come pubblicato**.
 - I post sono file in `_social/` (non vanno sul sito), le grafiche finite in `assets/social/`. Le foto caricate per un post vanno nei Media, nel gruppo "Post social".
 
 ---
@@ -163,7 +165,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=23`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=24`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
@@ -196,7 +198,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | **DecapBridge** | Non serve più | Resto della prova con Decap |
 
 ### Impostazioni del Worker su Cloudflare
-- **Variables and Secrets**: `EMAIL` (email autorizzate, separate da virgola), `GITHUB_TOKEN` (chiave GitHub del pannello), `RESEND_API_KEY` (chiave di Resend).
+- **Variables and Secrets**: `EMAIL` (email autorizzate, separate da virgola), `GITHUB_TOKEN` (chiave GitHub del pannello), `RESEND_API_KEY` (chiave di Resend). Per i social, quando ci saranno le app: `INSTAGRAM_APP_ID` e `INSTAGRAM_APP_SECRET`, `LINKEDIN_CLIENT_ID` e `LINKEDIN_CLIENT_SECRET`, `TIKTOK_CLIENT_KEY` e `TIKTOK_CLIENT_SECRET` (sempre come **Secret**), e facoltativo `LINKEDIN_VERSION`.
 - **Bindings**: `DB` → D1 **statistiche**. (Il KV `login` della prima versione è stato cancellato l'11/11/2026.)
 
 ### Chiavi GitHub
@@ -220,7 +222,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=23, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=24, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -322,6 +324,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Nuova **gestione social** nel pannello: calendario dei post, progetti da portare sui social, grafiche 4:5 rifatte in automatico, testo già pronto, foto anche dal computer |
 | 14/11/2026 | Social: i post vanno su Instagram, TikTok e LinkedIn (tolti Facebook e Threads). Nuova pagina **Account social** con stato e passi per collegare ogni social via API |
 | 14/11/2026 | Social: pulsante **Pubblica ora** (condivisione dal telefono, oppure testo + grafiche + link al social dal computer, poi "segna come pubblicato") e pulsante di salvataggio più chiaro |
+| 14/11/2026 | Social: **pubblicazione vera** tramite le API (Instagram, LinkedIn, TikTok nelle bozze) dal pulsante Pubblica ora, collegamento degli account da Account social, **post video**. Server aggiornato (`cms-server/worker.js`, da incollare su Cloudflare) |
 
 ---
 
