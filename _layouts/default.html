@@ -7,7 +7,8 @@
   {% assign f = site.data.testi.footer %}
   <title>{% if page.title %}{{ page.title }} — {% endif %}{{ info.nome }}</title>
   {% assign descrizione = page.seo_descrizione | default: page.sottotitolo | default: site.data.home.intro | strip_html | strip_newlines %}
-  {% assign anteprima = page.seo_immagine | default: page.copertina %}
+  {% comment %} Immagine di anteprima dei link condivisi (WhatsApp, social…): sempre la copertina del progetto. {% endcomment %}
+  {% assign anteprima = page.copertina %}
   <meta name="description" content="{{ descrizione }}">
   <meta property="og:title" content="{% if page.title %}{{ page.title }} — {% endif %}{{ info.nome }}">
   <meta property="og:description" content="{{ descrizione }}">

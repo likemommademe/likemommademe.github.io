@@ -81,7 +81,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - **Stato del sito**: "Sito aggiornato" oppure "In pubblicazione…". Ogni salvataggio va online in 1–2 minuti.
 
 ### Progetti
-- Campi: titolo, **Pubblicato sul sito** (spento = bozza), **Anche in** (altre categorie in cui compare il progetto), **Link esterno** e **Testo del pulsante** (pulsante blu nella scheda del progetto, es. la pagina IED), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google e immagine di anteprima per i link condivisi), **Mostra in home**.
+- Campi: titolo, **Pubblicato sul sito** (spento = bozza), **Anche in** (altre categorie in cui compare il progetto), **Link esterno** e **Testo del pulsante** (pulsante blu nella scheda del progetto, es. la pagina IED), categoria, cliente, anno, copertina, descrizione breve, **SEO** (descrizione per Google, scritta da Claude; come immagine di anteprima dei link condivisi si usa sempre la copertina), **Mostra in home**.
 - **Case study**: **Frase-titolo del progetto** (la frase grande in cima al racconto), poi le sezioni fisse **Brief e obiettivo**, **Concept**, **Execution**, **Galleria**, **Coordinamento e processo**, **Risultato**, **Strumenti usati** (caselle da spuntare divise in Adobe, Creative AI e UI/UX, più un campo per gli altri), **Crediti**. Sul sito compaiono solo le sezioni compilate, e in fondo c'è il link al progetto successivo della stessa categoria.
 - I progetti nuovi partono come bozza.
 - **Galleria**: si trascinano le foto dal Finder (anche tante insieme), si aggiungono video YouTube o Vimeo, prototipi Figma (link `figma.com/proto/...`) e file video `.mp4` caricati sul sito (partono da soli, muti e in loop, quando sono sullo schermo; l'anteprima è un'immagine `.webp` con lo stesso nome), e **titoli di sezione** (titolo + due righe) per dividere la galleria in parti. Ogni foto ha un **titolo** e **una riga** che la spiega: su computer compaiono sopra la foto al passaggio del mouse, su telefono restano sotto, si riordinano con la maniglia ⋮⋮, e per ogni elemento si sceglie **Tutta larghezza** o **Metà**.
@@ -166,7 +166,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 ### Pannello
 | File | A cosa serve |
 |---|---|
-| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=25`) |
+| `admin/index.html` | Pagina del pannello. Il numero `?v=` va aumentato a ogni aggiornamento, così il browser carica i file nuovi (ora è `?v=26`) |
 | `admin/cms.js` | Tutto il funzionamento del pannello |
 | `admin/cms.css` | Grafica del pannello |
 | `admin/social.js` | Gestione social: calendario, scelta del progetto, grafiche 4:5, testo del post |
@@ -223,7 +223,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 - Le istruzioni sono in `riassunto-github.md`, sezione "Come si fa".
 
 **…vedere la versione nuova del pannello subito**
-- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=25, oppure premi **Cmd + Shift + R**.
+- Aggiungi `?v=` e un numero in fondo all'indirizzo, per esempio https://likemommademe.github.io/admin/?v=26, oppure premi **Cmd + Shift + R**.
 
 ---
 
@@ -327,6 +327,7 @@ I progetti in **bozza** non compaiono da nessuna parte sul sito.
 | 14/11/2026 | Social: pulsante **Pubblica ora** (condivisione dal telefono, oppure testo + grafiche + link al social dal computer, poi "segna come pubblicato") e pulsante di salvataggio più chiaro |
 | 14/11/2026 | Social: **pubblicazione vera** tramite le API (Instagram, LinkedIn, TikTok nelle bozze) dal pulsante Pubblica ora, collegamento degli account da Account social, **post video**. Server aggiornato (`cms-server/worker.js`, da incollare su Cloudflare) |
 | 14/11/2026 | Social: **Esporta (ZIP)** con grafiche o video e testo; la pubblicazione automatica resta pronta ma gli account per ora non si collegano |
+| 14/11/2026 | Immagine di anteprima dei link condivisi: sempre la **copertina** del progetto; tolto il campo "Immagine di anteprima" dal pannello |
 
 ---
 
