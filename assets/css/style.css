@@ -1036,3 +1036,8 @@ a.esp__in:hover { background: var(--card); }
 /* Testimonianze: senza foto, le iniziali su un colore */
 .rec__iniziali { display: grid; place-items: center; width: 100%; height: 100%; background: var(--accent-1); color: #F5F5F2; font-weight: 900; font-size: clamp(4rem, 3rem + 4vw, 8rem); letter-spacing: -.04em; }
 .rec__chi--persona { grid-template-columns: minmax(0, 1fr) auto; }
+/* testimonianze: la foto (o le iniziali) più piccola della frase */
+.rec--persona { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); }
+.rec--persona .rec__img { max-width: 320px; }
+.rec--persona .rec__iniziali { font-size: clamp(3rem, 2rem + 3vw, 5.5rem); }
+@media (max-width: 720px) { .rec--persona { grid-template-columns: minmax(0, 1fr); } .rec--persona .rec__img { max-width: 160px; } }
