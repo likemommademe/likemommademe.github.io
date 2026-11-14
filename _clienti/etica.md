@@ -1,4 +1,5 @@
 ---
+logo: "/assets/clienti/etica.png"
 title: Etic.a Labels
 settore: Altro
 paese: IT

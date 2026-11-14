@@ -784,7 +784,11 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .anni__frise.is-vivo .anni__tappa.is-cur .anni__anno { color: var(--accent-3); }
 .clienti { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 4vw, 64px); margin: 0; padding: 0; list-style: none; }
 .clienti li { font-size: var(--t-h3); font-weight: 500; color: var(--muted); }
-.clienti img { max-height: 48px; width: auto; }
+.clienti img { display: block; height: clamp(34px, 3.4vw, 52px); width: auto; max-width: 220px; object-fit: contain; opacity: .82; transition: opacity .25s var(--ease); }   /* loghi neri su trasparente */
+.clienti li:hover img { opacity: 1; }
+:root[data-theme="dark"] .clienti img { filter: invert(1); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .clienti img { filter: invert(1); } }
+:root[data-theme="dark"] .inv .clienti img, :root:not([data-theme]) .inv .clienti img { filter: none; }
 @media (max-width: 860px) {
   .ahero, .anni__grid { grid-template-columns: 1fr; }
   .anni__fermo { position: static; }
