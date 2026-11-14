@@ -191,6 +191,43 @@ html.cerca-aperta { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .cerca[open] { animation: none; } .cerca-btn:hover { transform: none; } }
 
+/* Form «Raccontami un progetto»: un pannello nello stile del sito, chiaro di giorno e scuro di notte */
+.modulo { width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--line); border-radius: 28px; background: var(--bg); color: var(--fg); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .5); overflow: auto; overscroll-behavior: contain; }
+.modulo::backdrop { background: rgba(18, 20, 20, .55); backdrop-filter: blur(6px); }
+.modulo[open] { animation: cerca-in .45s var(--ease); }
+.modulo__in { position: relative; padding: clamp(28px, 4vw, 48px); }
+.modulo__x { position: absolute; top: 20px; right: 20px; z-index: 1; border-color: var(--line); }
+.modulo__f, .modulo__ok { display: grid; gap: 22px; }
+.modulo__f[hidden], .modulo__ok[hidden] { display: none; }
+.modulo__head { display: grid; gap: 10px; padding-right: 40px; }
+.modulo__t { margin: 0; font-weight: 500; font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1; letter-spacing: -.03em; text-wrap: balance; }
+.modulo__intro { margin: 0; color: var(--muted); max-width: 48ch; }
+.modulo__riga { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.campo { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.campo__k { font-family: var(--f-label); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 0; }
+.campo__k i { font-style: normal; font-family: var(--f-sans); letter-spacing: 0; text-transform: none; font-size: 13px; font-weight: 400; opacity: .8; }
+.campo input, .campo textarea { width: 100%; padding: 10px 0; border: 0; border-bottom: 1.5px solid var(--line-2); background: none; color: var(--fg); font: 500 1.0625rem/1.4 var(--f-sans); outline: none; resize: vertical; transition: border-color .2s; }
+.campo textarea { min-height: 2.8em; }
+.campo :is(input, textarea)::placeholder { color: var(--muted); opacity: .7; }
+.campo :is(input, textarea):focus { border-color: var(--accent-3); }
+.campo.is-err :is(input, textarea) { border-color: #E0266F; }
+.scelte { display: flex; flex-wrap: wrap; gap: 8px; }
+.scelta { position: relative; cursor: pointer; }
+.scelta input { position: absolute; opacity: 0; pointer-events: none; }
+.scelta span { display: inline-block; padding: 8px 14px; border: 1px solid var(--line-2); border-radius: 999px; font-size: 15px; font-weight: 500; transition: background .2s, color .2s, border-color .2s; }
+.scelta:hover span { border-color: var(--fg); }
+.scelta input:checked + span { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.scelta input:focus-visible + span { outline: 2px solid var(--accent-1); outline-offset: 2px; }
+.modulo__trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.modulo__err { margin: 0; color: #E0266F; }
+.modulo__err a { text-decoration: underline; }
+.modulo__invia { justify-self: start; border: 0; cursor: pointer; }
+.modulo__invia:disabled { opacity: .6; cursor: wait; }
+.modulo__ok { justify-items: start; padding: 24px 0 8px; }
+.modulo__segno { width: 22px; height: 22px; border-radius: 5px; background: var(--accent-3); transform: rotate(45deg); }
+@media (max-width: 720px) { .modulo__riga { grid-template-columns: minmax(0, 1fr); } .modulo { border-radius: 22px; } }
+@media (prefers-reduced-motion: reduce) { .modulo[open] { animation: none; } }
+
 /* Interruttore giorno / notte: un sole che diventa luna */
 .tema { width: 40px; height: 40px; padding: 0; border: 1.5px solid currentColor; border-radius: 50%; background: none; color: inherit; cursor: pointer; display: grid; place-items: center; }
 .tema__sole { width: 16px; height: 16px; border-radius: 50%; background: currentColor; transition: box-shadow .6s var(--ease), transform .6s var(--ease); }

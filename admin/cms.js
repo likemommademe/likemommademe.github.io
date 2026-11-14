@@ -291,8 +291,24 @@ async function relationTitles(coll) {
 
 function subtitle(coll, entry, titles) {
   return (coll.subtitle || [])
-    .map((key) => displayValue(coll.fields.find((f) => f.name === key), entry.data[key], titles))
+    .map((key) => {
+      const v = displayValue(coll.fields.find((f) => f.name === key), entry.data[key], titles);
+      if (key !== coll.orderWithin || !coll.alsoIn || v == null) return v;
+      const extra = (entry.data[coll.alsoIn] || []).map((s) => titles?.[key]?.[s] || s);
+      return [v, ...extra].join(' + ');
+    })
     .filter((v) => v != null).join(' · ');
+}
+
+// Il progetto sta in questa categoria? Sì se è la principale o una di quelle in "Anche in".
+function inGroup(coll, entry, value) {
+  return entry.data[coll.orderWithin] === value || (!!coll.alsoIn && (entry.data[coll.alsoIn] || []).includes(value));
+}
+
+// Posizione del progetto dentro una categoria: "ordine" per la principale, "ordini.<categoria>" per le altre.
+function groupRank(coll, entry, value) {
+  const n = entry.data[coll.orderWithin] === value ? entry.data[coll.orderField] : entry.data[coll.orderMap]?.[value];
+  return typeof n === 'number' ? n : Infinity;
 }
 
 async function homeSlugs() {
@@ -906,7 +922,7 @@ function shell(crumbs, content) {
       h('span', { class: 'wordmark' }, BRAND, h('i', { 'aria-hidden': 'true' })),
       h('small', { class: 'brand-cms' }, 'CMS')),
     h('nav', { class: 'nav' },
-      navGroup('generale', 'Generale', [navLink('#/', 'Dashboard', 'gauge')]),
+      navGroup('generale', 'Generale', [navLink('#/', 'Dashboard', 'gauge'), navLink('#/richieste', 'Richieste', 'mail')]),
       navGroup('contenuti', 'Contenuti', [
         ...collections.map((c) => navLink(`#/c/${c.name}`, c.label, c.icon)),
         navLink('#/immagini', 'Libreria immagini', 'images'),
@@ -1062,6 +1078,71 @@ function statsPanel() {
     body);
 }
 
+// ─── Richieste dal form «Raccontami un progetto» ───────────
+
+const STATI = [['nuova', 'Nuova', 'rose'], ['letta', 'Letta', ''], ['risposta', 'Risposta', 'green'], ['archiviata', 'Archiviata', '']];
+const quando = (iso) => new Date(iso).toLocaleString('it-IT', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const linkify = (text) => String(text || '').split(/(https?:\/\/\S+)/g).map((p, i) => i % 2 ? h('a', { href: p, target: '_blank', rel: 'noopener' }, p) : p);
+
+async function richiesteView() {
+  shell([['Richieste']], loading());
+  let lista;
+  try { const r = await request('/richieste'); if (!r) { const e = new Error('non attivo'); e.status = 404; throw e; } lista = r.richieste; }
+  catch (e) {
+    return shell([['Richieste']], h('div', {}, pageHead('Richieste', 'Le persone che ti scrivono dal form del sito'),
+      h('section', { class: 'panel' }, h('p', { class: 'empty-state' }, e.status === 503 || e.status === 404
+        ? 'Il form non è ancora attivo: va aggiornato il Worker su Cloudflare (vedi riassunto-cms.md).'
+        : e.message))));
+  }
+  let filtro = read('cms.richieste.filtro') || 'aperte';
+  const conta = (s) => lista.filter((r) => r.stato === s).length;
+  const tabs = h('div', { class: 'chips richieste-tabs' });
+  const body = h('div', {});
+
+  function disegna() {
+    write('cms.richieste.filtro', filtro);
+    const viste = lista.filter((r) => filtro === 'tutte' || (filtro === 'aperte' ? r.stato !== 'archiviata' : r.stato === filtro));
+    tabs.replaceChildren(...[['aperte', 'Da gestire'], ['nuova', `Nuove (${conta('nuova')})`], ['risposta', 'Risposte'], ['archiviata', 'Archiviate'], ['tutte', `Tutte (${lista.length})`]]
+      .map(([k, l]) => h('button', { type: 'button', class: `btn small ${filtro === k ? 'primary' : ''}`, onclick: () => { filtro = k; disegna(); } }, l)));
+    body.replaceChildren(viste.length
+      ? h('div', { class: 'richieste' }, viste.map(card))
+      : h('section', { class: 'panel' }, h('p', { class: 'empty-state' }, lista.length ? 'Niente qui, con questo filtro.' : 'Ancora nessuna richiesta. Arriveranno dal pulsante Scrivimi del sito.')));
+  }
+
+  function card(r) {
+    const st = STATI.find((s) => s[0] === r.stato) || STATI[0];
+    const sel = h('select', { class: 'compact', 'aria-label': 'Stato' }, STATI.map(([v, l]) => h('option', { value: v, selected: v === r.stato }, l)));
+    sel.addEventListener('input', async () => {
+      try { await request('/richieste', { method: 'PATCH', body: { id: r.id, stato: sel.value } }); r.stato = sel.value; disegna(); }
+      catch (e) { alert(e.message); }
+    });
+    const del = h('button', { type: 'button', class: 'icon-btn', title: 'Elimina', onclick: async () => {
+      if (!confirm(`Eliminare la richiesta di ${r.nome}? Non si può annullare.`)) return;
+      try { await request('/richieste', { method: 'DELETE', body: { id: r.id } }); lista = lista.filter((x) => x.id !== r.id); disegna(); }
+      catch (e) { alert(e.message); }
+    } }, icon('trash'));
+    const segna = () => { if (r.stato === 'nuova') { sel.value = 'letta'; sel.dispatchEvent(new Event('input')); } };
+    return h('section', { class: `panel richiesta ${r.stato === 'nuova' ? 'is-nuova' : ''}` },
+      h('div', { class: 'panel-head' },
+        h('div', {},
+          h('div', { class: 'title-row' }, h('h2', {}, r.nome), chip(st[1], st[2])),
+          h('p', { class: 'muted small' }, quando(r.quando), r.paese ? ` · ${countryNames.of(r.paese)}` : '', r.pagina ? ` · da ${r.pagina}` : '')),
+        h('div', { class: 'actions' }, sel, del)),
+      h('div', { class: 'richiesta-body' },
+        h('dl', { class: 'richiesta-dati' },
+          h('div', {}, h('dt', {}, 'Email'), h('dd', {}, h('a', { href: `mailto:${r.email}?subject=${encodeURIComponent('Il tuo progetto')}`, onclick: segna }, r.email))),
+          r.telefono && h('div', {}, h('dt', {}, 'Telefono'), h('dd', {}, h('a', { href: `tel:${r.telefono.replace(/\s/g, '')}` }, r.telefono))),
+          h('div', {}, h('dt', {}, 'Budget'), h('dd', {}, r.budget || '—'))),
+        h('div', { class: 'richiesta-testo' }, h('h3', {}, 'Il progetto'), h('p', {}, r.progetto)),
+        r.reference && h('div', { class: 'richiesta-testo' }, h('h3', {}, 'Reference'), h('p', {}, linkify(r.reference)))));
+  }
+
+  shell([['Richieste']], h('div', {},
+    pageHead('Richieste', 'Le persone che ti scrivono dal form «Raccontami un progetto»'),
+    tabs, body));
+  disegna();
+}
+
 // ─── Schermate ──────────────────────────────────────────────
 
 function showLogin(message, type = 'error') {
@@ -1141,6 +1222,7 @@ async function dashboard() {
     homeSlugs(),
     api('/commits?per_page=6').catch(() => []),
   ]);
+  const nuove = await request('/richieste').then((r) => (r ? r.richieste : []).filter((x) => x.stato === 'nuova').length).catch(() => 0);
   const titles = await relationTitles(progettiColl);
   const stat = (n, label, href, iconName, tone) => h('a', { href, class: 'stat' },
     h('div', { class: 'stat-top' }, h('span', { class: `stat-icon ${tone}` }, icon(iconName)), icon('right')),
@@ -1152,6 +1234,7 @@ async function dashboard() {
   shell([['Dashboard']], h('div', {},
     pageHead('Dashboard', 'Panoramica dei contenuti del portfolio'),
     h('div', { class: 'stats' },
+      stat(nuove, nuove === 1 ? 'Richiesta nuova' : 'Richieste nuove', '#/richieste', 'mail', 'rose'),
       stat(active.length, 'Progetti attivi', '#/c/progetti', 'folder', 'brand'),
       stat(progetti.length - active.length, 'Bozze', '#/c/progetti', 'edit', 'amber'),
       stat(home.length, 'Progetti in home', '#/p/home', 'star', 'rose'),
@@ -1228,8 +1311,14 @@ async function listView(coll) {
     const f = current();
     write(`cms.filters.${coll.name}`, JSON.stringify(f));
     const shown = entries.filter((e) => (!f.q || (e.data.title || e.slug).toLowerCase().includes(f.q))
-      && selects.every(([name]) => !f[name] || e.data[name] === f[name])
+      && selects.every(([name]) => !f[name] || (name === coll.orderWithin ? inGroup(coll, e, f[name]) : e.data[name] === f[name]))
       && (!f.stato || (f.stato === 'off') === isDraft(e)));
+    // Con una categoria scelta, i progetti si vedono nell'ordine che hanno in quella categoria.
+    const group = coll.orderWithin && f[coll.orderWithin];
+    if (group) {
+      shown.sort((a, b) => (groupRank(coll, a, group) - groupRank(coll, b, group)) || 0
+        || String(a.data.title || a.slug).localeCompare(String(b.data.title || b.slug), 'it'));
+    }
     // Si riordina tutta la lista, oppure (per i progetti) dentro la categoria scelta nel filtro.
     const groupField = coll.orderWithin && coll.fields.find((x) => x.name === coll.orderWithin);
     const canOrder = !!coll.orderField && !f.q && !f.stato
@@ -1247,7 +1336,8 @@ async function listView(coll) {
           h('span', { class: 'row-text' },
             h('strong', {}, e.data.title || e.slug),
             h('small', {}, [subtitle(coll, e, titles), coll.count && `${counts[e.slug] || 0} progetti`].filter(Boolean).join(' · '))),
-          h('span', { class: 'chips' }, e.error && chip('Errore nel file', 'err'), isDraft(e) && chip('Bozza', 'amber'), home.includes(e.slug) && chip('In home', 'rose')),
+          h('span', { class: 'chips' }, e.error && chip('Errore nel file', 'err'),
+            group && coll.alsoIn && e.data[coll.orderWithin] !== group && chip('Anche in questa categoria'), isDraft(e) && chip('Bozza', 'amber'), home.includes(e.slug) && chip('In home', 'rose')),
           icon('right'))))
       : [h('p', { class: 'empty-state' }, entries.length ? 'Nessun risultato con questi filtri.' : `Ancora nessun ${coll.singular}. Clicca “Aggiungi” per crearne uno.`)]));
   }
@@ -1257,10 +1347,15 @@ async function listView(coll) {
     saveOrder.disabled = true;
     status.textContent = 'Salvataggio…';
     const changes = [];
+    const group = coll.orderWithin && current()[coll.orderWithin];
     [...list.children].forEach((el, i) => {
       const e = entries.find((x) => x.slug === el.dataset.slug);
-      if (e.data[coll.orderField] === i + 1) return;
-      e.data = { ...e.data, [coll.orderField]: i + 1 };
+      // Nella categoria principale si salva "ordine", in una categoria in più "ordini.<categoria>".
+      const extra = group && coll.orderMap && e.data[coll.orderWithin] !== group;
+      if ((extra ? e.data[coll.orderMap]?.[group] : e.data[coll.orderField]) === i + 1) return;
+      e.data = extra
+        ? { ...e.data, [coll.orderMap]: { ...(e.data[coll.orderMap] || {}), [group]: i + 1 } }
+        : { ...e.data, [coll.orderField]: i + 1 };
       changes.push({ path: e.path, text: serialize(coll, e.data, e.body) });
     });
     try {
@@ -1519,6 +1614,7 @@ async function route() {
     }
     if (kind === 'p' && findPage(name)) return await pageEditor(findPage(name));
     if (location.hash === '#/immagini') return await libraryView();
+    if (location.hash === '#/richieste') return await richiesteView();
     return await dashboard();
   } catch (e) {
     if (state.session) shell([['Errore']], h('div', { class: 'banner error' }, icon('alert'), h('span', {}, e.message)));

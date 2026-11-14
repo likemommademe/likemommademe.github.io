@@ -484,3 +484,17 @@ select.compact { width: auto; padding: 9px 38px 9px 16px; font-size: 15px; borde
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation: none !important; }
 }
+
+/* ─── Richieste dal form del sito ─── */
+.richieste-tabs { flex-wrap: wrap; margin-bottom: 18px; }
+.richieste { display: grid; gap: 16px; }
+.richiesta.is-nuova { border-color: var(--accent); }
+.richiesta .panel-head h2 { margin: 0; }
+.richiesta-body { display: grid; gap: 18px; padding: 0 24px 22px; }
+.richiesta-dati { display: flex; flex-wrap: wrap; gap: 10px 36px; margin: 0; }
+.richiesta-dati dt { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.richiesta-dati dd { margin: 2px 0 0; font-weight: 600; }
+.richiesta-dati a, .richiesta-testo a { text-decoration: underline; text-underline-offset: 3px; }
+.richiesta-testo h3 { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.richiesta-testo p { margin: 0; white-space: pre-wrap; line-height: 1.55; max-width: 72ch; overflow-wrap: anywhere; }
+.chip.green { background: var(--ok-bg); color: var(--ok); }

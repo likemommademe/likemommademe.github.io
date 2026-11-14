@@ -3,7 +3,8 @@
 //   1. accesso con Google o con magic link: controlla che sia la tua email e apre una sessione di 30 giorni;
 //   2. fa da ponte verso GitHub: il pannello chiede di leggere/salvare i file e questo Worker
 //      lo fa con la chiave GitHub, che così non esce mai da Cloudflare;
-//   3. conta le visite al sito pubblico (senza cookie) e le mostra nella dashboard del pannello.
+//   3. conta le visite al sito pubblico (senza cookie) e le mostra nella dashboard del pannello;
+//   4. riceve le richieste del form «Raccontami un progetto» e le mostra nel pannello, in Richieste.
 //
 // Da impostare nel Worker, in Settings → Variables and Secrets:
 //   EMAIL           le email che possono entrare, separate da virgola (es. tu@gmail.com, amica@gmail.com).
@@ -11,7 +12,7 @@
 //                   gli altri entrano con Google.
 //   GITHUB_TOKEN    token GitHub con permesso Contents: Read and write sulla repo del sito
 //   RESEND_API_KEY  chiave di resend.com (serve a spedire la mail)
-// e in Settings → Bindings un database D1 con nome DB (per le statistiche delle visite).
+// e in Settings → Bindings un database D1 con nome DB (per le statistiche delle visite e le richieste).
 
 const REPO = 'likemommademe/likemommademe.github.io';
 // ID client di Google Cloud (progetto "portfolio"): non è segreto.
@@ -43,6 +44,8 @@ export default {
       else if (url.pathname === '/google' && request.method === 'POST') res = await google(request, env);
       else if (url.pathname === '/hit' && request.method === 'POST') res = await hit(request, env);
       else if (url.pathname === '/stats') res = await stats(request, env, url);
+      else if (url.pathname === '/richiesta' && request.method === 'POST') res = await nuovaRichiesta(request, env);
+      else if (url.pathname === '/richieste') res = await richieste(request, env, url);
       else if (url.pathname.startsWith('/github/')) res = await github(request, env, url);
       else res = json({ error: 'Not found' }, 404);
     } catch (e) {
@@ -209,6 +212,77 @@ async function stats(request, env, url) {
     refs: refs.results,
     devices: devices.results,
   });
+}
+
+// ─── Richieste dal form «Raccontami un progetto» ───
+
+let richiesteReady = false;
+async function ensureRichieste(env) {
+  if (richiesteReady) return;
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS richieste (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, quando TEXT, nome TEXT, email TEXT, telefono TEXT,
+    progetto TEXT, budget TEXT, reference TEXT, stato TEXT DEFAULT 'nuova', paese TEXT, pagina TEXT, chi TEXT)`).run();
+  richiesteReady = true;
+}
+
+// Dal sito pubblico: chiunque può mandare una richiesta, ma con dei limiti (campi controllati,
+// campo trappola per i bot, al massimo 5 richieste al giorno dalla stessa connessione).
+async function nuovaRichiesta(request, env) {
+  if (!env.DB) return json({ error: 'Il modulo non è ancora attivo. Scrivimi per email.' }, 503);
+  const b = await request.json().catch(() => ({}));
+  if (b.sito_web) return json({ ok: true });   // campo trappola: lo compilano solo i bot
+  const t = (v, n) => String(v || '').trim().slice(0, n);
+  const r = { nome: t(b.nome, 120), email: t(b.email, 160).toLowerCase(), telefono: t(b.telefono, 40),
+    progetto: t(b.progetto, 4000), budget: t(b.budget, 60), reference: t(b.reference, 1500), pagina: t(b.pagina, 200) };
+  if (!r.nome || !r.progetto) return json({ error: 'Mancano il nome o la descrizione del progetto.' }, 400);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email)) return json({ error: "L'email non sembra giusta: controllala." }, 400);
+  await ensureRichieste(env);
+  const day = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Rome' });
+  const ip = request.headers.get('CF-Connecting-IP') || '';
+  const chi = b64url(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${day}|${ip}|${env.GITHUB_TOKEN}`)))).slice(0, 16);
+  const tante = await env.DB.prepare('SELECT COUNT(*) AS n FROM richieste WHERE chi = ? AND quando >= ?').bind(chi, day).first();
+  if (tante && tante.n >= 5) return json({ error: 'Hai già mandato diverse richieste oggi: ti rispondo presto.' }, 429);
+  await env.DB.prepare('INSERT INTO richieste (quando, nome, email, telefono, progetto, budget, reference, stato, paese, pagina, chi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+    .bind(new Date().toISOString(), r.nome, r.email, r.telefono, r.progetto, r.budget, r.reference, 'nuova', request.cf?.country || '', r.pagina, chi).run();
+  // un avviso per email (se non parte, la richiesta resta comunque salvata nel pannello)
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Portfolio <onboarding@resend.dev>', to: allowed(env)[0], reply_to: r.email,
+        subject: `Nuova richiesta da ${r.nome}`,
+        html: `<div style="font-family:system-ui,sans-serif;max-width:520px"><p><b>${esc(r.nome)}</b> · ${esc(r.email)}${r.telefono ? ` · ${esc(r.telefono)}` : ''}</p>
+<p style="white-space:pre-wrap">${esc(r.progetto)}</p><p>Budget: ${esc(r.budget || '—')}<br>Reference: ${esc(r.reference || '—')}</p>
+<p style="color:#777;font-size:13px">La trovi anche nel pannello, in Richieste.</p></div>`,
+      }),
+    });
+  } catch {}
+  return json({ ok: true });
+}
+
+// Dal pannello: elenco (GET), cambio di stato (PATCH) ed eliminazione (DELETE).
+async function richieste(request, env, url) {
+  if (!(await session(request, env))) return json({ error: 'Sessione scaduta: accedi di nuovo.' }, 401);
+  if (!env.DB) return json({ error: 'Richieste non attive: manca il database.' }, 503);
+  await ensureRichieste(env);
+  if (request.method === 'GET') {
+    const { results } = await env.DB.prepare('SELECT id, quando, nome, email, telefono, progetto, budget, reference, stato, paese, pagina FROM richieste ORDER BY id DESC LIMIT 500').all();
+    return json({ richieste: results });
+  }
+  const { id, stato } = await request.json().catch(() => ({}));
+  if (!Number.isInteger(id)) return json({ error: 'Richiesta non valida.' }, 400);
+  if (request.method === 'PATCH') {
+    if (!['nuova', 'letta', 'risposta', 'archiviata'].includes(stato)) return json({ error: 'Stato non valido.' }, 400);
+    await env.DB.prepare('UPDATE richieste SET stato = ? WHERE id = ?').bind(stato, id).run();
+    return json({ ok: true });
+  }
+  if (request.method === 'DELETE') {
+    await env.DB.prepare('DELETE FROM richieste WHERE id = ?').bind(id).run();
+    return json({ ok: true });
+  }
+  return json({ error: 'Not found' }, 404);
 }
 
 // Link e sessioni sono firmati con una chiave ricavata dal token GitHub:

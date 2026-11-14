@@ -98,6 +98,40 @@
     </div>
   </dialog>
 
+  {% comment %} Il form «Raccontami un progetto»: le risposte vanno al server del pannello e si leggono in Richieste. {% endcomment %}
+  {% assign tm = site.data.testi.modulo %}
+  <dialog class="modulo" id="modulo" aria-labelledby="modulo-t" data-modulo>
+    <div class="modulo__in">
+      <button class="cerca__x modulo__x" type="button" data-modulo-chiudi aria-label="{{ tm.chiudi }}"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <form class="modulo__f" data-modulo-form novalidate>
+        <header class="modulo__head">
+          <h2 class="modulo__t" id="modulo-t">{{ tm.titolo }}</h2>
+          <p class="modulo__intro">{{ tm.intro }}</p>
+        </header>
+        <div class="modulo__riga">
+          <label class="campo"><span class="campo__k">{{ tm.nome }}</span><input name="nome" id="m-nome" autocomplete="name" required maxlength="120"></label>
+          <label class="campo"><span class="campo__k">{{ tm.email }}</span><input name="email" id="m-email" type="email" autocomplete="email" required maxlength="160"></label>
+        </div>
+        <label class="campo"><span class="campo__k">{{ tm.telefono }} <i>{{ tm.facoltativo }}</i></span><input name="telefono" id="m-tel" type="tel" autocomplete="tel" maxlength="40"></label>
+        <label class="campo"><span class="campo__k">{{ tm.progetto }}</span><textarea name="progetto" id="m-progetto" rows="4" required maxlength="4000" placeholder="{{ tm.progetto_aiuto }}"></textarea></label>
+        <fieldset class="campo campo--scelte">
+          <legend class="campo__k">{{ tm.budget }} <i>{{ tm.facoltativo }}</i></legend>
+          <div class="scelte">{% for b in tm.budget_scelte %}<label class="scelta"><input type="radio" name="budget" value="{{ b }}"><span>{{ b }}</span></label>{% endfor %}</div>
+        </fieldset>
+        <label class="campo"><span class="campo__k">{{ tm.reference }} <i>{{ tm.facoltativo }}</i></span><textarea name="reference" id="m-ref" rows="2" maxlength="1500" placeholder="{{ tm.reference_aiuto }}"></textarea></label>
+        <label class="modulo__trappola" aria-hidden="true">Sito web<input name="sito_web" tabindex="-1" autocomplete="off"></label>
+        <p class="modulo__err" data-modulo-err role="alert" hidden></p>
+        <button class="btn modulo__invia" type="submit" data-modulo-invia>{{ tm.invia }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      </form>
+      <div class="modulo__ok" data-modulo-ok hidden>
+        <span class="modulo__segno" aria-hidden="true"></span>
+        <h2 class="modulo__t">{{ tm.grazie_titolo }}</h2>
+        <p class="modulo__intro">{{ tm.grazie_testo }}</p>
+        <button class="btn" type="button" data-modulo-chiudi>{{ tm.chiudi }}</button>
+      </div>
+    </div>
+  </dialog>
+
   <main id="contenuto">
     {{ content }}
   </main>
@@ -108,7 +142,7 @@
       <div class="pied__cta">
         <h2 class="rise"><span>{{ f.cta_titolo }}</span></h2>
         <p>{{ f.cta_testo }}</p>
-        <a class="btn" href="{% if info.email and info.email != '' %}mailto:{{ info.email }}{% else %}{{ '/about/' | relative_url }}{% endif %}">{{ f.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <a class="btn" href="{% if info.email and info.email != '' %}mailto:{{ info.email }}{% else %}{{ '/about/' | relative_url }}{% endif %}" data-modulo-apri>{{ f.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
       <div class="pied__cols">
         <div>
@@ -305,6 +339,33 @@
         window.lmmOsserva = function (e) { io2.observe(e); };
       }
     })();
+    // Form «Raccontami un progetto»: si apre da Scrivimi, manda la richiesta al server del pannello.
+    (function () {
+      var d = document.querySelector('[data-modulo]'); if (!d || !d.showModal) return;
+      var f = d.querySelector('[data-modulo-form]'), ok = d.querySelector('[data-modulo-ok]'), err = d.querySelector('[data-modulo-err]'), btn = d.querySelector('[data-modulo-invia]');
+      var TM = {{ site.data.testi.modulo | jsonify }}, MAIL = {{ site.data.impostazioni.email | jsonify }};
+      function apri(e) { if (e) e.preventDefault(); f.hidden = false; ok.hidden = true; err.hidden = true; d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { d.querySelector('#m-nome').focus(); }, 40); }
+      d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
+      document.querySelectorAll('[data-modulo-apri]').forEach(function (b) { b.addEventListener('click', apri); });
+      d.querySelectorAll('[data-modulo-chiudi]').forEach(function (b) { b.addEventListener('click', function () { d.close(); }); });
+      d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+      if (location.hash === '#scrivimi') apri();
+      f.addEventListener('submit', function (e) {
+        e.preventDefault(); err.hidden = true;
+        var campi = [].slice.call(f.querySelectorAll('[required]')), primo = campi.find(function (c) { return !c.checkValidity(); });
+        campi.forEach(function (c) { c.closest('.campo').classList.toggle('is-err', !c.checkValidity()); });
+        if (primo) { primo.focus(); return; }
+        var dati = Object.fromEntries(new FormData(f)); dati.pagina = location.pathname;
+        btn.disabled = true; btn.firstChild.textContent = TM.invio;
+        fetch('https://portfolio-login.calfa63.workers.dev/richiesta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dati) })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(r.status === 404 ? '' : j.error || ''); }); })
+          .then(function () { f.reset(); f.hidden = true; ok.hidden = false; ok.querySelector('button').focus(); })
+          .catch(function (x) { err.innerHTML = (x.message ? x.message + ' ' : '') + TM.errore + ' <a href="mailto:' + MAIL + '">' + MAIL + '</a>.'; err.hidden = false; })
+          .then(function () { btn.disabled = false; btn.firstChild.textContent = TM.invia; });
+      });
+      f.addEventListener('input', function (e) { var c = e.target.closest('.campo'); if (c && e.target.checkValidity()) c.classList.remove('is-err'); });
+    })();
+
     // Cerca: si apre con la lente (o con il tasto /), filtra mentre scrivi, si chiude con Esc o cliccando fuori.
     (function () {
       var d = document.querySelector('[data-cerca]'); if (!d || !d.showModal) return;

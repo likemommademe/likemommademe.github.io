@@ -169,3 +169,28 @@ cerca:
   risultati: Risultati
   vuoto: Niente da fare. Nemmeno mamma l'avrebbe trovato. Prova con un'altra parola.
   tutti: Vedi tutti i progetti
+
+modulo:
+  titolo: "Raccontami un <em>progetto</em>"
+  intro: Due righe bastano. Ti rispondo io, di persona, e di solito in giornata.
+  nome: Come ti chiami
+  email: Email
+  telefono: Telefono
+  facoltativo: facoltativo
+  progetto: Il progetto
+  progetto_aiuto: Cosa ti serve, per chi, entro quando.
+  budget: Budget indicativo
+  budget_scelte:
+    - Sotto 1.000 €
+    - 1.000 – 3.000 €
+    - 3.000 – 7.000 €
+    - Oltre 7.000 €
+    - Da capire insieme
+  reference: Reference
+  reference_aiuto: Link a siti, profili o lavori che ti piacciono.
+  invia: Invia la richiesta
+  invio: Sto inviando…
+  grazie_titolo: Ricevuto.
+  grazie_testo: Grazie! Ti rispondo presto, di solito in giornata. Nel frattempo, mamma dice di stare tranquillo.
+  errore: Qualcosa non è andato. Riprova, oppure scrivimi direttamente a
+  chiudi: Chiudi
