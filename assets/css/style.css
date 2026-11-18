@@ -479,9 +479,12 @@ html.menu-prova {
 .nav__item { position: relative; display: flex; align-items: center; gap: 4px; }
 .nav__sub-btn { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; transition: transform .4s var(--ease); }
 .nav__item:is(:hover, :focus-within, .is-open) .nav__sub-btn { transform: rotate(180deg); }
+/* il pannello: in cima centrato sotto Works; nella pillola a filo dei suoi bordi, con la punta sempre sotto Works */
 .sub { position: absolute; left: 50%; top: 100%; z-index: 70; width: min(720px, 92vw); padding-top: 26px; pointer-events: none; opacity: 0; transform: translate(-50%, 10px); transition: opacity .25s var(--ease), transform .45s var(--ease); }
 .nav__item:is(:hover, :focus-within, .is-open) .sub { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-.sub__segno { position: absolute; left: 50%; top: 14px; width: 12px; height: 12px; border-radius: 3px; background: var(--accent-3); transform: translateX(-50%) rotate(45deg); z-index: 1; }
+.nav.is-pill .sub { --sg: var(--sgp, 50%); left: var(--slp, 50%); width: var(--swp, min(720px, 92vw)); transform: translateY(10px); }
+.nav.is-pill .nav__item:is(:hover, :focus-within, .is-open) .sub { transform: none; }
+.sub__segno { position: absolute; left: var(--sg, 50%); top: 14px; width: 12px; height: 12px; border-radius: 3px; background: var(--accent-3); transform: translateX(-50%) rotate(45deg); z-index: 1; }
 .sub__in { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 34px 32px 30px; border-radius: 28px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .45); }
 .sub__aside { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; padding: 6px 30px 2px 0; }
 .sub__lead { margin: 0; max-width: 12ch; font-size: clamp(1.6rem, 1.2rem + .9vw, 2.125rem); font-weight: 500; line-height: 1.04; letter-spacing: -.03em; text-wrap: balance; }

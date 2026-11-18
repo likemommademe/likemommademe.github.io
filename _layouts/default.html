@@ -224,6 +224,11 @@
         var nw = lw + (pad + 8) * 2;   // un po' d'aria attorno alla scritta
         bar.style.setProperty('--nclip', Math.max(0, (W - nw) / 2) + 'px');
         bar.style.setProperty('--nl', (W / 2 - (logo.offsetLeft + lw / 2)) + 'px');
+        // il sottomenu di Works nella pillola: a filo dei suoi bordi, la punta sotto Works
+        links.querySelectorAll('.nav__item').forEach(function (it) {
+          var x = links.offsetLeft + it.offsetLeft, cx = it.offsetWidth / 2, dc = clip + pad + lw + gap - links.offsetLeft;
+          it.style.setProperty('--slp', (clip - x - dc) + 'px'); it.style.setProperty('--swp', (W - 2 * clip) + 'px'); it.style.setProperty('--sgp', (x + dc + cx - clip) + 'px');
+        });
         // PROVA: il notch con logo + Menu, centrato
         var mb = nav.querySelector('.nav__mob-btn');
         if (prova() && mb) {
