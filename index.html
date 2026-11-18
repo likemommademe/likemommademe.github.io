@@ -37,8 +37,9 @@ reel: true
     // a fine intro lo showreel si chiude a un solo schermo e resta fermo dietro: è l'header, le fasce ci scorrono sopra
     function chiudi(subito) {
       if (fatta) return; fatta = true;
-      var tolto = reel.offsetHeight - innerHeight;
+      var prima = reel.offsetHeight;
       document.body.classList.add('reel-fatto');
+      var tolto = prima - reel.offsetHeight;   // quanto si è accorciato lo showreel: la pagina resta dov'era
       if (!subito) scrollTo({ top: Math.max(0, scrollY - tolto), behavior: 'instant' });
       try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
       post({ done: true });

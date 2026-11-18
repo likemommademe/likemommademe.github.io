@@ -333,11 +333,11 @@ html.vt-tema::view-transition-old(root), html.vt-tema::view-transition-new(root)
 html.vt-tema::view-transition-new(root) { z-index: 2; }
 
 /* ---------- Header animato della home ---------- */
-.reel { position: relative; height: 1500vh; width: 100vw; margin-left: calc(50% - 50vw); background: var(--bg); }
+.reel { position: relative; height: calc(1500vh + var(--r-fascia));   /* + il bordo arrotondato della prima sezione: a fine corsa non si vede */ width: 100vw; margin-left: calc(50% - 50vw); background: var(--bg); }
 .reel-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
 /* intro finita: lo showreel resta un solo schermo, fermo dietro la pagina, e le fasce ci scorrono sopra */
-body.reel-fatto .reel { height: 100vh; }
+body.reel-fatto .reel { height: calc(100vh + var(--r-fascia)); }   /* l'header finale resta pieno: la sezione parte sotto il bordo dello schermo */
 body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh; z-index: 0; }
 
 /* Prima sezione: il motto composto dallo showreel, con l'occhio al posto della O */
@@ -1043,7 +1043,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
   html.js .rise > span { transform: none; }
   .valore__d { opacity: 1; transform: none; }
   .pied__logo { --e: 1 !important; }
-  .reel { height: 100vh; }
+  .reel { height: calc(100vh + var(--r-fascia)); }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
