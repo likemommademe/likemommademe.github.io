@@ -22,12 +22,6 @@
       if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       document.documentElement.dataset.theme = t;
       document.documentElement.classList.add('js');
-      // PROVA menu: ?menu=prova la accende (e se la ricorda), ?menu=classico la spegne
-      try { var mq = new URLSearchParams(location.search).get('menu');
-        if (mq === 'prova') localStorage.setItem('lmm-menu-prova', '1'); else if (mq === 'classico') localStorage.removeItem('lmm-menu-prova');
-        if (localStorage.getItem('lmm-menu-prova')) document.documentElement.classList.add('menu-prova'); } catch (e) {}
-      // il colore delle barre del browser (Safari le colora con lo sfondo): giusto fin dal primo istante
-      var m = document.createElement('meta'); m.name = 'theme-color'; m.content = t === 'light' ? '#F4EFE7' : '#121414'; document.head.appendChild(m);
     })();
   </script>
   <!-- lo sfondo giusto prima che arrivino i fogli di stile: niente fasce bianche sopra e sotto mentre la pagina carica -->
@@ -210,7 +204,6 @@
       var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
           logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
       var links = nav.querySelector('.nav__links');
-      function prova() { return html.classList.contains('menu-prova') && innerWidth >= 721; }
       function layout() {
         // nella pillola stanno, uno dopo l'altro: il logo, le voci e (ricerca + giorno/notte + Contatti)
         var small = innerWidth < 720, pad = small ? 20 : 30, gap = small ? 18 : 40;
@@ -229,14 +222,7 @@
           var x = links.offsetLeft + it.offsetLeft, cx = it.offsetWidth / 2, dc = clip + pad + lw + gap - links.offsetLeft;
           it.style.setProperty('--slp', (clip - x - dc) + 'px'); it.style.setProperty('--swp', (W - 2 * clip) + 'px'); it.style.setProperty('--sgp', (x + dc + cx - clip) + 'px');
         });
-        // PROVA: il notch con logo + Menu, centrato
-        var mb = nav.querySelector('.nav__mob-btn');
-        if (prova() && mb) {
-          var mw = mb.offsetWidth, pw = pad + lw + 22 + mw + 6, pc = Math.max(0, (W - pw) / 2);
-          bar.style.setProperty('--pclip', pc + 'px');
-          bar.style.setProperty('--pl', (pc + pad - logo.offsetLeft) + 'px');
-          bar.style.setProperty('--pr', ((W - pc - 6) - (right.offsetLeft + rw)) + 'px');
-        }
+      }
       }
       // la capsula che scivola sotto la voce su cui passi
       var hl = links.querySelector('.nav__hl');
@@ -264,8 +250,32 @@
         if (!aperto && nav.classList.contains('mob-aperto') && Math.abs(scrollY - apertoY) > 80) nav.classList.remove('mob-aperto');
         nav.classList.toggle('is-pill', giu);
         nav.classList.toggle('is-notch', giu && !aperto && !small);
+        tonoPresto();
       }
-      function apri() { if (prova()) return; clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
+      // la pillola guarda cosa ha sotto: su uno sfondo scuro diventa chiara con la scritta nera
+      var tonoRaf = 0;
+      function tonoPresto() { if (!tonoRaf) tonoRaf = requestAnimationFrame(function () { tonoRaf = 0; tono(); }); }
+      function scuro(c) {
+        var m = c.match(/[\d.]+/g); if (!m || m.length < 3 || (m.length > 3 && +m[3] < .5)) return null;
+        var l = function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
+        return .2126 * l(+m[0]) + .7152 * l(+m[1]) + .0722 * l(+m[2]) < .3;
+      }
+      function tono() {
+        if (!nav.classList.contains('is-pill')) { nav.classList.remove('pill-chiara'); return; }
+        var r = bar.getBoundingClientRect(), y = r.top + 14 + r.height / 2, notte = html.dataset.theme === 'dark', dark = null;
+        var sotto = document.elementsFromPoint(innerWidth / 2, Math.min(innerHeight - 1, y));
+        for (var i = 0; i < sotto.length && dark === null; i++) {
+          var el = sotto[i]; if (nav.contains(el)) continue;
+          var tag = el.tagName;
+          if (tag === 'IFRAME') dark = notte;   // lo showreel ha lo sfondo del tema
+          else if (tag === 'IMG' || tag === 'VIDEO' || tag === 'CANVAS' || tag === 'PICTURE') dark = true;   // sulle foto la pillola chiara si legge meglio
+          else dark = scuro(getComputedStyle(el).backgroundColor);
+        }
+        if (dark === null) dark = notte;
+        nav.classList.toggle('pill-chiara', dark);
+      }
+      new MutationObserver(tonoPresto).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+      function apri() { clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
       bar.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') apri(); });
       bar.addEventListener('pointerleave', function (e) {
         if (e.pointerType !== 'mouse') return;
@@ -275,15 +285,14 @@
       bar.addEventListener('focusin', apri);
       bar.addEventListener('focusout', function (e) { if (!bar.contains(e.relatedTarget)) { aperto = false; onScroll(); } });
       // al tocco sulla notch: prima si apre (sul telefono la pillola larga: logo a sinistra, Menu a destra), poi i link funzionano
-      bar.addEventListener('click', function (e) { if (!prova() && nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
+      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
       // telefono: il tasto Menu riempie la pagina con le voci; sopra resta la barra con Close
       var mobBtn = nav.querySelector('[data-mob]'), mobT = mobBtn && mobBtn.querySelector('.nav__mob-t'), mob = nav.querySelector('.nav__mob');
       function apriMob(on) {
         nav.classList.toggle('mob-aperto', on); html.classList.toggle('menu-aperto', on);
         if (mobBtn) { mobBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); mobT.textContent = on ? mobT.dataset.chiudi : mobT.dataset.apri; }
         if (on) { aperto = true; apertoY = scrollY; oreMob(); }
-        else if (prova()) aperto = false;
-        if (!on) nav.querySelectorAll('.mv.is-open').forEach(function (m) { m.classList.remove('is-open'); m.querySelector('.mv__piu').setAttribute('aria-expanded', 'false'); });
+        else nav.querySelectorAll('.mv.is-open').forEach(function (m) { m.classList.remove('is-open'); m.querySelector('.mv__piu').setAttribute('aria-expanded', 'false'); });
         onScroll();
       }
       if (mobBtn) mobBtn.addEventListener('click', function () { apriMob(!nav.classList.contains('mob-aperto')); });
