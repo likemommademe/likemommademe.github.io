@@ -420,7 +420,7 @@
   const OCCHIO = '<span class="fu occhio"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="palpebra"><path class="contorno" d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" pathLength="1"/><circle class="iride" cx="50" cy="45" r="22" fill="#FF3D8B"/><circle class="pupilla" cx="50" cy="45" r="10" fill="#121414"/></g></svg></span>';
   const fraseEl = E('frase');
   fraseEl.innerHTML = ['M', OCCHIO, 'R', 'E', ' ', 'T', 'H', 'A', 'N', ' ', '<span class="fu fy">meets</span>', ' ', '7', 'H', 'E', ' ', 'E', 'Y', 'E']
-    .map((x, i) => x.startsWith('<') ? x : `<span class="fu${i === 9 || i === 11 ? ' rompi' : ''}">${x === ' ' ? '\u00a0' : x}</span>`).join('');   // in verticale: MORE THAN / MEETS / 7HE EYE
+    .map((x, i) => x.startsWith('<') ? x : `<span class="fu${i === 9 ? ' rompi' : ''}">${x === ' ' ? '\u00a0' : x}</span>`).join('');   // in verticale: MORE THAN / meets 7HE EYE
   // MEETS in vettori (assets/js/parole.js): uguale per tutti, anche senza TAN Nimbus sul computer
   if (window.LMM_PAROLE && LMM_PAROLE.parole.MEETS) { const m = LMM_PAROLE.meta, p = LMM_PAROLE.parole.MEETS, k = .93 / m.upm, fy = fraseEl.querySelector('.fy');
     fy.innerHTML = `<svg viewBox="0 0 ${p.w} ${m.h}" style="display:inline-block;height:${(m.h * k).toFixed(4)}em;width:auto;vertical-align:${(m.desc * k).toFixed(4)}em;fill:currentColor;overflow:visible" aria-hidden="true"><path d="${p.d}"/></svg>`; }
@@ -468,30 +468,57 @@
     tn.forEach(n => { n.style.transform = 'none'; });
     const s0 = stage.getBoundingClientRect(), S = s0.width / 1920;
     const box = n => { const b = n.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; };
+    const PX = 1920 / s0.width;   // unità del palco per ogni pixel vero
+    // 1 · la riga delle categorie: compatta e centrata in basso (in verticale su due righe, appena sopra Suono, scroll e Skip)
+    const lw = worldEls.map(d => box(d.firstChild.firstChild)).map(b => b.r - b.l), GAP = PT ? 76 : 56;
+    const file = PT ? [[0, 1, 2], [3, 4]] : [[0, 1, 2, 3, 4]];
+    M = { RX: [], RY: [] };
+    file.forEach((idx, ri) => {
+      const tot = idx.reduce((a, i) => a + lw[i], 0) + GAP * (idx.length - 1);
+      let x = 960 - tot / 2; idx.forEach(i => { M.RX[i] = x + lw[i] / 2; x += lw[i] + GAP; M.RY[i] = PT ? HP - 104 * PX - 100 - (file.length - 1 - ri) * 140 : 980; });
+    });
+    worldEls.forEach((d, i) => { d.style.left = M.RX[i] + 'px'; d.style.top = M.RY[i] + 'px'; });
+    const catTop = Math.min(...M.RY);
+    // 2 · la frase: la riga più larga entra nel palco (in verticale due righe: MORE THAN / meets 7HE EYE)
+    fraseEl.style.fontSize = '130px';
+    const fb0 = pezzi.map(q => box(q.n)), fLarga = (a, c) => Math.max(...fb0.slice(a, c).map(b => b.r)) - Math.min(...fb0.slice(a, c).map(b => b.l));
+    const fw = PT ? Math.max(fLarga(0, 9), fLarga(10, 19)) : fLarga(0, 19);
+    const fsz = Math.min(PT ? 130 * 2.6 : 130, 1720 / Math.max(1, fw) * 130), fwpx = fw / 130 * fsz;
+    fraseEl.style.fontSize = fsz + 'px';
+    const fh = PT ? fraseEl.getBoundingClientRect().height / S : fsz;
+    const fTop = PT ? YC + (470 - 500) * PK - fh / 2 : 470 - fsz / 2;
+    fraseEl.style.top = fTop + 'px';
+    // 3 · il nome: in verticale su quattro righe, grande quanto lo spazio tra il menu e le categorie,
+    //     contando anche la frase che a fine intro gli sta sotto (così niente si accavalla)
+    const top0 = 112 * PX, NG = 80;
     if (PT) {
-      // nome su quattro righe, grande quanto lo schermo (e mai più alto di metà palco)
       nameEl.style.fontSize = '190px'; nameEl.style.top = '0px';
       const r0 = letters.map(box), righe = [[0, 4], [4, 7], [7, 11], [11, 13]];
-      const wmax = Math.max(...righe.map(([a, c]) => r0[c - 1].r - r0[a].l));
-      const nf = Math.min(190 * 1640 / wmax, HP * .5 / 3.3);
+      const wmax = Math.max(...righe.map(([a, c]) => r0[c - 1].r - r0[a].l)), nh0 = Math.max(...r0.map(b => b.b)) - Math.min(...r0.map(b => b.t));
+      const avail = catTop - 40 * PX - top0;
+      let nf = 190 * 1640 / wmax;
+      for (let it = 0; it < 4; it++) { const frk = Math.min(.62, wmax * nf / 190 * .75 / fwpx), Hb = nh0 * nf / 190 + NG + fh * frk; if (Hb > avail) nf *= avail / Hb; }
       nameEl.style.fontSize = nf.toFixed(1) + 'px';
-      const nh = nameEl.getBoundingClientRect().height / S, ncy = Math.max(HP * .4, 520 + nh / 2);
-      nameEl.style.top = (ncy - nh / 2).toFixed(1) + 'px';
-      E('role').style.fontSize = '96px'; E('role').style.top = (ncy + nh / 2 + 70).toFixed(1) + 'px';
+      const r1 = letters.map(box), nt = Math.min(...r1.map(b => b.t)), nb = Math.max(...r1.map(b => b.b));
+      const frk = Math.min(.62, (Math.max(...r1.map(b => b.r)) - Math.min(...r1.map(b => b.l))) * .75 / fwpx), Hb = nb - nt + NG + fh * frk;
+      nameEl.style.top = (top0 + Math.max(0, (avail - Hb) / 2) - nt).toFixed(1) + 'px';
+      E('role').style.fontSize = '96px'; E('role').style.top = (top0 + Math.max(0, (avail - Hb) / 2) + (nb - nt) + 60).toFixed(1) + 'px';
       el.kin.style.fontSize = (250 * PK).toFixed(1) + 'px'; el.kin.style.top = (YC + (330 - 500) * PK).toFixed(1) + 'px';
     } else {
       nameEl.style.fontSize = nameEl.style.top = E('role').style.fontSize = E('role').style.top = el.kin.style.fontSize = el.kin.style.top = '';
     }
     const r = letters.map(box), k = kin.map(box), cy = (r[0].t + r[0].b) / 2;
-    M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0], lr: r,
+    Object.assign(M, { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy, L: r[0], lr: r,
           gaps: [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].r + GOFF[n] * G) + (r[c].l + GOFF[n + 1] * G)) / 2),
-          kx: k.map(b => (b.l + b.r) / 2), ky: (k[0].t + k[0].b) / 2 };
-    // il nome tutto su una riga, come nel logo: dove va ogni lettera quando vola nel notch
+          kx: k.map(b => (b.l + b.r) / 2), ky: (k[0].t + k[0].b) / 2 });
+    // il nome tutto su una riga, come nel logo: dove va ogni lettera quando vola nel menu
     const lw0 = r.map(b => b.r - b.l), ltot = lw0.reduce((a, w) => a + w, 0); let acc = 0;
     M.flat = lw0.map(w => { const c = acc + w / 2; acc += w; return c - ltot / 2; }); M.ftot = ltot;
     M.box = { l: Math.min(...r.map(b => b.l)), r: Math.max(...r.map(b => b.r)), t: Math.min(...r.map(b => b.t)), b: Math.max(...r.map(b => b.b)) };
+    M.line = i => i < 4 ? 0 : i < 7 ? 1 : i < 11 ? 2 : 3;
+    { const rb = box(E('role')); M.roleMax = Math.max(0, catTop - 40 * PX - rb.b); }   // il ruolo scende con ME, ma mai fino alle categorie
     // in verticale il nome si apre in altezza: i quadratini entrano tra una riga e l'altra
-    M.GV = PT ? (r[0].b - r[0].t) * .42 : 0;
+    { const lh = r[0].b - r[0].t; M.GV = PT ? Math.max(.15 * lh, Math.min(.42 * lh, (M.box.t - 30 * PX) / 1.5, M.roleMax / 1.5)) : 0; }   // aperto, il nome resta nello schermo e sopra le categorie
     M.gapsY = [[3, 4], [6, 7], [10, 11]].map(([a, c], n) => ((r[a].b + GOFF[n] * M.GV) + (r[c].t + GOFF[n + 1] * M.GV)) / 2);
     CT.forEach(c => {
       c.el.style.fontSize = '250px';
@@ -500,39 +527,26 @@
       c.el.style.fontSize = size + 'px';
       c.el.style.top = (PT ? YC - 250 * PK - size * .8 / 2 + (c.dy || 0) * PK : 398 - size * .8 / 2 + (c.dy || 0)) + 'px';
     });
-    fraseEl.style.fontSize = '130px';
-    // la frase: la riga più larga entra nel palco (in verticale sono tre righe)
-    const fb0 = pezzi.map(q => box(q.n)), fLarga = (a, c) => Math.max(...fb0.slice(a, c).map(b => b.r)) - Math.min(...fb0.slice(a, c).map(b => b.l));
-    const fw = PT ? Math.max(fLarga(0, 9), fLarga(10, 11), fLarga(12, 19)) : fLarga(0, 19);
-    const fsz = Math.min(PT ? 130 * 2.6 : 130, 1720 / Math.max(1, fw) * 130);
-    fraseEl.style.fontSize = fsz + 'px';
-    const fh = PT ? fraseEl.getBoundingClientRect().height / S : fsz;
-    fraseEl.style.top = (PT ? YC + (470 - 500) * PK - fh / 2 : 470 - fsz / 2) + 'px';
     const ob = box(occhio); M.eye = { x: (ob.l + ob.r) / 2, y: (ob.t + ob.b) / 2, w: ob.r - ob.l };
     // a fine intro la frase scende sotto il nome, al posto del ruolo
-    if (PT) { const fb = { t: parseFloat(fraseEl.style.top), h: fh }; FR.k = Math.min(.62, (M.box.r - M.box.l) * .7 / Math.max(1, fw / 130 * fsz)); FR.y = (M.box.b + 80 + fh * FR.k / 2) - (fb.t + fh / 2); }
+    if (PT) { FR.k = Math.min(.62, (M.box.r - M.box.l) * .75 / fwpx); FR.y = (M.box.b + NG + fh * FR.k / 2) - (fTop + fh / 2); }
     else { FR.y = 152; FR.k = .42; }
-    // la riga delle categorie: compatta e centrata in basso (in verticale su due righe, sopra Suono, scroll e Skip)
-    const lw = worldEls.map(d => box(d.firstChild.firstChild)).map(b => b.r - b.l), GAP = PT ? 76 : 56;
-    const file = PT ? [[0, 1, 2], [3, 4]] : [[0, 1, 2, 3, 4]];
-    M.RX = []; M.RY = [];
-    const piede = PT ? 150 / (s0.width / 1920) : 0;   // lo spazio dei tasti in fondo (150 px veri)
-    file.forEach((idx, ri) => {
-      const tot = idx.reduce((a, i) => a + lw[i], 0) + GAP * (idx.length - 1);
-      let x = 960 - tot / 2; idx.forEach(i => { M.RX[i] = x + lw[i] / 2; x += lw[i] + GAP; M.RY[i] = PT ? HP - piede - (file.length - ri) * 150 : 980; });
-    });
-    worldEls.forEach((d, i) => { d.style.left = M.RX[i] + 'px'; d.style.top = M.RY[i] + 'px'; });
-    // gli oggetti dei mondi, a fine intro: in verticale negli spazi accanto alle righe corte del nome (LIKE e ME) e sopra
+    // 4 · gli oggetti dei mondi, a fine intro: in verticale solo dove c'è spazio vuoto (accanto alle righe corte del nome,
+    //     sopra il nome o tra la frase e le categorie), ognuno grande quanto il suo spazio: mai sopra o sotto le scritte
     if (PT) {
-      const riga = (a, c) => ({ l: r[a].l, r: r[c - 1].r, y: (r[a].t + r[a].b) / 2 });
-      const L1 = riga(0, 4), L4 = riga(11, 13), sx = q => [q.l / 2, (1920 + q.r) / 2];
-      ORB.box = [sx(L1)[0], L1.y, 16.05]; ORB.ill = [sx(L1)[1] - 40, L1.y, 16.15];
-      ORB.ai = [960, Math.max(560, M.box.t - 230), 16.25];
-      ORB.mot = [sx(L4)[0], L4.y, 16.35]; ORB.web = [sx(L4)[1], L4.y, 16.45];
-      ORB.k = Math.min(1.2, Math.max(.6, Math.min(L1.l, 1920 - L1.r) / 330));   // grandi quanto lo spazio accanto alla riga più stretta
-      // gli oggetti stanno nella scena, che in verticale è ingrandita (PK) attorno a YC: riporto le posizioni dal palco alla scena
-      ['box', 'ill', 'ai', 'mot', 'web'].forEach(id => { const o = ORB[id]; o[0] = 960 + (o[0] - 960) / PK; o[1] = 500 + (o[1] - YC) / PK; });
-      ORB.k /= PK;
+      const lh = r[0].b - r[0].t, riga = (a, c) => ({ l: r[a].l, r: r[c - 1].r, y: (r[a].t + r[a].b) / 2 });
+      const L1 = riga(0, 4), L4 = riga(11, 13);
+      const DIM = { box: [210, 210], ill: [300, 230], ai: [330, 150], mot: [340, 110], web: [320, 220] };
+      const kSlot = (id, w, h) => { const q = Math.min(1.2, (w - 60) / DIM[id][0], (h * .9) / DIM[id][1]); return q < .45 ? 0 : q; };
+      ORB.box = [L1.l / 2, L1.y, 16.05, kSlot('box', L1.l, lh)];
+      ORB.ill = [(1920 + L1.r) / 2 - 20, L1.y, 16.15, kSlot('ill', 1920 - L1.r, lh)];
+      ORB.mot = [L4.l / 2, L4.y, 16.35, kSlot('mot', L4.l, lh)];
+      ORB.web = [(1920 + L4.r) / 2, L4.y, 16.45, kSlot('web', 1920 - L4.r, lh)];
+      const sopra = [top0, M.box.t - 30], sotto = [M.box.b + NG + fh * FR.k + 30, catTop - 30];
+      const band = sopra[1] - sopra[0] > sotto[1] - sotto[0] ? sopra : sotto;
+      ORB.ai = [960, (band[0] + band[1]) / 2, 16.25, kSlot('ai', 1800, band[1] - band[0])];
+      // gli oggetti stanno nella scena, che in verticale è ingrandita (PK) attorno a YC: riporto posizioni e grandezze dal palco alla scena
+      ['box', 'ill', 'ai', 'mot', 'web'].forEach(id => { const o = ORB[id]; o[0] = 960 + (o[0] - 960) / PK; o[1] = 500 + (o[1] - YC) / PK; o[3] /= PK; });
     } else Object.assign(ORB, ORB0);
     // titoli al centro: stessa grandezza di MOTION, rimpiccioliti se la parola è troppo lunga
     TITLES.forEach(g => {
@@ -720,7 +734,7 @@
     const oOn = t >= 16; vis(el.orbita, oOn); vis(el.miniBox, oOn);
     if (!oOn) return;
     const pop = k => spring(p(t, k, k + .55)), fl = (ph, a = 10) => a * Math.sin(IDLE * 1.1 + ph);
-    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .06)}) scale(${(k * ORB.k * (1 + .03 * r.s)).toFixed(3)}) ${extra}`); return k; };
+    const place = (id, o, extra = '') => { const k = pop(o[2]), r = repel(id, o[0], o[1]); E(id).setAttribute('transform', `translate(${f1(o[0] + r.x)} ${f1(o[1] + fl(o[0]) + r.y)}) rotate(${f1(r.x * .06)}) scale(${(k * (o[3] ?? ORB.k) * (1 + .03 * r.s)).toFixed(3)}) ${extra}`); return k; };
     drawOrbitaV2(t, pop, fl);   // V2: matita, icona 3D, varianti
     place('oMot', ORB.mot);
     E('oPh').setAttribute('transform', `translate(${f1(150 * Math.sin(IDLE * .9))} 0)`);
@@ -1210,17 +1224,17 @@
     // l'icona dell'app in 3D: lo spessore si sposta mentre ondeggia
     const kt = pop(ORB.box[2]), sw = Math.sin(IDLE * .7);
     const rT = repel('tile', ORB.box[0], ORB.box[1]);
-    oTile.setAttribute('transform', `translate(${f1(ORB.box[0] + rT.x)} ${f1(ORB.box[1] + fl(0) + rT.y)}) rotate(${f1(-8 + 7 * sw + rT.x * .06)}) scale(${(kt * ORB.k * (1 + .03 * rT.s)).toFixed(3)})`);
+    oTile.setAttribute('transform', `translate(${f1(ORB.box[0] + rT.x)} ${f1(ORB.box[1] + fl(0) + rT.y)}) rotate(${f1(-8 + 7 * sw + rT.x * .06)}) scale(${(kt * (ORB.box[3] ?? ORB.k) * (1 + .03 * rT.s)).toFixed(3)})`);
     oTileL.forEach((r, i) => r.setAttribute('transform', `translate(${f1((3 - i) * 5 * (.6 + .4 * sw))} ${f1((3 - i) * 6)})`));
     // la matita che rifà lo schizzo
     const kp = pop(ORB.ill[2]), ang = IDLE * 1.6;
     const rP = repel('pen', ORB.ill[0], ORB.ill[1]);
-    oPen.setAttribute('transform', `translate(${f1(ORB.ill[0] + rP.x)} ${f1(ORB.ill[1] + fl(ORB.ill[0]) + rP.y)}) rotate(${f1(rP.x * .06)}) scale(${(kp * 1.05 * ORB.k * (1 + .03 * rP.s)).toFixed(3)})`);
+    oPen.setAttribute('transform', `translate(${f1(ORB.ill[0] + rP.x)} ${f1(ORB.ill[1] + fl(ORB.ill[0]) + rP.y)}) rotate(${f1(rP.x * .06)}) scale(${(kp * 1.05 * (ORB.ill[3] ?? ORB.k) * (1 + .03 * rP.s)).toFixed(3)})`);
     oPen.querySelector('.oPenP').setAttribute('transform', `translate(${f1(70 * Math.cos(ang))} ${f1(48 * Math.sin(ang))}) rotate(${f1(-8 * Math.sin(ang))})`);
     // tre varianti generate, a ventaglio
     const kv = pop(ORB.ai[2]), ap = .7 + .3 * Math.sin(IDLE * 1.1) + .2 * ((REP.var || {}).s || 0);
     const rV = repel('var', ORB.ai[0], ORB.ai[1]);
-    oVar.setAttribute('transform', `translate(${f1(ORB.ai[0] + rV.x)} ${f1(ORB.ai[1] + fl(ORB.ai[0]) + rV.y)}) rotate(${f1(rV.x * .06)}) scale(${(kv * ORB.k * (1 + .03 * rV.s)).toFixed(3)})`);
+    oVar.setAttribute('transform', `translate(${f1(ORB.ai[0] + rV.x)} ${f1(ORB.ai[1] + fl(ORB.ai[0]) + rV.y)}) rotate(${f1(rV.x * .06)}) scale(${(kv * (ORB.ai[3] ?? ORB.k) * (1 + .03 * rV.s)).toFixed(3)})`);
     oVarT.forEach((q, i) => q.g.setAttribute('transform', `translate(${f1((i - 1) * 62 * ap)} ${f1(Math.abs(i - 1) * 10)}) rotate(${f1(q.r * ap)})`));
   }
   // gli elementi della versione con i mondi separati restano spenti durante la storia
@@ -1265,32 +1279,49 @@
       if (t < 2) {
         sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
         jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
-        const apre = eIO(p(t, .9, 1.3));
+        const ln = PT ? M.line(i) : 0;
+        const apre = PT ? spring(p(t, .9 + .05 * ln, 1.35 + .05 * ln)) : eIO(p(t, .9, 1.3));   // in verticale le righe si aprono una dopo l'altra
         if (PT) dy = GOFF[group(i)] * M.GV * apre; else x = GOFF[group(i)] * G * apre;   // in verticale le righe si aprono in altezza
+        let lx = 960, ly = 52, lw = 330;
+        if (LOGO) { const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920; lx = (LOGO.l + LOGO.w / 2 - r0.left) / SS; ly = (LOGO.t + LOGO.h / 2 - r0.top) / SS; lw = LOGO.w / SS; }
+        const cxi = (M.lr[i].l + M.lr[i].r) / 2, cyi = (M.lr[i].t + M.lr[i].b) / 2, hh = M.lr[i].b - M.lr[i].t;
+        if (PT) {
+          // in verticale, due tempi: prima le quattro righe scivolano una dopo l'altra in una riga sola (LIKE da sinistra, MOM da destra…),
+          // poi la riga sale compatta e si posa sul logo del menu
+          const kr = eIO(p(t, 1.38 + .06 * ln, 1.66 + .06 * ln)), kf = eIO(p(t, 1.7, 1.93));
+          if (kr > 0) {
+            const rs = Math.min(1, 1760 / M.ftot), ks = lw / M.ftot, ncy = (M.box.t + M.box.b) / 2;
+            const tx = lerp(lerp(cxi, 960 + M.flat[i] * rs, kr), lx + M.flat[i] * ks, kf), ty = lerp(lerp(cyi + dy, ncy, kr), ly, kf);
+            const kk = lerp(lerp(1, rs, kr), ks, kf);
+            x = tx - cxi; dy = ty - cyi - hh * (1 - kk) / 2; fly = kk;
+            rot = (ln % 2 ? 5 : -5) * bump(kr);   // ogni riga si inclina un poco nel verso in cui scivola
+            sy = 1 + .12 * bump(kf);
+            c.style.opacity = (1 - eIO(p(t, 1.9, 1.97))).toFixed(3);
+          } else c.style.opacity = '';
+        } else {
         // il nome se ne va in alto e diventa il notch del menu: le parole si richiudono e le lettere si posano sul logo
         const fv = eIO(p(t, 1.45 + .003 * i, 1.9 + .003 * i));   // la parola vola compatta, come un pezzo solo
         if (fv > 0) {
-          const L0 = M.lr[0].l, L1 = M.lr[12].r, ncx = (L0 + L1) / 2, cxi = (M.lr[i].l + M.lr[i].r) / 2;
-          let lx = 960, ly = 52, lw = 330;
-          if (LOGO) { const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920; lx = (LOGO.l + LOGO.w / 2 - r0.left) / SS; ly = (LOGO.t + LOGO.h / 2 - r0.top) / SS; lw = LOGO.w / SS; }
-          const ks = lw / (PT ? M.ftot : L1 - L0);
-          const kk = lerp(1, ks, fv), hh = M.lr[i].b - M.lr[i].t, cyi = (M.lr[i].t + M.lr[i].b) / 2;
-          x = lerp(x, PT ? lx + M.flat[i] * ks - cxi : lx + (cxi - ncx) * ks - cxi, fv);   // in verticale le quattro righe si rimettono in fila nel logo
-          dy = lerp(dy, 0, fv) + (ly - cyi) * fv - hh * (1 - kk) / 2;   // si scala dal basso: la alzo di quanto si accorcia, così il centro arriva sul centro del logo
+          const L0 = M.lr[0].l, L1 = M.lr[12].r, ncx = (L0 + L1) / 2;
+          const ks = lw / (L1 - L0);
+          const kk = lerp(1, ks, fv);
+          x = lerp(x, lx + (cxi - ncx) * ks - cxi, fv);
+          dy = (ly - M.cy) * fv - hh * (1 - kk) / 2;   // si scala dal basso: la alzo di quanto si accorcia, così il centro arriva sul centro del logo
           fly = kk; c.style.opacity = (1 - eIO(p(t, 1.9, 1.97))).toFixed(3);   // al posto del logo vero: sparisce mentre il menu compare
         } else c.style.opacity = '';
+        }
       } else if (t < 14) { y = 115; c.style.opacity = ''; }
-      else { y = 115 * (1 - eOut(p(t, 16.0 + .02 * i, 16.45 + .02 * i))); c.style.color = ''; c.style.opacity = ''; }   // dopo il volo nel notch le lettere tornano visibili   // header finale: il nome grande, come all'inizio
+      else { const d0 = PT ? .07 * M.line(i) + .012 * i : .02 * i; y = 115 * (1 - eOut(p(t, 16.0 + d0, 16.45 + d0))); c.style.color = ''; c.style.opacity = ''; }   // dopo il volo nel notch le lettere tornano visibili   // header finale: il nome grande, come all'inizio
       vis(c, y < 114 && dy < 990 && !(t >= 1.97 && t < 14));
       c.style.transformOrigin = '50% 100%';
       c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scale(${fly.toFixed(4)}, ${(fly * sy).toFixed(4)})`;
       c.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
     }
     let ry = 0;
-    if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
+    if (t >= 1.3 && t < 14) ry = t < 2 ? (PT ? 115 * eIO(p(t, 1.32, 1.56)) : 115 * eIn(p(t, 1.55, 1.9))) : 115;   // in verticale esce prima, mentre le righe si mettono in fila
     else if (t >= 14) ry = 115;
     el.role.style.transform = `translateY(${ry}%)`;
-    el.role.parentNode.parentNode.style.transform = PT && t < 2 ? `translateY(${f1(1.5 * M.GV * eIO(p(t, .9, 1.3)))}px)` : '';   // in verticale il ruolo scende con ME quando il nome si apre   // in verticale il ruolo scende con ME quando il nome si apre
+    el.role.parentNode.parentNode.style.transform = PT && t < 2 ? `translateY(${f1(Math.min(1.5 * M.GV, M.roleMax) * spring(p(t, 1.05, 1.5)) * (1 - eIO(p(t, 1.38, 1.62))))}px)` : '';   // in verticale il ruolo scende con ME quando il nome si apre   // in verticale il ruolo scende con ME quando il nome si apre
     [E('sq1'), E('sq2'), E('sq3')].forEach((q, n) => {
       const on = t >= 1 && t < 1.99; vis(q, on); if (!on) return;
       const room = clamp((eIO(p(t, .9, 1.3)) - .55) / .45);   // il quadratino entra solo quando lo spazio tra le parole c'è

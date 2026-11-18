@@ -274,17 +274,17 @@ html.cerca-aperta { overflow: hidden; }
 .nav__mob { display: none; }
 @media (max-width: 720px) {
   .nav__links, .nav__cta { display: none; }   /* le voci e Contatti stanno nel menu a pagina piena */
-  .nav__bar { padding: 0 12px; }
-  .nav__logo { font-size: 18px; }
+  .nav { --nav-h: 72px; }
+  .nav__bar { padding: 0 20px; }
+  .nav__logo { font-size: 16px; }
   .nav__right { padding-right: 0; }
   .nav__tools { height: auto; gap: 6px; padding: 0; border: 0; }
-  .nav__tools .cerca-btn, .nav__tools .tema { display: none; width: 44px; height: 44px; border: 1.5px solid rgba(245, 245, 242, .28); border-radius: 50%; }
-  .nav.mob-aperto .nav__tools .cerca-btn, .nav.mob-aperto .nav__tools .tema { display: grid; animation: mob-su .5s var(--ease) .15s both; }
-  .nav__mob-btn { order: 3; display: inline-flex; align-items: center; gap: 12px; height: 54px; padding: 0 5px 0 20px; border: 1.5px solid color-mix(in srgb, currentColor 30%, transparent);
-    border-radius: 999px; background: none; color: inherit; font: 500 17px/1 var(--f-sans); cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .nav.is-pill:not(.mob-aperto) .nav__mob-btn { height: 52px; border-color: transparent; padding-left: 14px; }   /* nella pillola basta il bordo della pillola */
-  .nav__mob-ico { position: relative; width: 42px; height: 42px; border-radius: 50%; background: currentColor; transition: transform .5s var(--ease); }
-  .nav__mob-ico i { position: absolute; left: 12px; top: 50%; width: 18px; height: 2px; margin-top: -1px; border-radius: 1px; background: var(--bg); transition: transform .5s var(--ease); }
+  .nav__tools .cerca-btn, .nav__tools .tema { display: none; }   /* sul telefono stanno nel menu a pagina piena, sotto il logo */
+  .nav__mob-btn { order: 3; display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 4px 0 16px; border: 1.5px solid color-mix(in srgb, currentColor 32%, transparent);
+    border-radius: 999px; background: none; color: inherit; font: 500 15px/1 var(--f-sans); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .nav.mob-aperto .nav__mob-btn { height: 50px; font-size: 16px; }
+  .nav__mob-ico { position: relative; width: 36px; height: 36px; border-radius: 50%; background: currentColor; transition: transform .5s var(--ease); }
+  .nav__mob-ico i { position: absolute; left: 10px; top: 50%; width: 16px; transform-origin: 50% 50%; height: 2px; margin-top: -1px; border-radius: 1px; background: var(--bg); transition: transform .5s var(--ease); }
   .nav.is-pill .nav__mob-ico i, .nav.mob-aperto .nav__mob-ico i { background: #121414; }
   .nav__mob-ico i:first-child { transform: translateY(-3.5px); }
   .nav__mob-ico i:last-child { transform: translateY(3.5px); }
@@ -300,12 +300,21 @@ html.cerca-aperta { overflow: hidden; }
   html.menu-aperto, html.menu-aperto body { overflow: hidden; }
 
   /* il pannello: nasce dalla pillola e si allarga fino a riempire lo schermo */
-  .nav__mob { position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; gap: 40px;
-    height: 100vh; height: 100dvh; padding: calc(var(--nav-h) + 44px) 20px max(28px, env(safe-area-inset-bottom));
+  .nav__mob { position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; gap: 28px;
+    height: 100vh; height: 100dvh; padding: calc(var(--nav-h) + 20px) 20px max(28px, env(safe-area-inset-bottom));
     background: #121414; color: #F5F5F2; overflow-y: auto; overscroll-behavior: contain; pointer-events: auto;
-    clip-path: inset(20px 12px calc(100% - 84px) 12px round 34px); visibility: hidden;
+    clip-path: inset(20px 40px calc(100% - 80px) 40px round 30px); visibility: hidden;
     transition: clip-path .7s var(--ease), visibility 0s linear .7s; }
   .nav.mob-aperto .nav__mob { clip-path: inset(0 0 0 0 round 0); visibility: visible; transition: clip-path .75s var(--ease), visibility 0s; }
+  /* subito sotto il logo: la barra di ricerca (apre Cerca) e giorno/notte */
+  .nav__mob-cerca { display: flex; gap: 10px; opacity: 0; transform: translateY(-8px); transition: opacity .2s, transform .3s var(--ease); }
+  .nav.mob-aperto .nav__mob-cerca { opacity: 1; transform: none; transition: opacity .4s .12s, transform .6s var(--ease) .12s; }
+  .nav__mob-q { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 20px; border: 1.5px solid rgba(245, 245, 242, .22); border-radius: 999px;
+    background: rgba(245, 245, 242, .06); color: rgba(245, 245, 242, .62); font: 500 16px/1 var(--f-sans); text-align: left; cursor: pointer; }
+  .nav__mob-q svg { flex: none; color: #F5F5F2; }
+  .nav__mob-q span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .nav__mob-tema { flex: none; width: 52px; height: 52px; border-color: rgba(245, 245, 242, .22); color: #F5F5F2; }
+  .nav .nav__mob .tema__sole { --pill-solid: #121414; }
   .nav__mob-voci { display: grid; }
   .mv__riga { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0; }
   .mv__riga > a { display: block; overflow: hidden; padding: .04em 0 .1em; font-weight: 500; font-size: clamp(2.75rem, 13vw, 3.5rem); line-height: 1; letter-spacing: -.035em; }
