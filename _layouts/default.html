@@ -62,12 +62,19 @@
       </nav>
       <div class="nav__right">
         <div class="nav__tools">
+          <button class="nav__mob-btn" type="button" aria-expanded="false" aria-controls="nav-mob" data-mob>Menu</button>
           <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
           <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
         </div>
         <a class="nav__cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
+    <nav class="nav__mob" id="nav-mob" aria-label="Menu principale (telefono)">
+      <a href="{{ '/work/' | relative_url }}">{{ f.progetti }}</a>
+      <a href="{{ '/about/' | relative_url }}">{{ f.chi_sono }}</a>
+      <a href="{{ '/news/' | relative_url }}">{{ f.news | default: "News" }}</a>
+      <a class="nav__mob-cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}</a>
+    </nav>
   </header>
 
   {% comment %} Cerca: un pannello con il campo di ricerca e l'anteprima dei lavori selezionati della home. {% endcomment %}
@@ -211,7 +218,11 @@
         // Due stati: grande in cima alla pagina, notch appena si scorre (in home anche durante l'animazione, dove il nome ci vola dentro).
         // La pillola con le voci non è uno stato a sé: è il notch aperto, col mouse sopra, un tocco o il tab.
         var inReel = reel && !animFinita(), giu = scrollY > 24 || inReel;
-        if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80 && !nav.contains(document.activeElement))) aperto = false;
+        if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80)) {
+          if (aperto && nav.contains(document.activeElement)) document.activeElement.blur();   // un tasto rimasto col focus non deve tenerlo aperto
+          aperto = false;
+        }
+        if (!aperto && nav.classList.contains('mob-aperto') && Math.abs(scrollY - apertoY) > 80) nav.classList.remove('mob-aperto');
         nav.classList.toggle('is-pill', giu);
         nav.classList.toggle('is-notch', giu && !aperto);
       }
@@ -225,7 +236,13 @@
       bar.addEventListener('focusin', apri);
       bar.addEventListener('focusout', function (e) { if (!bar.contains(e.relatedTarget)) { aperto = false; onScroll(); } });
       // al tocco sulla notch: prima si apre, poi i link funzionano
-      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
+      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); if (innerWidth < 720) apriMob(true); } }, true);
+      // telefono: le voci stanno in un pannello sotto la barra (tasto Menu, o tocco sul notch)
+      var mobBtn = nav.querySelector('[data-mob]');
+      function apriMob(on) { nav.classList.toggle('mob-aperto', on); if (mobBtn) mobBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); if (on) { aperto = true; apertoY = scrollY; } onScroll(); }
+      if (mobBtn) mobBtn.addEventListener('click', function () { apriMob(!nav.classList.contains('mob-aperto')); });
+      nav.querySelectorAll('.nav__mob a').forEach(function (a) { a.addEventListener('click', function () { apriMob(false); }); });
+      document.addEventListener('click', function (e) { if (nav.classList.contains('mob-aperto') && !nav.contains(e.target)) apriMob(false); });
       layout(); onScroll();
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', layout);
