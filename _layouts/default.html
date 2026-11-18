@@ -62,19 +62,32 @@
       </nav>
       <div class="nav__right">
         <div class="nav__tools">
-          <button class="nav__mob-btn" type="button" aria-expanded="false" aria-controls="nav-mob" data-mob>Menu</button>
+          <button class="nav__mob-btn" type="button" aria-expanded="false" aria-controls="nav-mob" data-mob><span class="nav__mob-t" data-apri="{{ f.menu | default: 'Menu' }}" data-chiudi="{{ f.menu_chiudi | default: 'Close' }}">{{ f.menu | default: "Menu" }}</span><span class="nav__mob-ico" aria-hidden="true"><i></i><i></i></span></button>
           <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
           <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
         </div>
         <a class="nav__cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
-    <nav class="nav__mob" id="nav-mob" aria-label="Menu principale (telefono)">
-      <a href="{{ '/work/' | relative_url }}">{{ f.progetti }}</a>
-      <a href="{{ '/about/' | relative_url }}">{{ f.chi_sono }}</a>
-      <a href="{{ '/news/' | relative_url }}">{{ f.news | default: "News" }}</a>
-      <a class="nav__mob-cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}</a>
-    </nav>
+    {% comment %} Telefono: il tasto Menu riempie la pagina con le voci grandi, il telefono, Contatti e gli orari nel mondo {% endcomment %}
+    {% assign t_or = site.data.testi.home %}
+    <div class="nav__mob" id="nav-mob" role="dialog" aria-modal="true" aria-label="Menu principale (telefono)">
+      <nav class="nav__mob-voci" aria-label="Menu principale (telefono)">
+        <div class="mv">
+          <div class="mv__riga"><a href="{{ '/work/' | relative_url }}"><span>{{ f.progetti }}</span></a><button class="mv__piu" type="button" aria-expanded="false" aria-controls="mv-work" aria-label="Apri le categorie di {{ f.progetti }}"><i aria-hidden="true"></i></button></div>
+          <div class="mv__sub" id="mv-work"><ul>{% for c in cats_menu %}<li><a href="{{ c.url | relative_url }}">{{ c.title }}</a></li>{% endfor %}<li><a class="mv__tutti" href="{{ '/work/' | relative_url }}">{{ f.sub_tutti }}</a></li></ul></div>
+        </div>
+        <div class="mv"><div class="mv__riga"><a href="{{ '/about/' | relative_url }}"><span>{{ f.chi_sono }}</span></a></div></div>
+        <div class="mv"><div class="mv__riga"><a href="{{ '/news/' | relative_url }}"><span>{{ f.news | default: "News" }}</span></a></div></div>
+      </nav>
+      <div class="nav__mob-piede">
+        <div class="nav__mob-riga">
+          {% if info.telefono and info.telefono != "" %}<div><p class="nav__mob-k">{{ f.telefono | default: "Telefono" }}</p><a class="nav__mob-tel" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a></div>{% endif %}
+          <a class="nav__mob-cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+        <ul class="nav__mob-ore" aria-label="{{ t_or.orari_k }}">{% for c in t_or.orari_citta %}<li data-ora-fuso="{{ c.fuso }}"><span class="nav__mob-k" title="{{ c.citta }}">{{ c.sigla | default: c.citta | slice: 0, 3 | upcase }}</span><span class="nav__mob-ora">--<i>:</i>--</span></li>{% endfor %}</ul>
+      </div>
+    </div>
   </header>
 
   {% comment %} Cerca: un pannello con il campo di ricerca e l'anteprima dei lavori selezionati della home. {% endcomment %}
@@ -189,7 +202,7 @@
         // nella pillola stanno, uno dopo l'altro: il logo, le voci e (ricerca + giorno/notte + Contatti)
         var small = innerWidth < 720, pad = small ? 18 : 30, gap = small ? 14 : 40;
         var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth, cw = links.offsetWidth,
-            pill = pad + lw + gap + (cw ? cw + gap : 0) + rw + 6, clip = Math.max(0, (W - pill) / 2);
+            pill = pad + lw + gap + (cw ? cw + gap : 0) + rw + 6, clip = small ? 0 : Math.max(0, (W - pill) / 2);   // telefono: la pillola è larga quanto lo schermo, logo a sinistra e Menu a destra
         bar.style.setProperty('--clip', clip + 'px');
         bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
         bar.style.setProperty('--dc', (clip + pad + lw + gap - links.offsetLeft) + 'px');
@@ -235,14 +248,30 @@
       });
       bar.addEventListener('focusin', apri);
       bar.addEventListener('focusout', function (e) { if (!bar.contains(e.relatedTarget)) { aperto = false; onScroll(); } });
-      // al tocco sulla notch: prima si apre, poi i link funzionano
-      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); if (innerWidth < 720) apriMob(true); } }, true);
-      // telefono: le voci stanno in un pannello sotto la barra (tasto Menu, o tocco sul notch)
-      var mobBtn = nav.querySelector('[data-mob]');
-      function apriMob(on) { nav.classList.toggle('mob-aperto', on); if (mobBtn) mobBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); if (on) { aperto = true; apertoY = scrollY; } onScroll(); }
+      // al tocco sulla notch: prima si apre (sul telefono la pillola larga: logo a sinistra, Menu a destra), poi i link funzionano
+      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
+      // telefono: il tasto Menu riempie la pagina con le voci; sopra resta la barra con Close
+      var mobBtn = nav.querySelector('[data-mob]'), mobT = mobBtn && mobBtn.querySelector('.nav__mob-t'), mob = nav.querySelector('.nav__mob');
+      function apriMob(on) {
+        nav.classList.toggle('mob-aperto', on); html.classList.toggle('menu-aperto', on);
+        if (mobBtn) { mobBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); mobT.textContent = on ? mobT.dataset.chiudi : mobT.dataset.apri; }
+        if (on) { aperto = true; apertoY = scrollY; oreMob(); }
+        else nav.querySelectorAll('.mv.is-open').forEach(function (m) { m.classList.remove('is-open'); m.querySelector('.mv__piu').setAttribute('aria-expanded', 'false'); });
+        onScroll();
+      }
       if (mobBtn) mobBtn.addEventListener('click', function () { apriMob(!nav.classList.contains('mob-aperto')); });
       nav.querySelectorAll('.nav__mob a').forEach(function (a) { a.addEventListener('click', function () { apriMob(false); }); });
-      document.addEventListener('click', function (e) { if (nav.classList.contains('mob-aperto') && !nav.contains(e.target)) apriMob(false); });
+      nav.querySelectorAll('.mv__piu').forEach(function (b) { b.addEventListener('click', function () { var m = b.closest('.mv'), on = !m.classList.contains('is-open'); m.classList.toggle('is-open', on); b.setAttribute('aria-expanded', on ? 'true' : 'false'); }); });
+      addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('mob-aperto')) { apriMob(false); mobBtn.focus(); } });
+      // sul telefono la pillola aperta si richiude toccando fuori
+      document.addEventListener('click', function (e) { if (aperto && !nav.classList.contains('mob-aperto') && !nav.contains(e.target) && innerWidth < 720) { aperto = false; onScroll(); } });
+      // gli orari nel mondo in fondo al menu
+      var ore = nav.querySelectorAll('[data-ora-fuso]'), oreT = 0;
+      function oreMob() {
+        ore.forEach(function (li) { var h = new Intl.DateTimeFormat('it-IT', { timeZone: li.dataset.oraFuso, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date()).split(':');
+          li.querySelector('.nav__mob-ora').innerHTML = h[0] + '<i>:</i>' + h[1]; });
+        clearTimeout(oreT); if (nav.classList.contains('mob-aperto')) oreT = setTimeout(oreMob, 20000);
+      }
       layout(); onScroll();
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', layout);

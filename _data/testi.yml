@@ -27,17 +27,23 @@ home:
   orari_dorme: Ti rispondo domattina
   orari_citta:
     - citta: Roma
+      sigla: ROM
       fuso: Europe/Rome
       casa: true
     - citta: Londra
+      sigla: LON
       fuso: Europe/London
     - citta: New York
+      sigla: NYC
       fuso: America/New_York
     - citta: Los Angeles
+      sigla: LAX
       fuso: America/Los_Angeles
     - citta: Dubai
+      sigla: DXB
       fuso: Asia/Dubai
     - citta: Tokyo
+      sigla: TYO
       fuso: Asia/Tokyo
 
 lavori:
@@ -61,6 +67,8 @@ footer:
   cta_testo: Raccontamelo. Rispondo io, di persona, e di solito in giornata.
   cta_bottone: Scrivimi
   menu: Menu
+  menu_chiudi: Close
+  telefono: Telefono
   mondi: Mondi
   contatti: Contatti
   home: Home
