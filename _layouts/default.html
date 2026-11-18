@@ -183,21 +183,21 @@
         bar.style.setProperty('--clip', clip + 'px');
         bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
         bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
-        // la notch: una capsula piccola al centro, in alto, con dentro solo il logo rimpicciolito
-        var H = bar.clientHeight, ns = small ? .72 : .6, nh = small ? 34 : 36, nw = lw * ns + (small ? 30 : 36), nv = (H - nh) / 2;
-        bar.style.setProperty('--ns', ns);
-        bar.style.setProperty('--nv', nv + 'px');
-        bar.style.setProperty('--ny', (8 - nv) + 'px');
+        // la notch: la pillola stretta attorno al solo logo, a grandezza piena, al centro
+        var nw = lw + pad * 2;
         bar.style.setProperty('--nclip', Math.max(0, (W - nw) / 2) + 'px');
         bar.style.setProperty('--nl', (W / 2 - (logo.offsetLeft + lw / 2)) + 'px');
       }
-      // Scorrendo il menu diventa una notch; col mouse sopra (o un tocco, o il tab) torna la pillola intera
-      var aperto = false, apertoY = 0, chiudi = null;
+      // Tre stadi: larga in cima; pillola mentre scorre l'animazione della home; notch col solo logo
+      // quando l'animazione è finita (o subito, nelle altre pagine). Col mouse sopra, un tocco o il tab torna la pillola.
+      var aperto = false, apertoY = 0, chiudi = null, reel = document.getElementById('reel');
+      function animFinita() { return !reel || document.body.classList.contains('reel-fatto'); }
+      document.addEventListener('reelfatto', function () { onScroll(); });
       function onScroll() {
-        var giu = scrollY > 24;
+        var giu = scrollY > 24 || (reel && animFinita());   // in home, a fine animazione resta piccola anche in cima
         if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80 && !nav.contains(document.activeElement))) aperto = false;
         nav.classList.toggle('is-pill', giu);
-        nav.classList.toggle('is-notch', giu && !aperto);
+        nav.classList.toggle('is-notch', giu && !aperto && animFinita());
       }
       function apri() { clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
       bar.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') apri(); });
@@ -209,7 +209,7 @@
       bar.addEventListener('focusin', apri);
       bar.addEventListener('focusout', function (e) { if (!bar.contains(e.relatedTarget)) { aperto = false; onScroll(); } });
       // al tocco sulla notch: prima si apre, poi i link funzionano
-      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
+      bar.addEventListener('click', function (e) { if (nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
       layout(); onScroll();
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', layout);
