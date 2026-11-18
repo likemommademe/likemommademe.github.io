@@ -458,11 +458,15 @@ body.has-reel .nav { transition: opacity .35s var(--ease), visibility 0s; }
 body.has-reel:not(.notch-on):not(.reel-fatto) .nav { opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s linear .2s; }
 body.reel-fatto .scorri, body.reel-fatto .salta-intro { opacity: 0; pointer-events: none; visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .scorri i { animation: none; top: 14px; } }
-/* Telefono: Suono e Skip non servono; lo scroll resta, più grande e centrato in basso */
+/* Telefono: in basso, su una riga sola sotto le categorie dello showreel verticale: Suono (tondo) · scroll · Skip (tondo) */
 @media (max-width: 720px) {
-  .salta-intro, .suono { display: none !important; }
   .scorri { bottom: max(28px, env(safe-area-inset-bottom)); width: 34px; height: 56px; margin-left: -17px; border-radius: 18px; opacity: .85; }
   .scorri i { top: 10px; width: 8px; height: 8px; margin-left: -4px; }
+  .suono, .salta-intro { bottom: calc(max(28px, env(safe-area-inset-bottom)) + 6px); width: 44px; height: 44px; padding: 0; justify-content: center; gap: 0; border-radius: 50%; }
+  .suono { left: 20px; }
+  .salta-intro { right: 20px; }
+  .suono__t, .salta-intro__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .salta-intro svg { width: 16px; height: 16px; }
 }
 @media (max-width: 720px) and (prefers-reduced-motion: no-preference) { .scorri i { animation-name: scorri-mob; } }
 @keyframes scorri-mob { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(22px); opacity: 0; } 100% { transform: translateY(22px); opacity: 0; } }
