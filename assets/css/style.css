@@ -158,7 +158,6 @@ em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; 
 .nav.is-pill .nav__hl { background: rgba(245, 245, 242, .12); }
 .nav__links.is-hl .nav__hl { opacity: 1; }
 .nav__links > a, .nav__item { position: relative; z-index: 1; }
-.nav__n { margin-left: 3px; font-family: var(--f-label); font-weight: 600; font-size: 11px; vertical-align: super; line-height: 0; color: var(--accent-3); }
 /* ricerca e giorno/notte in una sola capsula sottile */
 .nav__tools { display: flex; align-items: center; gap: 2px; height: 44px; padding: 0 3px; border: 1.5px solid currentColor; border-radius: 999px; }
 .nav__tools .cerca-btn { width: 36px; height: 36px; margin: 0; }

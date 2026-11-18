@@ -38,7 +38,7 @@
       <nav class="nav__links" aria-label="Menu principale">
           <i class="nav__hl" aria-hidden="true"></i>
           <div class="nav__item" data-sub>
-            <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}<sup class="nav__n">{{ site.progetti | where_exp: "p", "p.published != false" | size }}</sup></a>
+            <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}</a>
             <button class="nav__sub-btn" type="button" aria-expanded="false" aria-controls="sub-work" aria-label="Apri le categorie di {{ f.progetti }}"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             {% assign cats_menu = site.categorie | sort: "ordine", "last" %}
             <div class="sub" id="sub-work">
