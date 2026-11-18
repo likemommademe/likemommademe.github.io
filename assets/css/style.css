@@ -368,7 +368,7 @@ body.motto-vola .motto-volo { opacity: 1; }
 
 /* Pulsante della musica (home) */
 /* Header iniziale: indicatore di scroll (la pillola con il puntino che scende) e Skip intro. Spariscono quando parte la pagina */
-.scorri { position: absolute; left: 50%; bottom: 19vh; z-index: 2; width: 26px; height: 42px; margin-left: -13px; border: 2px solid currentColor; border-radius: 14px;
+.scorri { position: absolute; left: 50%; bottom: 6vh; z-index: 2; width: 26px; height: 42px; margin-left: -13px; border: 2px solid currentColor; border-radius: 14px;
   color: var(--fg); opacity: .7; pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
 .scorri i { position: absolute; left: 50%; top: 8px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: currentColor; animation: scorri 1.6s var(--ease) infinite; }
 @keyframes scorri { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(14px); opacity: 0; } 100% { transform: translateY(14px); opacity: 0; } }
