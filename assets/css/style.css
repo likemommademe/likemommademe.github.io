@@ -139,9 +139,8 @@ em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; 
 .nav__right { transition: transform .8s var(--ease), opacity .35s; }
 .nav.is-pill .nav__bar { pointer-events: none; }
 .nav.is-pill .nav__bar::before, .nav.is-pill .nav__logo, .nav.is-pill .nav__right { pointer-events: auto; }
-.nav.is-notch .nav__bar { transform: translateY(var(--ny, -12px)); }
-.nav.is-notch .nav__bar::before { clip-path: inset(var(--nv, 20px) var(--nclip, 40%) round 999px); }
-.nav.is-notch .nav__logo { transform: translateX(var(--nl, 0px)) scale(var(--ns, .6)); }
+.nav.is-notch .nav__bar::before { clip-path: inset(6px var(--nclip, 40%) round 999px); }
+.nav.is-notch .nav__logo { transform: translateX(var(--nl, 0px)); }
 .nav.is-notch .nav__right { opacity: 0; pointer-events: none; transform: translateX(var(--dr, 0px)) scale(.92); transition: transform .8s var(--ease), opacity .2s; }
 .nav.is-notch .nav__logo i { animation: notch-respira 2.4s var(--ease-io) infinite; }
 @keyframes notch-respira { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.45) rotate(45deg); } }
@@ -355,14 +354,14 @@ body.motto-vola .motto-volo { opacity: 1; }
   color: var(--fg); opacity: .7; pointer-events: none; transition: opacity .4s var(--ease), transform .4s var(--ease); }
 .scorri i { position: absolute; left: 50%; top: 8px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: currentColor; animation: scorri 1.6s var(--ease) infinite; }
 @keyframes scorri { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(14px); opacity: 0; } 100% { transform: translateY(14px); opacity: 0; } }
-.salta { position: fixed; right: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 18px;
+.salta-intro { position: fixed; right: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 18px;
   border: 1.5px solid var(--line-2); border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); color: var(--fg);
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font: 700 13px/1 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
   transition: opacity .4s var(--ease), border-color .2s; }
-.salta:hover { border-color: var(--fg); }
-.salta:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; }
+.salta-intro:hover { border-color: var(--fg); }
+.salta-intro:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; }
 body.intro-mossa .scorri { opacity: 0; transform: translateY(10px); }
-body.reel-fatto .scorri, body.reel-fatto .salta { opacity: 0; pointer-events: none; visibility: hidden; }
+body.reel-fatto .scorri, body.reel-fatto .salta-intro { opacity: 0; pointer-events: none; visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .scorri i { animation: none; top: 14px; } }
 
 .suono { position: fixed; left: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px;
