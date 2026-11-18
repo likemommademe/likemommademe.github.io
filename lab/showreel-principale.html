@@ -1197,22 +1197,28 @@
       }
       // Uscita: le lettere cadono intere (niente maschere che le tagliano), una parola dopo l'altra, con il motion blur
       m.style.overflow = t < 14 || t > 16.8 ? 'visible' : 'hidden';   // a nome salito niente maschera: al passaggio del mouse le lettere possono crescere
-      let x = 0, y = 0, sy = 1, jump = 0, dy = 0, rot = 0, blur = 0;
+      let x = 0, y = 0, sy = 1, jump = 0, dy = 0, rot = 0, blur = 0, fly = 1;
       if (t < 2) {
         sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
         jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
         x = GOFF[group(i)] * G * eIO(p(t, .9, 1.3));
-        if (true) {
-          const a = 1.45 + .05 * group(i) + .01 * i, fall = q => 1000 * eIn(p(q, a, a + .34));
-          dy = fall(t); const v = (dy - fall(t - 1 / 60)) * 60;
-          rot = (((i * 37) % 11) - 5) * 2.2 * p(t, a, a + .34);
-          blur = Math.min(10, v * .0016);
-        }
+        // il nome se ne va in alto e diventa il notch del menu: le parole si richiudono e le lettere si posano sul logo
+        const fv = eIO(p(t, 1.45 + .012 * i, 1.92 + .012 * i));
+        if (fv > 0) {
+          const L0 = M.lr[0].l, L1 = M.lr[12].r, ncx = (L0 + L1) / 2, cxi = (M.lr[i].l + M.lr[i].r) / 2;
+          let lx = 960, ly = 52, lw = 330;
+          if (LOGO) { const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920; lx = (LOGO.l + LOGO.w / 2 - r0.left) / SS; ly = (LOGO.t + LOGO.h / 2 - r0.top) / SS; lw = LOGO.w / SS; }
+          const ks = lw / (L1 - L0);
+          const kk = lerp(1, ks, fv), hh = M.lr[i].b - M.lr[i].t;
+          x = lerp(x, lx + (cxi - ncx) * ks - cxi, fv);
+          dy = (ly - M.cy) * fv + hh * (1 - kk) / 2;   // si scala dal basso: compenso, così il centro della lettera arriva sul logo
+          fly = kk; c.style.opacity = (1 - eIO(p(t, 1.9, 1.97))).toFixed(3);   // al posto del logo vero: sparisce mentre il menu compare
+        } else c.style.opacity = '';
       } else if (t < 14) { y = 115; }
       else { y = 115 * (1 - eOut(p(t, 16.0 + .02 * i, 16.45 + .02 * i))); c.style.color = ''; }   // header finale: il nome grande, come all'inizio
-      vis(c, y < 114 && dy < 990);
+      vis(c, y < 114 && dy < 990 && !(t >= 1.97 && t < 14));
       c.style.transformOrigin = '50% 100%';
-      c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scaleY(${sy.toFixed(3)})`;
+      c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scale(${fly.toFixed(4)}, ${(fly * sy).toFixed(4)})`;
       c.style.filter = blur > .4 ? `blur(${f1(blur)}px)` : 'none';
     }
     let ry = 0;
@@ -1232,6 +1238,7 @@
     el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
     const active = R.title ? R.title.world : WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
     worldEls.forEach((d, i) => {
+      d.firstChild.firstChild.style.transform = `translateY(${f1(115 * (1 - eOut(p(t, 1.9 + .05 * i, 2.32 + .05 * i))))}%)`;   // salgono quando il nome diventa il notch
       d.style.color = active === i || active === -1 ? TH.fg : TH.dim;
       d.lastChild.style.transform = `scaleX(${active === i ? (R.title ? 1 : eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3))) : 0})`;
     });
@@ -1420,6 +1427,7 @@
   const scrollMode = !inLoop && (embed || (!qs.has('play') && !qs.has('t') && !reduced));
   if (embed) document.body.classList.add('embed');
   else if (scrollMode) { document.body.classList.add('scroll'); document.documentElement.classList.add('scroll'); }
+  let LOGO = null, notchOra = null;   // il notch: le lettere del nome ci volano dentro
   let embedTarget = 0, done = false, vede = true;
   setTheme(qs.get('theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
   if (embed || inLoop) addEventListener('message', e => {
@@ -1430,6 +1438,7 @@
     if (typeof e.data.vede === 'boolean') vede = e.data.vede;
     if (typeof e.data.reel === 'number') embedTarget = reduced ? 0 : clamp(e.data.reel) * DUR;
     if (typeof e.data.mx === 'number') { ptr.x = e.data.mx; ptr.y = e.data.my; ptr.in = !!e.data.dentro; }
+    if (e.data.logo) { LOGO = e.data.logo; lastDrawn = -1; }   // dove sta il logo del menu a pillola (il notch)
   });
   let playing = !(reduced || qs.has('t')) && !scrollMode, sound = false, ctx = null, master = null, noise = null;
   let base = inLoop ? LOOP[0] + (reduced ? (LOOP[1] - LOOP[0]) * .6 : 0) : qs.has('t') ? parseFloat(qs.get('t')) || 0 : 0, ref = 0, nextBeat = 0, dragging = false;
@@ -1524,6 +1533,7 @@
     st = clamp(st, 0, DUR);
     if (st > DUR - .9 && vede) { IDLE += reduced ? 0 : dt; lastDrawn = -1; }   // a intro finita l'header resta vivo
     if (st !== lastDrawn) { seek(st); lastDrawn = st; }
+    const nn = st >= 1.9 || done; if (embed && nn !== notchOra) { notchOra = nn; parent.postMessage({ notch: nn }, location.origin); }
     // in cima, a pagina ferma: la lettera sotto il mouse si ingrandisce (le vicine un po' meno);
     // accanto alla freccia compare la pillola SCROLL e la segue
     const r0 = stage.getBoundingClientRect(), SS = r0.width / 1920;

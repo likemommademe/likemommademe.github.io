@@ -380,8 +380,9 @@ body.motto-vola .motto-volo { opacity: 1; }
 .salta-intro:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; }
 body.intro-mossa .scorri { opacity: 0; transform: translateY(10px); }
 /* Home: durante l'animazione iniziale il menu non c'è; compare (scendendo dall'alto) quando l'animazione è finita */
-body.has-reel .nav { transition: opacity .7s var(--ease), transform .7s var(--ease), visibility 0s; }
-body.has-reel:not(.reel-fatto) .nav { opacity: 0; visibility: hidden; transform: translateY(-24px); transition: opacity .3s, transform .3s, visibility 0s linear .3s; }
+/* Home: all'inizio c'è solo il nome. Il menu (nello stato notch), Suono e Skip intro compaiono quando il nome ci vola dentro */
+body.has-reel .nav, body.has-reel .suono, body.has-reel .salta-intro { transition: opacity .35s var(--ease), visibility 0s; }
+body.has-reel:not(.notch-on):not(.reel-fatto) :is(.nav, .suono, .salta-intro) { opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s linear .2s; }
 body.reel-fatto .scorri, body.reel-fatto .salta-intro { opacity: 0; pointer-events: none; visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .scorri i { animation: none; top: 14px; } }
 

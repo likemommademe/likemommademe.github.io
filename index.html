@@ -43,6 +43,12 @@ reel: true
       post({ done: true });
       document.dispatchEvent(new Event('reelfatto'));
     }
+    // il nome diventa il notch: da quel momento compaiono il menu (nello stato notch), Suono e Skip intro
+    addEventListener('message', function (e) {
+      if (e.origin !== location.origin || !e.data || typeof e.data.notch !== 'boolean') return;
+      document.body.classList.toggle('notch-on', e.data.notch);
+      document.dispatchEvent(new Event('notchcambia'));
+    });
     // Skip intro: salta subito alla schermata finale, senza far scorrere le scene
     var salta = reel.querySelector('[data-salta]');
     if (salta) salta.addEventListener('click', function () {
@@ -58,7 +64,8 @@ reel: true
     function send() {
       var r = reel.getBoundingClientRect(), max = r.height - innerHeight;
       var p = fatta ? 1 : max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
-      post({ reel: p, theme: document.documentElement.dataset.theme, vede: vede(), done: fatta });
+      var lg = document.querySelector('.nav__logo'), lr = lg && lg.getBoundingClientRect();
+      post({ reel: p, theme: document.documentElement.dataset.theme, vede: vede(), done: fatta, logo: lr ? { l: lr.left, t: lr.top, w: lr.width, h: lr.height } : null });
       if (!fatta && p >= .999) chiudi(false);
     }
     if (giaFatta || reduce) chiudi(true);
