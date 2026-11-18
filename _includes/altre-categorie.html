@@ -1,18 +1,25 @@
-{% comment %} Sotto ogni categoria: le altre categorie, nella stessa lista di "Cosa faccio" in Contatti. {% endcomment %}
+{% comment %}
+  Sotto ogni categoria: le altre categorie, a card con la foto.
+  La foto è l'Immagine della categoria (pannello); se manca, la copertina del suo primo progetto.
+{% endcomment %}
 {% assign tcat = site.data.testi.categoria %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
-<section class="fascia inv servizi altre-cat">
+{% assign tutti = site.progetti | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
+<section class="fascia inv altre-cat">
   <h2 class="rise"><span>{{ tcat.altre_titolo }}</span></h2>
-  {% assign i = 0 %}
-  <ol class="servizi__lista">
-    {% for c in categorie %}{% if c.slug != page.slug %}{% assign i = i | plus: 1 %}
-    {% assign n = 0 %}{% for p in site.progetti %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}
-    <li><a class="servizi__r" href="{{ c.url | relative_url }}">
-      <span class="servizi__n">{{ i | prepend: "0" }}</span>
-      <span class="servizi__t">{{ c.title }}</span>
-      <span class="servizi__d">{{ c.content | strip_html | strip_newlines }}{% if n > 0 %} <span class="altre-cat__n">{{ n }} {% if n == 1 %}{{ tcat.progetto }}{% else %}{{ tcat.progetti }}{% endif %}</span>{% endif %}</span>
-      <span class="servizi__go" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  <ul class="altre-cat__lista">
+    {% for c in categorie %}{% if c.slug != page.slug %}
+    {% assign n = 0 %}{% assign foto = c.copertina %}
+    {% for p in tutti %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% if foto == nil and p.categoria == c.slug and p.copertina %}{% assign foto = p.copertina %}{% endif %}{% endif %}{% endfor %}
+    <li><a class="altre-cat__c" href="{{ c.url | relative_url }}">
+      <span class="altre-cat__img">{% if foto %}<img src="{{ foto | relative_url }}" alt="" loading="lazy">{% endif %}</span>
+      <span class="altre-cat__testa">
+        <span class="altre-cat__t">{{ c.title }}</span>
+        <span class="altre-cat__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span>
+      <span class="altre-cat__d">{{ c.content | strip_html | strip_newlines }}</span>
+      {% if n > 0 %}<span class="altre-cat__n">{{ n }} {% if n == 1 %}{{ tcat.progetto }}{% else %}{{ tcat.progetti }}{% endif %}</span>{% endif %}
     </a></li>
     {% endif %}{% endfor %}
-  </ol>
+  </ul>
 </section>

@@ -73,7 +73,7 @@ window.CMS = {
       count: { collection: 'progetti', field: 'categoria', alsoField: 'altre_categorie' },
       fields: [
         { name: 'title', label: 'Nome', type: 'string', required: true, i18n: true },
-        { name: 'copertina', label: 'Immagine', type: 'image', hint: 'Compare nella pagina Work.' },
+        { name: 'copertina', label: 'Immagine', type: 'image', hint: 'Compare nella pagina Work e nelle card «Le altre categorie». Se manca, si usa la copertina del primo progetto della categoria.' },
         { name: 'body', label: 'Descrizione', type: 'markdown', rows: 4, i18n: true },
         { name: 'ordine', type: 'hidden' },
       ],
