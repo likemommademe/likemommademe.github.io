@@ -77,7 +77,7 @@ crediti: |
   Progetto personale, AI x Creatives.
 crediti_en: |
   Personal project, AI x Creatives.
-ordine: 8
+ordine: 12
 seo_descrizione: "Juniors: una folla di piccoli volti di bambola, dolce e inquietante, che alla fine si scioglie in una crema di colori. Immagini e video generativi."
 seo_descrizione_en: "Juniors: a crowd of small doll faces, sweet and unsettling, that finally melts into a cream of colours. Generative images and video."
 ---

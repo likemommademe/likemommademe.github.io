@@ -1,0 +1,373 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>One Line</title>
+<style>
+html,body{margin:0;padding:0;background:#0A0A0A;overflow:hidden}
+#stage{width:1920px;height:1080px;display:block}
+</style></head>
+<body>
+<svg id="stage" xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script>
+// ===== Concept: "One line of thought" — every shot is made from a single orange line. =====
+const W=1920,H=1080,CX=960,CY=540,DUR=10;
+const C={k:'#0A0A0A',w:'#F4F2EE',o:'#FF5A1F',b:'#2E4BFF'};
+const FONT='Inter Display';
+
+// ---------- math ----------
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,p)=>a+(b-a)*p;
+const prog=(t,s,d)=>cl((t-s)/d);
+const eOut=p=>p<=0?0:p>=1?1:(1-Math.pow(2,-10*p))/(1-Math.pow(2,-10));
+const eIn=p=>p<=0?0:p>=1?1:(Math.pow(2,10*p)-1)/(Math.pow(2,10)-1);
+const eIO=p=>p<=0?0:p>=1?1:(p<.5?eIn(p*2)/2:.5+eOut(p*2-1)/2);
+// critically damped spring (no overshoot), normalised to reach exactly 1 at s+d
+const sprRaw=(x,w)=>x<=0?0:1-(1+w*x)*Math.exp(-w*x);
+const spr=(t,s,d,w=22)=>{const x=t-s;if(x<=0)return 0;if(x>=d)return 1;return sprRaw(x,w)/sprRaw(d,w);};
+const hex=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));
+const mix=(a,b,p)=>{const A=hex(a),B=hex(b);p=cl(p);return 'rgb('+A.map((v,i)=>Math.round(lerp(v,B[i],p))).join(',')+')';};
+const f1=v=>(Math.round(v*100)/100);
+
+// ---------- text layout ----------
+const cv=document.createElement('canvas').getContext('2d');
+const layCache={};
+function layout(str,size,weight,track){
+  const key=str+size+weight+track; if(layCache[key])return layCache[key];
+  cv.font=`${weight} ${size}px "${FONT}"`;
+  const xs=[];let prev=0;
+  for(let i=0;i<str.length;i++){xs.push(prev+i*track);prev=cv.measureText(str.slice(0,i+1)).width;}
+  const width=prev+(str.length-1)*track;
+  const adv=str.split('').map((c,i)=>(i<str.length-1?xs[i+1]-track:width)-xs[i]);
+  return layCache[key]={xs,width,adv};
+}
+
+// ---------- data ----------
+const HS=[180,320,240,420,560,300,380,260,480];
+const VS=HS.map(h=>Math.round(h/5.6));
+const baseCol=k=>k===4?C.o:C.b;
+
+// ---------- scene: pure function of t -> primitives ----------
+function scene(t){
+  t=((t%DUR)+DUR)%DUR;
+  const P=[];
+  const rect=(key,x,y,w,h,fill,o={})=>P.push(Object.assign({type:'rect',key,x,y,w,h,fill,rx:0},o));
+
+  // ===== BAR 1 · hook + kinetic type (0–2) =====
+  if(t<2){
+    // the line
+    let lw, ly;
+    if(t<1.5){ lw=lerp(120,900,spr(t,0,0.42,20)); ly=lerp(540,683,spr(t,0.5,0.42,20)); }
+    else { lw=lerp(900,0,eIO(prog(t,1.5,0.22))); ly=683; }
+    if(lw>0.5) rect('line',CX-lw/2,ly-3,lw,6,C.o);
+
+    const L1=layout('THINK',300,900,-9), L2=layout('SHAPE',300,900,-9);
+    const clip=[0,410,W,270];
+    if(t>=0.5 && t<1.5){
+      'THINK'.split('').forEach((ch,i)=>{
+        let dy=lerp(260,0,eOut(prog(t,0.5+i*0.035,0.34)));
+        dy-=lerp(0,270,eIO(prog(t,1.0+i*0.03,0.3)));
+        const x=CX-L1.width/2+L1.xs[i];
+        P.push({type:'text',key:'th'+i,str:ch,x,y:680+dy,size:300,weight:900,fill:C.w,clip,cx:x+L1.adv[i]/2,cy:680+dy,w:L1.adv[i]});
+      });
+    }
+    if(t>=1.0 && t<1.72){
+      const sx=lerp(1,0.02,eIO(prog(t,1.5,0.22)));
+      'SHAPE'.split('').forEach((ch,i)=>{
+        const dy=lerp(270,0,eOut(prog(t,1.05+i*0.03,0.32)));
+        const x=CX-L2.width/2+L2.xs[i];
+        P.push({type:'text',key:'sh'+i,str:ch,x,y:680+dy,size:300,weight:900,fill:C.w,clip,sx,ox:CX,
+                cx:CX+(x+L2.adv[i]/2-CX)*sx,cy:680+dy,w:L2.adv[i]*sx});
+      });
+    }
+    if(t>=1.72){
+      const w0=L2.width*0.02, cap=0.727*300;
+      const p=spr(t,1.72,0.28,26);
+      const w=lerp(w0,44,p), h=lerp(cap,44,p), cy=lerp(680-cap/2,540,p);
+      rect('blob',CX-w/2,cy-h/2,w,h,C.w,{rx:Math.min(w,h)/2});
+    }
+  }
+
+  // ===== BAR 2 · shape morphing (2–4) =====
+  else if(t<4){
+    if(t<2.5){
+      const r=lerp(22,220,spr(t,2,0.45,20));
+      rect('blob',CX-r,CY-r,2*r,2*r,C.w,{rx:r});
+    } else if(t<3){
+      const p=eIO(prog(t,2.5,0.42));
+      rect('blob',CX-220,CY-220,440,440,mix(C.w,C.b,p),{rx:lerp(220,0,p),rot:45*(1-p)});
+    } else {
+      const quads=[[-1,-1],[1,-1],[-1,1],[1,1]];
+      if(t<3.5){
+        const p=spr(t,3,0.42,22), rot=90*eIO(prog(t,3,0.42));
+        const off=lerp(110,125,p), s=lerp(220,210,p);
+        quads.forEach(([a,b],i)=>rect('q'+i,CX+a*off-s/2,CY+b*off-s/2,s,s,C.b,{rot}));
+      } else {
+        const p=spr(t,3.5,0.42,22);
+        const off=lerp(125,168,p), s=lerp(210,150,p);
+        quads.forEach(([a,b],i)=>rect('q'+i,CX+a*off-s/2,CY+b*off-s/2,s,s,C.b));
+        const edges=[[0,-1],[-1,0],[1,0],[0,1]];
+        edges.forEach(([a,b],i)=>{
+          const sc=spr(t,3.55+i*0.03,0.36,24), s2=150*sc;
+          if(s2>0.5) rect('e'+i,CX+a*168-s2/2,CY+b*168-s2/2,s2,s2,C.b);
+        });
+        const sc=spr(t,3.68,0.3,26), s3=150*sc;
+        if(s3>0.5) rect('c',CX-s3/2,CY-s3/2,s3,s3,C.o);
+      }
+    }
+  }
+
+  // ===== BAR 3 · 2D -> 3D (4–6) =====
+  else if(t<6){
+    let th=44, yaw=0;
+    if(t<4.5) th=lerp(90,44,eIO(prog(t,4,0.46)));
+    if(t>=5.5) th=lerp(44,0,eIO(prog(t,5.5,0.46)));
+    if(t>=5 && t<5.5) yaw=lerp(0,32,eIO(prog(t,5,0.46)));
+    if(t>=5.5) yaw=lerp(32,0,eIO(prog(t,5.5,0.46)));
+    const ty=lerp(0,130,eIO(prog(t,4.15,0.8)))+lerp(0,110,eIO(prog(t,5.5,0.46)));
+    const r=eIO(prog(t,5.5,0.46));
+    const order=[4,1,3,5,7,0,2,6,8];
+    const boxes=[];
+    for(let j=0;j<3;j++)for(let i=0;i<3;i++){
+      const k=j*3+i;
+      const hh=HS[k]*spr(t,4.5+order.indexOf(k)*0.028,0.38,18);
+      boxes.push({k,x:lerp((i-1)*168,(k-4)*150,r),z:lerp((j-1)*168,0,r),
+                  fw:lerp(150,110,r),fd:lerp(150,0,r),h:hh,col:baseCol(k)});
+    }
+    draw3D(P,boxes,th*Math.PI/180,yaw*Math.PI/180,ty,1-r);
+  }
+
+  // ===== BAR 4 · data / UI (6–8) — strongest bar =====
+  else if(t<8){
+    const xC=k=>CX+(k-4)*150;
+    // bars
+    if(t<7.25){
+      const bw=lerp(110,14,eIO(prog(t,6.5,0.4)));
+      const sink=1-eIO(prog(t,7.0,0.24));
+      HS.forEach((h,k)=>{const bh=h*sink; if(bh>0.5) rect('bar'+k,xC(k)-bw/2,780-bh,bw,bh,baseCol(k));});
+    }
+    // axis = the line again
+    if(t<7.25){
+      const aw=1400*eOut(prog(t,6,0.36))*(1-eIO(prog(t,7.0,0.24)));
+      if(aw>0.5) rect('axis',CX-aw/2,780,aw,6,C.o);
+    }
+    // counters
+    if(t<6.75){
+      HS.forEach((h,k)=>{
+        const s=6.0+k*0.022;
+        let sc=spr(t,s,0.3,24)*(1-eIn(prog(t,6.5,0.24)));
+        const v=Math.round(VS[k]*eOut(prog(t,s,0.42)));
+        const dy=-36*eIn(prog(t,6.5,0.24));
+        if(sc>0.01) P.push({type:'label',key:'n'+k,str:String(v),x:xC(k),y:780-h-26+dy,size:36,weight:700,fill:C.w,sc});
+      });
+    }
+    // polyline through the tops -> flattens -> input field
+    if(t>=6.5 && t<7.25){
+      const dp=eIO(prog(t,6.5,0.4)), fl=eIO(prog(t,7.0,0.24));
+      const pts=HS.map((h,k)=>[lerp(xC(k),CX+(k-4)*137.5,fl),lerp(780-h,540,fl)]);
+      P.push({type:'poly-line',pts,dp,stroke:C.o,sw:6});
+      pts.forEach((p,k)=>{
+        const s=cl((dp-k/8)*10)*(1-fl);
+        if(s>0.01) P.push({type:'circle',cx:p[0],cy:p[1],r:10*s,fill:C.w});
+      });
+    }
+    const field='make it move', FL=layout(field,52,500,0);
+    const caretX=n=>460+(n>0?cv_w(field.slice(0,n)):0)+8;
+    if(t>=7.25 && t<7.5){
+      const p=spr(t,7.25,0.22,26), hh=lerp(6,140,p);
+      rect('field',410,CY-hh/2,1100,hh,mix(C.o,C.w,p),{rx:lerp(3,24,p)});
+    }
+    if(t>=7.5){
+      const p=eOut(prog(t,7.5,0.34));
+      rect('field',lerp(410,-40,p),lerp(470,-40,p),lerp(1100,2000,p),lerp(140,1160,p),C.w,{rx:lerp(24,0,p)});
+    }
+    if(t>=7.28){
+      const n=Math.floor(cl((t-7.3)/0.17)*field.length);
+      const dy=-lerp(0,640,eIn(prog(t,7.5,0.26)));
+      if(n>0 && dy>-600) P.push({type:'text',key:'typed',str:field.slice(0,n),x:460,y:558+dy,size:52,weight:500,fill:C.k,cx:460,cy:540+dy,w:0});
+      // caret -> becomes the title line
+      const q=eIO(prog(t,7.55,0.4)), cx0=caretX(n);
+      const x=lerp(cx0,510,q), y=lerp(510,617,q), w=lerp(4,900,q), h=lerp(60,6,q);
+      rect('line',x,y,w,h,C.o);
+    }
+  }
+
+  // ===== BAR 5 · end title (8–10) =====
+  else {
+    // white world collapses back into the line
+    if(t<9.5){
+      const c=eIO(prog(t,9.18,0.3));
+      const hh=lerp(1160,6,c), cy=lerp(540,620,c), ww=lerp(2000,900,eIO(prog(t,9.28,0.22)));
+      rect('field',CX-ww/2,cy-hh/2,ww,hh,mix(C.w,C.o,cl((c-0.86)/0.14)));
+    }
+    // title line
+    {
+      const p=eOut(prog(t,9.5,0.42));
+      const lw=lerp(900,120,p), ly=lerp(620,540,p);
+      rect('line',CX-lw/2,ly-3,lw,6,C.o);
+    }
+    const T='Opus 5.5', LT=layout(T,250,900,-7);
+    if(t<9.4){
+      T.split('').forEach((ch,i)=>{
+        if(ch===' ')return;
+        let dy=lerp(330,0,eOut(prog(t,8.0+i*0.035,0.34)));
+        dy+=lerp(0,330,eIn(prog(t,9.0+i*0.014,0.2)));
+        const x=CX-LT.width/2+LT.xs[i];
+        P.push({type:'text',key:'ti'+i,str:ch,x,y:560+dy,size:250,weight:900,fill:C.k,clip:[0,280,W,337],cx:x+LT.adv[i]/2,cy:560+dy,w:LT.adv[i]});
+      });
+      const S='motion, reasoned.', LS=layout(S,56,500,0);
+      const words=[[0,7],[8,17]];
+      words.forEach(([a,b],wi)=>{
+        let dy=-lerp(110,0,eOut(prog(t,8.5+wi*0.07,0.32)));
+        dy-=lerp(0,110,eIn(prog(t,9.02+wi*0.04,0.18)));
+        const x=CX-LS.width/2+LS.xs[a];
+        P.push({type:'text',key:'sub'+wi,str:S.slice(a,b),x,y:705+dy,size:56,weight:500,fill:C.k,clip:[0,623,W,120],cx:x,cy:705+dy,w:0});
+      });
+    }
+  }
+  return P;
+}
+function cv_w(s){cv.font=`500 52px "${FONT}"`;return cv.measureText(s).width;}
+
+// ---------- tiny 3D renderer (perspective, painter's sort, backface cull) ----------
+function draw3D(P,boxes,th,yaw,ty,edge=0){
+  const D=2200,F=2200, cT=Math.cos(th), sT=Math.sin(th), cY=Math.cos(yaw), sY=Math.sin(yaw);
+  const cam=[-D*cT*sY, ty+D*sT, -D*cT*cY];
+  const proj=([x,y,z])=>{
+    const yy=y-ty;
+    const xr=x*cY-z*sY, zr=x*sY+z*cY;
+    const d=zr*cT-yy*sT, u=yy*cT+zr*sT;
+    const s=F/(D+d);
+    return [CX+xr*s, CY-u*s, d];
+  };
+  boxes.forEach(b=>{const p=proj([b.x,b.h/2,b.z]);b.depth=p[2];});
+  boxes.sort((a,b)=>b.depth-a.depth);
+  boxes.forEach(b=>{
+    const x0=b.x-b.fw/2,x1=b.x+b.fw/2,z0=b.z-b.fd/2,z1=b.z+b.fd/2,y0=0,y1=Math.max(b.h,0);
+    const topCol=mix(b.col,C.w,0.22*cl(b.h/60));
+    const faces=[];
+    if(b.fd>=1) faces.push({v:[[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]],n:[0,1,0],c:[b.x,y1,b.z],col:topCol});
+    if(y1>0.5){
+      faces.push({v:[[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]],n:[0,0,-1],c:[b.x,y1/2,z0],col:b.col});
+      if(b.fd>=1){
+        faces.push({v:[[x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1]],n:[0,0,1],c:[b.x,y1/2,z1],col:mix(b.col,C.k,0.5)});
+        faces.push({v:[[x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0]],n:[-1,0,0],c:[x0,y1/2,b.z],col:mix(b.col,C.k,0.32)});
+        faces.push({v:[[x1,y0,z0],[x1,y0,z1],[x1,y1,z1],[x1,y1,z0]],n:[1,0,0],c:[x1,y1/2,b.z],col:mix(b.col,C.k,0.32)});
+      }
+    }
+    faces.forEach(fc=>{
+      const vis=fc.n[0]*(cam[0]-fc.c[0])+fc.n[1]*(cam[1]-fc.c[1])+fc.n[2]*(cam[2]-fc.c[2]);
+      if(vis<=0)return;
+      const pts=fc.v.map(proj).map(p=>[p[0],p[1]]);
+      P.push({type:'poly',pts,fill:fc.col,edge});
+    });
+  });
+}
+
+// ---------- SVG output with velocity-driven directional blur ----------
+const svg=document.getElementById('stage');
+function velocityMap(t){
+  const dt=1/240, now=scene(t), prev=scene(t-dt), m={};
+  prev.forEach(p=>{if(p.key)m[p.key]=p;});
+  return now.map(p=>{
+    if(!p.key||!m[p.key]||p.type==='label'||p.key==='field')return [0,0];
+    const q=m[p.key];
+    const c=o=>o.type==='rect'?[o.x+o.w/2,o.y+o.h/2,o.w,o.h]:[o.cx,o.cy,o.w||0,0];
+    const a=c(p),b=c(q);
+    const vx=(Math.abs(a[0]-b[0])+Math.abs(a[2]-b[2])/8)/dt;
+    const vy=(Math.abs(a[1]-b[1])+Math.abs(a[3]-b[3])/8)/dt;
+    return [vx,vy];
+  });
+}
+window.seek=function(t){
+  const prims=scene(t), vel=velocityMap(t);
+  let defs='',body='',id=0;
+  prims.forEach((p,i)=>{
+    let el='';
+    if(p.type==='rect'){
+      const tr=p.rot?` transform="rotate(${f1(p.rot)} ${f1(p.x+p.w/2)} ${f1(p.y+p.h/2)})"`:'';
+      el=`<rect x="${f1(p.x)}" y="${f1(p.y)}" width="${f1(Math.max(0,p.w))}" height="${f1(Math.max(0,p.h))}" rx="${f1(Math.max(0,p.rx||0))}" fill="${p.fill}"${tr}/>`;
+    } else if(p.type==='text'){
+      const tr=p.sx!==undefined?` transform="translate(${f1(p.ox)} 0) scale(${p.sx} 1) translate(${f1(-p.ox)} 0)"`:'';
+      el=`<text x="${f1(p.x)}" y="${f1(p.y)}" font-family="${FONT}" font-weight="${p.weight}" font-size="${p.size}" fill="${p.fill}"${tr} style="font-kerning:none">${p.str.replace(/&/g,'&amp;')}</text>`;
+    } else if(p.type==='label'){
+      el=`<text x="${f1(p.x)}" y="${f1(p.y)}" text-anchor="middle" font-family="${FONT}" font-weight="${p.weight}" font-size="${p.size}" fill="${p.fill}" transform="translate(${f1(p.x)} ${f1(p.y-12)}) scale(${p.sc}) translate(${f1(-p.x)} ${f1(-p.y+12)})" style="font-variant-numeric:tabular-nums">${p.str}</text>`;
+    } else if(p.type==='poly'){
+      el=`<polygon points="${p.pts.map(q=>f1(q[0])+','+f1(q[1])).join(' ')}" fill="${p.fill}" stroke="${p.edge>0.02?C.k:p.fill}" stroke-width="${p.edge>0.02?f1(2.5*p.edge):0.6}" stroke-linejoin="round"/>`;
+    } else if(p.type==='poly-line'){
+      let L=0;for(let k=1;k<p.pts.length;k++)L+=Math.hypot(p.pts[k][0]-p.pts[k-1][0],p.pts[k][1]-p.pts[k-1][1]);
+      el=`<polyline points="${p.pts.map(q=>f1(q[0])+','+f1(q[1])).join(' ')}" fill="none" stroke="${p.stroke}" stroke-width="${p.sw}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${f1(L+2)} ${f1(L+2)}" stroke-dashoffset="${f1((L+2)*(1-p.dp))}"/>`;
+    } else if(p.type==='circle'){
+      el=`<circle cx="${f1(p.cx)}" cy="${f1(p.cy)}" r="${f1(p.r)}" fill="${p.fill}"/>`;
+    }
+    const [vx,vy]=vel[i];
+    const sx=Math.min(vx*0.004,22), sy=Math.min(vy*0.004,22);
+    if(sx>0.6||sy>0.6){
+      const fid='f'+(id++);
+      defs+=`<filter id="${fid}" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="${f1(sx>0.6?sx:0)} ${f1(sy>0.6?sy:0)}"/></filter>`;
+      el=`<g filter="url(#${fid})">${el}</g>`;
+    }
+    if(p.clip){
+      const cid='c'+(id++);
+      defs+=`<clipPath id="${cid}"><rect x="${p.clip[0]}" y="${p.clip[1]}" width="${p.clip[2]}" height="${p.clip[3]}"/></clipPath>`;
+      el=`<g clip-path="url(#${cid})">${el}</g>`;
+    }
+    body+=el;
+  });
+  svg.innerHTML=`<defs>${defs}</defs><rect width="${W}" height="${H}" fill="${C.k}"/>${body}`;
+};
+
+// ---------- soundtrack (120 BPM) ----------
+window.renderAudio=async function(){
+  const SR=48000, ac=new OfflineAudioContext(2,SR*DUR,SR);
+  const comp=ac.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=4; comp.attack.value=0.003; comp.release.value=0.12;
+  const master=ac.createGain(); master.gain.value=0.85; comp.connect(master); master.connect(ac.destination);
+  const noiseBuf=ac.createBuffer(1,SR*2,SR); {const d=noiseBuf.getChannelData(0); let s=12345; for(let i=0;i<d.length;i++){s=(s*1103515245+12345)&0x7fffffff; d[i]=s/0x3fffffff-1;}}
+  const noise=(t,dur)=>{const n=ac.createBufferSource(); n.buffer=noiseBuf; n.start(t); n.stop(t+dur); return n;};
+  const env=(g,t,a,peak,dec)=>{g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(0.0008,t+a+dec);};
+  const kick=t=>{
+    const o=ac.createOscillator(), g=ac.createGain(); o.frequency.setValueAtTime(165,t); o.frequency.exponentialRampToValueAtTime(44,t+0.11);
+    env(g,t,0.002,1.0,0.32); o.connect(g); g.connect(comp); o.start(t); o.stop(t+0.4);
+    const n=noise(t,0.02), hp=ac.createBiquadFilter(), g2=ac.createGain(); hp.type='highpass'; hp.frequency.value=3000;
+    env(g2,t,0.0005,0.25,0.012); n.connect(hp); hp.connect(g2); g2.connect(comp);
+  };
+  const hat=(t,v)=>{const n=noise(t,0.08), hp=ac.createBiquadFilter(), g=ac.createGain(); hp.type='highpass'; hp.frequency.value=8500; env(g,t,0.001,v,0.045); n.connect(hp); hp.connect(g); g.connect(comp);};
+  const hit=(t,v=1)=>{
+    const n=noise(t,0.6), lp=ac.createBiquadFilter(), g=ac.createGain(); lp.type='lowpass'; lp.frequency.setValueAtTime(5000,t); lp.frequency.exponentialRampToValueAtTime(300,t+0.4);
+    env(g,t,0.001,0.42*v,0.38); n.connect(lp); lp.connect(g); g.connect(comp);
+    [110,164.81,220,261.63,329.63].forEach((f,i)=>{
+      const o=ac.createOscillator(), og=ac.createGain(), f2=ac.createBiquadFilter(); o.type='sawtooth'; o.frequency.value=f*(1+(i%2?0.004:-0.004));
+      f2.type='lowpass'; f2.frequency.setValueAtTime(3200,t); f2.frequency.exponentialRampToValueAtTime(260,t+0.32);
+      env(og,t,0.003,0.07*v,0.34); o.connect(f2); f2.connect(og); og.connect(comp); o.start(t); o.stop(t+0.4);
+    });
+    const s=ac.createOscillator(), sg=ac.createGain(); s.frequency.setValueAtTime(70,t); s.frequency.exponentialRampToValueAtTime(48,t+0.3);
+    env(sg,t,0.002,0.6*v,0.45); s.connect(sg); sg.connect(comp); s.start(t); s.stop(t+0.5);
+  };
+  for(let k=0;k<20;k++){ kick(k*0.5); hat(k*0.5+0.25, 0.13); }
+  for(let k=0;k<40;k++){ if(k%2) continue; } // offbeat hats already placed
+  // riser through bar 3 into bar 4
+  {
+    const t0=4.0,t1=6.0;
+    const n=noise(t0,t1-t0), bp=ac.createBiquadFilter(), g=ac.createGain(); bp.type='bandpass'; bp.Q.value=2.5;
+    bp.frequency.setValueAtTime(300,t0); bp.frequency.exponentialRampToValueAtTime(7000,t1);
+    g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.5,t1-0.01); g.gain.linearRampToValueAtTime(0,t1);
+    n.connect(bp); bp.connect(g); g.connect(comp);
+    const o=ac.createOscillator(), og=ac.createGain(), lp=ac.createBiquadFilter(); o.type='sawtooth';
+    o.frequency.setValueAtTime(110,t0); o.frequency.exponentialRampToValueAtTime(880,t1);
+    lp.type='lowpass'; lp.frequency.setValueAtTime(400,t0); lp.frequency.exponentialRampToValueAtTime(5000,t1);
+    og.gain.setValueAtTime(0.0001,t0); og.gain.exponentialRampToValueAtTime(0.12,t1-0.01); og.gain.linearRampToValueAtTime(0,t1);
+    o.connect(lp); lp.connect(og); og.connect(comp); o.start(t0); o.stop(t1);
+  }
+  // hits on every scene change
+  [2,4,6,8].forEach(t=>hit(t,1)); hit(7.5,0.8); hit(9.0,0.55);
+  const buf=await ac.startRendering();
+  // encode 16-bit WAV
+  const ch=[buf.getChannelData(0),buf.getChannelData(1)], len=buf.length;
+  const ab=new ArrayBuffer(44+len*4), dv=new DataView(ab);
+  const ws=(o,s)=>{for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i));};
+  ws(0,'RIFF');dv.setUint32(4,36+len*4,true);ws(8,'WAVE');ws(12,'fmt ');dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,2,true);
+  dv.setUint32(24,SR,true);dv.setUint32(28,SR*4,true);dv.setUint16(32,4,true);dv.setUint16(34,16,true);ws(36,'data');dv.setUint32(40,len*4,true);
+  let o=44;for(let i=0;i<len;i++){for(let c=0;c<2;c++){const v=cl(ch[c][i],-1,1);dv.setInt16(o,v<0?v*0x8000:v*0x7fff,true);o+=2;}}
+  const bytes=new Uint8Array(ab);let bin='';for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));
+  return btoa(bin);
+};
+window.seek(0);
+</script>
+</body></html>

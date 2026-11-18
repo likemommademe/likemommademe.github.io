@@ -99,7 +99,7 @@ crediti: |
   Progetto personale.
 crediti_en: |
   Personal project.
-ordine: 7
+ordine: 11
 seo_descrizione: "Scomodo: una parola trasformata in materia, dalle unghie gel ai lecca lecca sulla pelle. Più diventa carina, più mette a disagio. Lettering con l'AI."
 seo_descrizione_en: "Scomodo: one word turned into matter, from gel nails to lollipops on skin. The cuter it gets, the more uncomfortable it feels. AI lettering."
 ---

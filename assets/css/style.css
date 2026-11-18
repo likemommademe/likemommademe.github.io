@@ -1043,3 +1043,13 @@ a.esp__in:hover { background: var(--card); }
 .rec--persona .rec__img { max-width: 320px; }
 .rec--persona .rec__iniziali { font-size: clamp(3rem, 2rem + 3vw, 5.5rem); }
 @media (max-width: 720px) { .rec--persona { grid-template-columns: minmax(0, 1fr); } .rec--persona .rec__img { max-width: 160px; } }
+/* sotto le categorie: le altre categorie */
+.altre-cat { margin-top: clamp(64px, 8vw, 128px); }
+.altre-cat__n { display: block; margin-top: 6px; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+/* About: l'occhio nel titolo è sempre vivo, guarda in giro e fa l'occhiolino */
+.ahero__t .occhio { height: .7em; }
+.ahero__t .occhio__palpebra { animation: occhio-sbatte 4.2s 1s var(--ease) infinite; }
+.ahero__t .occhio__iride { animation: occhio-guarda 6.3s 1s var(--ease) infinite; }
+@keyframes occhio-sbatte { 0%, 40%, 50%, 100% { transform: scaleY(1); } 44%, 46% { transform: scaleY(.08); } }
+@keyframes occhio-guarda { 0%, 18%, 100% { transform: translateX(0); } 25%, 40% { transform: translateX(-12px); } 50%, 66% { transform: translateX(12px); } 75%, 90% { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .ahero__t .occhio__palpebra, .ahero__t .occhio__iride { animation: none; } }

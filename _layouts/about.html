@@ -9,7 +9,8 @@ layout: default
 <section class="ahero">
   <div class="ahero__txt">
     <p class="cs-label ahero__k">{{ page.title }}</p>
-    <h1 class="ahero__t rise"><span>{{ a.hero_titolo }}</span></h1>
+    {% capture occhio %}{% include occhio.html %}{% endcapture %}{% assign occhio = occhio | strip %}
+    <h1 class="ahero__t rise" aria-label="{{ a.hero_titolo_leggibile }}"><span>{{ a.hero_titolo | replace: '[occhio]', occhio }}</span></h1>
     <p class="lead ahero__lead">{{ a.sottotitolo }}</p>
     <div class="ahero__azioni">
       <a class="btn" href="{{ '/contatti/' | relative_url }}" data-modulo-apri>{{ a.hero_cta }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>

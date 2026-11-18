@@ -75,7 +75,9 @@ footer:
 
 # Testi provvisori della pagina About: li riscriviamo insieme
 about:
-  hero_titolo: "<span>More than</span><span><em>meets</em></span><span>the eye</span>"
+  # [occhio] = la O di MORE disegnata come un occhio che fa l'occhiolino, sempre in movimento
+  hero_titolo: "<span>M[occhio]re than</span><span><em>meets</em></span><span>the eye</span>"
+  hero_titolo_leggibile: More than meets the eye
   hero_cta: Lavoriamo insieme
   hero_fatti:
     - k: Base
@@ -236,6 +238,11 @@ news:
   home_titolo: "Cosa sto <em>guardando</em>"
   home_tutte: Tutte le news
   vuoto: Niente qui, per ora.
+
+categoria:
+  altre_titolo: "Le altre <em>categorie</em>"
+  progetto: progetto
+  progetti: progetti
 
 contatti:
   k: Scrivimi

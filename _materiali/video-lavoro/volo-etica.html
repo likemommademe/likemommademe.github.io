@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Etic.a, volo sul sito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500&family=Instrument+Serif:ital@1&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; background: #f6f7f9; }
+  #stage { position: relative; width: 1440px; height: 1152px; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 50%, #f9fbfb 0%, #f6f8f9 45%, #f2f3f6 100%); }
+  .cam { position: absolute; inset: 0; perspective: 1880px; perspective-origin: 720px 576px; }
+  .world { position: absolute; left: 720px; top: 576px; width: 0; height: 0; transform-style: preserve-3d; }
+  .page { position: absolute; left: 0; top: 0; width: 1440px; border-radius: 24px; overflow: hidden; transform-origin: 0 0;
+    box-shadow: 0 40px 120px rgba(26, 33, 51, .16), 0 8px 30px rgba(26, 33, 51, .08); background: #fff; }
+  .page img { display: block; width: 1440px; }
+  .blur { position: absolute; inset: 0; pointer-events: none; }
+  .blur .page { filter: blur(9px); box-shadow: none; }
+  .tile { position: absolute; width: 32px; height: 32px; border-radius: 9px; background: #fff;
+    box-shadow: 0 10px 30px rgba(26, 33, 51, .18); display: grid; place-items: center; transform-origin: 50% 50%; }
+  .tile img { width: 46%; }
+  .ui { position: absolute; inset: 0; pointer-events: none; font-family: "Geist", system-ui, sans-serif; color: #111; }
+  .badge { position: absolute; left: 50%; top: 44px; transform: translateX(-50%); display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px 9px 10px; border-radius: 999px; background: #fff; box-shadow: 0 6px 20px rgba(26, 33, 51, .1); font-size: 21px; font-weight: 500; }
+  .badge img { height: 26px; }
+  .t1, .t2 { position: absolute; left: 0; right: 0; text-align: center; letter-spacing: -.02em; white-space: nowrap; }
+  .t1 { top: 112px; font-size: 56px; font-weight: 500; }
+  .t2 { top: 178px; font-size: 60px; font-family: "Instrument Serif", serif; font-style: italic; color: #8b8b92; letter-spacing: -.01em; }
+  .w { display: inline-block; margin: 0 .12em; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="cam" id="cam"><div class="world" id="world"><div class="page" id="page"><img id="img" src="page.png"></div></div></div>
+  <div class="blur" id="blurwrap"><div class="cam"><div class="world" id="worldB"><div class="page" id="pageB"><img src="page.png"></div></div></div></div>
+  <div class="ui" id="tiles"></div>
+  <div class="ui">
+    <div class="badge" id="badge"><img src="segno.png" alt=""> Etic.a Labels</div>
+    <div class="t1" id="t1"></div>
+    <div class="t2" id="t2"></div>
+  </div>
+</div>
+<script>
+// Ogni fotogramma si calcola da t dentro seek(t): niente timer, niente transizioni.
+const W = 1440, H = 1152, F = 1880, PH = 7341, HERO = 900;
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const sm = x => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+const lerp = (a, b, k) => a + (b - a) * k;
+const lerpLog = (a, b, k) => Math.exp(lerp(Math.log(a), Math.log(b), k));
+const qio = x => { x = clamp(x, 0, 1); return x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+
+// Curva di velocità (quota della velocità di crociera) e posizione integrata
+function vel(t) {
+  if (t < .6) return .5 * sm(t / .6);
+  if (t < 1.25) return .5;
+  if (t < 1.6) return lerp(.5, 1, sm((t - 1.25) / .35));
+  if (t < 7.3) return 1 + .06 * Math.sin((t - 1.6) * 1.1);
+  if (t < 8.3) return lerp(1, .12, sm((t - 7.3) / 1));
+  return .12 * (1 - sm((t - 8.3) / .5));
+}
+const DT = 1 / 600, POS = [0];
+for (let t = DT; t <= 9.3; t += DT) POS.push(POS[POS.length - 1] + vel(t) * DT);
+const posAt = t => POS[Math.min(POS.length - 1, Math.round(t / DT))];
+const Y0 = 520, Y1 = PH - 820, CRUISE = (Y1 - Y0) / posAt(8.3);
+
+const world = document.getElementById('world'), worldB = document.getElementById('worldB');
+const page = document.getElementById('page'), pageB = document.getElementById('pageB');
+const blurwrap = document.getElementById('blurwrap');
+const tiles = document.getElementById('tiles');
+const T = [];
+for (let i = 0; i < 4; i++) { const d = document.createElement('div'); d.className = 'tile'; d.innerHTML = '<img src="segno.png" alt="">'; tiles.appendChild(d); T.push(d); }
+const L1 = 'Creiamo etichette con un’impronta positiva.'.split(' '), L2 = 'Dress your brand.'.split(' ');
+document.getElementById('t1').innerHTML = L1.map(w => '<span class="w">' + w + '</span>').join('');
+document.getElementById('t2').innerHTML = L2.map(w => '<span class="w">' + w + '</span>').join('');
+const w1 = [...document.querySelectorAll('#t1 .w')], w2 = [...document.querySelectorAll('#t2 .w')];
+
+// Proiezione di un punto della pagina (px, py, alto z) sullo schermo, con la stessa camera del CSS
+function proj(cam, px, py, z) {
+  const a = cam.tilt * Math.PI / 180, dx = px - cam.lx, dy = py - cam.ly;
+  const y = dy * Math.cos(a) - z * Math.sin(a), zz = dy * Math.sin(a) + z * Math.cos(a);
+  const depth = cam.dist + zz, s = F / depth;
+  return { x: W / 2 + dx * s, y: H / 2 + y * s, s, depth };
+}
+
+function camAt(t) {
+  const flight = Y0 + posAt(Math.min(t, 8.3)) * CRUISE;
+  let tilt = 56, dist = lerp(1360, 1700, sm(t / 8.2)), lx = 720, ly = flight;
+  const distAll = F * PH / (H - 84) * 1.02;            // pagina intera in verticale
+  if (t > 7.75) {                                        // salita: zoom out in scala log, inclinazione che si appiattisce
+    const k = sm((t - 7.75) / 1.5);
+    dist = lerpLog(lerp(1360, 1700, 1), distAll, k);
+    tilt = 56 * (1 - sm((t - 8.15) / .8));
+    ly = lerp(flight, PH / 2 + 21 * distAll / F, k);
+  }
+  if (t > 9.25) { dist = distAll / (1 + .035 * sm((t - 9.25) / .22)); ly = PH / 2 + 21 * distAll / F; }
+  const distCard = F * W / 1018;                          // l'hero diventa una card larga 1018px
+  if (t > 9.47) {
+    const k = qio((t - 9.47) / .5), d0 = distAll / 1.035;
+    dist = lerpLog(d0, distCard, k);
+    // il bordo alto resta in cima finché cresce, poi scende a y 283
+    const s = F / dist, topY = lerp(42 + 0, 283, sm((t - 9.75) / .22));
+    ly = (H / 2 - topY) / s;
+    tilt = 0;
+  }
+  if (t > 9.97) { const s = F / distCard * (1 + .02 * sm((t - 9.97) / 4.5)); dist = F / s; ly = (H / 2 - 283) / (F / distCard); }
+  return { tilt, dist, lx, ly };
+}
+
+function place(el, cam) {
+  el.style.transform = `translateZ(${F - cam.dist}px) rotateX(${cam.tilt}deg) translate(${-cam.lx}px, ${-cam.ly}px)`;
+}
+
+window.seek = function (t) {
+  const cam = camAt(t);
+  place(world, cam); place(worldB, cam);
+  // maschera: dalla pagina intera alla sola hero, angoli da 24 a 38
+  const km = sm((t - 9.47) / .5), hh = lerp(PH, HERO, km), rr = lerp(24, 38 * cam.dist / F, km);
+  [page, pageB].forEach(p => { p.style.height = hh + 'px'; p.style.borderRadius = rr + 'px'; });
+  // profondità di campo: sfocato vicino all'obiettivo (in basso), un filo in alto; sparisce dall'alto
+  const dof = 1 - sm((t - 7.9) / .8);
+  blurwrap.style.opacity = dof;
+  blurwrap.style.webkitMaskImage = blurwrap.style.maskImage = 'linear-gradient(to top, #000 0%, rgba(0,0,0,.85) 14%, transparent 42%, transparent 82%, rgba(0,0,0,.45) 100%)';
+
+  // le quattro tessere del logo
+  const btnX = [380, 1060, 300, 1140], btnY = [150, 150, 620, 620];
+  T.forEach((d, i) => {
+    let size = 32, z = 0, x, y, op = 1, blur = 0;
+    const lift = sm((t - .1 - i * .08) / 1.25);
+    size = lerp(32, [170, 150, 200, 140][i], lift); z = lerp(0, 260, lift);
+    const p = proj(cam, btnX[i], btnY[i] + 300 * sm((t - 1.2) / 1.2), z);
+    x = p.x; y = p.y; let sc = size * p.s / 32 * (cam.tilt > 1 ? 1 : 1);
+    op = 1 - sm((t - 2.1) / .4);
+    if (i === 0 && t > 4.8 && t < 6.2) { op = 1 - Math.abs(t - 5.4) / .8; x = lerp(-160, 260, sm((t - 4.8) / 1.4)); y = 820; sc = 9; blur = 14; }
+    if (t > 9.8) { // in chiusura: sui due angoli alti della card, due grandi sfocate in basso
+      const k = sm((t - 9.8) / .35), cw = 1018, cx = (W - cw) / 2;
+      const pos = [[cx, 283, 2.6, 0], [cx + cw, 283, 2.6, 0], [cx - 40, 1110, 9, 22], [cx + cw + 30, 1100, 7, 18]][i];
+      const drift = Math.sin((t - 10) * .9 + i) * 4;
+      x = pos[0] + drift; y = pos[1] + drift; sc = pos[2]; blur = pos[3]; op = k;
+    }
+    d.style.opacity = clamp(op, 0, 1);
+    d.style.transform = `translate(${x - 16}px, ${y - 16}px) scale(${sc}) rotate(${(i % 2 ? 1 : -1) * 6 * (1 - sm((t - 9.8) / .4))}deg)`;
+    d.style.filter = blur ? `blur(${blur / sc}px)` : 'none';
+  });
+
+  // la card finale: pillola e titolo parola per parola
+  const badge = document.getElementById('badge');
+  badge.style.opacity = sm((t - 10.02) / .3); badge.style.transform = `translateX(-50%) translateY(${(1 - sm((t - 10.02) / .3)) * 8}px)`;
+  w1.forEach((w, i) => { const k = sm((t - 10.12 - i * .06) / .34); w.style.opacity = k; w.style.transform = `translateY(${(1 - k) * 16}px)`; w.style.filter = `blur(${(1 - k) * 12}px)`; });
+  w2.forEach((w, i) => { const k = sm((t - 10.36 - i * .05) / .34); w.style.opacity = k; w.style.transform = `translateY(${(1 - k) * 16}px)`; w.style.filter = `blur(${(1 - k) * 12}px)`; });
+};
+window.pronto = new Promise(r => { const i = document.getElementById('img'); (i.complete ? Promise.resolve() : new Promise(o => i.onload = o)).then(() => document.fonts.ready).then(() => { seek(0); r(1); }); });
+</script>
+</body>
+</html>

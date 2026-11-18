@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>LIKEMOMMADEME, promo</title>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,900&display=block">
+<style>
+  html, body { margin: 0; background: #121414; }
+  #stage { position: relative; width: 1080px; height: 1080px; overflow: hidden; background: #121414; color: #F5F5F2; font-family: "Cabinet Grotesk", system-ui, sans-serif; }
+  #cam { position: absolute; inset: 0; transform-origin: 540px 540px; }
+  /* aggancio */
+  #hook { position: absolute; left: 70px; right: 70px; top: 300px; font-weight: 900; font-size: 104px; line-height: .92; letter-spacing: -.045em; }
+  #hook .w { display: inline-block; overflow: hidden; vertical-align: top; margin-right: .18em; }
+  #hook .w > span { display: inline-block; }
+  #hook .key { color: #FF3D8B; }
+  /* computer: resta aperto per tutto il film */
+  #pc { position: absolute; left: 140px; top: 330px; width: 800px; }
+  #lid { position: relative; width: 800px; height: 520px; border-radius: 26px; background: #0a0b0b; box-shadow: 0 0 0 2px #2c2f2f inset, 0 40px 90px rgba(0,0,0,.55); }
+  #screen { position: absolute; left: 22px; top: 22px; width: 756px; height: 472px; border-radius: 8px; overflow: hidden; background: #121414; }
+  #screen iframe { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; transform: scale(.525); }
+  #base { position: relative; margin: 0 -70px; height: 22px; border-radius: 0 0 26px 26px; background: linear-gradient(#d9dbde, #a8abb0); }
+  #base::before { content: ""; position: absolute; left: 50%; top: 0; width: 150px; height: 9px; margin-left: -75px; border-radius: 0 0 9px 9px; background: #8d9095; }
+  /* il quadrato rosa */
+  #sq { position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 9px; background: #FF3D8B; transform-origin: 50% 50%; z-index: 5; }
+  /* chiusura */
+  #end { position: absolute; left: 0; right: 0; top: 120px; text-align: center; }
+  #wm { display: inline-flex; align-items: flex-end; gap: 10px; font-weight: 900; font-size: 92px; line-height: 1; letter-spacing: -.02em; }
+  #wm .ph { width: 26px; height: 26px; margin-bottom: 12px; }
+  #cta { margin-top: 22px; font-weight: 500; font-size: 34px; letter-spacing: -.01em; color: #F5F5F2; }
+  #cta b { color: #FF3D8B; font-weight: 700; }
+  .wm-l { display: inline-block; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="cam">
+    <div id="hook"></div>
+    <div id="pc">
+      <div id="lid"><div id="screen">
+        <iframe id="f0" src="/lab/showreel.html?clean"></iframe>
+        <iframe id="f1" src="/work/"></iframe>
+        <iframe id="f2" src="/progetti/fight-club/"></iframe>
+      </div></div>
+      <div id="base"></div>
+    </div>
+    <div id="end"><div id="wm"><span id="wmt"></span><i class="ph"></i></div><div id="cta" id="cta">Il portfolio è su <b>likemommademe.github.io</b></div></div>
+  </div>
+  <div id="sq"></div>
+</div>
+<script>
+// Tutto si calcola da t dentro seek(t). 120 BPM: un battito ogni 0,5 s.
+const B = .5, clamp = (x, a, b) => Math.min(b, Math.max(a, x)), lerp = (a, b, k) => a + (b - a) * k;
+const ease = x => 1 - Math.pow(1 - clamp(x, 0, 1), 4);                          // esponenziale in uscita
+const spring = x => { x = clamp(x, 0, 1); return 1 - Math.exp(-7 * x) * Math.cos(9 * x * .55); }; // molla, poco overshoot
+const io = x => { x = clamp(x, 0, 1); return x < .5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2; };
+const $ = id => document.getElementById(id);
+
+// aggancio: una parola per battito
+const H = ['Un', 'portfolio', 'che', 'non', 'sembra', 'un', 'template'];
+$('hook').innerHTML = H.map((w, i) => `<span class="w"><span class="${w === 'non' ? 'key' : ''}">${w}</span></span>`).join('');
+const hw = [...document.querySelectorAll('#hook .w > span')];
+const WM = 'LIKEMOMMADEME'.split('');
+$('wmt').innerHTML = WM.map(c => `<span class="wm-l">${c}</span>`).join('');
+const wl = [...document.querySelectorAll('.wm-l')];
+const fr = [$('f0'), $('f1'), $('f2')];
+
+// posizioni utili misurate a runtime
+function rectOf(el) { const r = el.getBoundingClientRect(), s = $('stage').getBoundingClientRect(); return { x: r.left - s.left, y: r.top - s.top, w: r.width, h: r.height }; }
+
+function camera(t) {
+  // la camera non sta mai ferma: spinta 1 -> 1.04 per scena, zoom stile "screen studio" sui dettagli
+  let s = 1, ox = 540, oy = 540;
+  if (t < 2) s = 1 + .04 * t / 2;
+  else if (t < 5.5) { s = lerp(1.04, 1.18, io((t - 2) / 1)) + .04 * (t - 3) / 2.5; oy = lerp(540, 590, io((t - 2) / 1)); }
+  else if (t < 8.5) { const z = io((t - 6.2) / .6) * (1 - io((t - 7.9) / .5)); s = lerp(1.22, 1.9, z) + .04 * (t - 5.5) / 3; ox = lerp(540, 610, z); oy = lerp(590, 470, z); }
+  else if (t < 11.5) { s = 1.26 + .04 * (t - 8.5) / 3; oy = 590; }
+  else { const k = io((t - 11.5) / .9); s = lerp(1.30, 1, k) + .04 * clamp((t - 12.4) / 2.6, 0, 1); oy = lerp(590, 540, k); }
+  return { s, ox, oy };
+}
+
+window.seek = function (t) {
+  const c = camera(t);
+  $('cam').style.transformOrigin = `${c.ox}px ${c.oy}px`;
+  $('cam').style.transform = `translate(${540 - c.ox}px, ${540 - c.oy}px) scale(${c.s})`;
+  // --- aggancio (0-2 s) ---
+  hw.forEach((w, i) => { const k = ease((t - i * .2) / .32); w.style.transform = `translateY(${(1 - k) * 105}%)`; });
+  const hookOut = io((t - 1.7) / .4);
+  $('hook').style.transform = `translateY(${-hookOut * 220}px)`;
+  $('hook').style.opacity = 1 - hookOut;
+
+  // --- computer: entra da sotto con una maschera e resta aperto ---
+  const pcIn = spring((t - 2.0) / .8);
+  $('pc').style.transform = `translateY(${(1 - pcIn) * 700}px)`;
+  const endK = io((t - 11.6) / .9);
+  $('pc').style.transform += ` translateY(${endK * 150}px) scale(${1 - endK * .12})`;
+
+  // --- schermi: scena 1 showreel, scena 2 Works + sottomenu, scena 3 progetto; passaggi con una tendina ---
+  const scene = t < 5.5 ? 0 : t < 8.5 ? 1 : 2;
+  fr.forEach((f, i) => {
+    const show = i === scene || (i === scene - 1);
+    f.style.display = show ? 'block' : 'none';
+    if (i === scene && scene > 0) { const tStart = [0, 5.5, 8.5][scene]; const k = io((t - tStart) / .45); f.style.clipPath = `inset(${(1 - k) * 100}% 0 0 0)`; f.style.zIndex = 2; }
+    else { f.style.clipPath = 'none'; f.style.zIndex = 1; }
+  });
+  try {
+    const w0 = $('f0').contentWindow; if (w0.seek && t < 6) w0.seek(clamp((t - 1.8) / 3.7, 0, 1) * 17.5);
+    const d1 = $('f1').contentDocument, it = d1 && d1.querySelector('[data-sub]');
+    if (it) it.classList.toggle('is-open', t > 6.4 && t < 8.8);
+    if (d1) d1.querySelectorAll('[data-rivela],.rise').forEach(e => e.classList.add('is-in'));
+    const d2 = $('f2').contentDocument;
+    if (d2) { d2.querySelectorAll('[data-rivela],.rise').forEach(e => e.classList.add('is-in')); $('f2').contentWindow.scrollTo(0, io((t - 9.1) / 2.2) * 2600); }
+  } catch (e) {}
+
+  // --- il quadrato rosa: punto del titolo -> spia del computer -> cursore -> punto del logo ---
+  const sq = $('sq');
+  let x, y, sz = 40, r = 9, rot = 0, op = 1;
+  const last = rectOf(hw[hw.length - 1]);
+  const dotX = last.x + last.w + 22, dotY = last.y + last.h * .72;
+  function inSito(fi, sel) { const scr = rectOf($('screen')), k = scr.w / 1440; try { const e = $(fi).contentDocument.querySelector(sel).getBoundingClientRect(); return { x: scr.x + (e.left + e.width / 2) * k, y: scr.y + (e.top + e.height / 2) * k }; } catch (er) { return { x: scr.x + scr.w / 2, y: scr.y + scr.h / 2 }; } }
+  const ent = spring((t - 1.3) / .35);
+  x = dotX; y = lerp(-120, dotY, ent); sz = 34;
+  if (t > 1.95) { // scende e diventa la spia accesa sopra lo schermo
+    const k = io((t - 1.95) / .8), lid = rectOf($('lid'));
+    x = lerp(dotX, lid.x + lid.w / 2, k); y = lerp(dotY, lid.y + 11 * c.s, k); sz = lerp(34, 12 * c.s, k); r = lerp(9, 6, k);
+  }
+  if (t > 5.2) { // si stacca e diventa il cursore: va su Works, poi sulla categoria
+    const lid = rectOf($('lid')), works = inSito('f1', '[data-sub] > a'), cat = inSito('f1', '.sub__list li:nth-child(4) a .sub__t');
+    const k1 = io((t - 5.2) / .8), k2 = io((t - 7.2) / .6);
+    x = lerp(lerp(lid.x + lid.w / 2, works.x, k1), cat.x, k2); y = lerp(lerp(lid.y + 11 * c.s, works.y + 18 * c.s, k1), cat.y + 4 * c.s, k2);
+    sz = lerp(12 * c.s, 16, k1); r = 4;
+    const click = Math.max(0, 1 - Math.abs(t - 8.05) / .12); sz *= 1 - click * .35;
+  }
+  if (t > 8.5) { // trascina la galleria verso l'alto
+    const scr = rectOf($('screen')), k = io((t - 9.1) / 2.2);
+    x = scr.x + scr.w * .86; y = scr.y + scr.h * lerp(.8, .3, k); sz = 16; r = 4;
+    if (t > 9 && t < 11.3) sz *= .82;
+  }
+  if (t > 11.5) { // esce dallo schermo e diventa il punto di LIKEMOMMADEME
+    const k = io((t - 11.5) / .8), ph = rectOf(document.querySelector('#wm .ph'));
+    const scr = rectOf($('screen')), sc = scr.w / 1440;
+    x = lerp(scr.x + scr.w * .86, ph.x + ph.w / 2, k); y = lerp(scr.y + scr.h * .3, ph.y + ph.h / 2, k); sz = lerp(16, ph.w, k); r = lerp(4, 6, k); rot = lerp(0, 180, k);
+  }
+  // tutte le misure sono già sullo schermo (la camera è applicata prima): il quadrato va lì com'è
+  sq.style.transform = `translate(${x - sz / 2}px, ${y - sz / 2}px) rotate(${rot}deg)`; sq.style.width = sq.style.height = sz + 'px'; sq.style.borderRadius = r + 'px'; sq.style.opacity = op;
+
+  // --- chiusura: il nome sale lettera per lettera, poi l'invito ---
+  wl.forEach((l, i) => { const k = ease((t - 11.7 - i * .03) / .4); l.style.transform = `translateY(${(1 - k) * 60}px)`; l.style.opacity = k; });
+  const ck = ease((t - 12.6) / .5); $('cta').style.opacity = ck; $('cta').style.transform = `translateY(${(1 - ck) * 20}px)`;
+  $('end').style.visibility = t > 11.4 ? 'visible' : 'hidden';
+};
+
+// colonna sonora: cassa su ogni battito, colpo a ogni cambio scena (OfflineAudioContext -> WAV in base64)
+window.audio = async function () {
+  const sr = 44100, dur = 15, ctx = new OfflineAudioContext(2, sr * dur, sr);
+  function kick(t, g = .9) { const o = ctx.createOscillator(), v = ctx.createGain(); o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + .18); v.gain.setValueAtTime(g, t); v.gain.exponentialRampToValueAtTime(.001, t + .35); o.connect(v).connect(ctx.destination); o.start(t); o.stop(t + .4); }
+  function hat(t) { const b = ctx.createBuffer(1, sr * .05, sr), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length); const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), v = ctx.createGain(); f.type = 'highpass'; f.frequency.value = 7000; v.gain.value = .18; s.buffer = b; s.connect(f).connect(v).connect(ctx.destination); s.start(t); }
+  function hit(t) { const o = ctx.createOscillator(), o2 = ctx.createOscillator(), v = ctx.createGain(); o.type = 'sawtooth'; o2.type = 'square'; o.frequency.value = 110; o2.frequency.value = 165; v.gain.setValueAtTime(.22, t); v.gain.exponentialRampToValueAtTime(.001, t + .7); const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(2400, t); f.frequency.exponentialRampToValueAtTime(300, t + .6); o.connect(f); o2.connect(f); f.connect(v).connect(ctx.destination); o.start(t); o2.start(t); o.stop(t + .8); o2.stop(t + .8); }
+  function bass(t, n) { const o = ctx.createOscillator(), v = ctx.createGain(); o.type = 'triangle'; o.frequency.value = n; v.gain.setValueAtTime(.0001, t); v.gain.exponentialRampToValueAtTime(.25, t + .02); v.gain.exponentialRampToValueAtTime(.001, t + .45); o.connect(v).connect(ctx.destination); o.start(t); o.stop(t + .5); }
+  const notes = [55, 55, 65.4, 49];
+  for (let b = 0; b < 30; b++) { const t = b * .5; kick(t); hat(t + .25); if (b >= 4) bass(t + .25, notes[Math.floor(b / 2) % 4]); }
+  [1.5, 2, 5.5, 8.5, 11.5].forEach(hit);
+  const buf = await ctx.startRendering(), L = buf.getChannelData(0), R = buf.getChannelData(1);
+  const n = L.length, data = new DataView(new ArrayBuffer(44 + n * 4));
+  const ws = (o, s) => [...s].forEach((c, i) => data.setUint8(o + i, c.charCodeAt(0)));
+  ws(0, 'RIFF'); data.setUint32(4, 36 + n * 4, true); ws(8, 'WAVE'); ws(12, 'fmt '); data.setUint32(16, 16, true); data.setUint16(20, 1, true); data.setUint16(22, 2, true); data.setUint32(24, sr, true); data.setUint32(28, sr * 4, true); data.setUint16(32, 4, true); data.setUint16(34, 16, true); ws(36, 'data'); data.setUint32(40, n * 4, true);
+  for (let i = 0; i < n; i++) { data.setInt16(44 + i * 4, clamp(L[i], -1, 1) * 32767, true); data.setInt16(46 + i * 4, clamp(R[i], -1, 1) * 32767, true); }
+  let s = ''; const u = new Uint8Array(data.buffer); for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
+  return btoa(s);
+};
+
+window.pronto = Promise.all([document.fonts.ready, ...fr.map(f => new Promise(r => { if (f.contentDocument && f.contentDocument.readyState === 'complete') r(); else f.onload = r; }))])
+  .then(() => new Promise(r => setTimeout(r, 2500)))
+  .then(() => { try { const d = $('f2').contentDocument; d.querySelectorAll('img').forEach(i => i.loading = 'eager'); } catch (e) {} return new Promise(r => setTimeout(r, 2000)); })
+  .then(() => { seek(0); return 1; });
+</script>
+</body>
+</html>
