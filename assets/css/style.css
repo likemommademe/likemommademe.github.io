@@ -380,6 +380,9 @@ body.motto-vola .motto-volo { opacity: 1; }
 .salta-intro:focus-visible { outline: 2px solid var(--accent-1); outline-offset: 3px; }
 body.intro-mossa .scorri { opacity: 0; transform: translateY(10px); }
 /* Home: durante l'animazione iniziale il menu non c'è; compare (scendendo dall'alto) quando l'animazione è finita */
+/* Home: finché il menu non c'è, il giorno/notte sta da solo in alto a destra (stessa posizione di quello del menu) */
+.tema-intro { position: fixed; top: 22px; right: var(--m); z-index: 61; color: var(--fg); transition: opacity .3s var(--ease), visibility 0s; }
+body.notch-on .tema-intro, body.reel-fatto .tema-intro, body:not(.has-reel) .tema-intro { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s, visibility 0s linear .2s; }
 /* Home: all'inizio manca solo il menu. Compare (nello stato notch) quando il nome ci vola dentro */
 body.has-reel .nav { transition: opacity .35s var(--ease), visibility 0s; }
 body.has-reel:not(.notch-on):not(.reel-fatto) .nav { opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s linear .2s; }
