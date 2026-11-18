@@ -413,7 +413,8 @@
   <div class="segui" aria-hidden="true"><svg viewBox="-6 -6 112 112"><path d="M50.0 0.0 L59.8 13.3 L75.0 6.7 L76.9 23.1 L93.3 25.0 L86.7 40.2 L100.0 50.0 L86.7 59.8 L93.3 75.0 L76.9 76.9 L75.0 93.3 L59.8 86.7 L50.0 100.0 L40.2 86.7 L25.0 93.3 L23.1 76.9 L6.7 75.0 L13.3 59.8 L0.0 50.0 L13.3 40.2 L6.7 25.0 L23.1 23.1 L25.0 6.7 L40.2 13.3Z" fill="currentColor" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/></svg></div>
   <script>
     (function () {
-      if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!matchMedia('(hover: hover)').matches) return;
+      var fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;   // con meno movimento: segue senza ritardo e non gira
       var el = document.querySelector('.segui'), x = -100, y = -100, tx = -100, ty = -100, giro = 0, su = false, attivo = false;
       addEventListener('pointermove', function (e) {
         if (e.pointerType !== 'mouse') return;
@@ -425,7 +426,7 @@
       document.documentElement.addEventListener('pointerleave', function () { attivo = false; el.classList.remove('is-on'); });
       addEventListener('blur', function () { attivo = false; el.classList.remove('is-on'); });
       (function passo() {
-        x += (tx - x) * .14; y += (ty - y) * .14; giro += su ? 2.4 : .6;
+        var k = fermo ? 1 : .14; x += (tx - x) * k; y += (ty - y) * k; if (!fermo) giro += su ? 2.4 : .6;
         el.style.transform = 'translate3d(' + (x + 14).toFixed(1) + 'px,' + (y + 14).toFixed(1) + 'px,0) rotate(' + (giro % 360).toFixed(1) + 'deg)';
         requestAnimationFrame(passo);
       })();
