@@ -22,8 +22,12 @@
       if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       document.documentElement.dataset.theme = t;
       document.documentElement.classList.add('js');
+      // il colore delle barre del browser (Safari le colora con lo sfondo): giusto fin dal primo istante
+      var m = document.createElement('meta'); m.name = 'theme-color'; m.content = t === 'light' ? '#F4EFE7' : '#121414'; document.head.appendChild(m);
     })();
   </script>
+  <!-- lo sfondo giusto prima che arrivino i fogli di stile: niente fasce bianche sopra e sotto mentre la pagina carica -->
+  <style>html, body { background: #121414; } html[data-theme="light"], html[data-theme="light"] body { background: #F4EFE7; }</style>
   <link rel="preconnect" href="https://api.fontshare.com">
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,900&f[]=clash-display@600&display=swap">
   <!-- Yink (Adobe Fonts), font delle categorie: progetto web "LIKEMOMMADEME portfolio" -->
@@ -287,6 +291,7 @@
         function apply() {
           html.dataset.theme = next;
           try { localStorage.setItem('lmm-tema', next); } catch (e) {}
+          var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.content = next === 'light' ? '#F4EFE7' : '#121414';
           dispatchEvent(new Event('themechange'));
         }
         if (!document.startViewTransition || reduce.matches) { apply(); return; }
