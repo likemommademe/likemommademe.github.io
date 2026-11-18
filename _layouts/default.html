@@ -35,11 +35,10 @@
   <header class="nav" data-nav>
     <div class="nav__bar">
       <a class="nav__logo" href="{{ '/' | relative_url }}" aria-label="{{ info.nome | upcase }}, home">{{ info.nome | upcase }}<i aria-hidden="true"></i></a>
-      <div class="nav__right">
-        <nav class="nav__links" aria-label="Menu principale">
-          <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+      <nav class="nav__links" aria-label="Menu principale">
+          <i class="nav__hl" aria-hidden="true"></i>
           <div class="nav__item" data-sub>
-            <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}</a>
+            <a href="{{ '/work/' | relative_url }}"{% if page.url contains '/work/' or page.collection == 'progetti' %} aria-current="page"{% endif %}>{{ f.progetti }}<sup class="nav__n">{{ site.progetti | where_exp: "p", "p.published != false" | size }}</sup></a>
             <button class="nav__sub-btn" type="button" aria-expanded="false" aria-controls="sub-work" aria-label="Apri le categorie di {{ f.progetti }}"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             {% assign cats_menu = site.categorie | sort: "ordine", "last" %}
             <div class="sub" id="sub-work">
@@ -60,9 +59,12 @@
           </div>
           <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>{{ f.chi_sono }}</a>
           <a href="{{ '/news/' | relative_url }}"{% if page.url == '/news/' %} aria-current="page"{% endif %}>{{ f.news | default: "News" }}</a>
-        </nav>
-        <button class="cerca-btn cerca-btn--mob" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
-        <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+      </nav>
+      <div class="nav__right">
+        <div class="nav__tools">
+          <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="{{ site.data.testi.cerca.apri }}"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+          <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+        </div>
         <a class="nav__cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
       </div>
     </div>
@@ -175,19 +177,32 @@
       // Menu: largo in cima, si stringe in una pillola quando si scorre (come bitwip)
       var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
           logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
+      var links = nav.querySelector('.nav__links');
       function layout() {
-        // come bitwip: nella pillola stanno il logo a sinistra e link, giorno/notte e Contatti a destra
-        var small = innerWidth < 720, pad = small ? 18 : 30, gap = small ? 14 : 44;
-        var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth,
-            pill = pad + lw + gap + rw + 6, clip = Math.max(0, (W - pill) / 2);
+        // nella pillola stanno, uno dopo l'altro: il logo, le voci e (ricerca + giorno/notte + Contatti)
+        var small = innerWidth < 720, pad = small ? 18 : 30, gap = small ? 14 : 40;
+        var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth, cw = links.offsetWidth,
+            pill = pad + lw + gap + (cw ? cw + gap : 0) + rw + 6, clip = Math.max(0, (W - pill) / 2);
         bar.style.setProperty('--clip', clip + 'px');
         bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
+        bar.style.setProperty('--dc', (clip + pad + lw + gap - links.offsetLeft) + 'px');
         bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
         // la notch: la pillola stretta attorno al solo logo, a grandezza piena, al centro
         var nw = lw + (pad + 8) * 2;   // un po' d'aria attorno alla scritta
         bar.style.setProperty('--nclip', Math.max(0, (W - nw) / 2) + 'px');
         bar.style.setProperty('--nl', (W / 2 - (logo.offsetLeft + lw / 2)) + 'px');
       }
+      // la capsula che scivola sotto la voce su cui passi
+      var hl = links.querySelector('.nav__hl');
+      links.querySelectorAll(':scope > a, :scope > .nav__item > a').forEach(function (a) {
+        a.addEventListener('pointerenter', function () {
+          var r = a.getBoundingClientRect(), b = links.getBoundingClientRect();
+          hl.style.width = (r.width + 28) + 'px';
+          hl.style.transform = 'translateX(' + (r.left - b.left - 14) + 'px)';
+          links.classList.add('is-hl');
+        });
+      });
+      links.addEventListener('pointerleave', function () { links.classList.remove('is-hl'); });
       // Tre stadi: larga in cima; pillola mentre scorre l'animazione della home; notch col solo logo
       // quando l'animazione è finita (o subito, nelle altre pagine). Col mouse sopra, un tocco o il tab torna la pillola.
       var aperto = false, apertoY = 0, chiudi = null, reel = document.getElementById('reel');
