@@ -334,11 +334,11 @@ html.vt-tema::view-transition-new(root) { z-index: 2; }
 
 /* ---------- Header animato della home ---------- */
 .reel { position: relative; height: calc(1500vh + var(--r-fascia));   /* + il bordo arrotondato della prima sezione: a fine corsa non si vede */ width: 100vw; margin-left: calc(50% - 50vw); background: var(--bg); }
-.reel-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.reel-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }   /* svh: l'altezza visibile vera, senza le barre del browser del telefono */
 .reel iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }
 /* intro finita: lo showreel resta un solo schermo, fermo dietro la pagina, e le fasce ci scorrono sopra */
 body.reel-fatto .reel { height: calc(100vh + var(--r-fascia)); }   /* l'header finale resta pieno: la sezione parte sotto il bordo dello schermo */
-body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh; z-index: 0; }
+body.reel-fatto .reel-sticky { position: fixed; inset: 0 0 auto 0; height: 100vh; height: 100svh; z-index: 0; }
 
 /* Prima sezione: il motto composto dallo showreel, con l'occhio al posto della O */
 .motto { margin: 0 0 clamp(28px, 3.4vw, 56px); font-weight: 900; font-size: clamp(2.5rem, 7.4vw, 8.8rem); line-height: .94; letter-spacing: -.02em; text-transform: uppercase; transform-origin: 0 0; }
@@ -400,6 +400,14 @@ body.has-reel .nav { transition: opacity .35s var(--ease), visibility 0s; }
 body.has-reel:not(.notch-on):not(.reel-fatto) .nav { opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s linear .2s; }
 body.reel-fatto .scorri, body.reel-fatto .salta-intro { opacity: 0; pointer-events: none; visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .scorri i { animation: none; top: 14px; } }
+/* Telefono: Suono e Skip non servono; lo scroll resta, più grande e centrato in basso */
+@media (max-width: 720px) {
+  .salta-intro, .suono { display: none !important; }
+  .scorri { bottom: max(28px, env(safe-area-inset-bottom)); width: 34px; height: 56px; margin-left: -17px; border-radius: 18px; opacity: .85; }
+  .scorri i { top: 10px; width: 8px; height: 8px; margin-left: -4px; }
+}
+@media (max-width: 720px) and (prefers-reduced-motion: no-preference) { .scorri i { animation-name: scorri-mob; } }
+@keyframes scorri-mob { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(22px); opacity: 0; } 100% { transform: translateY(22px); opacity: 0; } }
 
 .suono { position: fixed; left: var(--m); bottom: 24px; z-index: 55; display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 14px;
   border: 1.5px solid var(--line-2); border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); color: var(--fg);
