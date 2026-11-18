@@ -203,18 +203,17 @@
         });
       });
       links.addEventListener('pointerleave', function () { links.classList.remove('is-hl'); });
-      // Tre stadi: larga in cima; pillola mentre scorre l'animazione della home; notch col solo logo
-      // quando l'animazione è finita (o subito, nelle altre pagine). Col mouse sopra, un tocco o il tab torna la pillola.
       var aperto = false, apertoY = 0, chiudi = null, reel = document.getElementById('reel');
       function animFinita() { return !reel || document.body.classList.contains('reel-fatto'); }
       document.addEventListener('reelfatto', function () { onScroll(); });
       document.addEventListener('notchcambia', function () { onScroll(); });
       function onScroll() {
-        // in home, durante l'animazione il menu è il notch (il nome ci vola dentro); a fine animazione resta piccolo anche in cima
-        var inReel = reel && !animFinita(), giu = scrollY > 24 || !!reel;
+        // Due stati: grande in cima alla pagina, notch appena si scorre (in home anche durante l'animazione, dove il nome ci vola dentro).
+        // La pillola con le voci non è uno stato a sé: è il notch aperto, col mouse sopra, un tocco o il tab.
+        var inReel = reel && !animFinita(), giu = scrollY > 24 || inReel;
         if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80 && !nav.contains(document.activeElement))) aperto = false;
         nav.classList.toggle('is-pill', giu);
-        nav.classList.toggle('is-notch', giu && !aperto && (reel ? inReel : true));   // in home: notch durante l'animazione, poi il menu si apre
+        nav.classList.toggle('is-notch', giu && !aperto);
       }
       function apri() { clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
       bar.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') apri(); });
