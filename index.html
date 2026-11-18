@@ -11,6 +11,8 @@ reel: true
 
 <section class="reel" id="reel" aria-label="Showreel: Brand Identity, Illustration, Generative AI, Motion Design, Web Design">
   <div class="reel-sticky">
+    <span class="scorri" aria-hidden="true"><i></i></span>
+    <button class="salta" type="button" data-salta aria-label="Salta l'animazione iniziale">Skip intro<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3.5 7.5 8 3 12.5M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <iframe src="{{ '/lab/showreel-principale.html' | relative_url }}?embed&v={{ site.time | date: '%s' }}" title="Showreel di LIKEMOMMADEME" tabindex="-1"></iframe>
   </div>
 </section>
@@ -41,6 +43,16 @@ reel: true
       post({ done: true });
       document.dispatchEvent(new Event('reelfatto'));
     }
+    // Skip intro: salta subito alla schermata finale, senza far scorrere le scene
+    var salta = reel.querySelector('[data-salta]');
+    if (salta) salta.addEventListener('click', function () {
+      if (fatta) return;
+      chiudi(true); scrollTo({ top: 0, behavior: 'instant' });
+      post({ salta: true });
+    });
+    // l'indicatore di scroll sparisce appena si comincia a scorrere
+    var aggIntro = function () { document.body.classList.toggle('intro-mossa', scrollY > 40); };
+    addEventListener('scroll', aggIntro, { passive: true }); aggIntro();
     function vede() { var a = document.getElementById('apertura'); return !a || a.getBoundingClientRect().top > 0; }   // l'header si vede ancora?
     function post(m) { if (frame.contentWindow) frame.contentWindow.postMessage(m, location.origin); }
     function send() {

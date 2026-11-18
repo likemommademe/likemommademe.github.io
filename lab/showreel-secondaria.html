@@ -923,6 +923,7 @@
     if (e.origin !== location.origin || !e.data) return;
     if (e.data.theme && (e.data.theme === 'light') !== (TH === THEMES.light)) { setTheme(e.data.theme); lastDrawn = -1; }
     if (e.data.done) done = true;
+    if (e.data.salta) { done = true; st = DUR; sv = 0; lastDrawn = -1; }   // Skip intro: subito alla schermata finale
     if (typeof e.data.vede === 'boolean') vede = e.data.vede;
     if (typeof e.data.reel === 'number') embedTarget = reduced ? 0 : clamp(e.data.reel) * DUR;
     if (typeof e.data.mx === 'number') { ptr.x = e.data.mx; ptr.y = e.data.my; ptr.in = !!e.data.dentro; }
