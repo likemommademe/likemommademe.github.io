@@ -462,8 +462,8 @@ body.reel-fatto .scorri, body.reel-fatto .salta-intro { opacity: 0; pointer-even
 @media (max-width: 720px) {
   .scorri { bottom: max(28px, env(safe-area-inset-bottom)); width: 34px; height: 56px; margin-left: -17px; border-radius: 18px; opacity: .85; }
   .scorri i { top: 10px; width: 8px; height: 8px; margin-left: -4px; }
-  .suono, .salta-intro { bottom: calc(max(28px, env(safe-area-inset-bottom)) + 6px); width: 44px; height: 44px; padding: 0; justify-content: center; gap: 0; border-radius: 50%; }
-  .suono { left: 20px; }
+  body .suono, body .salta-intro { bottom: calc(max(28px, env(safe-area-inset-bottom)) + 6px); width: 44px; height: 44px; padding: 0; justify-content: center; gap: 0; border-radius: 50%; }
+  body .suono { left: 20px; }
   .salta-intro { right: 20px; }
   .suono__t, .salta-intro__t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .salta-intro svg { width: 16px; height: 16px; }
