@@ -184,7 +184,7 @@
         bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
         bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
         // la notch: la pillola stretta attorno al solo logo, a grandezza piena, al centro
-        var nw = lw + pad * 2;
+        var nw = lw + (pad + 8) * 2;   // un po' d'aria attorno alla scritta
         bar.style.setProperty('--nclip', Math.max(0, (W - nw) / 2) + 'px');
         bar.style.setProperty('--nl', (W / 2 - (logo.offsetLeft + lw / 2)) + 'px');
       }
