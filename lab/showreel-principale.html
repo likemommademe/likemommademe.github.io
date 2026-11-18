@@ -1211,7 +1211,7 @@
           const ks = lw / (L1 - L0);
           const kk = lerp(1, ks, fv), hh = M.lr[i].b - M.lr[i].t;
           x = lerp(x, lx + (cxi - ncx) * ks - cxi, fv);
-          dy = (ly - M.cy) * fv + hh * (1 - kk) / 2;   // si scala dal basso: compenso, così il centro della lettera arriva sul logo
+          dy = (ly - M.cy) * fv - hh * (1 - kk) / 2;   // si scala dal basso: la alzo di quanto si accorcia, così il centro arriva sul centro del logo
           fly = kk; c.style.opacity = (1 - eIO(p(t, 1.9, 1.97))).toFixed(3);   // al posto del logo vero: sparisce mentre il menu compare
         } else c.style.opacity = '';
       } else if (t < 14) { y = 115; }
@@ -1238,7 +1238,6 @@
     el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
     const active = R.title ? R.title.world : WORLDS.findIndex(w => t >= w.t0 && t < w.t1);
     worldEls.forEach((d, i) => {
-      d.firstChild.firstChild.style.transform = `translateY(${f1(115 * (1 - eOut(p(t, 1.9 + .05 * i, 2.32 + .05 * i))))}%)`;   // salgono quando il nome diventa il notch
       d.style.color = active === i || active === -1 ? TH.fg : TH.dim;
       d.lastChild.style.transform = `scaleX(${active === i ? (R.title ? 1 : eOut(p(t, WORLDS[i].t0, WORLDS[i].t0 + .3))) : 0})`;
     });
