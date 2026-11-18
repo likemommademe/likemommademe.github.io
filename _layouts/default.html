@@ -214,7 +214,7 @@
         var inReel = reel && !animFinita(), giu = scrollY > 24 || !!reel;
         if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80 && !nav.contains(document.activeElement))) aperto = false;
         nav.classList.toggle('is-pill', giu);
-        nav.classList.toggle('is-notch', giu && !aperto && (animFinita() || inReel));
+        nav.classList.toggle('is-notch', giu && !aperto && (reel ? inReel : true));   // in home: notch durante l'animazione, poi il menu si apre
       }
       function apri() { clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
       bar.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') apri(); });
