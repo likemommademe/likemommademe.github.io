@@ -1214,8 +1214,8 @@
           dy = (ly - M.cy) * fv - hh * (1 - kk) / 2;   // si scala dal basso: la alzo di quanto si accorcia, così il centro arriva sul centro del logo
           fly = kk; c.style.opacity = (1 - eIO(p(t, 1.9, 1.97))).toFixed(3);   // al posto del logo vero: sparisce mentre il menu compare
         } else c.style.opacity = '';
-      } else if (t < 14) { y = 115; }
-      else { y = 115 * (1 - eOut(p(t, 16.0 + .02 * i, 16.45 + .02 * i))); c.style.color = ''; }   // header finale: il nome grande, come all'inizio
+      } else if (t < 14) { y = 115; c.style.opacity = ''; }
+      else { y = 115 * (1 - eOut(p(t, 16.0 + .02 * i, 16.45 + .02 * i))); c.style.color = ''; c.style.opacity = ''; }   // dopo il volo nel notch le lettere tornano visibili   // header finale: il nome grande, come all'inizio
       vis(c, y < 114 && dy < 990 && !(t >= 1.97 && t < 14));
       c.style.transformOrigin = '50% 100%';
       c.style.transform = `translate(${f1(x)}px, ${f1(y + jump)}%) translateY(${f1(dy)}px) rotate(${f1(rot)}deg) scale(${fly.toFixed(4)}, ${(fly * sy).toFixed(4)})`;
