@@ -399,14 +399,10 @@ html.cerca-aperta { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .sub, .nav__sub-btn { transition: none; } }
 
 /* ---------- Passaggio tra le pagine (View Transitions) ---------- */
-@view-transition { navigation: auto; }
-/* passaggio calmo: la pagina vecchia svanisce in fretta, la nuova compare salendo appena; il menu resta fermo */
-::view-transition-old(root) { animation: vt-esce .22s ease-out both; }
-::view-transition-new(root) { animation: vt-entra .5s var(--ease) .06s both; }
+/* niente effetto nel cambio pagina: la pagina cambia e basta, come su tutti i siti.
+   Le View Transitions restano solo dentro la pagina (cerchio del giorno/notte, schede dei filtri di Work). */
 ::view-transition-group(barra), ::view-transition-old(barra), ::view-transition-new(barra) { animation: none; }
-::view-transition-old(barra) { display: none; }   /* nel cambio pagina resta solo il menu della pagina nuova (prima la notch vecchia restava sopra) */
-@keyframes vt-esce { to { opacity: 0; } }
-@keyframes vt-entra { from { opacity: 0; transform: translateY(18px); } }
+::view-transition-old(barra) { display: none; }
 /* cambio tema: il cerchio lo disegna il JavaScript, qui si spengono le animazioni standard */
 html.vt-tema::view-transition-old(root), html.vt-tema::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 html.vt-tema::view-transition-new(root) { z-index: 2; }
