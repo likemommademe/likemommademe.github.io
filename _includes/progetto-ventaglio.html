@@ -41,7 +41,7 @@
     var att = 0, tira = 0, giu = null, mosso = false, sopra = false, timer = null;
     function dist(i) { var d = ((i - att) % n + n) % n; return d > n / 2 ? d - n : d; }
     function disponi() {
-      var Wp = palco.clientWidth, small = innerWidth < 720, A = small ? Wp * .86 : Math.min(980, Wp * .66), S = small ? 46 : 110, step = S * .52;
+      var Wp = palco.clientWidth, small = innerWidth < 720, A = small ? Wp * .8 : Math.min(760, Wp * .5), S = small ? 56 : Math.min(190, Wp * .12), step = S * .62;
       palco.style.setProperty('--A', A + 'px'); palco.style.setProperty('--S', S + 'px');
       carte.forEach(function (c, i) {
         var d = dist(i) + tira, a = Math.abs(d), s = d < 0 ? -1 : 1, x;
@@ -68,17 +68,25 @@
     // trascinare
     palco.addEventListener('pointerdown', function (e) { if (e.button) return; giu = { x: e.clientX }; mosso = false; palco.classList.add('is-tira'); });
     addEventListener('pointermove', function (e) {
-      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = -dx / Math.max(160, palco.clientWidth * .22); disponi(); }
+      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = dx / Math.max(140, (palco.clientWidth < 720 ? palco.clientWidth * .5 : 260)); disponi(); }   // le schede seguono il dito
       if (e.pointerType === 'mouse' && sopra) { drag.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 10) + 'px)'; }
     }, { passive: true });
     addEventListener('pointerup', function () {
       if (!giu) return;
       var k = Math.round(tira); giu = null; tira = 0; palco.classList.remove('is-tira');
-      if (k) vai(k); else disponi();
+      if (k) vai(-k); else disponi();   // trascini a destra: arriva quella di sinistra
       gira(); setTimeout(function () { mosso = false; }, 0);
     });
     palco.addEventListener('pointerenter', function (e) { sopra = true; if (e.pointerType === 'mouse') drag.classList.add('is-su'); });
     palco.addEventListener('pointerleave', function () { sopra = false; drag.classList.remove('is-su'); });
+    // trackpad: scorrimento laterale
+    var ruota = 0, ruotaT = null;
+    palco.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault(); ruota += e.deltaX;
+      if (Math.abs(ruota) > 60) { vai(ruota > 0 ? 1 : -1); ruota = 0; gira(); }
+      clearTimeout(ruotaT); ruotaT = setTimeout(function () { ruota = 0; }, 200);
+    }, { passive: false });
     addEventListener('resize', disponi);
     disponi(); gira();
   })();
