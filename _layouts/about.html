@@ -90,10 +90,10 @@ layout: default
 </section>
 
 {% comment %} Cosa faccio: la stessa sezione della home (categorie che si aprono con una selezione di lavori) {% endcomment %}
-{% include cosa-faccio.html %}
+{% include cosa-faccio.html inv=true %}
 
 {% comment %} Strumenti, divisi in tre gruppi come sul profilo LinkedIn {% endcomment %}
-<section class="fascia inv">
+<section class="fascia">
   <div class="sec-head"><h2 class="rise"><span>{{ a.strumenti_titolo }}</span></h2></div>
   <div class="strum">
     {% for g in a.strumenti %}
@@ -107,7 +107,7 @@ layout: default
 </section>
 
 {% comment %} 5. Dove ho lavorato e studiato {% endcomment %}
-{% include esperienze.html %}
+{% include esperienze.html inv=true %}
 
 {% comment %} Chi mi conosce {% endcomment %}
 {% include testimonianze.html %}
@@ -116,7 +116,7 @@ layout: default
 {% include orari.html %}
 
 {% comment %} 7. Domande frequenti {% endcomment %}
-{% include domande.html id="about" %}
+{% include domande.html id="about" inv=true %}
 
 <script>
   (function () {

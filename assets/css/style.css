@@ -528,9 +528,12 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .manifesto { margin: 0; max-width: 18ch; font-weight: 500; font-size: var(--t-h2); line-height: 1.02; letter-spacing: -.03em; }
 
 /* Cosa faccio: schede che si impilano una sopra l'altra scorrendo (le intestazioni restano come linguette) */
-.pila { margin: 0; padding: 0; list-style: none; --tab: clamp(64px, 6.4vw, 92px); }
-.pila::after { content: ""; display: block; height: 45vh; }   /* lo spazio in fondo tiene ferma anche l'ultima scheda prima che la pila riparta */
-.pila__s { position: sticky; top: calc(var(--nav-h) + 12px + var(--i) * var(--tab) * (1 - var(--chiudi, 0))); background: var(--bg); border-top: 1px solid var(--line); padding-bottom: clamp(28px, 3vw, 48px); }
+.pila { margin: 0; padding: 0; list-style: none; --tab: clamp(56px, 5vw, 72px); }
+.pila::after { content: ""; display: block; height: var(--spazio, 0px); }
+/* la sezione intera resta bloccata quando l'ultima scheda è al suo posto; quella dopo le scorre sopra */
+.pila-sez { position: sticky; top: var(--pin, 0px); z-index: 0; }
+.pila-sez + * { position: relative; z-index: 1; }
+.pila__s { position: sticky; top: calc(var(--nav-h) + 12px + var(--i) * var(--tab)); background: var(--bg); border-top: 1px solid var(--line); padding-bottom: clamp(20px, 2vw, 32px); }
 .pila__s:last-child { margin-bottom: 0; }
 .pila__testa { display: grid; grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 1.4fr) auto auto; align-items: center; gap: var(--gap); min-height: var(--tab); }
 .pila__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); }
@@ -542,9 +545,9 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .pila__go svg { transition: transform .5s var(--ease); }
 .pila__testa:hover .pila__go { background: var(--accent-1); color: #F5F5F2; }
 .pila__testa:hover .pila__go svg { transform: rotate(-45deg); }
-.pila__lavori { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding: 8px 0 0 calc(56px + var(--gap)); }
+.pila__lavori { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding: 4px 0 0 calc(56px + var(--gap)); }
 .pila__lav { display: grid; gap: 10px; }
-.pila__img { display: block; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
+.pila__img { display: block; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
 .pila__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
 .pila__lav:hover .pila__img img { transform: scale(1.05); }
 .pila__lt { font-weight: 500; font-size: 15px; line-height: 1.3; }
@@ -556,7 +559,7 @@ main.finisce-fascia { padding-bottom: 0 !important; }
   .pila__go { width: 40px; height: 40px; }
   .pila__lavori { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-left: 0; }
 }
-@media (prefers-reduced-motion: reduce) { .pila__s { position: static; } }
+@media (prefers-reduced-motion: reduce) { .pila__s, .pila-sez { position: static; } }
 
 /* ---------- Pagina Progetti (come bitwip / work) ---------- */
 .phero { padding-bottom: clamp(32px, 4vw, 64px); }

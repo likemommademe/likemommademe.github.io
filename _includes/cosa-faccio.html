@@ -31,23 +31,22 @@
     {% endfor %}
   </ol>
   <script>
-    // la pila si chiude: quando anche l'ultima scheda è al suo posto, scorrendo le schede risalgono una sull'altra
-    // (le linguette spariscono sotto l'ultima) e poi il blocco intero se ne va con lo scroll normale
+    // la pila resta ferma: quando anche l'ultima scheda è al suo posto, la sezione si blocca e la sezione dopo le scorre sopra.
+    // Lo spazio in fondo alla pila è calcolato perché l'ultima scheda arrivi al suo posto proprio quando la sezione si blocca.
     (function () {
-      var pila = document.querySelector('[data-pila] .pila'); if (!pila) return;
-      var schede = pila.querySelectorAll('.pila__s'), ultima = schede[schede.length - 1], tic = false;
-      function chiudi() {
-        tic = false;
-        if (getComputedStyle(ultima).position !== 'sticky') { pila.style.setProperty('--chiudi', 0); return; }
-        var spazio = innerHeight * .45, cs = getComputedStyle(pila), tab = parseFloat(cs.getPropertyValue('--tab')) || 80,
-            nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 76,
-            T1 = nav + 12, T = T1 + (schede.length - 1) * tab, fondo = pila.getBoundingClientRect().bottom,
-            // si chiude esattamente fino al momento in cui la pila riparte: niente pause, lo scroll continua normale
-            q = 1 - (fondo - T1 - ultima.offsetHeight) / (T - T1 + spazio * .7);
-        pila.style.setProperty('--chiudi', Math.max(0, Math.min(1, q)).toFixed(4));
+      var sez = document.querySelector('[data-pila]'), pila = sez && sez.querySelector('.pila'); if (!pila) return;
+      var schede = pila.querySelectorAll('.pila__s'), ultima = schede[schede.length - 1];
+      function misura() {
+        if (getComputedStyle(ultima).position !== 'sticky') { sez.style.removeProperty('--pin'); pila.style.removeProperty('--spazio'); return; }
+        var T = parseFloat(getComputedStyle(ultima).top) || 0,   // dove si ferma l'ultima scheda
+            pilaTop = pila.getBoundingClientRect().top - sez.getBoundingClientRect().top,
+            dopo = sez.offsetHeight - (pilaTop + pila.offsetHeight);   // quanto c'è sotto la pila, dentro la sezione
+        pila.style.setProperty('--spazio', Math.max(0, innerHeight - T - ultima.offsetHeight - dopo) + 'px');
+        sez.style.setProperty('--pin', Math.min(0, innerHeight - sez.offsetHeight) + 'px');
       }
-      addEventListener('scroll', function () { if (!tic) { tic = true; requestAnimationFrame(chiudi); } }, { passive: true });
-      addEventListener('resize', chiudi); chiudi();
+      addEventListener('resize', misura); addEventListener('load', misura);
+      if (document.fonts) document.fonts.ready.then(misura);
+      misura();
     })();
     (function () {
       // la calamita: passando sulla scheda, la freccia viene attirata verso il cursore
