@@ -1,7 +1,7 @@
 {% comment %}
-  Altri progetti, a ventaglio: al centro la scheda aperta (copertina + titolo, frase, Vedi), ai lati le altre chiuse e
-  sovrapposte con il titolo in verticale. Parte dal progetto successivo; si trascina, si clicca una scheda di lato,
-  si usano le frecce (anche da tastiera). Gira da sola finché il mouse non ci passa sopra.
+  Altri progetti, a ventaglio: solo foto, tutte uguali, disposte ad arco (al centro la più grande). Passandoci sopra
+  compare in overlay categoria, titolo e freccia; il clic porta al progetto. Si trascina, si usano le frecce
+  (anche da tastiera) o il trackpad; gira da sola finché il mouse non ci passa sopra. Si muove solo con transform: niente scatti.
   include.lista: tutti i progetti in ordine; include.qui: la posizione di questo progetto.
 {% endcomment %}
 {% assign t = site.data.testi.progetto %}{% assign tl = site.data.testi.lavori %}
@@ -19,16 +19,14 @@
     {% for k in (1..tot) %}{% assign j = include.qui | plus: k | modulo: tot %}{% if j != include.qui %}{% assign p = lista[j] %}
     {% assign pc = site.categorie | where: "slug", p.categoria | first %}
     {% assign pcl = nil %}{% if p.cliente %}{% assign pcl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
-    <article class="ven__c" data-ven-c>
-      <a class="ven__img" href="{{ p.url | relative_url }}" tabindex="-1">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy" draggable="false">{% endif %}</a>
-      <span class="ven__vert" aria-hidden="true">{{ p.title }}</span>
-      <div class="ven__corpo">
+    <a class="ven__c" href="{{ p.url | relative_url }}" data-ven-c draggable="false">
+      {% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy" draggable="false">{% endif %}
+      <span class="ven__over">
         <span class="pc__tag">{% if pc %}<span class="pc__tag-cat">{{ pc.title }}</span>{% endif %}{% if pcl %}<span class="pc__tag-dot">{{ pcl.title }}</span>{% elsif p.anno %}<span class="pc__tag-dot">{{ p.anno }}</span>{% endif %}</span>
-        <h3 class="ven__t">{{ p.title }}</h3>
-        {% if p.domanda %}<p class="ven__q">«{{ p.domanda }}»</p>{% elsif p.sottotitolo %}<p class="ven__q">{{ p.sottotitolo }}</p>{% endif %}
-        <a class="btn ven__vai" href="{{ p.url | relative_url }}" draggable="false">{{ tl.vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-      </div>
-    </article>
+        <span class="ven__t">{{ p.title }}</span>
+        <span class="ven__vai" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span>
+    </a>
     {% endif %}{% endfor %}
   </div>
   <span class="ven__drag" aria-hidden="true">{{ t.trascina | default: "Trascina" }}</span>
@@ -41,20 +39,16 @@
     var att = 0, tira = 0, giu = null, mosso = false, sopra = false, timer = null;
     function dist(i) { var d = ((i - att) % n + n) % n; return d > n / 2 ? d - n : d; }
     function disponi() {
-      var Wp = palco.clientWidth, small = innerWidth < 720, A = small ? Wp * .8 : Math.min(760, Wp * .5), S = small ? 56 : Math.min(190, Wp * .12), step = S * .62;
-      palco.style.setProperty('--A', A + 'px'); palco.style.setProperty('--S', S + 'px');
+      var Wp = palco.clientWidth, small = innerWidth < 720, C = carte[0].offsetWidth, passo = C * (small ? .5 : .46);
       carte.forEach(function (c, i) {
-        var d = dist(i) + tira, a = Math.abs(d), s = d < 0 ? -1 : 1, x;
-        if (a <= 1) x = d * (A / 2 + S / 2 + 18);   // dalla scheda aperta alla prima chiusa
-        else x = s * (A / 2 + S / 2 + 18 + (a - 1) * step);
-        var vis = a < (small ? 3.5 : 6.5);
-        c.classList.toggle('is-aperta', Math.round(dist(i) + tira) === 0 && Math.abs(tira) < .5);
-        c.style.transform = 'translate(-50%, -50%) translateX(' + x.toFixed(1) + 'px) translateY(' + (a * 8).toFixed(1) + 'px) rotate(' + (d * 1.6).toFixed(2) + 'deg) scale(' + (1 - Math.min(a, 6) * .05).toFixed(3) + ')';
+        var d = dist(i) + tira, a = Math.abs(d), vis = a < (small ? 2.6 : 4.6);
+        var x = d * passo * (1 - Math.min(a, 4) * .06), y = a * a * (small ? 6 : 10), sc = 1 - Math.min(a, 5) * .12;
+        c.style.transform = 'translate(-50%, -50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (d * 5).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
         c.style.zIndex = String(100 - Math.round(a * 10));
         c.style.opacity = vis ? '1' : '0';
         c.style.pointerEvents = vis ? '' : 'none';
-        c.setAttribute('aria-hidden', Math.round(dist(i)) === 0 ? 'false' : 'true');
-        c.querySelectorAll('a').forEach(function (l) { l.tabIndex = Math.round(dist(i)) === 0 && l.classList.contains('ven__vai') ? 0 : -1; });
+        c.classList.toggle('is-centro', Math.round(dist(i)) === 0);
+        c.tabIndex = Math.round(dist(i)) === 0 ? 0 : -1;
       });
       num.textContent = String(att + 1).padStart(2, '0');
     }
@@ -64,11 +58,11 @@
     v.querySelector('[data-ven-succ]').addEventListener('click', function () { vai(1); gira(); });
     palco.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { vai(1); gira(); } if (e.key === 'ArrowLeft') { vai(-1); gira(); } });
     // clic su una scheda chiusa: diventa quella aperta (il link vale solo sulla scheda aperta)
-    carte.forEach(function (c, i) { c.addEventListener('click', function (e) { if (mosso || Math.round(dist(i)) !== 0) { e.preventDefault(); if (!mosso) { vai(dist(i)); gira(); } } }); });
+    carte.forEach(function (c) { c.addEventListener('click', function (e) { if (mosso) e.preventDefault(); }); });   // il clic porta al progetto, ma non dopo un trascinamento
     // trascinare
     palco.addEventListener('pointerdown', function (e) { if (e.button) return; giu = { x: e.clientX }; mosso = false; palco.classList.add('is-tira'); });
     addEventListener('pointermove', function (e) {
-      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = dx / Math.max(140, (palco.clientWidth < 720 ? palco.clientWidth * .5 : 260)); disponi(); }   // le schede seguono il dito
+      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = dx / Math.max(120, carte[0].offsetWidth * .46); disponi(); }   // le schede seguono il dito
       if (e.pointerType === 'mouse' && sopra) { drag.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 10) + 'px)'; }
     }, { passive: true });
     addEventListener('pointerup', function () {
