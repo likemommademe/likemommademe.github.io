@@ -1138,9 +1138,14 @@ body:has(.vocchio__tu.is-su) .segui { opacity: 0; }
   .vocchio__scena { position: sticky; top: 0; height: 100vh; overflow: hidden; }
   .vocchio__head { position: absolute; left: 0; top: calc(var(--nav-h) + 24px); margin: 0; z-index: 3; }
   .vocchio__parole { position: absolute; left: 0; right: 0; bottom: clamp(32px, 6vh, 72px); opacity: var(--palco, 1); transition: opacity .3s; }
-  .vocchio.is-viva .vparola :is(.vparola__t, .vparola__d) { opacity: .14; transform: translateY(14px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
+  .vocchio.is-viva .vparola :is(.vparola__t, .vparola__d) { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
   .vocchio.is-viva .vparola.is-qui :is(.vparola__t, .vparola__d) { opacity: 1; transform: none; }
   .vocchio.is-viva .vparola.is-qui .vparola__d { transition-delay: .15s; }
+  /* finché l'elemento non arriva, la riga non si vede: niente testo né linee in anticipo */
+  .vocchio.is-viva .vparola { border-bottom-color: transparent; transition: border-color .6s; }
+  .vocchio.is-viva .vparola.is-qui { border-bottom-color: var(--line); }
+  .vocchio.is-viva .vocchio__parole { border-top-color: transparent; transition: border-color .6s; }
+  .vocchio.is-viva .vocchio__parole:has(.is-qui) { border-top-color: var(--line); }
 }
 @media (max-width: 860px) {
   .vparola { grid-template-columns: 64px minmax(0, 1fr); }
