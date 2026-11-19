@@ -33,8 +33,9 @@
   function animate(update) {
     if (!document.startViewTransition || reduce.matches) { update(); return; }
     cards.forEach((c, i) => { c.style.viewTransitionName = 'card-' + i; });
+    document.documentElement.classList.add('vt-filtri');   // si muovono solo le schede: la pagina resta ferma
     const t = document.startViewTransition(update);
-    t.finished.finally(() => cards.forEach(c => { c.style.viewTransitionName = ''; }));
+    t.finished.finally(() => { cards.forEach(c => { c.style.viewTransitionName = ''; }); document.documentElement.classList.remove('vt-filtri'); });
   }
 
   function apply() {
