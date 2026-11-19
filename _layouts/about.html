@@ -69,26 +69,30 @@ layout: default
   {% endfor %}
 </section>
 
-{% comment %} 4. Valori (spunto da crency.agency, sezione Trust): la sezione resta ferma, al centro l'occhio galleggia e segue il mouse;
-   scorrendo, le tre parole escono una alla volta dall'occhio e volano al loro posto. Su telefono e con meno movimento: tutto in colonna. {% endcomment %}
+{% comment %} 4. Valori: una scena per parola, tutte partono dall'occhio (la sezione resta ferma mentre scorri).
+   Visione: la pupilla si dilata e nel suo fascio di luce si accendono le lettere.
+   Execution: cubi che escono dall'occhio girando (come i blocchi del branding nello showreel) e costruiscono la parola.
+   Coordinamento: un'orchestra di puntini gira in disordine attorno all'occhio, poi si mette in fila e forma la parola.
+   Alla fine l'occhio sta a sinistra e le tre parole a destra, in righe. Su telefono e con meno movimento: tutto fermo, in colonna. {% endcomment %}
 <section class="fascia vocchio" data-vocchio>
   <div class="vocchio__scena">
     <div class="sec-head vocchio__head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
+    <canvas class="vocchio__tela" aria-hidden="true"></canvas>
     <div class="vocchio__occhio" aria-hidden="true">
       <div class="vocchio__galleggia">
         <svg viewBox="0 0 100 90"><g class="vocchio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="var(--bg)" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/><g class="vocchio__iride"><circle cx="50" cy="45" r="22" fill="var(--accent-3)"/><circle class="vocchio__pupilla" cx="50" cy="45" r="10" fill="#121414"/><circle cx="55" cy="39" r="3.4" fill="#F5F5F2"/></g></g></svg>
       </div>
     </div>
-    <span class="vocchio__tu" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="var(--accent-3)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><b>{{ a.valori_tu | default: "Tu" }}</b></span>
     <ul class="vocchio__parole">
       {% for v in a.valori %}
         <li class="vparola vparola--{{ forloop.index }}" data-vparola>
-          <h3 class="vparola__t">{{ v.nome }}</h3>
+          <h3 class="vparola__t" aria-label="{{ v.nome }}">{{ v.nome }}</h3>
           <p class="vparola__d">{{ v.testo }}</p>
         </li>
       {% endfor %}
     </ul>
   </div>
+  <span class="vocchio__tu" aria-hidden="true"><b>{{ a.valori_tu | default: "Tu" }}</b></span>
 </section>
 
 {% comment %} Strumenti, divisi in tre gruppi come sul profilo LinkedIn {% endcomment %}
@@ -178,70 +182,168 @@ layout: default
       misura();
     }
 
-    // Valori: l'occhio racconta una piccola storia.
-    // 1. Ti guarda: segue te (il cursore «Tu»); se non ti muovi, guarda dritto verso di te.
-    // 2. Immagina: scorrendo, guarda il punto dove andrà la parola, mette a fuoco (pupilla stretta), la parola esce da lui e la accompagna con lo sguardo.
-    // 3. Coordina: quando sono uscite tutte e tre le riguarda una dopo l'altra, torna su di te e fa l'occhiolino. Una volta sola.
+    // Valori: tre scene, una per parola, tutte guidate dallo scroll (si possono riavvolgere tornando su).
     var vo = document.querySelector('[data-vocchio]');
-    if (vo) {
-      var occ = vo.querySelector('.vocchio__occhio'), corpo = vo.querySelector('.vocchio__galleggia'), iride = vo.querySelector('.vocchio__iride'),
+    if (vo) (function () {
+      var scena = vo.querySelector('.vocchio__scena'), tela = vo.querySelector('.vocchio__tela'), cx = tela.getContext('2d'),
+          occ = vo.querySelector('.vocchio__occhio'), corpo = vo.querySelector('.vocchio__galleggia'), iride = vo.querySelector('.vocchio__iride'),
           pup = vo.querySelector('.vocchio__pupilla'), palp = vo.querySelector('.vocchio__palpebra'), tu = vo.querySelector('.vocchio__tu'),
-          vp = Array.prototype.slice.call(vo.querySelectorAll('[data-vparola]')), largo = matchMedia('(min-width: 861px)'),
-          mx = -1, my = -1, ultimoMouse = 0, gx = 0, gy = 0, ps = 1, finale = null, finaleFatto = false, inVista = false, ciclo = false;
+          righe = Array.prototype.slice.call(vo.querySelectorAll('[data-vparola]')), titoli = righe.map(function (r) { return r.querySelector('.vparola__t'); }),
+          desc = righe.map(function (r) { return r.querySelector('.vparola__d'); }), largo = matchMedia('(min-width: 861px)');
+      var E = function (t) { return 1 - Math.pow(1 - t, 3); }, EIO = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      var tra = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+      var lerp = function (a, b, t) { return a + (b - a) * t; };
+      // le lettere di Visione, una per una
+      var lettere = [];
+      titoli[0].innerHTML = titoli[0].textContent.trim().split('').map(function (c) { return '<span class="vlettera" aria-hidden="true">' + c + '</span>'; }).join('');
+      lettere = Array.prototype.slice.call(titoli[0].querySelectorAll('.vlettera'));
+      var W = 0, H = 0, dpr = 1, cubi = [], punti = [], col = {}, mx = -1, my = -1, ultimo = 0, gx = 0, gy = 0, ps = 1, finale = null, finaleFatto = false, inVista = false, ciclo = false, pronto = false;
       var vivo = function () { return largo.matches && !reduce; };
       var strizza = function () { palp.classList.remove('is-strizza'); void palp.getBBox(); palp.classList.add('is-strizza'); };
-      var centro = function (el) { var b = el.getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; };
-      var posa = function () {   // dove sta ogni parola quando è arrivata (senza trasformazioni)
-        return vp.map(function (w) { var t = w.style.transform; w.style.transform = 'none'; var c = centro(w); w.style.transform = t; return c; });
-      };
-      var passo = function (ora) {
-        ciclo = false;
-        if (!vivo()) { vo.classList.remove('is-viva'); vp.forEach(function (w) { w.style.transform = ''; w.style.opacity = ''; }); return; }
-        vo.classList.add('is-viva');
-        var r = vo.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1),
-            o = centro(occ), arrivi = posa(), meta = null, fuoco = false, tutte = true;
-        vp.forEach(function (w, i) {
-          var inizio = .06 + i * .24, t = clamp((p - inizio) / .18, 0, 1), e = 1 - Math.pow(1 - t, 3), a = arrivi[i];
-          var dx = o.x - a.x, dy = o.y - a.y;
-          w.style.transform = 'translate(' + (dx * (1 - e)).toFixed(1) + 'px,' + (dy * (1 - e)).toFixed(1) + 'px) scale(' + (.1 + .9 * e).toFixed(3) + ')';
-          w.style.opacity = Math.min(1, t * 5).toFixed(2);
-          w.classList.toggle('is-fuori', t >= 1);
-          if (t < 1) tutte = false;
-          // poco prima che esca guarda già dove andrà; mentre vola la segue
-          if (p > inizio - .07 && t < 1 && !meta) { meta = t > 0 ? { x: a.x + dx * (1 - e), y: a.y + dy * (1 - e) } : a; fuoco = true; }
-        });
-        // 3. il finale: le riguarda tutte, torna su di te e strizza l'occhio
-        if (tutte && !finaleFatto && !finale) finale = ora;
-        if (!tutte) { finale = null; if (p < .5) finaleFatto = false; }
-        if (finale) {
-          var f = (ora - finale) / 420, k = Math.floor(f);
-          if (k < 3) { meta = arrivi[k]; fuoco = true; }
-          else { finale = null; finaleFatto = true; strizza(); }
+      var scatola = function (el) { var b = el.getBoundingClientRect(), s = scena.getBoundingClientRect(); return { x: b.left - s.left, y: b.top - s.top, w: b.width, h: b.height }; };
+      // i punti che compongono una parola: la scrivo su una tela nascosta con lo stesso carattere e prendo le celle piene
+      function campiona(el, passo) {
+        var b = scatola(el), st = getComputedStyle(el), c = document.createElement('canvas'), k = c.getContext('2d');
+        c.width = Math.ceil(b.w) + 4; c.height = Math.ceil(b.h) + 4;
+        k.font = '900 ' + st.fontSize + ' ' + st.fontFamily; k.textBaseline = 'alphabetic';
+        if ('letterSpacing' in k) k.letterSpacing = st.letterSpacing;
+        var fs = parseFloat(st.fontSize), base = b.h / 2 + fs * .34;
+        k.fillText(el.textContent.trim(), 0, base);
+        var d = k.getImageData(0, 0, c.width, c.height).data, out = [];
+        for (var y = passo / 2; y < c.height; y += passo) for (var x = passo / 2; x < c.width; x += passo) {
+          if (d[(Math.floor(y) * c.width + Math.floor(x)) * 4 + 3] > 120) out.push({ x: b.x + x, y: b.y + y });
         }
-        // 1. altrimenti guarda te: il cursore, o dritto se sei fermo da un po'
-        if (!meta && mx >= 0 && ora - ultimoMouse < 2500) meta = { x: mx, y: my };
+        return out;
+      }
+      function misura() {
+        if (!vivo()) return;
+        var s = scena.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1);
+        W = s.width; H = s.height; tela.width = W * dpr; tela.height = H * dpr;
+        var cs = getComputedStyle(vo);
+        col = { fg: cs.getPropertyValue('--fg').trim() || '#121414', a1: cs.getPropertyValue('--accent-1').trim(), a2: cs.getPropertyValue('--accent-2').trim(), a3: cs.getPropertyValue('--accent-3').trim() };
+        var fs = parseFloat(getComputedStyle(titoli[1]).fontSize), lato = Math.max(8, Math.round(fs / 6.5));
+        cubi = campiona(titoli[1], lato).map(function (q, i) { return { x: q.x, y: q.y, s: lato * .92, giri: (i % 3 + 1) * (i % 2 ? 1 : -1), c: i % 9 === 4 ? 'a3' : 'a1' }; });
+        var cmin = Infinity, cmax = -Infinity; cubi.forEach(function (q) { cmin = Math.min(cmin, q.x); cmax = Math.max(cmax, q.x); });
+        cubi.forEach(function (q) { q.k = (q.x - cmin) / Math.max(1, cmax - cmin); });
+        var lp = Math.max(7, Math.round(fs / 7));
+        punti = campiona(titoli[2], lp).map(function (q, i) {
+          var pal = ['a3', 'a1', 'a2', 'fg'];
+          return { x: q.x, y: q.y, r: lp * .38, c: pal[i % 4], or: 130 + (i * 53 % 230), vel: (.35 + (i * 37 % 100) / 110) * (i % 2 ? 1 : -1), fase: i * 2.399, sq: .45 + (i % 5) / 12 };
+        });
+        var pmin = Infinity, pmax = -Infinity; punti.forEach(function (q) { pmin = Math.min(pmin, q.x); pmax = Math.max(pmax, q.x); });
+        punti.forEach(function (q) { q.k = (q.x - pmin) / Math.max(1, pmax - pmin); });
+        pronto = true;
+      }
+      // un cubo che gira, in proiezione ortogonale: si vedono solo le facce rivolte verso di noi
+      function cubo(x, y, s, ax, ay, base) {
+        var h = s / 2, ca = Math.cos(ax), sa = Math.sin(ax), cb = Math.cos(ay), sb = Math.sin(ay);
+        var V = [[-h,-h,-h],[h,-h,-h],[h,h,-h],[-h,h,-h],[-h,-h,h],[h,-h,h],[h,h,h],[-h,h,h]].map(function (v) {
+          var x1 = v[0] * cb + v[2] * sb, z1 = -v[0] * sb + v[2] * cb, y2 = v[1] * ca - z1 * sa, z2 = v[1] * sa + z1 * ca; return [x + x1, y + y2, z2];
+        });
+        var F = [[0,1,2,3],[5,4,7,6],[4,0,3,7],[1,5,6,2],[4,5,1,0],[3,2,6,7]];
+        F.forEach(function (f) {
+          var a = V[f[0]], b = V[f[1]], c = V[f[2]], nz = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+          if (nz <= 0) return;
+          var area = nz / (s * s);   // più la faccia è di fronte, più è chiara
+          cx.globalAlpha = 1; cx.fillStyle = base; cx.beginPath();
+          f.forEach(function (i, j) { j ? cx.lineTo(V[i][0], V[i][1]) : cx.moveTo(V[i][0], V[i][1]); }); cx.closePath(); cx.fill();
+          if (area < .98) { cx.fillStyle = 'rgba(0,0,0,' + (.45 * (1 - area)).toFixed(3) + ')'; cx.fill(); }
+        });
+      }
+      function passo(ora) {
+        ciclo = false;
+        if (!vivo()) { vo.classList.remove('is-viva'); occ.style.transform = ''; return; }
+        if (!pronto) misura();
+        vo.classList.add('is-viva');
+        var r = vo.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1), t = ora / 1000;
+        cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, W, H);
+        // l'occhio parte al centro e va a sinistra, dove resta
+        var fin = { x: occ.offsetLeft - occ.offsetWidth / 2, y: occ.offsetTop - occ.offsetHeight / 2, w: occ.offsetWidth, h: occ.offsetHeight }, sposta = 1 - EIO(tra(p, .05, .13));
+        var dX = (W / 2 - (fin.x + fin.w / 2)) * sposta, dY = (H * .54 - (fin.y + fin.h / 2)) * sposta;
+        occ.style.transform = 'translate(-50%, -50%) translate(' + dX.toFixed(1) + 'px,' + dY.toFixed(1) + 'px) scale(' + (1 + .25 * sposta).toFixed(3) + ')';
+        var oc = { x: fin.x + fin.w / 2 + dX, y: fin.y + fin.h / 2 + dY }, meta = null, pupT = 1, vista = 1;
+
+        // VISIONE: la pupilla si dilata, il fascio di luce va verso la riga e le lettere si accendono lungo il fascio
+        var v1 = tra(p, .14, .2), v2 = tra(p, .18, .32), v3 = tra(p, .32, .36);
+        var t1 = scatola(titoli[0]);
+        if (v1 > 0 && v3 < 1) {
+          pupT = lerp(1, 1.9, E(v1)) * (1 - E(v3)) + E(v3); vista = 1 + .12 * E(v1) * (1 - E(v3));
+          var luce = Math.min(E(v1), 1 - E(v3)), fx = t1.x + t1.w * Math.max(.15, v2) + 30;
+          var g = cx.createLinearGradient(oc.x, oc.y, fx, oc.y);
+          g.addColorStop(0, 'rgba(255,61,139,' + (.55 * luce).toFixed(3) + ')'); g.addColorStop(1, 'rgba(255,61,139,0)');
+          cx.fillStyle = g; cx.beginPath(); cx.moveTo(oc.x + fin.w * .08, oc.y - 6); cx.lineTo(fx, t1.y - t1.h * .35); cx.lineTo(fx, t1.y + t1.h * 1.35); cx.lineTo(oc.x + fin.w * .08, oc.y + 6); cx.closePath(); cx.fill();
+          meta = { x: fx, y: t1.y + t1.h / 2 };
+        }
+        lettere.forEach(function (l, i) {
+          var k = E(tra(v2, i / lettere.length * .85, i / lettere.length * .85 + .2));
+          l.style.opacity = k.toFixed(3); l.style.filter = k < 1 ? 'blur(' + ((1 - k) * 10).toFixed(1) + 'px)' : '';
+          l.style.transform = k < 1 ? 'scale(' + (1.5 - .5 * k).toFixed(3) + ')' : '';
+        });
+        desc[0].style.opacity = E(v3).toFixed(3);
+
+        // EXECUTION: i cubi escono dall'occhio girando e si incastrano nelle loro celle, poi diventano la parola
+        var e0 = tra(p, .38, .58), eF = tra(p, .58, .62), ultimoCubo = null;
+        if (e0 > 0 && eF < 1) {
+          cubi.forEach(function (q) {
+            var k = tra(e0, q.k * .75, q.k * .75 + .25); if (k <= 0) return;
+            var e = E(k), x = lerp(oc.x, q.x, e), y = lerp(oc.y, q.y, e) - Math.sin(e * Math.PI) * 140, gira = (1 - e) * q.giri * Math.PI;
+            cx.globalAlpha = 1 - E(eF);
+            cubo(x, y, q.s * (.5 + .5 * e), gira * .9, gira, col[q.c]);
+            if (k < 1) ultimoCubo = { x: x, y: y };
+          });
+          cx.globalAlpha = 1;
+          if (ultimoCubo) { meta = ultimoCubo; pupT = .7; }
+        }
+        titoli[1].style.opacity = E(eF).toFixed(3); desc[1].style.opacity = E(tra(p, .6, .64)).toFixed(3);
+
+        // COORDINAMENTO: i puntini escono e girano in disordine attorno all'occhio, poi uno alla volta vanno al loro posto
+        var c0 = tra(p, .64, .69), c1 = tra(p, .7, .86), cF = tra(p, .86, .9), guidato = null;
+        if (c0 > 0 && cF < 1) {
+          punti.forEach(function (q, i) {
+            var a = q.fase + t * q.vel, rr = q.or * E(c0), ox = oc.x + Math.cos(a) * rr, oy = oc.y + Math.sin(a) * rr * q.sq;
+            var k = E(tra(c1, q.k * .7, q.k * .7 + .3)), x = lerp(ox, q.x, k), y = lerp(oy, q.y, k);
+            cx.globalAlpha = (1 - E(cF)) * Math.min(1, c0 * 3); cx.fillStyle = col[q.c];
+            cx.beginPath(); cx.arc(x, y, q.r * (1 + .35 * (1 - k)), 0, 6.2832); cx.fill();
+            if (i === 0 && c1 <= 0) guidato = { x: x, y: y };
+            if (k > 0 && k < 1) guidato = { x: x, y: y };
+          });
+          cx.globalAlpha = 1;
+          if (guidato) { meta = guidato; pupT = .8; }
+        }
+        titoli[2].style.opacity = E(cF).toFixed(3); desc[2].style.opacity = E(tra(p, .88, .92)).toFixed(3);
+
+        // FINALE: riguarda le tre parole, torna su di te e strizza l'occhio (una volta)
+        var arrivi = titoli.map(function (el) { var b = scatola(el); return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; });
+        if (p >= .93 && !finaleFatto && !finale) finale = ora;
+        if (p < .9) { finale = null; finaleFatto = false; }
+        if (finale) { var k2 = Math.floor((ora - finale) / 420); if (k2 < 3) { meta = arrivi[k2]; pupT = .8; } else { finale = null; finaleFatto = true; strizza(); } }
+
+        // se non sta guardando una parola, guarda te
+        var s0 = scena.getBoundingClientRect();
+        if (!meta && mx >= 0 && ora - ultimo < 2500) meta = { x: mx - s0.left, y: my - s0.top };
         var tx = 0, ty = 0;
-        if (meta) { var ang = Math.atan2(meta.y - o.y, meta.x - o.x), d = Math.min(1, Math.hypot(meta.x - o.x, meta.y - o.y) / 260); tx = Math.cos(ang) * 14 * d; ty = Math.sin(ang) * 10 * d; }
-        gx += (tx - gx) * .14; gy += (ty - gy) * .14;
-        ps += ((fuoco ? .7 : meta ? 1 : 1.25) - ps) * .1;   // a fuoco si stringe, quando ti guarda fermo si allarga
+        if (meta) { var an = Math.atan2(meta.y - oc.y, meta.x - oc.x), dd = Math.min(1, Math.hypot(meta.x - oc.x, meta.y - oc.y) / 260); tx = Math.cos(an) * 14 * dd; ty = Math.sin(an) * 10 * dd; }
+        else pupT = Math.max(pupT, 1.2);
+        gx += (tx - gx) * .14; gy += (ty - gy) * .14; ps += (pupT - ps) * .14;
         iride.style.transform = 'translate(' + gx.toFixed(2) + 'px,' + gy.toFixed(2) + 'px)';
         pup.style.transform = 'scale(' + ps.toFixed(3) + ')';
-        corpo.style.transform = 'translate(' + (gx * .8).toFixed(1) + 'px,' + (gy * .8).toFixed(1) + 'px) rotate(' + (gx * .35).toFixed(2) + 'deg)';   // il corpo si sporge verso dove guarda
+        corpo.style.transform = 'translate(' + (gx * .8).toFixed(1) + 'px,' + (gy * .8).toFixed(1) + 'px) rotate(' + (gx * .35).toFixed(2) + 'deg) scaleY(' + vista.toFixed(3) + ')';
         if (inVista) giro();
-      };
+      }
       var giro = function () { if (!ciclo) { ciclo = true; requestAnimationFrame(passo); } };
       if ('IntersectionObserver' in window) new IntersectionObserver(function (v) { inVista = v[0].isIntersecting; if (inVista) giro(); }).observe(vo);
       else inVista = true;
       vo.addEventListener('pointermove', function (e) {
         if (e.pointerType !== 'mouse') return;
-        mx = e.clientX; my = e.clientY; ultimoMouse = performance.now();
-        tu.style.transform = 'translate(' + (mx + 6) + 'px,' + (my + 4) + 'px)';
-        tu.classList.add('is-su');
+        mx = e.clientX; my = e.clientY; ultimo = performance.now();
+        tu.style.transform = 'translate(' + (mx + 6) + 'px,' + (my + 4) + 'px)'; tu.classList.add('is-su');
       }, { passive: true });
       vo.addEventListener('pointerleave', function () { tu.classList.remove('is-su'); mx = -1; });
-      addEventListener('resize', giro);
+      addEventListener('resize', function () { pronto = false; giro(); });
+      addEventListener('themechange', function () { pronto = false; giro(); });
+      if (document.fonts) document.fonts.ready.then(function () { pronto = false; giro(); });
       giro();
-    }
+    })();
 
 
 
