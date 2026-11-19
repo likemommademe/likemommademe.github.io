@@ -406,11 +406,6 @@ html.cerca-aperta { overflow: hidden; }
 /* cambio tema: il cerchio lo disegna il JavaScript, qui si spengono le animazioni standard */
 html.vt-tema::view-transition-old(root), html.vt-tema::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 html.vt-tema::view-transition-new(root) { z-index: 2; }
-/* filtri di Work: la pagina non si muove, si spostano solo le schede */
-html.vt-filtri::view-transition-old(root) { animation: none; display: none; }
-html.vt-filtri::view-transition-new(root) { animation: none; }
-html.vt-filtri::view-transition-old(barra), html.vt-filtri::view-transition-new(barra) { animation: none; }
-
 /* ---------- Header animato della home ---------- */
 .reel { position: relative; height: calc(1500vh + var(--r-fascia));   /* + il bordo arrotondato della prima sezione: a fine corsa non si vede */ width: 100vw; margin-left: calc(50% - 50vw); background: var(--bg); }
 .reel-sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }   /* svh: l'altezza visibile vera, senza le barre del browser del telefono */

@@ -30,12 +30,23 @@
   dds.forEach(d => (qs.get(d.k) || '').split(',').filter(Boolean).forEach(v => sel[d.k].add(v)));
   dds.forEach(d => d.boxes.forEach(x => { x.checked = sel[d.k].has(x.value); }));
 
+  // si muovono solo le schede (FLIP): quelle che restano scivolano al nuovo posto, le nuove compaiono. La pagina non si ridisegna.
   function animate(update) {
-    if (!document.startViewTransition || reduce.matches) { update(); return; }
-    cards.forEach((c, i) => { c.style.viewTransitionName = 'card-' + i; });
-    document.documentElement.classList.add('vt-filtri');   // si muovono solo le schede: la pagina resta ferma
-    const t = document.startViewTransition(update);
-    t.finished.finally(() => { cards.forEach(c => { c.style.viewTransitionName = ''; }); document.documentElement.classList.remove('vt-filtri'); });
+    if (reduce.matches || !Element.prototype.animate) { update(); return; }
+    const prima = new Map();
+    cards.forEach(c => { if (!c.hidden) prima.set(c, c.getBoundingClientRect()); });
+    update();
+    cards.forEach((c, i) => {
+      if (c.hidden) return;
+      const r = c.getBoundingClientRect(), p = prima.get(c);
+      if (p) {
+        const dx = p.left - r.left, dy = p.top - r.top, sx = p.width / r.width;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < .01) return;
+        c.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }], { duration: 650, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+      } else {
+        c.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 550, delay: Math.min(i, 8) * 30, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'backwards' });
+      }
+    });
   }
 
   function apply() {
@@ -65,6 +76,7 @@
     d.b.addEventListener('click', () => { dds.forEach(o => { if (o !== d) open(o, false); }); open(d, !d.g.classList.contains('is-open')); });
     d.boxes.forEach(x => x.addEventListener('change', () => {
       x.checked ? sel[d.k].add(x.value) : sel[d.k].delete(x.value);
+      open(d, false);   // scelto il filtro, la tendina si chiude
       animate(apply);
     }));
     d.g.addEventListener('keydown', e => { if (e.key === 'Escape') { open(d, false); d.b.focus(); } });
