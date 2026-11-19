@@ -1,0 +1,85 @@
+{% comment %}
+  Altri progetti, a ventaglio: al centro la scheda aperta (copertina + titolo, frase, Vedi), ai lati le altre chiuse e
+  sovrapposte con il titolo in verticale. Parte dal progetto successivo; si trascina, si clicca una scheda di lato,
+  si usano le frecce (anche da tastiera). Gira da sola finché il mouse non ci passa sopra.
+  include.lista: tutti i progetti in ordine; include.qui: la posizione di questo progetto.
+{% endcomment %}
+{% assign t = site.data.testi.progetto %}{% assign tl = site.data.testi.lavori %}
+{% assign lista = include.lista %}{% assign tot = lista.size %}
+<div class="ven" data-ven>
+  <div class="ven__testa">
+    <h2 class="rise"><span>{{ t.altri }}</span></h2>
+    <div class="ven__comandi">
+      <span class="ven__conta" aria-live="polite"><b data-ven-n>01</b> / {{ tot | minus: 1 | prepend: "0" | slice: -2, 2 }}</span>
+      <button class="ven__freccia" type="button" data-ven-prec aria-label="{{ t.precedente }}"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M14 8H3M7 3.5 2.5 8 7 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="ven__freccia" type="button" data-ven-succ aria-label="{{ t.successivo }}"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+  <div class="ven__palco" data-ven-palco tabindex="0" aria-roledescription="carosello" aria-label="{{ t.altri }}">
+    {% for k in (1..tot) %}{% assign j = include.qui | plus: k | modulo: tot %}{% if j != include.qui %}{% assign p = lista[j] %}
+    {% assign pc = site.categorie | where: "slug", p.categoria | first %}
+    {% assign pcl = nil %}{% if p.cliente %}{% assign pcl = site.clienti | where: "slug", p.cliente | first %}{% endif %}
+    <article class="ven__c" data-ven-c>
+      <a class="ven__img" href="{{ p.url | relative_url }}" tabindex="-1">{% if p.copertina %}<img src="{{ p.copertina | relative_url }}" alt="" loading="lazy" draggable="false">{% endif %}</a>
+      <span class="ven__vert" aria-hidden="true">{{ p.title }}</span>
+      <div class="ven__corpo">
+        <span class="pc__tag">{% if pc %}<span class="pc__tag-cat">{{ pc.title }}</span>{% endif %}{% if pcl %}<span class="pc__tag-dot">{{ pcl.title }}</span>{% elsif p.anno %}<span class="pc__tag-dot">{{ p.anno }}</span>{% endif %}</span>
+        <h3 class="ven__t">{{ p.title }}</h3>
+        {% if p.domanda %}<p class="ven__q">«{{ p.domanda }}»</p>{% elsif p.sottotitolo %}<p class="ven__q">{{ p.sottotitolo }}</p>{% endif %}
+        <a class="btn ven__vai" href="{{ p.url | relative_url }}" draggable="false">{{ tl.vedi }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </article>
+    {% endif %}{% endfor %}
+  </div>
+  <span class="ven__drag" aria-hidden="true">{{ t.trascina | default: "Trascina" }}</span>
+</div>
+<script>
+  (function () {
+    var v = document.querySelector('[data-ven]'); if (!v) return;
+    var palco = v.querySelector('[data-ven-palco]'), carte = Array.prototype.slice.call(v.querySelectorAll('[data-ven-c]')), n = carte.length,
+        num = v.querySelector('[data-ven-n]'), drag = v.querySelector('.ven__drag'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var att = 0, tira = 0, giu = null, mosso = false, sopra = false, timer = null;
+    function dist(i) { var d = ((i - att) % n + n) % n; return d > n / 2 ? d - n : d; }
+    function disponi() {
+      var Wp = palco.clientWidth, small = innerWidth < 720, A = small ? Wp * .86 : Math.min(980, Wp * .66), S = small ? 46 : 110, step = S * .52;
+      palco.style.setProperty('--A', A + 'px'); palco.style.setProperty('--S', S + 'px');
+      carte.forEach(function (c, i) {
+        var d = dist(i) + tira, a = Math.abs(d), s = d < 0 ? -1 : 1, x;
+        if (a <= 1) x = d * (A / 2 + S / 2 + 18);   // dalla scheda aperta alla prima chiusa
+        else x = s * (A / 2 + S / 2 + 18 + (a - 1) * step);
+        var vis = a < (small ? 3.5 : 6.5);
+        c.classList.toggle('is-aperta', Math.round(dist(i) + tira) === 0 && Math.abs(tira) < .5);
+        c.style.transform = 'translate(-50%, -50%) translateX(' + x.toFixed(1) + 'px) translateY(' + (a * 8).toFixed(1) + 'px) rotate(' + (d * 1.6).toFixed(2) + 'deg) scale(' + (1 - Math.min(a, 6) * .05).toFixed(3) + ')';
+        c.style.zIndex = String(100 - Math.round(a * 10));
+        c.style.opacity = vis ? '1' : '0';
+        c.style.pointerEvents = vis ? '' : 'none';
+        c.setAttribute('aria-hidden', Math.round(dist(i)) === 0 ? 'false' : 'true');
+        c.querySelectorAll('a').forEach(function (l) { l.tabIndex = Math.round(dist(i)) === 0 && l.classList.contains('ven__vai') ? 0 : -1; });
+      });
+      num.textContent = String(att + 1).padStart(2, '0');
+    }
+    function vai(k) { att = ((att + k) % n + n) % n; disponi(); }
+    function gira() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!sopra && !giu && !document.hidden) vai(1); }, 4200); }
+    v.querySelector('[data-ven-prec]').addEventListener('click', function () { vai(-1); gira(); });
+    v.querySelector('[data-ven-succ]').addEventListener('click', function () { vai(1); gira(); });
+    palco.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { vai(1); gira(); } if (e.key === 'ArrowLeft') { vai(-1); gira(); } });
+    // clic su una scheda chiusa: diventa quella aperta (il link vale solo sulla scheda aperta)
+    carte.forEach(function (c, i) { c.addEventListener('click', function (e) { if (mosso || Math.round(dist(i)) !== 0) { e.preventDefault(); if (!mosso) { vai(dist(i)); gira(); } } }); });
+    // trascinare
+    palco.addEventListener('pointerdown', function (e) { if (e.button) return; giu = { x: e.clientX }; mosso = false; palco.classList.add('is-tira'); });
+    addEventListener('pointermove', function (e) {
+      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = -dx / Math.max(160, palco.clientWidth * .22); disponi(); }
+      if (e.pointerType === 'mouse' && sopra) { drag.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 10) + 'px)'; }
+    }, { passive: true });
+    addEventListener('pointerup', function () {
+      if (!giu) return;
+      var k = Math.round(tira); giu = null; tira = 0; palco.classList.remove('is-tira');
+      if (k) vai(k); else disponi();
+      gira(); setTimeout(function () { mosso = false; }, 0);
+    });
+    palco.addEventListener('pointerenter', function (e) { sopra = true; if (e.pointerType === 'mouse') drag.classList.add('is-su'); });
+    palco.addEventListener('pointerleave', function () { sopra = false; drag.classList.remove('is-su'); });
+    addEventListener('resize', disponi);
+    disponi(); gira();
+  })();
+</script>

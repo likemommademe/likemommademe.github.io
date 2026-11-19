@@ -146,7 +146,7 @@ layout: default
 {% assign banda = banda | plus: 1 %}
 {% endif %}
 
-{% comment %} Precedente e successivo: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; si gira in tondo. {% endcomment %}
+{% comment %} Altri progetti a ventaglio: le categorie nell'ordine del pannello, dentro ognuna i progetti nel loro ordine; parte dal successivo e gira in tondo. {% endcomment %}
 {% assign tutti = "" | split: "" %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
 {% for c in categorie %}
@@ -160,10 +160,7 @@ layout: default
   {% assign isucc = qui | plus: 1 | modulo: tot %}
 {% assign ultima = banda | modulo: 2 %}
 <section class="fascia cs-suite{% if ultima == 1 %} inv{% endif %}">
-  <nav class="cs-pn" aria-label="{{ t.altri }}">
-    {% assign pprec = tutti[iprec] %}{% assign psucc = tutti[isucc] %}{% include progetto-pn.html p=pprec verso="prec" etichetta=t.precedente %}
-    {% if isucc != iprec %}{% include progetto-pn.html p=psucc verso="succ" etichetta=t.successivo %}{% endif %}
-  </nav>
+  {% include progetto-ventaglio.html lista=tutti qui=qui %}
 </section>
 {% endif %}
 

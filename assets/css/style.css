@@ -1284,3 +1284,40 @@ em.segno--evidenzia .cerchio { top: 0; height: 100%; }
 @media (prefers-reduced-motion: reduce) { .cerchio path { transition: none; } }
 /* card che si inclinano verso il mouse */
 .card-img, .pc__media, .nc__img, .altre-cat__img, .cs-pn__img, .rec__img { transition: transform .5s var(--ease); will-change: transform; }
+/* Progetto: altri progetti a ventaglio */
+.ven__testa { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--gap); margin-bottom: clamp(28px, 3vw, 48px); }
+.ven__testa h2 { margin: 0; font-size: var(--t-h2); }
+.ven__comandi { display: flex; align-items: center; gap: 10px; }
+.ven__conta { margin-right: 10px; white-space: nowrap; font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ven__conta b { color: var(--fg); font-weight: 600; }
+.ven__freccia { display: grid; place-items: center; width: 52px; height: 52px; padding: 0; border: 1px solid var(--line-2); border-radius: 50%; background: none; color: inherit; cursor: pointer; transition: background .3s, color .3s, border-color .3s; }
+.ven__freccia:hover { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
+.ven__palco { position: relative; height: clamp(420px, 40vw, 600px); margin: 0 calc(-1 * var(--m)); overflow: hidden; touch-action: pan-y; user-select: none; cursor: grab; outline: none; }
+.ven__palco.is-tira { cursor: grabbing; }
+.ven__palco:focus-visible { box-shadow: inset 0 0 0 2px var(--accent-1); }
+.ven__c { position: absolute; left: 50%; top: 50%; width: var(--S); height: 86%; display: grid; grid-template-columns: minmax(0, 1fr); border-radius: var(--r); overflow: hidden; background: var(--card); box-shadow: 0 24px 50px -28px rgba(0, 0, 0, .55); transition: transform .75s var(--ease), width .75s var(--ease), opacity .4s; }
+.ven__palco.is-tira .ven__c { transition: width .75s var(--ease), opacity .4s; }
+.ven__c.is-aperta { width: var(--A); grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+.ven__img { display: block; height: 100%; overflow: hidden; background: var(--placeholder); }
+.ven__img img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: transform 1s var(--ease); }
+.ven__c.is-aperta:hover .ven__img img { transform: scale(1.04); }
+/* la scheda chiusa: solo la striscia della foto con il titolo in verticale */
+.ven__vert { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 18px 0; writing-mode: vertical-rl; transform: rotate(180deg); background: linear-gradient(0deg, rgba(18, 20, 20, .55), rgba(18, 20, 20, .2)); color: #F5F5F2; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; overflow: hidden; transition: opacity .4s; }
+.ven__c.is-aperta .ven__vert { opacity: 0; pointer-events: none; }
+.ven__corpo { display: none; flex-direction: column; justify-content: center; align-items: flex-start; gap: 16px; padding: clamp(24px, 3vw, 48px); }
+.ven__c.is-aperta .ven__corpo { display: flex; animation: ven-entra .6s var(--ease) both; }
+@keyframes ven-entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.ven__t { margin: 0; font-weight: 500; font-size: clamp(1.9rem, 1.2rem + 1.8vw, 3.25rem); line-height: 1; letter-spacing: -.035em; }
+.ven__q { margin: 0; color: var(--muted); font-size: var(--t-body); line-height: 1.5; max-width: 34ch; }
+.ven__vai { margin-top: 8px; }
+.ven__drag { position: fixed; left: 0; top: 0; z-index: 9998; padding: 6px 14px; border-radius: 999px; background: var(--accent-1); color: #F5F5F2; font-family: var(--f-label); font-weight: 600; font-size: 13px; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.ven__drag.is-su { opacity: 1; }
+body:has(.ven__drag.is-su) .segui { opacity: 0; }
+@media (max-width: 720px) {
+  .ven__palco { height: 620px; }
+  .ven__c.is-aperta { grid-template-columns: minmax(0, 1fr); grid-template-rows: 52% 1fr; }
+  .ven__corpo { padding: 20px; gap: 12px; }
+  .ven__vert { font-size: 11px; }
+  .ven__freccia { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .ven__c { transition: none; } .ven__c.is-aperta .ven__corpo { animation: none; } }
