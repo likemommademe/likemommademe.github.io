@@ -114,10 +114,7 @@ em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; 
 .btn__arrow { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #121414; color: #F5F5F2; flex: none; }
 .btn:hover .btn__arrow { background: var(--accent-1); }
 .btn__arrow svg { transition: transform .6s var(--ease); }
-/* la freccia esce a destra e ne rientra una nuova da sinistra (da crency) */
-.btn__arrow, .nav__arrow, .servizi__go, .altre-cat__go { overflow: hidden; }
-:is(.btn, .card, .mondo, .nav__cta, .servizi__r, .altre-cat__c, .pc):hover :is(.btn__arrow, .nav__arrow, .servizi__go, .altre-cat__go) svg { animation: freccia-giro .7s var(--ease); }
-@keyframes freccia-giro { 0% { transform: translateX(0); } 45% { transform: translateX(160%); } 46% { transform: translateX(-160%); } 100% { transform: translateX(0); } }
+.btn:hover .btn__arrow svg, .card:hover .btn__arrow svg, .mondo:hover .btn__arrow svg { transform: rotate(-45deg); }
 
 /* ---------- Menu: barra larga in cima, pillola scura quando si scorre ---------- */
 .nav { position: fixed; left: 0; right: 0; top: 0; z-index: 60; pointer-events: none; view-transition-name: barra; }
@@ -555,6 +552,7 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .mondo:hover :is(.mondo__i, .mondo__n) { color: inherit; }
 .mondo .btn__arrow { transition: transform .6s var(--ease), background .3s; }
 .mondo:hover .btn__arrow { background: var(--accent-1); }
+.mondi-sez.is-pronta li.is-in .mondo:hover .btn__arrow { transform: none; }
 /* entrata: la riga si disegna da sinistra e i testi salgono, una riga dopo l'altra */
 .mondi-sez.is-pronta .mondi li::after { transform: scaleX(0); transition: transform 1.1s var(--ease) calc(var(--i) * 90ms); }
 .mondi-sez.is-pronta .mondo > * { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .9s var(--ease), color .45s, background .3s; }
@@ -1125,16 +1123,17 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 /* About: valori, le tre parole escono dall'occhio (spunto da crency.agency) */
 .vocchio__scena { position: relative; }
 .vocchio__occhio { position: relative; width: clamp(160px, 24vw, 380px); margin: clamp(24px, 4vw, 56px) auto; color: var(--fg); }
-.vocchio__galleggia { animation: vocchio-galleggia 5.5s ease-in-out infinite; }
+.vocchio__galleggia { will-change: transform; }
 .vocchio__galleggia svg { display: block; width: 100%; overflow: visible; }
-@keyframes vocchio-galleggia { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
 .vocchio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
 .vocchio__palpebra.is-strizza { animation: occhiolino .5s var(--ease); }
-.vocchio__iride { transition: transform .5s var(--ease); }
-/* il cursore «Tu» che gira attorno all'occhio */
-.vocchio__tu { position: absolute; left: -8%; top: 58%; display: flex; align-items: flex-start; gap: 0; animation: vocchio-tu 7s ease-in-out infinite; pointer-events: none; }
-.vocchio__tu b { margin: 16px 0 0 -4px; padding: 4px 12px; border: 1.5px solid currentColor; border-radius: 999px; background: var(--accent-3); color: #121414; font-family: var(--f-label); font-weight: 600; font-size: 13px; }
-@keyframes vocchio-tu { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(-26px, -18px); } 60% { transform: translate(-6px, 22px); } }
+.vocchio__pupilla { transform-box: fill-box; transform-origin: 50% 50%; }
+/* «Tu»: l'etichetta attaccata al tuo cursore, è quello che l'occhio guarda */
+.vocchio__tu { position: fixed; left: 0; top: 0; z-index: 9998; display: flex; align-items: flex-start; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.vocchio__tu svg { display: none; }
+.vocchio__tu.is-su { opacity: 1; }
+body:has(.vocchio__tu.is-su) .segui { opacity: 0; }
+.vocchio__tu b { margin: 14px 0 0 8px; padding: 4px 12px; border: 1.5px solid currentColor; border-radius: 999px; background: var(--accent-3); color: #121414; font-family: var(--f-label); font-weight: 600; font-size: 13px; }
 .vocchio__parole { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(28px, 4vw, 48px); }
 .vparola__t { margin: 0; font-weight: 500; font-size: clamp(2.5rem, 1.4rem + 4.4vw, 6rem); line-height: 1; letter-spacing: -.045em; }
 .vparola__d { margin: 12px 0 0; max-width: 32ch; color: var(--muted); }
@@ -1211,7 +1210,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .servizi__t { font-weight: 500; font-size: var(--t-h3); letter-spacing: -.02em; }
 .servizi__d { color: var(--muted); }
 .servizi__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, transform .6s var(--ease); }
-.servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
+.servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
 .faq-cont { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
 .faq-cont__lato { display: grid; gap: 20px; justify-items: start; position: sticky; top: calc(var(--nav-h) + 24px); }
 .faq-cont__lato h2 { margin: 0; font-size: var(--t-h2); }
@@ -1263,7 +1262,7 @@ a.esp__in:hover { background: var(--card); }
 .altre-cat__testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
 .altre-cat__t { font-weight: 500; font-size: var(--t-h3); letter-spacing: -.02em; line-height: 1.1; }
 .altre-cat__go { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, border-color .3s, transform .6s var(--ease); }
-.altre-cat__c:hover .altre-cat__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
+.altre-cat__c:hover .altre-cat__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
 .altre-cat__d { color: var(--muted); font-size: 15px; line-height: 1.5; }
 .altre-cat__n { font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
 @media (max-width: 1000px) { .altre-cat__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -1289,8 +1288,13 @@ a.esp__in:hover { background: var(--card); }
 /* cerchio disegnato a mano attorno alla parola speciale dei titoli di sezione */
 em.con-cerchio { position: relative; display: inline-block; }
 em.vet svg.cerchio, .cerchio { position: absolute; left: -.24em; top: -.1em; width: calc(100% + .48em); height: calc(100% + .3em); overflow: visible; pointer-events: none; }
-.cerchio path { fill: none; stroke: var(--accent-3); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s var(--ease-io); }
+.cerchio path { fill: none; stroke: var(--segno, var(--accent-3)); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s var(--ease-io); }
 em.is-cerchio .cerchio path { stroke-dashoffset: 0; }
+/* l'evidenziatore passa dietro alla parola, largo e trasparente */
+em.segno--evidenzia { isolation: isolate; }
+em.segno--evidenzia .cerchio { z-index: -1; }
+em.segno--evidenzia .cerchio path { stroke-width: .42em; stroke-linecap: butt; opacity: .45; vector-effect: none; }
+em.segno--evidenzia .cerchio { top: 0; height: 100%; }
 @media (prefers-reduced-motion: reduce) { .cerchio path { transition: none; } }
 /* card che si inclinano verso il mouse */
-.card-img, .pc__media { transition: transform .5s var(--ease); will-change: transform; }
+.card-img, .pc__media, .nc__img, .altre-cat__img, .cs-pn__img, .rec__img { transition: transform .5s var(--ease); will-change: transform; }

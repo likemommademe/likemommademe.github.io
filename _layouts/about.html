@@ -76,10 +76,10 @@ layout: default
     <div class="sec-head vocchio__head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
     <div class="vocchio__occhio" aria-hidden="true">
       <div class="vocchio__galleggia">
-        <svg viewBox="0 0 100 90"><g class="vocchio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="var(--bg)" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/><g class="vocchio__iride"><circle cx="50" cy="45" r="22" fill="var(--accent-3)"/><circle cx="50" cy="45" r="10" fill="#121414"/><circle cx="55" cy="39" r="3.4" fill="#F5F5F2"/></g></g></svg>
+        <svg viewBox="0 0 100 90"><g class="vocchio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="var(--bg)" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/><g class="vocchio__iride"><circle cx="50" cy="45" r="22" fill="var(--accent-3)"/><circle class="vocchio__pupilla" cx="50" cy="45" r="10" fill="#121414"/><circle cx="55" cy="39" r="3.4" fill="#F5F5F2"/></g></g></svg>
       </div>
-      <span class="vocchio__tu"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="var(--accent-3)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><b>{{ a.valori_tu | default: "Tu" }}</b></span>
     </div>
+    <span class="vocchio__tu" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="var(--accent-3)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><b>{{ a.valori_tu | default: "Tu" }}</b></span>
     <ul class="vocchio__parole">
       {% for v in a.valori %}
         <li class="vparola vparola--{{ forloop.index }}" data-vparola>
@@ -178,41 +178,69 @@ layout: default
       misura();
     }
 
-    // Valori: le parole escono dall'occhio una alla volta, seguendo lo scroll; l'occhio le guarda e poi fa l'occhiolino
+    // Valori: l'occhio racconta una piccola storia.
+    // 1. Ti guarda: segue te (il cursore «Tu»); se non ti muovi, guarda dritto verso di te.
+    // 2. Immagina: scorrendo, guarda il punto dove andrà la parola, mette a fuoco (pupilla stretta), la parola esce da lui e la accompagna con lo sguardo.
+    // 3. Coordina: quando sono uscite tutte e tre le riguarda una dopo l'altra, torna su di te e fa l'occhiolino. Una volta sola.
     var vo = document.querySelector('[data-vocchio]');
     if (vo) {
-      var occ = vo.querySelector('.vocchio__occhio'), iride = vo.querySelector('.vocchio__iride'), palp = vo.querySelector('.vocchio__palpebra'),
+      var occ = vo.querySelector('.vocchio__occhio'), corpo = vo.querySelector('.vocchio__galleggia'), iride = vo.querySelector('.vocchio__iride'),
+          pup = vo.querySelector('.vocchio__pupilla'), palp = vo.querySelector('.vocchio__palpebra'), tu = vo.querySelector('.vocchio__tu'),
           vp = Array.prototype.slice.call(vo.querySelectorAll('[data-vparola]')), largo = matchMedia('(min-width: 861px)'),
-          mx = innerWidth / 2, my = innerHeight / 2, fatte = [], gx = 0, gy = 0;
-      var strizza = function () { palp.classList.remove('is-strizza'); void palp.getBBox(); palp.classList.add('is-strizza'); };
+          mx = -1, my = -1, ultimoMouse = 0, gx = 0, gy = 0, ps = 1, finale = null, finaleFatto = false, inVista = false, ciclo = false;
       var vivo = function () { return largo.matches && !reduce; };
-      var muovi = function () {
+      var strizza = function () { palp.classList.remove('is-strizza'); void palp.getBBox(); palp.classList.add('is-strizza'); };
+      var centro = function (el) { var b = el.getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; };
+      var posa = function () {   // dove sta ogni parola quando è arrivata (senza trasformazioni)
+        return vp.map(function (w) { var t = w.style.transform; w.style.transform = 'none'; var c = centro(w); w.style.transform = t; return c; });
+      };
+      var passo = function (ora) {
+        ciclo = false;
         if (!vivo()) { vo.classList.remove('is-viva'); vp.forEach(function (w) { w.style.transform = ''; w.style.opacity = ''; }); return; }
         vo.classList.add('is-viva');
         var r = vo.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1),
-            o = occ.getBoundingClientRect(), ox = o.left + o.width / 2, oy = o.top + o.height / 2, guarda = null;
+            o = centro(occ), arrivi = posa(), meta = null, fuoco = false, tutte = true;
         vp.forEach(function (w, i) {
-          var t = clamp((p - (.06 + i * .26)) / .2, 0, 1), e = 1 - Math.pow(1 - t, 3);
-          w.style.transform = '';
-          var b = w.getBoundingClientRect(), dx = ox - (b.left + b.width / 2), dy = oy - (b.top + b.height / 2);
-          w.style.transform = 'translate(' + (dx * (1 - e)).toFixed(1) + 'px,' + (dy * (1 - e)).toFixed(1) + 'px) scale(' + (.12 + .88 * e).toFixed(3) + ') rotate(' + ((1 - e) * (i % 2 ? 14 : -14)).toFixed(2) + 'deg)';
-          w.style.opacity = Math.min(1, t * 4).toFixed(2);
+          var inizio = .06 + i * .24, t = clamp((p - inizio) / .18, 0, 1), e = 1 - Math.pow(1 - t, 3), a = arrivi[i];
+          var dx = o.x - a.x, dy = o.y - a.y;
+          w.style.transform = 'translate(' + (dx * (1 - e)).toFixed(1) + 'px,' + (dy * (1 - e)).toFixed(1) + 'px) scale(' + (.1 + .9 * e).toFixed(3) + ')';
+          w.style.opacity = Math.min(1, t * 5).toFixed(2);
           w.classList.toggle('is-fuori', t >= 1);
-          if (t > 0 && t < 1) guarda = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
-          if (t >= 1 && !fatte[i]) { fatte[i] = true; strizza(); }
-          if (t <= 0) fatte[i] = false;
+          if (t < 1) tutte = false;
+          // poco prima che esca guarda già dove andrà; mentre vola la segue
+          if (p > inizio - .07 && t < 1 && !meta) { meta = t > 0 ? { x: a.x + dx * (1 - e), y: a.y + dy * (1 - e) } : a; fuoco = true; }
         });
-        var tx = guarda ? guarda.x : mx, ty = guarda ? guarda.y : my, a = Math.atan2(ty - oy, tx - ox), d = Math.min(1, Math.hypot(tx - ox, ty - oy) / 300);
-        gx = Math.cos(a) * 13 * d; gy = Math.sin(a) * 9 * d;
+        // 3. il finale: le riguarda tutte, torna su di te e strizza l'occhio
+        if (tutte && !finaleFatto && !finale) finale = ora;
+        if (!tutte) { finale = null; if (p < .5) finaleFatto = false; }
+        if (finale) {
+          var f = (ora - finale) / 420, k = Math.floor(f);
+          if (k < 3) { meta = arrivi[k]; fuoco = true; }
+          else { finale = null; finaleFatto = true; strizza(); }
+        }
+        // 1. altrimenti guarda te: il cursore, o dritto se sei fermo da un po'
+        if (!meta && mx >= 0 && ora - ultimoMouse < 2500) meta = { x: mx, y: my };
+        var tx = 0, ty = 0;
+        if (meta) { var ang = Math.atan2(meta.y - o.y, meta.x - o.x), d = Math.min(1, Math.hypot(meta.x - o.x, meta.y - o.y) / 260); tx = Math.cos(ang) * 14 * d; ty = Math.sin(ang) * 10 * d; }
+        gx += (tx - gx) * .14; gy += (ty - gy) * .14;
+        ps += ((fuoco ? .7 : meta ? 1 : 1.25) - ps) * .1;   // a fuoco si stringe, quando ti guarda fermo si allarga
         iride.style.transform = 'translate(' + gx.toFixed(2) + 'px,' + gy.toFixed(2) + 'px)';
+        pup.style.transform = 'scale(' + ps.toFixed(3) + ')';
+        corpo.style.transform = 'translate(' + (gx * .8).toFixed(1) + 'px,' + (gy * .8).toFixed(1) + 'px) rotate(' + (gx * .35).toFixed(2) + 'deg)';   // il corpo si sporge verso dove guarda
+        if (inVista) giro();
       };
-      var tic2 = false, giro = function () { if (!tic2) { tic2 = true; requestAnimationFrame(function () { tic2 = false; muovi(); }); } };
-      addEventListener('scroll', giro, { passive: true });
+      var giro = function () { if (!ciclo) { ciclo = true; requestAnimationFrame(passo); } };
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (v) { inVista = v[0].isIntersecting; if (inVista) giro(); }).observe(vo);
+      else inVista = true;
+      vo.addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        mx = e.clientX; my = e.clientY; ultimoMouse = performance.now();
+        tu.style.transform = 'translate(' + (mx + 6) + 'px,' + (my + 4) + 'px)';
+        tu.classList.add('is-su');
+      }, { passive: true });
+      vo.addEventListener('pointerleave', function () { tu.classList.remove('is-su'); mx = -1; });
       addEventListener('resize', giro);
-      addEventListener('pointermove', function (e) { mx = e.clientX; my = e.clientY; giro(); }, { passive: true });
-      occ.addEventListener('pointerenter', strizza);
-      setInterval(function () { if (vivo() && !document.hidden) strizza(); }, 4200);
-      muovi();
+      giro();
     }
 
 

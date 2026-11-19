@@ -195,11 +195,26 @@
         em.innerHTML = '<svg viewBox="0 0 ' + p.w + ' ' + m.h + '" style="height:' + (m.h * k).toFixed(4) + 'em;vertical-align:' + (m.desc * k).toFixed(4) + 'em" aria-hidden="true" focusable="false"><path d="' + p.d + '"/></svg><span class="vet__t">' + em.innerHTML + '</span>';
       });
     })();
-    // Titoli di sezione: attorno alla parola speciale un cerchio fucsia disegnato a mano, che si traccia quando il titolo entra
+    // Titoli di sezione: la parola speciale viene segnata a mano, come con un pennarello, quando il titolo entra.
+    // Il segno cambia da titolo a titolo (cerchio, sottolineatura, onda, riquadro, evidenziatore), e così il colore (i tre accenti).
     (function () {
       var parole = document.querySelectorAll('h2:not(.motto) em.vet'); if (!parole.length) return;
-      var C = '<svg class="cerchio" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M34 12C86 -1 176 3 193 30C206 57 142 78 90 76C30 74 1 58 8 35C14 16 66 5 128 9"/></svg>';
-      parole.forEach(function (em) { em.classList.add('con-cerchio'); em.insertAdjacentHTML('beforeend', C); });
+      var SEGNI = [
+        ['cerchio', 'M34 12C86 -1 176 3 193 30C206 57 142 78 90 76C30 74 1 58 8 35C14 16 66 5 128 9'],
+        ['sotto', 'M4 70C46 63 96 66 196 61M30 77C80 72 130 73 170 72'],
+        ['onda', 'M3 70C20 60 33 79 51 69S83 60 101 69 134 79 151 69 183 60 197 68'],
+        ['evidenzia', 'M2 50C50 46 120 49 198 44'],
+        ['riquadro', 'M9 9C70 4 150 6 194 11C197 36 196 56 191 73C130 78 60 77 6 72C3 51 4 30 11 6'],
+        ['cerchio2', 'M100 4C160 2 199 18 196 42C193 66 150 79 96 77C40 75 3 62 6 38C9 16 52 3 112 8']
+      ];
+      var COLORI = ['var(--accent-3)', 'var(--accent-1)', 'var(--accent-2)'];
+      var dove = location.pathname.length;
+      parole.forEach(function (em, i) {
+        var k = (i + dove) % SEGNI.length, g = SEGNI[k];
+        em.classList.add('con-cerchio', 'segno--' + g[0]);
+        em.style.setProperty('--segno', COLORI[(i + dove * 2) % COLORI.length]);
+        em.insertAdjacentHTML('beforeend', '<svg class="cerchio" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="' + g[1] + '"/></svg>');
+      });
       function disegna(em) {
         var r = em.closest('.rise');
         setTimeout(function () { if (r) r.style.overflow = 'visible'; em.classList.add('is-cerchio'); }, r ? 900 : 200);
@@ -208,15 +223,20 @@
       var io = new IntersectionObserver(function (v) { v.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); disegna(e.target); } }); }, { rootMargin: '0px 0px -15% 0px' });
       parole.forEach(function (em) { io.observe(em); });
     })();
-    // Card dei progetti: si inclinano appena verso il mouse
+    // Card (progetti, news, categorie, testimonianze): la foto si inclina appena verso il mouse, su tutto il sito
     (function () {
       if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var FOTO = '.card-img, .pc__media, .nc__img, .altre-cat__img, .cs-pn__img, .rec__img', ora = null;
+      function dritta() { if (ora) { ora.style.transform = ''; ora = null; } }
       document.addEventListener('pointermove', function (e) {
-        var el = e.target.closest && e.target.closest('.card-img, .pc__media'); if (!el) return;
-        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-        el.style.transform = 'perspective(900px) rotateY(' + (x * 7).toFixed(2) + 'deg) rotateX(' + (-y * 7).toFixed(2) + 'deg)';
-        if (!el.dataset.inclina) { el.dataset.inclina = '1'; el.addEventListener('pointerleave', function () { el.style.transform = ''; }); }
+        var box = e.target.closest && e.target.closest('a, figure'), el = box && (box.matches(FOTO) ? box : box.querySelector(FOTO));
+        if (el !== ora) dritta();
+        if (!el) return;
+        var r = el.getBoundingClientRect(), x = Math.max(-.5, Math.min(.5, (e.clientX - r.left) / r.width - .5)), y = Math.max(-.5, Math.min(.5, (e.clientY - r.top) / r.height - .5));
+        el.style.transform = 'perspective(900px) rotateY(' + (x * 8).toFixed(2) + 'deg) rotateX(' + (-y * 8).toFixed(2) + 'deg)';
+        ora = el;
       }, { passive: true });
+      document.addEventListener('pointerleave', dritta);
     })();
   </script>
   <script>
