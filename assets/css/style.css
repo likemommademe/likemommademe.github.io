@@ -619,16 +619,17 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .vuoto { padding: 40px 0; color: var(--muted); font-size: var(--t-lead); }
 
 /* Card di un progetto */
-.card { display: block; }
+.card { display: flex; flex-direction: column; }
 .card-img { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r); background: var(--placeholder); }
 .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
 .card:hover .card-img img { transform: scale(1.04); }
-.card-meta { padding-top: 18px; }
-.card-tag { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; padding: 0; list-style: none; }
+.card-meta { padding-top: 18px; display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.card-tag { display: flex; flex-wrap: nowrap; gap: 6px; margin: 0 0 12px; padding: 0; list-style: none; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }   /* tutte su una riga: le schede restano allineate */
+.card-tag li { flex: none; white-space: nowrap; }
 .card-tag li { padding: 4px 12px; border: 1px solid var(--line-2); border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); }
 .card-meta h3 { font-size: var(--t-h3); }
-.card-meta p { margin: 6px 0 0; color: var(--muted); }
-.card-go { display: inline-flex; align-items: center; gap: 12px; margin-top: 16px; font-weight: 700; }
+.card-meta p { margin: 6px 0 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* la frase su una riga sola, uguale per tutte */
+.card-go { display: inline-flex; align-self: flex-start; align-items: center; gap: 12px; margin-top: 16px; font-weight: 700; }
 .card-go .btn__arrow { width: 36px; height: 36px; background: var(--fg); color: var(--bg); }
 
 /* ---------- Home: lavori in scorrimento orizzontale (come la "piste" di bitwip) ---------- */
