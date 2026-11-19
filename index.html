@@ -111,23 +111,75 @@ reel: true
   </div>
 </section>
 
-<section class="fascia">
+{% comment %}
+  Cosa faccio: i cinque mondi in righe grandi. Entrando nello schermo le righe si disegnano una dopo l'altra
+  e i numeri contano; al passaggio del mouse la riga si riempie, il titolo rotola e una foto del mondo segue il cursore.
+  La foto è l'Immagine della categoria (pannello) o, se manca, la copertina del suo primo progetto.
+{% endcomment %}
+{% assign tutti_mondi = site.progetti | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
+<section class="fascia mondi-sez" data-mondi>
   <div class="sec-head">
     <h2 class="rise"><span>{{ t.mondi_titolo }}</span></h2>
   </div>
   <ul class="mondi">
     {% for c in categorie %}
-      {% assign n = 0 %}{% for p in site.progetti %}{% if p.published != false %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% endif %}{% endif %}{% endfor %}
-      <li>
-        <a class="mondo" href="{{ c.url | relative_url }}">
-          <span class="mondo__t">{{ c.title }}</span>
+      {% assign n = 0 %}{% assign foto = c.copertina %}
+      {% for p in tutti_mondi %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% if foto == nil and p.categoria == c.slug and p.copertina %}{% assign foto = p.copertina %}{% endif %}{% endif %}{% endfor %}
+      <li style="--i: {{ forloop.index0 }}">
+        <a class="mondo" href="{{ c.url | relative_url }}"{% if foto %} data-foto="{{ foto | relative_url }}"{% endif %}>
+          <span class="mondo__i">{{ forloop.index | prepend: "0" }}</span>
+          <span class="mondo__t"><span class="mondo__roll"><span>{{ c.title }}</span><span aria-hidden="true">{{ c.title }}</span></span></span>
           <span class="mondo__d">{{ c.content | strip_html | strip_newlines }}</span>
-          <span class="mondo__n">{{ n }} {% if n == 1 %}{{ t.mondi_progetti_uno }}{% else %}{{ t.mondi_progetti_piu }}{% endif %}</span>
+          <span class="mondo__n"><span data-conta="{{ n }}">{{ n }}</span> {% if n == 1 %}{{ t.mondi_progetti_uno }}{% else %}{{ t.mondi_progetti_piu }}{% endif %}</span>
           <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
       </li>
     {% endfor %}
   </ul>
+  <div class="mondi__foto" aria-hidden="true"><img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></div>
+  <script>
+    (function () {
+      var sez = document.querySelector('[data-mondi]'); if (!sez) return;
+      var righe = sez.querySelectorAll('.mondi li'), fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // 1. entrando nello schermo: le righe si disegnano una dopo l'altra e i numeri contano da zero
+      function conta(el) {
+        var fine = +el.dataset.conta, t0 = null;
+        if (fermo || !fine) return;
+        el.textContent = '0';
+        (function passo(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 900); el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); })(performance.now());
+      }
+      if ('IntersectionObserver' in window && !fermo) {
+        sez.classList.add('is-pronta');
+        var io = new IntersectionObserver(function (voci) {
+          voci.forEach(function (v) {
+            if (!v.isIntersecting) return;
+            v.target.classList.add('is-in'); io.unobserve(v.target);
+            var c = v.target.querySelector('[data-conta]'); setTimeout(function () { conta(c); }, 250 + (+v.target.style.getPropertyValue('--i')) * 90);
+          });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        righe.forEach(function (r) { io.observe(r); });
+      }
+      // 2. col mouse: la foto del mondo segue il cursore, in ritardo e inclinata dalla velocità
+      if (!matchMedia('(hover: hover)').matches) return;
+      var box = sez.querySelector('.mondi__foto'), img = box.querySelector('img'), x = 0, y = 0, tx = 0, ty = 0, rot = 0, su = false, vivo = false;
+      sez.querySelectorAll('.mondo[data-foto]').forEach(function (a) {
+        a.addEventListener('pointerenter', function (e) {
+          if (img.getAttribute('src') !== a.dataset.foto) img.src = a.dataset.foto;
+          if (!su) { x = tx = e.clientX; y = ty = e.clientY; }
+          su = true; box.classList.add('is-su'); if (!vivo) { vivo = true; requestAnimationFrame(passo); }
+        });
+      });
+      sez.querySelector('.mondi').addEventListener('pointerleave', function () { su = false; box.classList.remove('is-su'); });
+      addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+      addEventListener('scroll', function () { if (su && !sez.querySelector('.mondi').matches(':hover')) { su = false; box.classList.remove('is-su'); } }, { passive: true });
+      function passo() {
+        var k = fermo ? 1 : .16, dx = (tx - x) * k; x += dx; y += (ty - y) * k;
+        rot += ((fermo ? 0 : Math.max(-12, Math.min(12, dx * .6))) - rot) * .2;
+        box.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
+        if (su || Math.abs(dx) > .1) requestAnimationFrame(passo); else vivo = false;
+      }
+    })();
+  </script>
 </section>
 
 {% comment %}
