@@ -30,22 +30,23 @@
   dds.forEach(d => (qs.get(d.k) || '').split(',').filter(Boolean).forEach(v => sel[d.k].add(v)));
   dds.forEach(d => d.boxes.forEach(x => { x.checked = sel[d.k].has(x.value); }));
 
-  // si muovono solo le schede (FLIP): quelle che restano scivolano al nuovo posto, le nuove compaiono. La pagina non si ridisegna.
+  // si muovono solo le schede: quelle di prima svaniscono in un attimo, le nuove salgono una dopo l'altra.
+  // Durante il cambio l'altezza della lista resta ferma, così la pagina non salta.
+  let corsa = 0;
   function animate(update) {
     if (reduce.matches || !Element.prototype.animate) { update(); return; }
-    const prima = new Map();
-    cards.forEach(c => { if (!c.hidden) prima.set(c, c.getBoundingClientRect()); });
-    update();
-    cards.forEach((c, i) => {
-      if (c.hidden) return;
-      const r = c.getBoundingClientRect(), p = prima.get(c);
-      if (p) {
-        const dx = p.left - r.left, dy = p.top - r.top, sx = p.width / r.width;
-        if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < .01) return;
-        c.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }], { duration: 650, easing: 'cubic-bezier(.16, 1, .3, 1)' });
-      } else {
-        c.animate([{ opacity: 0, transform: 'translateY(24px)' }, { opacity: 1, transform: 'none' }], { duration: 550, delay: Math.min(i, 8) * 30, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'backwards' });
-      }
+    const mia = ++corsa;
+    list.style.minHeight = list.offsetHeight + 'px';
+    list.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-out', fill: 'forwards' }).finished.then(() => {
+      if (mia !== corsa) return;
+      update();
+      list.getAnimations().forEach(a => a.cancel());
+      let k = 0;
+      cards.forEach(c => {
+        if (c.hidden) return;
+        c.animate([{ opacity: 0, transform: 'translateY(22px)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: Math.min(k++, 8) * 45, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'backwards' });
+      });
+      setTimeout(() => { if (mia === corsa) list.style.minHeight = ''; }, 700);
     });
   }
 
