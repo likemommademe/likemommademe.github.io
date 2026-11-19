@@ -1316,3 +1316,6 @@ body:has(.ven__drag.is-su) .segui { opacity: 0; }
 .vita__ph a:hover img { transform: scale(1.05); }
 .vita__t { position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 999px; background: var(--bg); color: var(--fg); font-weight: 600; font-size: 13px; opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .5s var(--ease); pointer-events: none; }
 .vita__ph a:hover .vita__t, .vita__ph a:focus-visible .vita__t { opacity: 1; transform: none; }
+
+/* Contatti: i profili social */
+.contatti-pag__social { display: flex; flex-wrap: wrap; gap: 12px 28px; }

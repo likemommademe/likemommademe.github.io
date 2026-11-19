@@ -23,6 +23,13 @@ permalink: /contatti/
       {% if info.email != "" %}<a class="contatti-pag__grande" href="mailto:{{ info.email }}">{{ info.email }}</a>{% endif %}
       {% if info.telefono != "" %}<a class="contatti-pag__grande" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a>{% endif %}
     </div>
+    {% if info.instagram != "" or info.linkedin != "" %}<div class="contatti-pag__blocco">
+      <p class="cs-label">{{ tc.social_k }}</p>
+      <div class="contatti-pag__social">
+        {% if info.instagram != "" %}<a class="rec__vedi" href="{{ info.instagram }}" target="_blank" rel="noopener">Instagram<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
+        {% if info.linkedin != "" %}<a class="rec__vedi" href="{{ info.linkedin }}" target="_blank" rel="noopener">LinkedIn<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
+      </div>
+    </div>{% endif %}
     {% if info.curriculum != "" %}<div class="contatti-pag__blocco">
       <p class="cs-label">{{ tc.cv_k }}</p>
       <a class="rec__vedi" href="{{ info.curriculum | relative_url }}" download>{{ site.data.testi.footer.curriculum }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
