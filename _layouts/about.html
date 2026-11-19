@@ -54,15 +54,15 @@ layout: default
 {% comment %} 3. Due strisce di foto che scorrono in direzioni opposte (per ora: copertine e gallerie dei progetti) {% endcomment %}
 {% comment %} Due strisce: in alto le copertine, in basso una foto per progetto. Ognuna ripetuta 4 volte per un giro continuo. {% endcomment %}
 {% assign prog_vita = site.progetti | sort: "ordine", "last" %}
-{% capture s1 %}{% for p in prog_vita %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }};{% endif %}{% endfor %}{% endcapture %}
-{% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% unless g.immagine contains 'riferimento' %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ g.titolo | default: p.title }};{% assign fatto = true %}{% endif %}{% endunless %}{% endfor %}{% endfor %}{% endcapture %}
+{% capture s1 %}{% for p in prog_vita %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }}|{{ p.url }};{% endif %}{% endfor %}{% endcapture %}
+{% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% unless g.immagine contains 'riferimento' %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ p.title }}|{{ p.url }};{% assign fatto = true %}{% endif %}{% endunless %}{% endfor %}{% endfor %}{% endcapture %}
 {% assign strisce = s1 | append: "#" | append: s2 | split: "#" %}
 <section class="fascia inv vita" aria-label="{{ a.foto_titolo }}" data-vita>
   {% for st in strisce %}{% assign foto = st | split: ";" %}
   <div class="vita__striscia" data-striscia="{{ forloop.index }}">
     <ul class="vita__pista">
       {% for giro in (1..4) %}{% for f in foto %}{% assign x = f | split: "|" %}
-        <li class="vita__ph"><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy" decoding="async"></li>
+        <li class="vita__ph"><a href="{{ x[2] | relative_url }}" draggable="false"{% if giro > 1 %} tabindex="-1" aria-hidden="true"{% endif %}><img src="{{ x[0] | relative_url }}" alt="{% if giro == 1 %}{{ x[1] }}{% endif %}" loading="lazy" decoding="async" draggable="false"><span class="vita__t">{{ x[1] }}</span></a></li>
       {% endfor %}{% endfor %}
     </ul>
   </div>
@@ -128,16 +128,40 @@ layout: default
     // Le foto si caricano tutte appena la sezione sta per arrivare, così non restano riquadri vuoti.
     var vita = document.querySelector('[data-vita]');
     if (vita) {
-      var piste = [].slice.call(vita.querySelectorAll('.vita__pista')), pos = piste.map(function () { return 0; }), spinta = 0, ultimoY = scrollY, ultimoT = 0, attiva = false;
+      // scorrono da sole; col mouse sopra rallentano, e si possono trascinare (anche col trackpad); ogni foto porta al suo progetto
+      var piste = [].slice.call(vita.querySelectorAll('.vita__pista')), strisce = piste.map(function (p) { return p.parentNode; }),
+          pos = piste.map(function () { return 0; }), vel = piste.map(function () { return 28; }), lancio = piste.map(function () { return 0; }),
+          sopra = piste.map(function () { return false; }), spinta = 0, ultimoY = scrollY, ultimoT = 0, attiva = false, tiro = null, mosso = false;
       var carica = function () { vita.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; }); };
       new IntersectionObserver(function (es) { es.forEach(function (e) { attiva = e.isIntersecting; if (attiva) { carica(); if (!ultimoT) requestAnimationFrame(passo); } }); }, { rootMargin: '600px 0px' }).observe(vita);
       addEventListener('scroll', function () { spinta += Math.abs(scrollY - ultimoY); ultimoY = scrollY; }, { passive: true });
+      var gira = function (i, d) { var giro = piste[i].scrollWidth / 4; if (giro) pos[i] = ((pos[i] + d) % giro + giro) % giro; };
+      strisce.forEach(function (st, i) {
+        st.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') sopra[i] = true; });
+        st.addEventListener('pointerleave', function () { sopra[i] = false; });
+        st.addEventListener('pointerdown', function (e) { if (e.button) return; tiro = { i: i, x: e.clientX, t: performance.now(), v: 0 }; mosso = false; st.classList.add('is-tira'); });
+        st.addEventListener('wheel', function (e) { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); gira(i, e.deltaX); } }, { passive: false });
+        st.addEventListener('click', function (e) { if (mosso) { e.preventDefault(); e.stopPropagation(); } }, true);
+      });
+      addEventListener('pointermove', function (e) {
+        if (!tiro) return;
+        var dx = e.clientX - tiro.x, ora = performance.now();
+        if (Math.abs(dx) > 0) { if (Math.abs(e.clientX - (tiro.x0 || tiro.x)) > 6) mosso = true; }
+        tiro.x0 = tiro.x0 || tiro.x;
+        gira(tiro.i, -dx); tiro.v = -dx / Math.max(1, ora - tiro.t) * 1000; tiro.x = e.clientX; tiro.t = ora;
+      }, { passive: true });
+      addEventListener('pointerup', function () {
+        if (!tiro) return; lancio[tiro.i] = Math.max(-2500, Math.min(2500, tiro.v)); strisce[tiro.i].classList.remove('is-tira'); tiro = null;
+        setTimeout(function () { mosso = false; }, 0);
+      });
       var passo = function (t) {
         var dt = Math.min(.05, (t - (ultimoT || t)) / 1000); ultimoT = t;
-        var v = reduce ? 0 : 28 + Math.min(900, spinta * 9); spinta *= Math.pow(.02, dt);
+        var base = reduce ? 0 : 28 + Math.min(900, spinta * 9); spinta *= Math.pow(.02, dt);
         piste.forEach(function (p, i) {
-          var giro = p.scrollWidth / 4; if (!giro) return;
-          pos[i] = (pos[i] + v * dt * (i % 2 ? -1 : 1) + giro) % giro;
+          var meta = sopra[i] ? 5 : base;
+          vel[i] += (meta - vel[i]) * Math.min(1, dt * 5);   // rallenta e riparte con dolcezza
+          if (!tiro || tiro.i !== i) gira(i, vel[i] * dt * (i % 2 ? -1 : 1) + lancio[i] * dt);
+          lancio[i] *= Math.pow(.04, dt);   // l'inerzia del lancio si spegne
           p.style.transform = 'translate3d(' + (-pos[i]).toFixed(1) + 'px, 0, 0)';
         });
         if (attiva) requestAnimationFrame(passo); else ultimoT = 0;
