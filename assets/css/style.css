@@ -529,6 +529,7 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 
 /* Cosa faccio: schede che si impilano una sopra l'altra scorrendo (le intestazioni restano come linguette) */
 .pila { margin: 0; padding: 0; list-style: none; --tab: clamp(64px, 6.4vw, 92px); }
+.pila::after { content: ""; display: block; height: 45vh; }   /* lo spazio in fondo tiene ferma anche l'ultima scheda prima che la pila riparta */
 .pila__s { position: sticky; top: calc(var(--nav-h) + 12px + var(--i) * var(--tab)); background: var(--bg); border-top: 1px solid var(--line); padding-bottom: clamp(28px, 3vw, 48px); }
 .pila__s:last-child { margin-bottom: 0; }
 .pila__testa { display: grid; grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 1.4fr) auto auto; align-items: center; gap: var(--gap); min-height: var(--tab); }
