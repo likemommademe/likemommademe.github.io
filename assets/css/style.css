@@ -607,7 +607,7 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 :is(.rea-list[data-vista="mosaico"][data-list] > [data-m="1"], .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(3n+1)) .card-meta { grid-column: 9 / -1; padding-top: 0; min-width: 0; }
 :is(.rea-list[data-vista="mosaico"][data-list] > [data-m="1"], .rea-list[data-vista="mosaico"]:not([data-list]) > .card:nth-child(3n+1)) .card-meta h3 { font-size: clamp(2rem, 3.1vw, 4.25rem); overflow-wrap: anywhere; text-wrap: balance; line-height: 1; letter-spacing: -.035em; }
 .rea-list[data-vista="griglia"] > .card { grid-column: span 4; margin-top: 0; }
-.rea-list > .card[hidden] { display: none; }
+.rea-list > .card[hidden], .rea-list[data-vista] > .card[hidden] { display: none !important; }   /* vale anche su telefono e tablet, dove le card sono forzate in colonna */
 @media (max-width: 860px) {
   .rea-list > .card, .rea-list[data-vista] > .card { grid-column: 1 / -1 !important; margin-top: 0 !important; display: block !important; }
   .rea-list > .card .card-img { aspect-ratio: 4 / 3 !important; }
