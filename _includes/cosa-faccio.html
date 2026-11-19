@@ -1,63 +1,57 @@
 {% assign t = site.data.testi.home %}{% assign categorie = site.categorie | sort: "ordine", "last" %}
 {% comment %}
-  Cosa faccio (home e About): ogni categoria è una scheda con titolo, frase, numero di progetti e quattro lavori.
-  Scorrendo le schede si impilano una sopra l'altra: ognuna si ferma lasciando visibile l'intestazione della precedente,
-  come le linguette di un raccoglitore. Niente da aprire col mouse: col mouse sopra solo la freccia viene attirata (calamita).
-  I lavori sono i primi quattro della categoria nell'ordine del pannello.
+  Cosa faccio (home e About): le categorie in righe grandi, come all'inizio, con qualche animazione in più.
+  Entrando nello schermo le linee si disegnano una dopo l'altra, i testi salgono e il numero dei progetti conta da zero.
+  Al passaggio del mouse: la riga si riempie appena dal basso, le lettere del nome fanno un'onda, il numero diventa fucsia,
+  la frase si accende e la freccia diventa blu, ruota ed è attirata dal cursore (calamita).
 {% endcomment %}
-{% assign tutti_mondi = site.progetti | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
-<section class="fascia pila-sez{% if include.inv %} inv{% endif %}" data-pila>
+{% assign tutti_mondi = site.progetti | where_exp: "p", "p.published != false" %}
+<section class="fascia mondi-sez{% if include.inv %} inv{% endif %}" data-mondi>
   <div class="sec-head">
     <h2 class="rise"><span>{{ t.mondi_titolo }}</span></h2>
   </div>
-  <ol class="pila">
+  <ul class="mondi">
     {% for c in categorie %}
       {% assign n = 0 %}{% for p in tutti_mondi %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}
-      <li class="pila__s" style="--i: {{ forloop.index0 }}">
-        <a class="pila__testa" href="{{ c.url | relative_url }}">
-          <span class="pila__n">{{ forloop.index | prepend: "0" }}</span>
-          <span class="pila__t">{{ c.title }}</span>
-          <span class="pila__d">{{ c.content | strip_html | strip_newlines }}</span>
-          <span class="pila__c">{{ n }} {% if n == 1 %}{{ t.mondi_progetti_uno }}{% else %}{{ t.mondi_progetti_piu }}{% endif %}</span>
-          <span class="pila__go" aria-hidden="true" data-calamita><svg width="18" height="18" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <li style="--i: {{ forloop.index0 }}">
+        <a class="mondo" href="{{ c.url | relative_url }}">
+          <span class="mondo__i">{{ forloop.index | prepend: "0" }}</span>
+          <span class="mondo__t" aria-label="{{ c.title }}">{% assign lettere = c.title | split: "" %}{% for l in lettere %}<span class="mondo__l" style="--k: {{ forloop.index0 }}" aria-hidden="true">{% if l == " " %}&nbsp;{% else %}{{ l }}{% endif %}</span>{% endfor %}</span>
+          <span class="mondo__d">{{ c.content | strip_html | strip_newlines }}</span>
+          <span class="mondo__n"><span data-conta="{{ n }}">{{ n }}</span> {% if n == 1 %}{{ t.mondi_progetti_uno }}{% else %}{{ t.mondi_progetti_piu }}{% endif %}</span>
+          <span class="btn__arrow mondo__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
-        <div class="pila__lavori">
-          {% assign scelti = 0 %}
-          {% for p in tutti_mondi %}{% if scelti < 4 %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% if p.copertina %}{% assign scelti = scelti | plus: 1 %}
-          <a class="pila__lav" href="{{ p.url | relative_url }}"><span class="pila__img"><img src="{{ p.copertina | relative_url }}" alt="" loading="lazy"></span><span class="pila__lt">{{ p.title }}</span></a>
-          {% endif %}{% endif %}{% endif %}{% endfor %}
-        </div>
       </li>
     {% endfor %}
-  </ol>
+  </ul>
   <script>
-    // la pila resta ferma: quando anche l'ultima scheda è al suo posto, la sezione si blocca e la sezione dopo le scorre sopra.
-    // Lo spazio in fondo alla pila è calcolato perché l'ultima scheda arrivi al suo posto proprio quando la sezione si blocca.
     (function () {
-      var sez = document.querySelector('[data-pila]'), pila = sez && sez.querySelector('.pila'); if (!pila) return;
-      var schede = pila.querySelectorAll('.pila__s'), ultima = schede[schede.length - 1];
-      function misura() {
-        if (getComputedStyle(ultima).position !== 'sticky') { sez.style.removeProperty('--pin'); pila.style.removeProperty('--spazio'); return; }
-        var T = parseFloat(getComputedStyle(ultima).top) || 0,   // dove si ferma l'ultima scheda
-            pilaTop = pila.getBoundingClientRect().top - sez.getBoundingClientRect().top,
-            dopo = sez.offsetHeight - (pilaTop + pila.offsetHeight);   // quanto c'è sotto la pila, dentro la sezione
-        pila.style.setProperty('--spazio', Math.max(0, innerHeight - T - ultima.offsetHeight - dopo) + 'px');
-        sez.style.setProperty('--pin', Math.min(0, innerHeight - sez.offsetHeight) + 'px');
+      var sez = document.currentScript.closest('[data-mondi]'); if (!sez) return;
+      var righe = sez.querySelectorAll('.mondi li'), fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function conta(el) {
+        var fine = +el.dataset.conta, t0 = null; if (fermo || !fine) return; el.textContent = '0';
+        (function passo(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 900); el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(passo); })(performance.now());
       }
-      addEventListener('resize', misura); addEventListener('load', misura);
-      if (document.fonts) document.fonts.ready.then(misura);
-      misura();
-    })();
-    (function () {
-      // la calamita: passando sulla scheda, la freccia viene attirata verso il cursore
-      if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      document.querySelectorAll('[data-pila] .pila__testa').forEach(function (a) {
-        var go = a.querySelector('[data-calamita]');
+      if ('IntersectionObserver' in window && !fermo) {
+        sez.classList.add('is-pronta');
+        var io = new IntersectionObserver(function (voci) {
+          voci.forEach(function (v) {
+            if (!v.isIntersecting) return;
+            v.target.classList.add('is-in'); io.unobserve(v.target);
+            var c = v.target.querySelector('[data-conta]'); setTimeout(function () { conta(c); }, 250 + (+v.target.style.getPropertyValue('--i')) * 90);
+          });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        righe.forEach(function (r) { io.observe(r); });
+      }
+      // la calamita: la freccia viene attirata verso il cursore
+      if (!matchMedia('(hover: hover)').matches || fermo) return;
+      sez.querySelectorAll('.mondo').forEach(function (a) {
+        var go = a.querySelector('.mondo__go');
         a.addEventListener('pointermove', function (e) {
-          var r = go.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy), k = Math.max(0, 1 - d / 320);
-          go.style.transform = 'translate(' + (dx * .35 * k).toFixed(1) + 'px,' + (dy * .35 * k).toFixed(1) + 'px)';
+          var r = go.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), k = Math.max(0, 1 - Math.hypot(dx, dy) / 340);
+          go.style.translate = (dx * .3 * k).toFixed(1) + 'px ' + (dy * .3 * k).toFixed(1) + 'px';
         });
-        a.addEventListener('pointerleave', function () { go.style.transform = ''; });
+        a.addEventListener('pointerleave', function () { go.style.translate = ''; });
       });
     })();
   </script>

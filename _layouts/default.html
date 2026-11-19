@@ -143,6 +143,10 @@
 
   {% assign categorie = site.categorie | sort: "ordine", "last" %}
   <footer class="pied" id="contatti">
+  <script>
+    // il piè di pagina ha sempre il colore opposto all'ultima sezione della pagina
+    (function () { var m = document.querySelector('main'), u = m && m.lastElementChild; while (u && u.tagName === 'SCRIPT') u = u.previousElementSibling; if (u && !u.classList.contains('inv')) document.getElementById('contatti').classList.add('inv'); })();
+  </script>
     <div class="pied__in">
       <div class="pied__cta">
         <h2 class="rise"><span>{{ f.cta_titolo }}</span></h2>

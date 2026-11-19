@@ -527,39 +527,38 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .sec--intro { padding-top: var(--sec); }
 .manifesto { margin: 0; max-width: 18ch; font-weight: 500; font-size: var(--t-h2); line-height: 1.02; letter-spacing: -.03em; }
 
-/* Cosa faccio: schede che si impilano una sopra l'altra scorrendo (le intestazioni restano come linguette) */
-.pila { margin: 0; padding: 0; list-style: none; --tab: clamp(56px, 5vw, 72px); }
-.pila::after { content: ""; display: block; height: var(--spazio, 0px); }
-/* la sezione intera resta bloccata quando l'ultima scheda è al suo posto; quella dopo le scorre sopra */
-.pila-sez { position: sticky; top: var(--pin, 0px); z-index: 0; }
-.pila-sez + * { position: relative; z-index: 1; }
-.pila__s { position: sticky; top: calc(var(--nav-h) + 12px + var(--i) * var(--tab)); background: var(--bg); border-top: 1px solid var(--line); padding-bottom: clamp(20px, 2vw, 32px); }
-.pila__s:last-child { margin-bottom: 0; }
-.pila__testa { display: grid; grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 1.4fr) auto auto; align-items: center; gap: var(--gap); min-height: var(--tab); }
-.pila__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); }
-.pila__t { font-weight: 900; font-size: var(--t-h3); line-height: 1; letter-spacing: -.02em; transition: transform .6s var(--ease); }
-.pila__testa:hover .pila__t { transform: translateX(10px); }
-.pila__d { color: var(--muted); max-width: 46ch; }
-.pila__c { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; }
-.pila__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--fg); color: var(--bg); transition: transform .5s var(--ease), background .3s; }
-.pila__go svg { transition: transform .5s var(--ease); }
-.pila__testa:hover .pila__go { background: var(--accent-1); color: #F5F5F2; }
-.pila__testa:hover .pila__go svg { transform: rotate(-45deg); }
-.pila__lavori { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding: 4px 0 0 calc(56px + var(--gap)); }
-.pila__lav { display: grid; gap: 10px; }
-.pila__img { display: block; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
-.pila__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
-.pila__lav:hover .pila__img img { transform: scale(1.05); }
-.pila__lt { font-weight: 500; font-size: 15px; line-height: 1.3; }
-.pila__lav:hover .pila__lt { text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 860px) {
-  .pila { --tab: 60px; }
-  .pila__testa { grid-template-columns: 28px minmax(0, 1fr) auto; }
-  .pila__d, .pila__c { display: none; }
-  .pila__go { width: 40px; height: 40px; }
-  .pila__lavori { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-left: 0; }
-}
-@media (prefers-reduced-motion: reduce) { .pila__s, .pila-sez { position: static; } }
+/* Cosa faccio: i mondi in righe grandi, come all'inizio, con qualche animazione in più */
+.mondi { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.mondi li { position: relative; }
+.mondi li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: left; }
+.mondo { display: grid; grid-template-columns: 56px 1.1fr 1.4fr auto auto; align-items: center; gap: var(--gap); padding: clamp(22px, 2.6vw, 40px) 0; position: relative; isolation: isolate; }
+.mondo::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--m)); background: var(--card); transform: scaleY(0); transform-origin: bottom; transition: transform .6s var(--ease); z-index: -1; }
+.mondo:hover::before { transform: scaleY(1); }
+.mondo__i { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); transition: color .3s; }
+.mondo:hover .mondo__i { color: var(--accent-3); }
+.mondo__t { display: block; font-weight: 900; font-size: var(--t-h3); line-height: 1; letter-spacing: -.02em; white-space: nowrap; transition: transform .6s var(--ease); }
+.mondo:hover .mondo__t { transform: translateX(14px); }
+/* l'onda: passando sopra, le lettere del nome saltano una dopo l'altra */
+.mondo__l { display: inline-block; }
+.mondo:hover .mondo__l { animation: mondo-onda .55s var(--ease) calc(var(--k) * 28ms); }
+@keyframes mondo-onda { 0%, 100% { transform: none; } 40% { transform: translateY(-.16em); } }
+.mondo__d { color: var(--muted); max-width: 46ch; transition: color .4s; }
+.mondo:hover .mondo__d { color: var(--fg); }
+.mondo__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mondo__go { transition: background .3s, translate .35s var(--ease); }
+.mondo:hover .mondo__go { background: var(--accent-1); }
+.mondo__go svg { transition: transform .5s var(--ease); }
+.mondo:hover .mondo__go svg { transform: rotate(-45deg); }
+/* entrata: la linea si disegna da sinistra e i testi salgono, una riga dopo l'altra */
+.mondi-sez.is-pronta .mondi li::after { transform: scaleX(0); transition: transform 1.1s var(--ease) calc(var(--i) * 90ms); }
+.mondi-sez.is-pronta .mondo > * { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .9s var(--ease); }
+.mondi-sez.is-pronta li.is-in::after { transform: scaleX(1); }
+.mondi-sez.is-pronta li.is-in .mondo > * { opacity: 1; transform: none; transition-delay: calc(var(--i) * 90ms + 120ms); }
+.mondi-sez.is-pronta li.is-in .mondo > :nth-child(3) { transition-delay: calc(var(--i) * 90ms + 200ms); }
+.mondi-sez.is-pronta li.is-in .mondo:hover .mondo__t { transform: translateX(14px); transition-delay: 0s; }
+.mondi-sez.is-pronta li.is-in .mondo > .mondo__d { transition: opacity .6s var(--ease), transform .9s var(--ease), color .4s; }
+@media (max-width: 860px) { .mondo { grid-template-columns: 32px minmax(0, 1fr) auto; } .mondo__d, .mondo__n { grid-column: 2; } .mondo .mondo__go { grid-row: 1; grid-column: 3; } .mondo__t { white-space: normal; } }
+@media (prefers-reduced-motion: reduce) { .mondo:hover .mondo__l { animation: none; } }
 
 /* ---------- Pagina Progetti (come bitwip / work) ---------- */
 .phero { padding-bottom: clamp(32px, 4vw, 64px); }
@@ -1195,7 +1194,7 @@ body:has(.vocchio__tu.is-su) .segui { opacity: 0; }
 .servizi__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, transform .6s var(--ease); }
 .servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
 .faq-cont { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
-.faq-cont__lato { display: grid; gap: 20px; justify-items: start; position: sticky; top: calc(var(--nav-h) + 24px); }
+.faq-cont__lato { display: grid; gap: 20px; justify-items: start; }   /* niente parte bloccata: titolo e domande scorrono come un blocco unico */
 .faq-cont__lato h2 { margin: 0; font-size: var(--t-h2); }
 @media (max-width: 900px) {
   .contatti-pag, .faq-cont { grid-template-columns: minmax(0, 1fr); }

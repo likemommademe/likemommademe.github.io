@@ -1,6 +1,6 @@
 {% assign t_o = site.data.testi.home %}
 {% comment %} Orari nel mondo: l'ora in tempo reale in alcune città, e se a Roma sono sveglio {% endcomment %}
-<section class="fascia orari" aria-labelledby="t-orari">
+<section class="fascia orari{% if include.inv %} inv{% endif %}" aria-labelledby="t-orari">
   <p class="cs-label cs-head__k">{{ t_o.orari_k }}</p>
   <div class="orari__head">
     <h2 class="rise" id="t-orari"><span>{{ t_o.orari_titolo }}</span></h2>

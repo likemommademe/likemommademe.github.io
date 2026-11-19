@@ -25,7 +25,7 @@ layout: default
 
 {% comment %} 2. La timeline (come bitwip "through the years"): a sinistra il testo e l'anno gigante che scorre
    come un contatore, a destra le tappe; la linea si riempie fino alla tappa attiva e il segno ci si posa ruotando {% endcomment %}
-<section class="anni">
+<section class="fascia inv anni">
   <h2 class="anni__t rise"><span>{{ a.anni_titolo }}<i class="segno" aria-hidden="true"></i></span></h2>
   <div class="anni__grid">
     <div class="anni__sx">
@@ -57,7 +57,7 @@ layout: default
 {% capture s1 %}{% for p in prog_vita %}{% if p.copertina %}{{ p.copertina }}|{{ p.title }}|{{ p.url }};{% endif %}{% endfor %}{% endcapture %}
 {% capture s2 %}{% for p in prog_vita %}{% assign fatto = false %}{% for g in p.galleria %}{% unless g.immagine contains 'riferimento' %}{% if fatto == false and g.immagine and g.immagine != p.copertina %}{{ g.immagine }}|{{ p.title }}|{{ p.url }};{% assign fatto = true %}{% endif %}{% endunless %}{% endfor %}{% endfor %}{% endcapture %}
 {% assign strisce = s1 | append: "#" | append: s2 | split: "#" %}
-<section class="fascia inv vita" aria-label="{{ a.foto_titolo }}" data-vita>
+<section class="fascia vita" aria-label="{{ a.foto_titolo }}" data-vita>
   {% for st in strisce %}{% assign foto = st | split: ";" %}
   <div class="vita__striscia" data-striscia="{{ forloop.index }}">
     <ul class="vita__pista">
@@ -72,7 +72,7 @@ layout: default
 {% comment %} 4. Valori: ogni parola ha il suo elemento. Visione = l'occhio, Execution = il cubo dei blocchi del branding (showreel),
    Coordinamento = tre orbite che trovano lo stesso ritmo. Scorrendo (la sezione resta ferma) ogni elemento entra grande al centro,
    fa la sua scena e poi va a sedersi accanto alla sua parola, dove resta vivo. Telefono e meno movimento: righe ferme con gli elementi. {% endcomment %}
-<section class="fascia vocchio" data-vocchio>
+<section class="fascia inv vocchio" data-vocchio>
   <div class="vocchio__scena">
     <div class="sec-head vocchio__head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
     <ul class="vocchio__parole">
@@ -90,10 +90,10 @@ layout: default
 </section>
 
 {% comment %} Cosa faccio: la stessa sezione della home (categorie che si aprono con una selezione di lavori) {% endcomment %}
-{% include cosa-faccio.html inv=true %}
+{% include cosa-faccio.html %}
 
 {% comment %} Strumenti, divisi in tre gruppi come sul profilo LinkedIn {% endcomment %}
-<section class="fascia">
+<section class="fascia inv">
   <div class="sec-head"><h2 class="rise"><span>{{ a.strumenti_titolo }}</span></h2></div>
   <div class="strum">
     {% for g in a.strumenti %}
@@ -107,16 +107,16 @@ layout: default
 </section>
 
 {% comment %} 5. Dove ho lavorato e studiato {% endcomment %}
-{% include esperienze.html inv=true %}
+{% include esperienze.html %}
 
 {% comment %} Chi mi conosce {% endcomment %}
 {% include testimonianze.html %}
 
 {% comment %} 6. Orari nel mondo, uguali a home e contatti {% endcomment %}
-{% include orari.html %}
+{% include orari.html inv=true %}
 
 {% comment %} 7. Domande frequenti {% endcomment %}
-{% include domande.html id="about" inv=true %}
+{% include domande.html id="about" %}
 
 <script>
   (function () {

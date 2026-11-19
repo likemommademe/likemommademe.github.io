@@ -12,7 +12,7 @@ permalink: /contatti/
 </section>
 
 {% comment %} 1. Il form e, di lato, i contatti diretti {% endcomment %}
-<section class="contatti-pag">
+<section class="fascia inv contatti-pag">
   <div class="contatti-pag__form">
     <h2 class="contatti-pag__t">{{ site.data.testi.modulo.titolo }}</h2>
     {% include modulo.html id="p" senza_titolo=true %}
@@ -35,14 +35,14 @@ permalink: /contatti/
 </section>
 
 {% comment %} 2. Dove ho lavorato e studiato {% endcomment %}
-{% include esperienze.html inv=true %}
+{% include esperienze.html %}
 
 {% comment %} 3. Gli orari nel mondo {% endcomment %}
-{% include orari.html %}
+{% include orari.html inv=true %}
 
 {% comment %} 4. Cosa faccio: le categorie come servizi {% endcomment %}
 {% assign categorie = site.categorie | sort: "ordine", "last" %}
-<section class="fascia inv servizi">
+<section class="fascia servizi">
   <h2 class="rise"><span>{{ tc.servizi_titolo }}</span></h2>
   <ol class="servizi__lista">
     {% for c in categorie %}
@@ -57,4 +57,4 @@ permalink: /contatti/
 </section>
 
 {% comment %} 5. Domande frequenti {% endcomment %}
-{% include domande.html id="contatti" %}
+{% include domande.html id="contatti" inv=true %}
