@@ -3,7 +3,7 @@ title: Topboy
 title_en: Topboy
 categoria: generative-ai
 anno: 2024
-copertina: /assets/uploads/lettering-topboy-01.webp
+copertina: /assets/uploads/lettering-topboy-05.webp
 sottotitolo: 'Un logo in stile Y2K, con la stella e l''ovale. L''ho trasformato in due tutorial per i social: dal tracciato in Illustrator al render con Firefly.'
 sottotitolo_en: 'A Y2K-style logo, with its star and oval. I turned it into two social tutorials: from the Illustrator path to the Firefly render.'
 body_en: |
