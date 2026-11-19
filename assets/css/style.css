@@ -114,7 +114,7 @@ em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; 
 .btn__arrow { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #121414; color: #F5F5F2; flex: none; }
 .btn:hover .btn__arrow { background: var(--accent-1); }
 .btn__arrow svg { transition: transform .6s var(--ease); }
-.btn:hover .btn__arrow svg, .card:hover .btn__arrow svg, .mondi li:is(.is-aperta, :focus-within) .mondo .btn__arrow svg { transform: rotate(-45deg); }
+.btn:hover .btn__arrow svg, .card:hover .btn__arrow svg { transform: rotate(-45deg); }
 
 /* ---------- Menu: barra larga in cima, pillola scura quando si scorre ---------- */
 .nav { position: fixed; left: 0; right: 0; top: 0; z-index: 60; pointer-events: none; view-transition-name: barra; }
@@ -527,55 +527,35 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .sec--intro { padding-top: var(--sec); }
 .manifesto { margin: 0; max-width: 18ch; font-weight: 500; font-size: var(--t-h2); line-height: 1.02; letter-spacing: -.03em; }
 
-/* Cosa faccio: i cinque mondi in righe grandi, animate */
-.mondi { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.mondi li { position: relative; isolation: isolate; transition: color .5s var(--ease); }
-.mondi li::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--m)); background: var(--fill, var(--fg)); transform: scaleY(0); transform-origin: bottom; transition: transform .7s var(--ease); z-index: -1; }
-.mondi li.is-aperta, .mondi li:focus-within { color: var(--ink, var(--bg)); }
-.mondi li.is-aperta::before, .mondi li:focus-within::before { transform: scaleY(1); transform-origin: top; }
-.mondi li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); transform-origin: left; }
-.mondo {
-  display: grid; grid-template-columns: 56px 1.1fr 1.4fr auto auto; align-items: center; gap: var(--gap);
-  padding: clamp(22px, 2.6vw, 40px) 0; position: relative; isolation: isolate; transition: color .45s var(--ease);
-}
-/* la riga si riempie di nero (bianco di notte) dal basso, e il testo si inverte */
-.mondo__i { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); transition: color .45s; }
-.mondo__t { display: block; overflow: hidden; font-weight: 900; font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.02em; }
-.mondo__roll { display: grid; transition: transform .7s var(--ease); }
-.mondo__roll > span { grid-area: 1 / 1; display: block; transition: transform .7s var(--ease); }
-.mondo__roll > span + span { transform: translateY(105%); color: var(--ink, var(--accent-3)); }
-.mondi li:is(.is-aperta, :focus-within) .mondo .mondo__roll > span:first-child { transform: translateY(-105%); }
-.mondi li:is(.is-aperta, :focus-within) .mondo .mondo__roll > span + span { transform: translateY(0); }
-.mondo__d { color: var(--muted); max-width: 46ch; transition: color .45s, transform .7s var(--ease); }
-.mondi li:is(.is-aperta, :focus-within) .mondo .mondo__d { color: inherit; transform: translateX(10px); }
-.mondo__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; transition: color .45s; }
-.mondi li:is(.is-aperta, :focus-within) .mondo :is(.mondo__i, .mondo__n) { color: inherit; }
-.mondo .btn__arrow { transition: transform .6s var(--ease), background .3s; }
-.mondi li:is(.is-aperta, :focus-within) .mondo .btn__arrow { background: var(--ink, var(--accent-1)); color: var(--fill, #F5F5F2); }
-.mondi-sez.is-pronta li.is-in .mondi li:is(.is-aperta, :focus-within) .mondo .btn__arrow { transform: none; }
-/* entrata: la riga si disegna da sinistra e i testi salgono, una riga dopo l'altra */
-.mondi-sez.is-pronta .mondi li::after { transform: scaleX(0); transition: transform 1.1s var(--ease) calc(var(--i) * 90ms); }
-.mondi-sez.is-pronta .mondo > * { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .9s var(--ease), color .45s, background .3s; }
-.mondi-sez.is-pronta li.is-in::after { transform: scaleX(1); }
-.mondi-sez.is-pronta li.is-in .mondo > * { opacity: 1; transform: none; transition-delay: calc(var(--i) * 90ms + 120ms), calc(var(--i) * 90ms + 120ms), 0s, 0s; }
-.mondi-sez.is-pronta li.is-in .mondo > :nth-child(3) { transition-delay: calc(var(--i) * 90ms + 200ms), calc(var(--i) * 90ms + 200ms), 0s, 0s; }
-.mondi-sez.is-pronta li.is-in .mondi li:is(.is-aperta, :focus-within) .mondo .mondo__d { transform: translateX(10px); }
-/* il sottomenu: passando sulla categoria la riga si apre e mostra una selezione dei lavori */
-.mondo__sub { height: 0; overflow: hidden; transition: height .55s var(--ease); }
-.mondo__sub-in { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding-left: calc(56px + var(--gap)); }
-.mondo__lav { display: grid; gap: 10px; padding-bottom: clamp(22px, 2.6vw, 40px); opacity: 0; transform: translateY(18px); transition: opacity .35s, transform .6s var(--ease); }
-.mondi li:is(.is-aperta, :focus-within) .mondo__lav { opacity: 1; transform: none; transition-delay: calc(var(--j) * 70ms + 120ms); }
-.mondo__lav-img { display: block; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
-.mondo__lav-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
-.mondo__lav:hover .mondo__lav-img img { transform: scale(1.06); }
-.mondo__lav-t { font-weight: 500; font-size: 15px; line-height: 1.3; }
-.mondo__lav:hover .mondo__lav-t { text-decoration: underline; text-underline-offset: 3px; }
-@media (hover: none), (max-width: 860px) { .mondo__sub { display: none; } }
+/* Cosa faccio: schede che si impilano una sopra l'altra scorrendo (le intestazioni restano come linguette) */
+.pila { margin: 0; padding: 0; list-style: none; --tab: clamp(64px, 6.4vw, 92px); }
+.pila__s { position: sticky; top: calc(var(--nav-h) + 12px + var(--i) * var(--tab)); background: var(--bg); border-top: 1px solid var(--line); padding-bottom: clamp(28px, 3vw, 48px); }
+.pila__s:last-child { margin-bottom: 0; }
+.pila__testa { display: grid; grid-template-columns: 56px minmax(0, 1.1fr) minmax(0, 1.4fr) auto auto; align-items: center; gap: var(--gap); min-height: var(--tab); }
+.pila__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); }
+.pila__t { font-weight: 900; font-size: var(--t-h3); line-height: 1; letter-spacing: -.02em; transition: transform .6s var(--ease); }
+.pila__testa:hover .pila__t { transform: translateX(10px); }
+.pila__d { color: var(--muted); max-width: 46ch; }
+.pila__c { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.pila__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--fg); color: var(--bg); transition: transform .5s var(--ease), background .3s; }
+.pila__go svg { transition: transform .5s var(--ease); }
+.pila__testa:hover .pila__go { background: var(--accent-1); color: #F5F5F2; }
+.pila__testa:hover .pila__go svg { transform: rotate(-45deg); }
+.pila__lavori { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding: 8px 0 0 calc(56px + var(--gap)); }
+.pila__lav { display: grid; gap: 10px; }
+.pila__img { display: block; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden; background: var(--placeholder); }
+.pila__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+.pila__lav:hover .pila__img img { transform: scale(1.05); }
+.pila__lt { font-weight: 500; font-size: 15px; line-height: 1.3; }
+.pila__lav:hover .pila__lt { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 860px) {
-  .mondo { grid-template-columns: 32px minmax(0, 1fr) auto; }
-  .mondo__d, .mondo__n { grid-column: 2; }
-  .mondo .btn__arrow { grid-row: 1; grid-column: 3; }
+  .pila { --tab: 60px; }
+  .pila__testa { grid-template-columns: 28px minmax(0, 1fr) auto; }
+  .pila__d, .pila__c { display: none; }
+  .pila__go { width: 40px; height: 40px; }
+  .pila__lavori { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-left: 0; }
 }
+@media (prefers-reduced-motion: reduce) { .pila__s { position: static; } }
 
 /* ---------- Pagina Progetti (come bitwip / work) ---------- */
 .phero { padding-bottom: clamp(32px, 4vw, 64px); }

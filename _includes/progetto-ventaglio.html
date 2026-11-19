@@ -39,11 +39,11 @@
     var att = 0, tira = 0, giu = null, mosso = false, sopra = false, timer = null;
     function dist(i) { var d = ((i - att) % n + n) % n; return d > n / 2 ? d - n : d; }
     function disponi() {
-      var Wp = palco.clientWidth, small = innerWidth < 720, C = carte[0].offsetWidth, passo = C * (small ? .5 : .46);
+      var Wp = palco.clientWidth, small = innerWidth < 720, C = carte[0].offsetWidth, passo = small ? C * .5 : Math.max(C * .42, (Wp / 2 - C * .3) / (4 * .76));   // la quarta scheda arriva al bordo
       carte.forEach(function (c, i) {
         var d = dist(i) + tira, a = Math.abs(d), vis = a < (small ? 2.6 : 4.6);
-        var x = d * passo * (1 - Math.min(a, 4) * .06), y = a * a * (small ? 6 : 10), sc = 1 - Math.min(a, 5) * .12;
-        c.style.transform = 'translate(-50%, -50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (d * 5).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+        var x = d * passo * (1 - Math.min(a, 4) * .06), y = a * (small ? 6 : 8), sc = 1 - Math.min(a, 5) * .08;
+        c.style.transform = 'translate(-50%, -50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (d * 2.5).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
         c.style.zIndex = String(100 - Math.round(a * 10));
         c.style.opacity = vis ? '1' : '0';
         c.style.pointerEvents = vis ? '' : 'none';
