@@ -89,6 +89,9 @@ layout: default
   <span class="vocchio__tu" aria-hidden="true"><b>{{ a.valori_tu | default: "Tu" }}</b></span>
 </section>
 
+{% comment %} Cosa faccio: la stessa sezione della home (categorie che si aprono con una selezione di lavori) {% endcomment %}
+{% include cosa-faccio.html %}
+
 {% comment %} Strumenti, divisi in tre gruppi come sul profilo LinkedIn {% endcomment %}
 <section class="fascia inv">
   <div class="sec-head"><h2 class="rise"><span>{{ a.strumenti_titolo }}</span></h2></div>
