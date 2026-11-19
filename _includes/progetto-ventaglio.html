@@ -32,56 +32,86 @@
   <span class="ven__drag" aria-hidden="true">{{ t.trascina | default: "Trascina" }}</span>
 </div>
 <script>
+  // Il ventaglio si muove con un'animazione continua (fotogramma per fotogramma, solo transform):
+  // pos è la posizione "morbida", meta quella di arrivo. Trascinando pos segue il dito; lasciando, lo slancio
+  // porta avanti e poi si ferma sulla scheda più vicina.
   (function () {
     var v = document.querySelector('[data-ven]'); if (!v) return;
     var palco = v.querySelector('[data-ven-palco]'), carte = Array.prototype.slice.call(v.querySelectorAll('[data-ven-c]')), n = carte.length,
         num = v.querySelector('[data-ven-n]'), drag = v.querySelector('.ven__drag'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var att = 0, tira = 0, giu = null, mosso = false, sopra = false, timer = null;
-    function dist(i) { var d = ((i - att) % n + n) % n; return d > n / 2 ? d - n : d; }
-    function disponi() {
-      var Wp = palco.clientWidth, small = innerWidth < 720, C = carte[0].offsetWidth, passo = small ? C * .5 : Math.max(C * .42, (Wp / 2 - C * .3) / (4 * .76));   // la quarta scheda arriva al bordo
-      carte.forEach(function (c, i) {
-        var d = dist(i) + tira, a = Math.abs(d), vis = a < (small ? 2.6 : 4.6);
-        var x = d * passo * (1 - Math.min(a, 4) * .06), y = a * (small ? 6 : 8), sc = 1 - Math.min(a, 5) * .08;
-        c.style.transform = 'translate(-50%, -50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (d * 2.5).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
-        c.style.zIndex = String(100 - Math.round(a * 10));
-        c.style.opacity = vis ? '1' : '0';
-        c.style.pointerEvents = vis ? '' : 'none';
-        c.classList.toggle('is-centro', Math.round(dist(i)) === 0);
-        c.tabIndex = Math.round(dist(i)) === 0 ? 0 : -1;
-      });
-      num.textContent = String(att + 1).padStart(2, '0');
+    var pos = 0, meta = 0, giu = null, mosso = false, sopra = false, timer = null, ciclo = false, inVista = false, misure = null, centro = -1;
+    var mod = function (x) { return ((x % n) + n) % n; };
+    function misura() {
+      var Wp = palco.clientWidth, small = innerWidth < 720, C = carte[0].offsetWidth;
+      misure = { small: small, passo: small ? C * .5 : Math.max(C * .42, (Wp / 2 - C * .3) / (4 * .76)), C: C };
     }
-    function vai(k) { att = ((att + k) % n + n) % n; disponi(); }
-    function gira() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (!sopra && !giu && !document.hidden) vai(1); }, 4200); }
+    function disegna() {
+      if (!misure) misura();
+      var m = misure, lim = m.small ? 2.6 : 4.6;
+      carte.forEach(function (c, i) {
+        var d = mod(i - pos); if (d > n / 2) d -= n;
+        var a = Math.abs(d), vis = a < lim;
+        if (!vis) { if (c.style.visibility !== 'hidden') c.style.visibility = 'hidden'; return; }
+        if (c.style.visibility) c.style.visibility = '';
+        var x = d * m.passo * (1 - Math.min(a, 4) * .06), y = a * (m.small ? 6 : 8), sc = 1 - Math.min(a, 5) * .08;
+        c.style.transform = 'translate3d(calc(-50% + ' + x.toFixed(2) + 'px), calc(-50% + ' + y.toFixed(2) + 'px), 0) rotate(' + (d * 2.5).toFixed(3) + 'deg) scale(' + sc.toFixed(4) + ')';
+        c.style.zIndex = String(1000 - Math.round(a * 100));
+      });
+      var cc = mod(Math.round(pos));
+      if (cc !== centro) {
+        centro = cc; num.textContent = String(cc + 1).padStart(2, '0');
+        carte.forEach(function (c, i) { c.classList.toggle('is-centro', i === cc); c.tabIndex = i === cc ? 0 : -1; });
+      }
+    }
+    function passo() {
+      ciclo = false;
+      if (!giu) pos += (meta - pos) * (reduce ? 1 : .11);
+      if (Math.abs(meta - pos) < .0005) pos = meta;
+      disegna();
+      if (giu || pos !== meta) giro();
+    }
+    function giro() { if (!ciclo) { ciclo = true; requestAnimationFrame(passo); } }
+    function vai(k) { meta = Math.round(meta) + k; giro(); }
+    function gira() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (inVista && !sopra && !giu && !document.hidden) vai(1); }, 4200); }
     v.querySelector('[data-ven-prec]').addEventListener('click', function () { vai(-1); gira(); });
     v.querySelector('[data-ven-succ]').addEventListener('click', function () { vai(1); gira(); });
     palco.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { vai(1); gira(); } if (e.key === 'ArrowLeft') { vai(-1); gira(); } });
-    // clic su una scheda chiusa: diventa quella aperta (il link vale solo sulla scheda aperta)
     carte.forEach(function (c) { c.addEventListener('click', function (e) { if (mosso) e.preventDefault(); }); });   // il clic porta al progetto, ma non dopo un trascinamento
-    // trascinare
-    palco.addEventListener('pointerdown', function (e) { if (e.button) return; giu = { x: e.clientX }; mosso = false; palco.classList.add('is-tira'); });
+    // trascinare: le schede seguono il dito, con lo slancio
+    palco.addEventListener('pointerdown', function (e) { if (e.button) return; giu = { x: e.clientX, x0: e.clientX, p0: pos, t: performance.now(), vel: 0 }; mosso = false; palco.classList.add('is-tira'); giro(); });
     addEventListener('pointermove', function (e) {
-      if (giu) { var dx = e.clientX - giu.x; if (Math.abs(dx) > 6) mosso = true; tira = dx / Math.max(120, carte[0].offsetWidth * .46); disponi(); }   // le schede seguono il dito
-      if (e.pointerType === 'mouse' && sopra) { drag.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 10) + 'px)'; }
+      if (giu) {
+        var ora = performance.now(), dt = Math.max(1, ora - giu.t), unita = Math.max(120, misure ? misure.passo : 200);
+        if (Math.abs(e.clientX - giu.x0) > 6) mosso = true;
+        giu.vel = ((e.clientX - giu.x) / unita) / dt * 1000 * .6 + giu.vel * .4;
+        giu.x = e.clientX; giu.t = ora;
+        pos = giu.p0 - (e.clientX - giu.x0) / unita; meta = pos;
+      }
+      if (e.pointerType === 'mouse' && sopra) drag.style.transform = 'translate3d(' + (e.clientX + 14) + 'px,' + (e.clientY + 10) + 'px,0)';
     }, { passive: true });
     addEventListener('pointerup', function () {
       if (!giu) return;
-      var k = Math.round(tira); giu = null; tira = 0; palco.classList.remove('is-tira');
-      if (k) vai(-k); else disponi();   // trascini a destra: arriva quella di sinistra
-      gira(); setTimeout(function () { mosso = false; }, 0);
+      var slancio = Math.max(-2, Math.min(2, -giu.vel * .12));
+      meta = Math.round(pos + slancio); giu = null; palco.classList.remove('is-tira');
+      giro(); gira(); setTimeout(function () { mosso = false; }, 0);
     });
     palco.addEventListener('pointerenter', function (e) { sopra = true; if (e.pointerType === 'mouse') drag.classList.add('is-su'); });
     palco.addEventListener('pointerleave', function () { sopra = false; drag.classList.remove('is-su'); });
-    // trackpad: scorrimento laterale
-    var ruota = 0, ruotaT = null;
+    // trackpad: scorrimento laterale, continuo
+    var fermo = null;
     palco.addEventListener('wheel', function (e) {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
-      e.preventDefault(); ruota += e.deltaX;
-      if (Math.abs(ruota) > 60) { vai(ruota > 0 ? 1 : -1); ruota = 0; gira(); }
-      clearTimeout(ruotaT); ruotaT = setTimeout(function () { ruota = 0; }, 200);
+      e.preventDefault();
+      meta += e.deltaX / Math.max(160, misure ? misure.passo * 1.6 : 300); giro();
+      clearTimeout(fermo); fermo = setTimeout(function () { meta = Math.round(meta); giro(); gira(); }, 140);
     }, { passive: false });
-    addEventListener('resize', disponi);
-    disponi(); gira();
+    // le foto si caricano prima che il ventaglio arrivi sullo schermo
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+      inVista = es[0].isIntersecting;
+      if (inVista) v.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; i.decoding = 'async'; });
+    }, { rootMargin: '800px 0px' }).observe(v);
+    else inVista = true;
+    addEventListener('resize', function () { misure = null; disegna(); });
+    misura(); disegna(); gira();
   })();
 </script>
