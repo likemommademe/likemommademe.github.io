@@ -37,10 +37,14 @@
     if (reduce.matches || !Element.prototype.animate) { update(); return; }
     const mia = ++corsa;
     list.style.minHeight = list.offsetHeight + 'px';
-    list.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 140, easing: 'ease-out', fill: 'forwards' }).finished.then(() => {
+    // uscita: ogni scheda visibile svanisce salendo appena e rimpicciolendo un poco, una dopo l'altra
+    const vis = cards.filter(c => !c.hidden && c.getBoundingClientRect().bottom > 0 && c.getBoundingClientRect().top < innerHeight);
+    cards.filter(c => !c.hidden && vis.indexOf(c) < 0).forEach(c => { c.style.opacity = '0'; });
+    const uscite = vis.map((c, i) => c.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-14px) scale(.97)' }], { duration: 260, delay: Math.min(i, 6) * 35, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' }).finished);
+    Promise.all(uscite).then(() => {
       if (mia !== corsa) return;
       update();
-      list.getAnimations().forEach(a => a.cancel());
+      cards.forEach(c => { c.getAnimations().forEach(a => a.cancel()); c.style.opacity = ''; });
       let k = 0;
       cards.forEach(c => {
         if (c.hidden) return;

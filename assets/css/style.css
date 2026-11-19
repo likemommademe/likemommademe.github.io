@@ -575,6 +575,12 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .dd__b svg { transition: transform .5s var(--ease); }
 .dd.is-open .dd__b svg { transform: rotate(180deg); }
 .dd__n { color: var(--accent-1); }
+/* Azzera: una X fucsia in un cerchio; passandoci sopra si riempie e la X gira */
+.raz-x { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1.5px solid var(--accent-3); border-radius: 50%; background: none; color: var(--accent-3); cursor: pointer; transition: background .3s, color .3s; }
+.raz-x[hidden] { display: none; }
+.raz-x svg { transition: transform .5s var(--ease); }
+.raz-x:hover, .raz-x:focus-visible { background: var(--accent-3); color: #121414; }
+.raz-x:hover svg { transform: rotate(90deg); }
 .dd__p {
   position: absolute; top: calc(100% + 10px); left: 0; z-index: 20; display: flex; flex-direction: column; gap: 2px;
   min-width: max(100%, 260px); padding: 8px; border-radius: 20px; background: var(--card); border: 1px solid var(--line);
