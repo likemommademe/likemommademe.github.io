@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  <title>likemommademe</title>
+  
+  
+  
+  <meta name="description" content="Generative AI, illustrazione e brand identity. Questa frase si cambia dal pannello.">
+  <meta property="og:title" content="likemommademe">
+  <meta property="og:description" content="Generative AI, illustrazione e brand identity. Questa frase si cambia dal pannello.">
+  <meta property="og:url" content="https://likemommademe.github.io/">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <script>
+    // Giorno o notte: la scelta salvata, altrimenti quella del sistema. Prima del CSS, così non c'è il lampo.
+    (function () {
+      var t; try { t = localStorage.getItem('lmm-tema'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+      document.documentElement.classList.add('js');
+      // PROVA menu: ?menu=prova la accende (e se la ricorda), ?menu=classico la spegne
+      try { var mq = new URLSearchParams(location.search).get('menu');
+        if (mq === 'prova') localStorage.setItem('lmm-menu-prova', '1'); else if (mq === 'classico') localStorage.removeItem('lmm-menu-prova');
+        document.documentElement.classList.add('menu-prova'); } catch (e) {}
+      // il colore delle barre del browser (Safari le colora con lo sfondo): giusto fin dal primo istante
+      var m = document.createElement('meta'); m.name = 'theme-color'; m.content = t === 'light' ? '#F4EFE7' : '#121414'; document.head.appendChild(m);
+    })();
+  </script>
+  <!-- lo sfondo giusto prima che arrivino i fogli di stile: niente fasce bianche sopra e sotto mentre la pagina carica -->
+  <style>html, body { background: #121414; } html[data-theme="light"], html[data-theme="light"] body { background: #F4EFE7; }</style>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,900&f[]=clash-display@600&display=swap">
+  <!-- Yink (Adobe Fonts), font delle categorie: progetto web "LIKEMOMMADEME portfolio" -->
+  <link rel="stylesheet" href="https://use.typekit.net/rtt3djn.css">
+  <link rel="stylesheet" href="/prove/menu-come-telefono/style.css?v=1795116925">
+</head>
+<body class="has-reel">
+  <a class="salta" href="#contenuto">Vai al contenuto</a>
+  <header class="nav" data-nav>
+    <div class="nav__bar">
+      <a class="nav__logo" href="/" aria-label="LIKEMOMMADEME, home">LIKEMOMMADEME<i aria-hidden="true"></i></a>
+      <nav class="nav__links" aria-label="Menu principale">
+          <i class="nav__hl" aria-hidden="true"></i>
+          <div class="nav__item" data-sub>
+            <a href="/work/">Works</a>
+            <button class="nav__sub-btn" type="button" aria-expanded="false" aria-controls="sub-work" aria-label="Apri le categorie di Works"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            
+            <div class="sub" id="sub-work">
+              <i class="sub__segno" aria-hidden="true"></i>
+              <div class="sub__in">
+                <div class="sub__aside">
+                  <p class="sub__lead">Cinque mondi, un solo metodo<span class="sub__punto">.</span></p>
+                  <a class="sub__all" href="/work/">Tutti i progetti<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+                <div class="sub__main">
+                  <p class="sub__k">Per categoria</p>
+                  <ul class="sub__list">
+                    <li><a href="/work/branding/"><span class="sub__t">Branding</span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li><li><a href="/work/generative-ai/"><span class="sub__t">Generative AI</span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li><li><a href="/work/web-design/"><span class="sub__t">Web Design</span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li><li><a href="/work/motion-design/"><span class="sub__t">Motion Design</span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li><li><a href="/work/illustration/"><span class="sub__t">Illustration</span><svg class="sub__go" width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="/about/">About me</a>
+          <a href="/news/">News</a>
+      </nav>
+      <div class="nav__right">
+        <div class="nav__tools">
+          <button class="nav__mob-btn" type="button" aria-expanded="false" aria-controls="nav-mob" data-mob><span class="nav__mob-t" data-apri="Menu" data-chiudi="Close">Menu</span><span class="nav__mob-ico" aria-hidden="true"><i></i><i></i></span></button>
+          <button class="cerca-btn" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca" aria-label="Cerca un progetto"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+          <button class="tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+        </div>
+        <a class="nav__cta" href="/contatti/">Contatti<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+    
+    
+    <div class="nav__mob" id="nav-mob" role="dialog" aria-modal="true" aria-label="Menu principale (telefono)">
+      <div class="nav__mob-cerca">
+        <button class="nav__mob-q" type="button" data-cerca-apri aria-haspopup="dialog" aria-controls="cerca"><svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span>Cerca un progetto…</span></button>
+        <button class="tema nav__mob-tema" type="button" data-tema aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+      </div>
+      <nav class="nav__mob-voci" aria-label="Menu principale (telefono)">
+        <div class="mv">
+          <div class="mv__riga"><a href="/work/"><span>Works</span></a><button class="mv__piu" type="button" aria-expanded="false" aria-controls="mv-work" aria-label="Apri le categorie di Works"><i aria-hidden="true"></i></button></div>
+          <div class="mv__sub" id="mv-work"><ul><li><a href="/work/branding/">Branding</a></li><li><a href="/work/generative-ai/">Generative AI</a></li><li><a href="/work/web-design/">Web Design</a></li><li><a href="/work/motion-design/">Motion Design</a></li><li><a href="/work/illustration/">Illustration</a></li><li><a class="mv__tutti" href="/work/">Tutti i progetti</a></li></ul></div>
+        </div>
+        <div class="mv"><div class="mv__riga"><a href="/about/"><span>About me</span></a></div></div>
+        <div class="mv"><div class="mv__riga"><a href="/news/"><span>News</span></a></div></div>
+      </nav>
+      <div class="nav__mob-piede">
+        <div class="nav__mob-riga">
+          <div><p class="nav__mob-k">Telefono</p><a class="nav__mob-tel" href="tel:+393928163159">+39 392 816 3159</a></div>
+          <a class="nav__mob-cta" href="/contatti/">Contatti<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        </div>
+        <ul class="nav__mob-ore" aria-label="In your territory, on your time"><li data-ora-fuso="Europe/Rome"><span class="nav__mob-k" title="Roma">ROM</span><span class="nav__mob-ora">--<i>:</i>--</span></li><li data-ora-fuso="Europe/London"><span class="nav__mob-k" title="Londra">LON</span><span class="nav__mob-ora">--<i>:</i>--</span></li><li data-ora-fuso="America/New_York"><span class="nav__mob-k" title="New York">NYC</span><span class="nav__mob-ora">--<i>:</i>--</span></li><li data-ora-fuso="America/Los_Angeles"><span class="nav__mob-k" title="Los Angeles">LAX</span><span class="nav__mob-ora">--<i>:</i>--</span></li><li data-ora-fuso="Asia/Dubai"><span class="nav__mob-k" title="Dubai">DXB</span><span class="nav__mob-ora">--<i>:</i>--</span></li><li data-ora-fuso="Asia/Tokyo"><span class="nav__mob-k" title="Tokyo">TYO</span><span class="nav__mob-ora">--<i>:</i>--</span></li></ul>
+      </div>
+    </div>
+  </header>
+
+  
+  
+  <dialog class="cerca" id="cerca" aria-label="Cerca tra i progetti" data-cerca>
+    <div class="cerca__in">
+      <div class="cerca__top">
+        <svg class="cerca__lente" width="22" height="22" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.6" cy="7.6" r="5.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m11.8 11.8 4.4 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input class="cerca__q" id="cerca-q" type="search" placeholder="Cerca un progetto…" aria-label="Cerca tra i progetti" autocomplete="off" spellcheck="false" data-cerca-q>
+        <button class="cerca__x" type="button" data-cerca-chiudi aria-label="Chiudi la ricerca"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <p class="cs-label cerca__k" data-cerca-k>I lavori migliori</p>
+      <ul class="cerca__lista" data-cerca-lista>
+        
+        
+          
+          
+          
+          
+          
+        <li data-pos="11" data-testo="Accademia dei Romani Il manuale d'immagine coordinata, la mia tesi di diploma Branding Accademia dei Romani  " hidden>
+          <a class="cerca__r" href="/progetti/accademia-dei-romani/">
+            <span class="cerca__img"><img src="/assets/uploads/accademia-dei-romani-copertina.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Accademia dei Romani</span><span class="cerca__s">Branding</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="10" data-testo="Animazioni Lo showreel di questo sito, loghi che prendono vita, icone marine e un sushi che si serve da solo Motion Design  2021 After Effects Procreate Claude" hidden>
+          <a class="cerca__r" href="/progetti/animazioni/">
+            <span class="cerca__img"><img src="/assets/uploads/animazioni-copertina-adidas.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Animazioni</span><span class="cerca__s">Motion Design · 2021</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Architecture Una piccola scultura, sette materiali Generative AI  2024 Firefly Photoshop" hidden>
+          <a class="cerca__r" href="/progetti/architecture/">
+            <span class="cerca__img"><img src="/assets/uploads/architecture-06.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Architecture</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="9" data-testo="Audible Il classico si unisce al futuro Branding IED · Istituto Europeo di Design 2021 " hidden>
+          <a class="cerca__r" href="/progetti/audible-il-classico-si-unisce-al-futuro/">
+            <span class="cerca__img"><img src="/assets/uploads/audible-maxiposter-notte.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Audible</span><span class="cerca__s">Branding · 2021</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Audible, lo spot Uno spot animato di 30 secondi per i classici di Audible Motion Design IED · Istituto Europeo di Design 2021 " hidden>
+          <a class="cerca__r" href="/progetti/audible-video-animation/">
+            <span class="cerca__img"><img src="/assets/uploads/audible-spot-copertina.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Audible, lo spot</span><span class="cerca__s">Motion Design · 2021</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="BeYOU Logo e communication package per un hotel di lusso accessibile Branding  2026 Firefly" hidden>
+          <a class="cerca__r" href="/progetti/beyou/">
+            <span class="cerca__img"><img src="/assets/uploads/beyou-03.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">BeYOU</span><span class="cerca__s">Branding · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="8" data-testo="Chaos Una scritta che si avvita su se stessa, prima in nero e poi in cromo liquido. Generative AI  2024 Illustrator Photoshop Firefly" hidden>
+          <a class="cerca__r" href="/progetti/chaos/">
+            <span class="cerca__img"><img src="/assets/uploads/lettering-chaos-03.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Chaos</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="7" data-testo="Chrome Nails Un editoriale moda futurista, dove le unghie sono l'arma Generative AI Motion Design  2026 Firefly Photoshop" hidden>
+          <a class="cerca__r" href="/progetti/chrome-nails/">
+            <span class="cerca__img"><img src="/assets/uploads/unghie-posa.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Chrome Nails</span><span class="cerca__s">Generative AI · Motion Design · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Come mamma mi ha fatto Il nome d'arte avvolto in una sfera, come una gomma da masticare. Generative AI  2024 Illustrator Photoshop Firefly" hidden>
+          <a class="cerca__r" href="/progetti/come-mamma-mi-ha-fatto/">
+            <span class="cerca__img"><img src="/assets/uploads/lettering-mamma-02.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Come mamma mi ha fatto</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="3" data-testo="DCD Studi Estetici Il restyling del marchio e il brand identity manual di una catena di centri estetici Branding Motion Design DCD Studi Estetici 2022 InDesign Illustrator Photoshop After Effects">
+          <a class="cerca__r" href="/progetti/dcd-studi-estetici/">
+            <span class="cerca__img"><img src="/assets/uploads/dcd-manuale.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">DCD Studi Estetici</span><span class="cerca__s">Branding · Motion Design · 2022</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="4" data-testo="Etic.a Labels Il sito, il nuovo marchio e tutta la comunicazione di un'azienda di etichette Web Design Motion Design Etic.a Labels 2022 Sketch Illustrator InDesign Photoshop After Effects">
+          <a class="cerca__r" href="/progetti/etica/">
+            <span class="cerca__img"><img src="/assets/uploads/etica-sito-home.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Etic.a Labels</span><span class="cerca__s">Web Design · Motion Design · 2022</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Fight Club, la saponetta Una saponetta, cento materiali Generative AI  2024 Illustrator Firefly Photoshop" hidden>
+          <a class="cerca__r" href="/progetti/fight-club/">
+            <span class="cerca__img"><img src="/assets/uploads/fight-club-10.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Fight Club, la saponetta</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Hardnails Art Un lettering per la nail art: rosa, gonfio e lucido come un palloncino. Generative AI  2024 Illustrator Photoshop Firefly" hidden>
+          <a class="cerca__r" href="/progetti/hardnails-art/">
+            <span class="cerca__img"><img src="/assets/uploads/lettering-hardnails-02.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Hardnails Art</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="2" data-testo="IKEA, Voglia di casa Uno spazio di lavoro, un temporary store e nove vetrine Generative AI IKEA 2026 Firefly">
+          <a class="cerca__r" href="/progetti/ikea-voglia-di-casa/">
+            <span class="cerca__img"><img src="/assets/uploads/ikea-voglia-di-casa-copertina-frakta-3.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">IKEA, Voglia di casa</span><span class="cerca__s">Generative AI · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Il mio vecchio logo Il monogramma CE, dalla griglia alla stationery Branding Motion Design  2021 Illustrator After Effects" hidden>
+          <a class="cerca__r" href="/progetti/il-mio-marchio/">
+            <span class="cerca__img"><img src="/assets/uploads/il-mio-marchio-03.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Il mio vecchio logo</span><span class="cerca__s">Branding · Motion Design · 2021</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="14" data-testo="Joker Ritratti fatti solo di linee Illustration   Illustrator Procreate" hidden>
+          <a class="cerca__r" href="/progetti/joker/">
+            <span class="cerca__img"><img src="/assets/uploads/joker-ledger.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Joker</span><span class="cerca__s">Illustration</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="6" data-testo="Juniors Cento facce di bambola, tutte uguali e tutte diverse, finché non si sciolgono Generative AI Motion Design  2026 Firefly Photoshop">
+          <a class="cerca__r" href="/progetti/juniors/">
+            <span class="cerca__img"><img src="/assets/uploads/juniors-02.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Juniors</span><span class="cerca__s">Generative AI · Motion Design · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="M Gradient Una sola lettera, la m, fatta di gelatina che cola. Generative AI  2024 Illustrator Photoshop Firefly" hidden>
+          <a class="cerca__r" href="/progetti/m-gradient/">
+            <span class="cerca__img"><img src="/assets/uploads/lettering-mgradient-01.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">M Gradient</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="12" data-testo="Omaggio a Malika Favre Illustrazioni nello stile di Malika Favre Illustration IED · Istituto Europeo di Design  Illustrator" hidden>
+          <a class="cerca__r" href="/progetti/malika-favre/">
+            <span class="cerca__img"><img src="/assets/uploads/malika-favre-donne.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Omaggio a Malika Favre</span><span class="cerca__s">Illustration</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="5" data-testo="The North Face, Tokyo Una campagna immaginata tra i vicoli di Tokyo, di notte Generative AI  2026 Firefly ChatGPT Photoshop">
+          <a class="cerca__r" href="/progetti/north-face/">
+            <span class="cerca__img"><img src="/assets/uploads/north-face-04.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">The North Face, Tokyo</span><span class="cerca__s">Generative AI · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Patch Patch a tema spaziale per il Master in Digital Art Direction Illustration IED · Istituto Europeo di Design  Illustrator Procreate" hidden>
+          <a class="cerca__r" href="/progetti/patch/">
+            <span class="cerca__img"><img src="/assets/uploads/patch-esagono-ricamata.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Patch</span><span class="cerca__s">Illustration</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="1" data-testo="LIKEMOMMADEME, questo sito Il portfolio che stai guardando, progettato e costruito con Claude in Visual Studio Code Web Design Motion Design  2026 Claude Visual Studio Code">
+          <a class="cerca__r" href="/progetti/portfolio-likemommademe/">
+            <span class="cerca__img"><img src="/assets/uploads/portfolio-header.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">LIKEMOMMADEME, questo sito</span><span class="cerca__s">Web Design · Motion Design · 2026</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Scomodo Una parola, trasformata finché non diventa scomoda Generative AI  2024 Illustrator Firefly Photoshop" hidden>
+          <a class="cerca__r" href="/progetti/scomodo/">
+            <span class="cerca__img"><img src="/assets/uploads/scomodo-05.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Scomodo</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="13" data-testo="SITUATION Allena come mai prima d'ora: l'app per gli allenatori di pallavolo Web Design Motion Design IED · Istituto Europeo di Design 2021 " hidden>
+          <a class="cerca__r" href="/progetti/situation/">
+            <span class="cerca__img"><img src="/assets/uploads/situation-copertina.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">SITUATION</span><span class="cerca__s">Web Design · Motion Design · 2021</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+          
+          
+          
+          
+          
+        <li data-pos="999" data-testo="Topboy Un logo in stile Y2K, con la stella e l'ovale. L'ho trasformato in due tutorial per i social: dal tracciato in Illustrator al render con Firefly. Generative AI  2024 Illustrator Photoshop Firefly" hidden>
+          <a class="cerca__r" href="/progetti/topboy/">
+            <span class="cerca__img"><img src="/assets/uploads/lettering-topboy-01.webp" alt="" loading="lazy"></span>
+            <span class="cerca__txt"><span class="cerca__t">Topboy</span><span class="cerca__s">Generative AI · 2024</span></span>
+            <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        
+      </ul>
+      <p class="cerca__vuoto" data-cerca-vuoto hidden>Niente da fare. Nemmeno mamma l'avrebbe trovato. Prova con un'altra parola.</p>
+      <a class="lnk cerca__tutti" href="/work/">Vedi tutti i progetti</a>
+    </div>
+  </dialog>
+
+  
+  
+  <dialog class="modulo" id="modulo" aria-labelledby="d-t" data-modulo>
+    <div class="modulo__in">
+      <button class="cerca__x modulo__x" type="button" data-modulo-chiudi aria-label="Chiudi"><svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      
+
+<div class="modulo-box" data-modulo-box>
+  <form class="modulo__f" data-modulo-form novalidate>
+    <header class="modulo__head">
+      <h2 class="modulo__t" id="d-t">Raccontami un <em>progetto</em></h2>
+      <p class="modulo__intro">Due righe bastano. Ti rispondo io, di persona, e di solito in giornata.</p>
+    </header>
+    <div class="modulo__riga">
+      <label class="campo"><span class="campo__k">Come ti chiami</span><input name="nome" id="d-nome" autocomplete="name" required maxlength="120"></label>
+      <label class="campo"><span class="campo__k">Email</span><input name="email" id="d-email" type="email" autocomplete="email" required maxlength="160"></label>
+    </div>
+    <label class="campo"><span class="campo__k">Telefono <i>facoltativo</i></span><input name="telefono" id="d-tel" type="tel" autocomplete="tel" maxlength="40"></label>
+    <fieldset class="campo campo--scelte">
+      <legend class="campo__k">Cosa ti serve <i>anche più di una cosa</i></legend>
+      <div class="scelte"><label class="scelta"><input type="checkbox" name="servizi" value="Branding"><span>Branding</span></label><label class="scelta"><input type="checkbox" name="servizi" value="Generative AI"><span>Generative AI</span></label><label class="scelta"><input type="checkbox" name="servizi" value="Illustration"><span>Illustration</span></label><label class="scelta"><input type="checkbox" name="servizi" value="Motion Design"><span>Motion Design</span></label><label class="scelta"><input type="checkbox" name="servizi" value="Web Design"><span>Web Design</span></label><label class="scelta"><input type="checkbox" name="servizi" value="Altro"><span>Altro</span></label></div>
+    </fieldset>
+    <label class="campo"><span class="campo__k">Il progetto</span><textarea name="progetto" id="d-progetto" rows="4" required maxlength="3800" placeholder="Cosa ti serve, per chi, entro quando."></textarea></label>
+    <fieldset class="campo campo--scelte">
+      <legend class="campo__k">Budget indicativo <i>facoltativo</i></legend>
+      <div class="scelte"><label class="scelta"><input type="radio" name="budget" value="Sotto 1.000 €"><span>Sotto 1.000 €</span></label><label class="scelta"><input type="radio" name="budget" value="1.000 – 3.000 €"><span>1.000 – 3.000 €</span></label><label class="scelta"><input type="radio" name="budget" value="3.000 – 7.000 €"><span>3.000 – 7.000 €</span></label><label class="scelta"><input type="radio" name="budget" value="Oltre 7.000 €"><span>Oltre 7.000 €</span></label><label class="scelta"><input type="radio" name="budget" value="Da capire insieme"><span>Da capire insieme</span></label></div>
+    </fieldset>
+    <label class="campo"><span class="campo__k">Reference <i>facoltativo</i></span><textarea name="reference" id="d-ref" rows="2" maxlength="1500" placeholder="Link a siti, profili o lavori che ti piacciono."></textarea></label>
+    <label class="modulo__trappola" aria-hidden="true">Sito web<input name="sito_web" tabindex="-1" autocomplete="off"></label>
+    <p class="modulo__err" data-modulo-err role="alert" hidden></p>
+    <div class="modulo__fine">
+      <button class="btn modulo__invia" type="submit" data-modulo-invia><span data-modulo-testo>Invia la richiesta</span><span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+      <p class="modulo__privacy">Uso questi dati solo per risponderti. <a href="/privacy/">Privacy</a></p>
+    </div>
+  </form>
+  <div class="modulo__ok" data-modulo-ok hidden>
+    <span class="modulo__segno" aria-hidden="true"></span>
+    <h2 class="modulo__t">Ricevuto.</h2>
+    <p class="modulo__intro">Grazie! Ti rispondo presto, di solito in giornata. Nel frattempo, mamma dice di stare tranquillo.</p>
+    <button class="btn" type="button" data-modulo-chiudi>Chiudi</button>
+  </div>
+</div>
+
+    </div>
+  </dialog>
+
+  <main id="contenuto">
+    
+
+
+
+<button class="suono" type="button" data-suono aria-pressed="false" aria-label="Musica di sottofondo"><span class="suono__eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="suono__t">Suono</span></button>
+<script src="/assets/js/musica.js?v=1795116925" defer></script>
+
+<section class="reel" id="reel" aria-label="Showreel: Brand Identity, Illustration, Generative AI, Motion Design, Web Design">
+  <div class="reel-sticky">
+    <span class="scorri" aria-hidden="true"><i></i></span>
+    <button class="tema tema-intro" type="button" data-tema-intro aria-label="Passa al tema chiaro o scuro"><span class="tema__sole" aria-hidden="true"></span></button>
+    <button class="salta-intro" type="button" data-salta aria-label="Salta l'animazione iniziale"><span class="salta-intro__t">Skip intro</span><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3.5 7.5 8 3 12.5M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <iframe src="/lab/showreel-principale.html?embed&v=1795116925" title="Showreel di LIKEMOMMADEME" tabindex="-1" style="opacity:0" onload="this.style.opacity=''"></iframe>
+  </div>
+</section>
+<script>
+  (function () {
+    var reel = document.getElementById('reel'), frame = reel.querySelector('iframe');
+    // l'animazione secondaria (quella dei mondi separati) è spenta ma salvata: in home si rivede con ?secondaria nell'indirizzo
+    if (/[?&]secondaria\b/.test(location.search)) frame.src = frame.src.replace('/showreel-principale.html', '/showreel-secondaria.html');
+    var KEY = 'lmm-intro-fatta', fatta = false;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // L'intro gira una volta sola. Riparte solo ricaricando la pagina o cliccando HOME / il logo (che riaprono la home);
+    // tornando indietro da un'altra pagina la si ritrova già finita, dove la si era lasciata.
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var ritorno = nav && nav.type === 'back_forward';
+    var giaFatta = false; try { giaFatta = ritorno && sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (!giaFatta) {
+      try { sessionStorage.removeItem(KEY); } catch (e) {}
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      scrollTo(0, 0);
+    }
+    // a fine intro lo showreel si chiude a un solo schermo e resta fermo dietro: è l'header, le fasce ci scorrono sopra
+    function chiudi(subito) {
+      if (fatta) return; fatta = true;
+      var prima = reel.offsetHeight;
+      document.body.classList.add('reel-fatto');
+      var tolto = prima - reel.offsetHeight;   // quanto si è accorciato lo showreel: la pagina resta dov'era
+      if (!subito) scrollTo({ top: Math.max(0, scrollY - tolto), behavior: 'instant' });
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      post({ done: true });
+      document.dispatchEvent(new Event('reelfatto'));
+    }
+    // il nome diventa il notch: da quel momento compaiono il menu (nello stato notch), Suono e Skip intro
+    addEventListener('message', function (e) {
+      if (e.origin !== location.origin || !e.data || typeof e.data.notch !== 'boolean') return;
+      document.body.classList.toggle('notch-on', e.data.notch);
+      document.dispatchEvent(new Event('notchcambia'));
+    });
+    // giorno/notte anche prima che compaia il menu: usa lo stesso comando del menu (con il suo cerchio)
+    var temaIntro = reel.querySelector('[data-tema-intro]');
+    if (temaIntro) temaIntro.addEventListener('click', function () { var b = document.querySelector('[data-tema]'); if (b) b.click(); });
+    // Skip intro: salta subito alla schermata finale, senza far scorrere le scene
+    var salta = reel.querySelector('[data-salta]');
+    if (salta) salta.addEventListener('click', function () {
+      if (fatta) return;
+      chiudi(true); scrollTo({ top: 0, behavior: 'instant' });
+      post({ salta: true });
+    });
+    // l'indicatore di scroll sparisce appena si comincia a scorrere
+    var aggIntro = function () { document.body.classList.toggle('intro-mossa', scrollY > 40); };
+    addEventListener('scroll', aggIntro, { passive: true }); aggIntro();
+    function vede() { var a = document.getElementById('apertura'); return !a || a.getBoundingClientRect().top > 0; }   // l'header si vede ancora?
+    function post(m) { if (frame.contentWindow) frame.contentWindow.postMessage(m, location.origin); }
+    function send() {
+      var r = reel.getBoundingClientRect(), max = r.height - innerHeight;
+      var p = fatta ? 1 : max > 0 ? Math.min(1, Math.max(0, -r.top / max)) : 0;
+      var lg = document.querySelector('.nav__logo'), lr = lg && lg.getBoundingClientRect();
+      post({ reel: p, theme: document.documentElement.dataset.theme, vede: vede(), done: fatta, logo: lr ? { l: lr.left, t: lr.top, w: lr.width, h: lr.height } : null });
+      if (!fatta && p >= .999) chiudi(false);
+    }
+    if (giaFatta || reduce) chiudi(true);
+    // passo allo showreel la posizione del mouse (il riquadro non riceve il mouse, così lo scroll resta libero)
+    function mouse(e, dentro) {
+      var r = frame.getBoundingClientRect();
+      if (frame.contentWindow) frame.contentWindow.postMessage({ mx: e.clientX - r.left, my: e.clientY - r.top, dentro: dentro && e.clientY >= r.top && e.clientY <= r.bottom }, location.origin);
+    }
+    addEventListener('pointermove', function (e) { mouse(e, true); }, { passive: true });
+    document.addEventListener('pointerleave', function (e) { mouse(e, false); });
+    addEventListener('scroll', send, { passive: true });
+    addEventListener('resize', send);
+    addEventListener('themechange', function () {
+      try { frame.contentWindow.lmmTheme(document.documentElement.dataset.theme); } catch (e) {}
+      send();
+    });
+    frame.addEventListener('load', send);
+    send();
+  })();
+</script>
+
+
+<section class="fascia inv apertura" id="apertura">
+  <h2 class="motto rise" aria-label="More than meets the eye"><span>M<span class="occhio" role="img" aria-label="O"><svg viewBox="0 0 100 90" aria-hidden="true"><g class="occhio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round" stroke-linecap="round"/><g class="colore occhio__iride"><circle cx="50" cy="45" r="22" fill="#FF3D8B"/><circle cx="50" cy="45" r="10" fill="#121414"/></g></g></svg></span>RE THAN <em>meets</em> 7HE EYE</span></h2>
+  <div class="apertura__grid">
+    <div class="apertura__testo">
+      <p class="apertura__lead">Generative AI, illustrazione e brand identity. Questa frase si cambia dal pannello.</p>
+      <p class="apertura__sotto">Seguo ogni progetto dal concept alla consegna: idee, esecuzione e coordinamento di clienti, team e fornitori. Hands-on, con l'occhio sempre sul brand.</p>
+      <a class="lnk apertura__link" href="/about/">Chi sono<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <dl class="numeri" data-numeri>
+      
+      <div class="numero">
+        <dt>Anni di esperienza</dt>
+        <dd><span class="numero__piu">+</span><span class="numero__v" data-valore="10">10</span></dd>
+      </div>
+      <div class="numero">
+        <dt>Progetti consegnati</dt>
+        <dd><span class="numero__piu">+</span><span class="numero__v" data-valore="150">150</span></dd>
+      </div>
+      <div class="numero">
+        <dt>Mondi creativi</dt>
+        <dd><span class="numero__v" data-valore="5">5</span></dd>
+      </div>
+      <div class="numero">
+        <dt>Clienti seguiti</dt>
+        <dd><span class="numero__piu">+</span><span class="numero__v" data-valore="40">40</span></dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<section class="fascia">
+  <div class="sec-head">
+    <h2 class="rise"><span>Cosa <em>faccio</em></span></h2>
+  </div>
+  <ul class="mondi">
+    
+      
+      <li>
+        <a class="mondo" href="/work/branding/">
+          <span class="mondo__t">Branding</span>
+          <span class="mondo__d">Brand identity: logo, sistema visivo e linee guida.</span>
+          <span class="mondo__n">5 progetti</span>
+          <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    
+      
+      <li>
+        <a class="mondo" href="/work/generative-ai/">
+          <span class="mondo__t">Generative AI</span>
+          <span class="mondo__d">Immagini, video e mondi visivi creati con l’intelligenza artificiale.</span>
+          <span class="mondo__n">12 progetti</span>
+          <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    
+      
+      <li>
+        <a class="mondo" href="/work/web-design/">
+          <span class="mondo__t">Web Design</span>
+          <span class="mondo__d">Siti web e landing page: design dell’interfaccia e dell’esperienza.</span>
+          <span class="mondo__n">3 progetti</span>
+          <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    
+      
+      <li>
+        <a class="mondo" href="/work/motion-design/">
+          <span class="mondo__t">Motion Design</span>
+          <span class="mondo__d">Animazioni, motion graphics e contenuti video per brand e social.</span>
+          <span class="mondo__n">9 progetti</span>
+          <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    
+      
+      <li>
+        <a class="mondo" href="/work/illustration/">
+          <span class="mondo__t">Illustration</span>
+          <span class="mondo__d">Illustrazioni editoriali, personaggi e immagini su commissione.</span>
+          <span class="mondo__n">3 progetti</span>
+          <span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+<section class="fascia inv piste" id="lavori" data-piste aria-labelledby="t-lavori">
+  <div class="piste__scena" data-piste-scena>
+    <div class="piste__rail" data-piste-rail>
+      <header class="piste__intro" data-piste-intro>
+        <div>
+          <p class="cs-label cs-head__k">Lavori</p>
+          <h2 class="piste__t" id="t-lavori">Lavori selezionati</h2>
+        </div>
+        <div class="piste__bas">
+          <p class="piste__i">Dal brief alla consegna, un progetto alla volta. Scorri per vederli tutti.</p>
+          <a class="lnk" href="/work/">Tutti i progetti</a>
+        </div>
+      </header>
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/portfolio-likemommademe/">
+        <span class="pc__media"><img src="/assets/uploads/portfolio-header.webp" alt="LIKEMOMMADEME, questo sito" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Web Design</span><span class="pc__tag-dot">2026</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">LIKEMOMMADEME, questo sito</span>
+          <span class="pc__q">Come me l’ha fatto mamma. E poi l’ho rifatto io.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/ikea-voglia-di-casa/">
+        <span class="pc__media"><img src="/assets/uploads/ikea-voglia-di-casa-copertina-frakta-3.webp" alt="IKEA, Voglia di casa" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Generative AI</span><span class="pc__tag-dot">IKEA</span></span>
+          <span class="pc__t">IKEA, Voglia di casa</span>
+          <span class="pc__q">Sentirsi a casa al primo sguardo.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/dcd-studi-estetici/">
+        <span class="pc__media"><img src="/assets/uploads/dcd-manuale.webp" alt="DCD Studi Estetici" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Branding</span><span class="pc__tag-dot">DCD Studi Estetici</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">DCD Studi Estetici</span>
+          <span class="pc__q">Più leggera, più tonica, più tu.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/etica/">
+        <span class="pc__media"><img src="/assets/uploads/etica-sito-home.webp" alt="Etic.a Labels" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Web Design</span><span class="pc__tag-dot">Etic.a Labels</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">Etic.a Labels</span>
+          <span class="pc__q">Dress your brand.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/north-face/">
+        <span class="pc__media"><img src="/assets/uploads/north-face-04.webp" alt="The North Face, Tokyo" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Generative AI</span><span class="pc__tag-dot">2026</span></span>
+          <span class="pc__t">The North Face, Tokyo</span>
+          <span class="pc__q">Il freddo si sente meno, sotto il neon.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/juniors/">
+        <span class="pc__media"><img src="/assets/uploads/juniors-02.webp" alt="Juniors" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Generative AI</span><span class="pc__tag-dot">2026</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">Juniors</span>
+          <span class="pc__q">Sembrano tutti uguali. Poi uno ti guarda.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/chrome-nails/">
+        <span class="pc__media"><img src="/assets/uploads/unghie-posa.webp" alt="Chrome Nails" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Generative AI</span><span class="pc__tag-dot">2026</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">Chrome Nails</span>
+          <span class="pc__q">Altro che manicure: questi sono artigli.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/chaos/">
+        <span class="pc__media"><img src="/assets/uploads/lettering-chaos-03.webp" alt="Chaos" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Generative AI</span><span class="pc__tag-dot">2024</span></span>
+          <span class="pc__t">Chaos</span>
+          <span class="pc__q">Una scritta che si avvita su se stessa, prima in nero e poi in cromo liquido.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/audible-il-classico-si-unisce-al-futuro/">
+        <span class="pc__media"><img src="/assets/uploads/audible-maxiposter-notte.webp" alt="Audible" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Branding</span><span class="pc__tag-dot">IED · Istituto Europeo di Design</span></span>
+          <span class="pc__t">Audible</span>
+          <span class="pc__q">Come si mette Dante nelle cuffie di chi ha vent'anni?</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/animazioni/">
+        <span class="pc__media"><img src="/assets/uploads/animazioni-copertina-adidas.webp" alt="Animazioni" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Motion Design</span><span class="pc__tag-dot">2021</span></span>
+          <span class="pc__t">Animazioni</span>
+          <span class="pc__q">Un logo fermo è solo metà del lavoro.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/accademia-dei-romani/">
+        <span class="pc__media"><img src="/assets/uploads/accademia-dei-romani-copertina.webp" alt="Accademia dei Romani" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Branding</span><span class="pc__tag-dot">Accademia dei Romani</span></span>
+          <span class="pc__t">Accademia dei Romani</span>
+          <span class="pc__q">Le cose più semplici, a volte, sono quelle che ti mettono più alla prova.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/malika-favre/">
+        <span class="pc__media"><img src="/assets/uploads/malika-favre-donne.webp" alt="Omaggio a Malika Favre" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Illustration</span><span class="pc__tag-dot">IED · Istituto Europeo di Design</span></span>
+          <span class="pc__t">Omaggio a Malika Favre</span>
+          <span class="pc__q">Pieni e vuoti, e il ritratto si disegna da solo.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/situation/">
+        <span class="pc__media"><img src="/assets/uploads/situation-copertina.webp" alt="SITUATION" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Web Design</span><span class="pc__tag-dot">IED · Istituto Europeo di Design</span><span class="pc__tag-fiore">Motion Design</span></span>
+          <span class="pc__t">SITUATION</span>
+          <span class="pc__q">La pallavolo è uno sport di situazione. Perché non allenarla così?</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+        
+        
+        
+        
+      <a class="pc" href="/progetti/joker/">
+        <span class="pc__media"><img src="/assets/uploads/joker-ledger.webp" alt="Joker" loading="lazy"></span>
+        <span class="pc__corpo">
+          <span class="pc__tag"><span class="pc__tag-cat">Illustration</span></span>
+          <span class="pc__t">Joker</span>
+          <span class="pc__q">Perché così serio? Bastano le linee.</span>
+          <span class="pc__go">Vedi il progetto<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </span>
+      </a>
+        
+      
+      <a class="piste__fin" href="/work/">
+        <span class="piste__fin-t">Vedi tutti i progetti</span>
+        <span class="piste__fin-go" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+    </div>
+    <div class="piste__barra" aria-hidden="true"><i data-piste-barra></i></div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+<section class="fascia news-home" aria-labelledby="t-news">
+  <p class="cs-label cs-head__k">News</p>
+  <div class="news-home__head">
+    <h2 class="rise" id="t-news"><span>Cosa sto <em>guardando</em></span></h2>
+    <a class="rec__vedi" href="/news/">Tutte le news<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="news-griglia news-griglia--home">
+    
+
+<a class="nc nc--siti" href="https://www.awwwards.com/sites/preymaker" target="_blank" rel="noopener" data-cat="siti">
+  <span class="nc__img"><span class="nc__fonte" aria-hidden="true">Awwwards</span><img src="https://assets.awwwards.com/awards/submissions/2026/09/6ab13a392cc6b094293023.png" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></span>
+  <span class="nc__meta"><span class="nc__cat">Siti del giorno</span><span class="nc__dot">Awwwards</span><span class="nc__dot">14/11/2026</span></span>
+  <span class="nc__t">Preymaker</span>
+  <span class="nc__p">Lo studio di DashDigital per Preymaker. Lo metto qui perché ogni passaggio di pagina sembra un taglio di montaggio.</span>
+  <span class="nc__go">Leggi su Awwwards<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</a>
+
+
+<a class="nc nc--siti" href="https://www.awwwards.com/sites/delta-cafes" target="_blank" rel="noopener" data-cat="siti">
+  <span class="nc__img"><span class="nc__fonte" aria-hidden="true">Awwwards</span><img src="https://assets.awwwards.com/awards/submissions/2026/09/6aba4799e2814987403946.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></span>
+  <span class="nc__meta"><span class="nc__cat">Siti del giorno</span><span class="nc__dot">Awwwards</span><span class="nc__dot">13/11/2026</span></span>
+  <span class="nc__t">Delta Cafés</span>
+  <span class="nc__p">Il caffè portoghese raccontato da Bürocratik. Un brand storico che sul web non sembra per niente vecchio.</span>
+  <span class="nc__go">Leggi su Awwwards<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</a>
+
+
+<a class="nc nc--grafica" href="https://www.itsnicethat.com/articles/dum-dum-studio-graphic-design-discover-121126" target="_blank" rel="noopener" data-cat="grafica">
+  <span class="nc__img"><span class="nc__fonte" aria-hidden="true">It's Nice That</span><img src="https://m.itsnicethat.com/original_images/Dum-Dum-Studio-graphic-design-itsnicethat-18.png?class=w1440" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></span>
+  <span class="nc__meta"><span class="nc__cat">Grafica</span><span class="nc__dot">It's Nice That</span><span class="nc__dot">12/11/2026</span></span>
+  <span class="nc__t">Dum Dum Studio, il design come gioco</span>
+  <span class="nc__p">Uno studio che parte dal gioco e arriva a progetti seri. Mi ci ritrovo parecchio.</span>
+  <span class="nc__go">Leggi su It's Nice That<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</a>
+
+
+<a class="nc nc--siti" href="https://www.awwwards.com/sites/auge-experience" target="_blank" rel="noopener" data-cat="siti">
+  <span class="nc__img"><span class="nc__fonte" aria-hidden="true">Awwwards</span><img src="https://assets.awwwards.com/awards/submissions/2026/09/6ab695ee12e89641139763.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></span>
+  <span class="nc__meta"><span class="nc__cat">Siti del giorno</span><span class="nc__dot">Awwwards</span><span class="nc__dot">12/11/2026</span></span>
+  <span class="nc__t">AUGE Experience</span>
+  <span class="nc__p">Uno studio che fa esperienze e lo dimostra dal primo scroll. Da guardare con il volume alto.</span>
+  <span class="nc__go">Leggi su Awwwards<svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</a>
+
+  </div>
+</section>
+
+
+
+
+<section class="fascia orari" aria-labelledby="t-orari">
+  <p class="cs-label cs-head__k">In your territory, on your time</p>
+  <div class="orari__head">
+    <h2 class="rise" id="t-orari"><span>Nel tuo fuso, ai tuoi <em>orari</em></span></h2>
+    <p class="orari__p">Lavoro da Roma con clienti ovunque. Guarda che ore sono da te, e se in questo momento sono sveglio. <strong class="orari__stato" data-orari-stato data-si="Ti rispondo adesso" data-no="Ti rispondo domattina"></strong></p>
+  </div>
+  <ul class="orari__lista">
+    
+    <li class="orari__c is-casa" data-orari-fuso="Europe/Rome">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">Roma <i>· io sono qui</i></span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+    <li class="orari__c" data-orari-fuso="Europe/London">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">Londra</span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+    <li class="orari__c" data-orari-fuso="America/New_York">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">New York</span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+    <li class="orari__c" data-orari-fuso="America/Los_Angeles">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">Los Angeles</span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+    <li class="orari__c" data-orari-fuso="Asia/Dubai">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">Dubai</span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+    <li class="orari__c" data-orari-fuso="Asia/Tokyo">
+      <span class="orari__ico" aria-hidden="true"></span>
+      <span class="orari__ora">--:--</span>
+      <span class="orari__citta">Tokyo</span>
+      <span class="orari__giorno"></span>
+    </li>
+    
+  </ul>
+</section>
+<script>
+  // Orari nel mondo: ogni 20 secondi. Sole o luna a seconda dell'ora locale; a Roma sveglio dalle 8 alle 23.
+  (function () {
+    var cc = document.querySelectorAll('[data-orari-fuso]'), st = document.querySelector('[data-orari-stato]'); if (!cc.length) return;
+    function ora(tz, o) { return new Intl.DateTimeFormat('it-IT', Object.assign({ timeZone: tz }, o)).format(new Date()); }
+    function giro() {
+      cc.forEach(function (c) {
+        var tz = c.dataset.orariFuso, h = +ora(tz, { hour: 'numeric', hourCycle: 'h23' });
+        c.querySelector('.orari__ora').textContent = ora(tz, { hour: '2-digit', minute: '2-digit' });
+        c.querySelector('.orari__giorno').textContent = ora(tz, { weekday: 'long', day: 'numeric', month: 'long' });
+        c.classList.toggle('is-notte', h < 7 || h >= 20);
+      });
+      if (st) { var r = +ora('Europe/Rome', { hour: 'numeric', hourCycle: 'h23' }); st.textContent = r >= 8 && r < 23 ? st.dataset.si : st.dataset.no; st.classList.toggle('is-no', !(r >= 8 && r < 23)); }
+    }
+    giro(); setInterval(giro, 20000);
+  })();
+</script>
+
+
+<script>
+  // Scorrimento orizzontale dei lavori (come bitwip): per ogni pixel di scroll in giù la fila va a sinistra di 1/0,7 px;
+  // l'altezza della sezione è calcolata in modo che l'ultima card arrivi in fondo proprio quando la sezione finisce.
+  (function () {
+    var sec = document.querySelector('[data-piste]'); if (!sec) return;
+    var scena = sec.querySelector('[data-piste-scena]'), rail = sec.querySelector('[data-piste-rail]');
+    var intro = sec.querySelector('[data-piste-intro]'), barra = sec.querySelector('[data-piste-barra]');
+    var mq = matchMedia('(min-width: 761px) and (min-height: 600px)'), rid = matchMedia('(prefers-reduced-motion: reduce)');
+    var K = .7, d = { on: false, top: 0, run: 0, dist: 0, corsa: 0 }, ultimo = -1, raf = 0;
+    function lim(x, a, b) { return Math.min(b, Math.max(a, x)); }
+    function pos() {
+      raf = 0; if (!d.on) return;
+      var t = lim((window.scrollY - d.top) / (d.run || 1), 0, 1); if (t === ultimo) return; ultimo = t;
+      var x = t * d.dist;
+      rail.style.transform = 'translate3d(' + (-x).toFixed(1) + 'px,0,0)';
+      if (barra) barra.style.transform = 'translate3d(' + (t * d.corsa).toFixed(2) + '%,0,0)';
+      if (intro) {   // il titolo scivola via un po' più veloce e svanisce, come su bitwip
+        var L = intro.offsetWidth || 1, q = Math.min(1, x / L);
+        intro.style.opacity = q ? (1 - q).toFixed(3) : '';
+        intro.style.transform = q ? 'translate3d(' + (-.7 * Math.min(x, L)).toFixed(1) + 'px,0,0) scale(' + (1 - .08 * q).toFixed(4) + ')' : '';
+      }
+    }
+    function misura() {
+      d.on = mq.matches && !rid.matches;
+      sec.classList.toggle('is-pilota', d.on);
+      if (!d.on) { sec.style.height = ''; rail.style.transform = ''; if (intro) { intro.style.opacity = ''; intro.style.transform = ''; } return; }
+      rail.style.transform = 'none';
+      var vw = document.documentElement.clientWidth, pad = parseFloat(getComputedStyle(sec).paddingTop) || 0;
+      d.dist = Math.max(0, rail.scrollWidth - vw); d.run = Math.round(d.dist * K);
+      var e = lim(vw / (rail.scrollWidth || 1), .08, .5); d.corsa = (1 - e) / e * 100;
+      if (barra) barra.style.width = (e * 100).toFixed(2) + '%';
+      sec.style.height = (d.run + scena.offsetHeight + pad) + 'px';
+      d.top = sec.getBoundingClientRect().top + window.scrollY + pad;
+      ultimo = -1; pos();
+    }
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(pos); }, { passive: true });
+    addEventListener('resize', misura); addEventListener('load', misura); document.addEventListener('reelfatto', function () { setTimeout(misura, 50); });
+    (mq.addEventListener ? mq.addEventListener('change', misura) : mq.addListener(misura));
+    if ('ResizeObserver' in window) new ResizeObserver(function () { if (d.on) { d.top = sec.getBoundingClientRect().top + window.scrollY + (parseFloat(getComputedStyle(sec).paddingTop) || 0); ultimo = -1; pos(); } }).observe(document.body);
+    // da tastiera: se il focus va su una card, porta lo scroll dove quella card è visibile
+    rail.addEventListener('focusin', function (ev) {
+      if (!d.on) return; scena.scrollLeft = 0;
+      var el = ev.target.closest('.pc, .piste__fin, .piste__intro'); if (!el) return;
+      var off = el.offsetLeft - (parseFloat(getComputedStyle(rail).paddingLeft) || 0);
+      window.scrollTo({ top: Math.round(d.top + lim(off / (d.dist || 1), 0, 1) * d.run), behavior: 'auto' });
+    });
+    rail.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; });
+    misura();
+  })();
+</script>
+
+<script>
+  // La frase MORE THAN meets THE EYE passa dallo showreel alla pagina. Vola in un livello fisso: in verticale resta ferma
+  // dov'era nell'header (così non trema mentre si scorre), cresce e va a sinistra mentre la prima sezione le sale incontro;
+  // quando arriva al suo posto lascia il posto al titolo vero. Il colore si inverte da solo dove passa sopra la sezione
+  // (fusione "differenza"), mentre l'iride resta rosa in un livello suo.
+  (function () {
+    var ap = document.getElementById('apertura'), h = ap && ap.querySelector('.motto'), frame = document.querySelector('#reel iframe');
+    if (!h || !frame) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, H = null, N = null, V = null, volo = null, iride = null, preso = false;
+    var eio = function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    function pronto() { try { var w = frame.contentWindow; return w && w.lmmFrase && w.document.documentElement.dataset.ready === '1' ? w : null; } catch (e) { return null; } }
+    function crea() {
+      volo = document.createElement('div'); volo.className = 'motto-volo'; volo.setAttribute('aria-hidden', 'true');
+      iride = document.createElement('div'); iride.className = 'motto-volo motto-colori'; iride.setAttribute('aria-hidden', 'true');
+      volo.innerHTML = iride.innerHTML = h.firstElementChild.innerHTML;   // due copie identiche: testo in "differenza", colori a parte
+      document.body.appendChild(volo); document.body.appendChild(iride);
+    }
+    function misura() {
+      if (!document.body.classList.contains('reel-fatto')) return;
+      var w = pronto();
+      if (!w) { setTimeout(misura, 200); return; }
+      h.classList.add('is-in', 'motto--preso');
+      if (reduce || innerWidth < 720) { H = null; h.style.visibility = ''; document.body.classList.remove('motto-vola'); w.lmmFraseVia(false); return; }
+      if (!volo) crea();
+      var cs = getComputedStyle(h);
+      volo.style.fontSize = cs.fontSize; volo.style.lineHeight = cs.lineHeight; volo.style.transform = iride.style.transform = 'none';
+      var r = w.lmmFrase(), fr = frame.getBoundingClientRect(), sp = h.firstElementChild.getBoundingClientRect(), vb = volo.getBoundingClientRect();
+      iride.style.fontSize = cs.fontSize; iride.style.lineHeight = cs.lineHeight;
+      H = { l: r.l + fr.left, cy: r.t + fr.top + r.h / 2, w: r.w };
+      N = { l: sp.left, h: sp.height, top: sp.top + scrollY };
+      V = { w: vb.width, h: vb.height };
+      aspetta();
+    }
+    // la pagina prende la frase solo quando nello showreel è arrivata al suo posto (se si scorre veloce, l'animazione è un po' indietro)
+    function aspetta() {
+      var w = pronto();
+      if (!H || !w) return;
+      if (!w.lmmFine()) { h.style.visibility = 'hidden'; setTimeout(aspetta, 60); return; }
+      preso = true; w.lmmFraseVia(true); muovi();
+    }
+    function muovi() {
+      if (!H || !preso) return;
+      var corsa = N.top + N.h / 2 - H.cy, k = corsa > 0 ? Math.min(1, Math.max(0, scrollY / corsa)) : 1;
+      var vola = k < 1;
+      h.style.visibility = vola ? 'hidden' : '';
+      document.body.classList.toggle('motto-vola', vola);
+      if (!vola) return;
+      var e = eio(k), s0 = H.w / V.w, sc = s0 + (1 - s0) * e, x = H.l + (N.l - H.l) * e, y = H.cy - V.h * sc / 2;
+      volo.style.transform = iride.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + sc.toFixed(4) + ')';
+    }
+    addEventListener('scroll', muovi, { passive: true });
+    addEventListener('resize', function () { H = null; misura(); });
+    document.addEventListener('reelfatto', misura);
+    misura();
+
+    // i numeri si contano da zero quando compaiono
+    var nums = document.querySelectorAll('[data-numeri] .numero__v');
+    if (nums.length && !reduce && 'IntersectionObserver' in window) {
+      var conta = function (el) {
+        var fine = parseFloat(el.dataset.valore), t0 = performance.now();
+        if (isNaN(fine)) return;
+        (function passo() {
+          var k = Math.max(0, Math.min(1, (performance.now() - t0) / 1400)), e = 1 - Math.pow(1 - k, 4);
+          el.textContent = Math.round(fine * e); if (k < 1) requestAnimationFrame(passo); else el.textContent = el.dataset.valore;
+        })();
+      };
+      var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { io.unobserve(en.target); conta(en.target); } }); }, { threshold: .6 });
+      nums.forEach(function (n) { if (!isNaN(parseFloat(n.dataset.valore))) { n.textContent = '0'; io.observe(n); } });
+    }
+  })();
+</script>
+
+  </main>
+
+  
+  <footer class="pied" id="contatti">
+    <div class="pied__in">
+      <div class="pied__cta">
+        <h2 class="rise"><span>Hai un progetto in <em>testa</em>?</span></h2>
+        <p>Raccontamelo. Rispondo io, di persona, e di solito in giornata.</p>
+        <a class="btn" href="mailto:calfa63@gmail.com" data-modulo-apri>Scrivimi<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+      <div class="pied__cols">
+        <div>
+          <h3>Menu</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/work/">Works</a></li>
+            <li><a href="/about/">About me</a></li>
+            <li><a href="/news/">News</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Mondi</h3>
+          <ul><li><a href="/work/branding/">Branding</a></li><li><a href="/work/generative-ai/">Generative AI</a></li><li><a href="/work/web-design/">Web Design</a></li><li><a href="/work/motion-design/">Motion Design</a></li><li><a href="/work/illustration/">Illustration</a></li></ul>
+        </div>
+        <div>
+          <h3>Contatti</h3>
+          
+<ul class="contatti">
+  <li><a href="mailto:calfa63@gmail.com">calfa63@gmail.com</a></li>
+  <li><a href="tel:+393928163159">+39 392 816 3159</a></li>
+  <li><a class="contatti__cv" href="/assets/docs/curriculum-emanuele-calfa.pdf" download>Scarica il curriculum<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+  
+  
+</ul>
+
+        </div>
+      </div>
+      
+      
+      <div class="pied__logo" aria-hidden="true" data-compone>
+        <div class="pied__mot"><span class="pl">L</span><span class="pl">I</span><span class="pl">K</span><span class="pl">E</span><span class="pl">M</span><span class="pl">O</span><span class="pl">M</span><span class="pl">M</span><span class="pl">A</span><span class="pl">D</span><span class="pl">E</span><span class="pl">M</span><span class="pl">E</span><span class="pl pl--segno" data-trottola></span></div>
+      </div>
+      <div class="pied__fine">
+        <span>© 2026 LIKEMOMMADEME</span>
+        <a href="/privacy/">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/parole.js?v=1795116925"></script>
+  <script>
+    // Parole speciali dei titoli: al posto del testo in TAN Nimbus, la stessa parola disegnata in vettori (assets/js/parole.js).
+    // Il testo resta nascosto sotto il disegno, per Google e per chi usa uno screen reader.
+    (function () {
+      var P = window.LMM_PAROLE; if (!P) return;
+      var m = P.meta, k = m.scala / m.upm;
+      document.querySelectorAll(':is(h1, h2, h3, .manifesto) em').forEach(function (em) {
+        var w = em.textContent.trim();
+        if (getComputedStyle(em).textTransform === 'uppercase') w = w.toUpperCase();
+        var p = P.parole[w]; if (!p) return;
+        em.classList.add('vet');
+        em.innerHTML = '<svg viewBox="0 0 ' + p.w + ' ' + m.h + '" style="height:' + (m.h * k).toFixed(4) + 'em;vertical-align:' + (m.desc * k).toFixed(4) + 'em" aria-hidden="true" focusable="false"><path d="' + p.d + '"/></svg><span class="vet__t">' + em.innerHTML + '</span>';
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var html = document.documentElement, reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+      // Menu: largo in cima, si stringe in una pillola quando si scorre (come bitwip)
+      var nav = document.querySelector('[data-nav]'), bar = nav.querySelector('.nav__bar'),
+          logo = nav.querySelector('.nav__logo'), right = nav.querySelector('.nav__right');
+      var links = nav.querySelector('.nav__links');
+      function prova() { return html.classList.contains('menu-prova') && innerWidth >= 721; }
+      function layout() {
+        // nella pillola stanno, uno dopo l'altro: il logo, le voci e (ricerca + giorno/notte + Contatti)
+        var small = innerWidth < 720, pad = small ? 20 : 30, gap = small ? 18 : 40;
+        var W = bar.clientWidth, lw = logo.offsetWidth, rw = right.offsetWidth, cw = links.offsetWidth,
+            pill = pad + lw + gap + (cw ? cw + gap : 0) + rw + 6, clip = Math.max(0, (W - pill) / 2);
+        bar.style.setProperty('--clip', clip + 'px');
+        bar.style.setProperty('--dl', (clip + pad - logo.offsetLeft) + 'px');
+        bar.style.setProperty('--dc', (clip + pad + lw + gap - links.offsetLeft) + 'px');
+        bar.style.setProperty('--dr', ((W - clip - 6) - (right.offsetLeft + rw)) + 'px');
+        // la notch: la pillola stretta attorno al solo logo, a grandezza piena, al centro
+        var nw = lw + (pad + 8) * 2;   // un po' d'aria attorno alla scritta
+        bar.style.setProperty('--nclip', Math.max(0, (W - nw) / 2) + 'px');
+        bar.style.setProperty('--nl', (W / 2 - (logo.offsetLeft + lw / 2)) + 'px');
+        // il sottomenu di Works nella pillola: a filo dei suoi bordi, la punta sotto Works
+        links.querySelectorAll('.nav__item').forEach(function (it) {
+          var x = links.offsetLeft + it.offsetLeft, cx = it.offsetWidth / 2, dc = clip + pad + lw + gap - links.offsetLeft;
+          it.style.setProperty('--slp', (clip - x - dc) + 'px'); it.style.setProperty('--swp', (W - 2 * clip) + 'px'); it.style.setProperty('--sgp', (x + dc + cx - clip) + 'px');
+        });
+        // PROVA: il notch con logo + Menu, centrato
+        var mb = nav.querySelector('.nav__mob-btn');
+        if (prova() && mb) {
+          var mw = mb.offsetWidth, pw = pad + lw + 22 + mw + 6, pc = Math.max(0, (W - pw) / 2);
+          bar.style.setProperty('--pclip', pc + 'px');
+          bar.style.setProperty('--pl', (pc + pad - logo.offsetLeft) + 'px');
+          bar.style.setProperty('--pr', ((W - pc - 6) - (right.offsetLeft + rw)) + 'px');
+        }
+      }
+      // la capsula che scivola sotto la voce su cui passi
+      var hl = links.querySelector('.nav__hl');
+      links.querySelectorAll(':scope > a, :scope > .nav__item > a').forEach(function (a) {
+        a.addEventListener('pointerenter', function () {
+          var r = a.getBoundingClientRect(), b = links.getBoundingClientRect();
+          hl.style.width = (r.width + 28) + 'px';
+          hl.style.transform = 'translateX(' + (r.left - b.left - 14) + 'px)';
+          links.classList.add('is-hl');
+        });
+      });
+      links.addEventListener('pointerleave', function () { links.classList.remove('is-hl'); });
+      var aperto = false, apertoY = 0, chiudi = null, reel = document.getElementById('reel');
+      function animFinita() { return !reel || document.body.classList.contains('reel-fatto'); }
+      document.addEventListener('reelfatto', function () { onScroll(); });
+      document.addEventListener('notchcambia', function () { onScroll(); });
+      function onScroll() {
+        // Due stati: grande in cima alla pagina, notch appena si scorre (in home anche durante l'animazione, dove il nome ci vola dentro).
+        // La pillola con le voci non è uno stato a sé: è il notch aperto, col mouse sopra, un tocco o il tab.
+        var small = innerWidth < 720, inReel = reel && !animFinita(), giu = small || scrollY > 24 || inReel;   // telefono: sempre la pillola con logo e Menu
+        if (!giu || (aperto && !bar.matches(':hover') && Math.abs(scrollY - apertoY) > 80)) {
+          if (aperto && nav.contains(document.activeElement)) document.activeElement.blur();   // un tasto rimasto col focus non deve tenerlo aperto
+          aperto = false;
+        }
+        if (!aperto && nav.classList.contains('mob-aperto') && Math.abs(scrollY - apertoY) > 80) nav.classList.remove('mob-aperto');
+        nav.classList.toggle('is-pill', giu);
+        nav.classList.toggle('is-notch', giu && !aperto && !small);
+      }
+      function apri() { if (prova()) return; clearTimeout(chiudi); aperto = true; apertoY = scrollY; onScroll(); }
+      bar.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') apri(); });
+      bar.addEventListener('pointerleave', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        clearTimeout(chiudi);
+        chiudi = setTimeout(function () { if (!nav.contains(document.activeElement) || document.activeElement === document.body) { aperto = false; onScroll(); } }, 350);
+      });
+      bar.addEventListener('focusin', apri);
+      bar.addEventListener('focusout', function (e) { if (!bar.contains(e.relatedTarget)) { aperto = false; onScroll(); } });
+      // al tocco sulla notch: prima si apre (sul telefono la pillola larga: logo a sinistra, Menu a destra), poi i link funzionano
+      bar.addEventListener('click', function (e) { if (!prova() && nav.classList.contains('is-notch') && !e.target.closest('.nav__right')) { e.preventDefault(); e.stopPropagation(); apri(); } }, true);
+      // telefono: il tasto Menu riempie la pagina con le voci; sopra resta la barra con Close
+      var mobBtn = nav.querySelector('[data-mob]'), mobT = mobBtn && mobBtn.querySelector('.nav__mob-t'), mob = nav.querySelector('.nav__mob');
+      function apriMob(on) {
+        nav.classList.toggle('mob-aperto', on); html.classList.toggle('menu-aperto', on);
+        if (mobBtn) { mobBtn.setAttribute('aria-expanded', on ? 'true' : 'false'); mobT.textContent = on ? mobT.dataset.chiudi : mobT.dataset.apri; }
+        if (on) { aperto = true; apertoY = scrollY; oreMob(); }
+        else if (prova()) aperto = false;
+        if (!on) nav.querySelectorAll('.mv.is-open').forEach(function (m) { m.classList.remove('is-open'); m.querySelector('.mv__piu').setAttribute('aria-expanded', 'false'); });
+        onScroll();
+      }
+      if (mobBtn) mobBtn.addEventListener('click', function () { apriMob(!nav.classList.contains('mob-aperto')); });
+      nav.querySelectorAll('.nav__mob a').forEach(function (a) { a.addEventListener('click', function () { apriMob(false); }); });
+      nav.querySelectorAll('.mv__piu').forEach(function (b) { b.addEventListener('click', function () { var m = b.closest('.mv'), on = !m.classList.contains('is-open'); m.classList.toggle('is-open', on); b.setAttribute('aria-expanded', on ? 'true' : 'false'); }); });
+      addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('mob-aperto')) { apriMob(false); mobBtn.focus(); } });
+      // sul telefono la pillola aperta si richiude toccando fuori
+      document.addEventListener('click', function (e) { if (aperto && !nav.classList.contains('mob-aperto') && !nav.contains(e.target) && innerWidth < 720) { aperto = false; onScroll(); } });
+      // gli orari nel mondo in fondo al menu
+      var ore = nav.querySelectorAll('[data-ora-fuso]'), oreT = 0;
+      function oreMob() {
+        ore.forEach(function (li) { var h = new Intl.DateTimeFormat('it-IT', { timeZone: li.dataset.oraFuso, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date()).split(':');
+          li.querySelector('.nav__mob-ora').innerHTML = h[0] + '<i>:</i>' + h[1]; });
+        clearTimeout(oreT); if (nav.classList.contains('mob-aperto')) oreT = setTimeout(oreMob, 20000);
+      }
+      layout(); onScroll();
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', layout);
+      if (document.fonts) document.fonts.ready.then(layout);
+
+      // Giorno / notte: un cerchio si allarga dal pulsante e cambia colore alla pagina
+      document.querySelectorAll('[data-tema]').forEach(function (btn) { btn.addEventListener('click', function () {
+        var next = html.dataset.theme === 'light' ? 'dark' : 'light';
+        function apply() {
+          html.dataset.theme = next;
+          try { localStorage.setItem('lmm-tema', next); } catch (e) {}
+          var tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.content = next === 'light' ? '#F4EFE7' : '#121414';
+          dispatchEvent(new Event('themechange'));
+        }
+        if (!document.startViewTransition || reduce.matches) { apply(); return; }
+        var r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+        var R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        html.classList.add('vt-tema');
+        var t = document.startViewTransition(apply);
+        t.ready.then(function () {
+          html.animate({ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + R + 'px at ' + x + 'px ' + y + 'px)'] },
+                       { duration: 700, easing: 'cubic-bezier(.16, 1, .3, 1)', pseudoElement: '::view-transition-new(root)' });
+        });
+        t.finished.finally(function () { html.classList.remove('vt-tema'); });
+      }); });
+
+      // Footer: la scritta gigante si ricompone. Ogni lettera parte spostata e ruotata (valori fissi, non casuali);
+      // --e va da 0 a 1 mentre la scritta sale dal fondo dello schermo
+      var wm = document.querySelector('[data-compone]');
+      if (wm) {
+        var mot = wm.querySelector('.pied__mot'), pls = mot.querySelectorAll('.pl:not(.pl--segno)');
+        var mezzo = (pls.length - 1) / 2;
+        pls.forEach(function (p, i) {
+          var h = Math.sin(i * 12.9898 + 4.1) * 43758.5453, r = h - Math.floor(h), r2 = Math.abs(Math.sin(i * 78.233) * 9999) % 1;
+          // arrivando in fondo la scritta è più larga (le lettere sono distanziate) e si stringe fino al suo posto
+          // come bitwip: le lettere partono sparse, alte e basse, inclinate e grigie, poi si ricompongono precise
+          p.style.setProperty('--dx', ((i - mezzo) * .1 + (r - .5) * .12).toFixed(3) + 'em');
+          p.style.setProperty('--dy', ((r2 - .5) * .7 - .15).toFixed(3) + 'em');
+          p.style.setProperty('--dr', ((r - .5) * 14).toFixed(1) + 'deg');
+        });
+        // al passaggio del mouse, come nello showreel: la lettera sotto il cursore cresce un poco e le vicine si scostano
+        var hv = [].map.call(pls, function () { return 0; }), cx = [], lw = [], mx = -1e4, dentro = false, hraf = 0, ht = 0;
+        var centri = function () { cx = []; lw = []; pls.forEach(function (p) { var b = p.getBoundingClientRect(); cx.push(b.left + b.width / 2); lw.push(b.width); }); };
+        var muovi = function (t) {
+          var dt = Math.min(.05, (t - (ht || t)) / 1000); ht = t; var vivo = false;
+          pls.forEach(function (p, i) {
+            var goal = dentro ? Math.max(0, 1 - Math.abs(mx - cx[i]) / Math.max(1, lw[i]) * .9) : 0;
+            hv[i] += (goal - hv[i]) * (1 - Math.exp(-dt * 6)); if (Math.abs(goal - hv[i]) > .002 || hv[i] > .002) vivo = true;
+          });
+          pls.forEach(function (p, i) {
+            var dx = 0; for (var j = 0; j < pls.length; j++) if (j !== i) dx += Math.sign(i - j) * hv[j] * .14 * lw[j] * .55;
+            p.style.setProperty('--hx', dx.toFixed(1) + 'px'); p.style.setProperty('--hy', (-.04 * hv[i]).toFixed(3) + 'em');
+            p.style.setProperty('--hs', (1 + .14 * hv[i]).toFixed(3)); p.style.setProperty('--hr', ((i % 2 ? -2 : 2) * hv[i]).toFixed(2) + 'deg');
+          });
+          hraf = vivo ? requestAnimationFrame(muovi) : 0; if (!vivo) ht = 0;
+        };
+        if (!reduce.matches && matchMedia('(hover: hover)').matches) {
+          wm.addEventListener('pointerenter', function () { if (wm.style.getPropertyValue('--e') < .98) return; centri(); dentro = true; });
+          wm.addEventListener('pointermove', function (e) { if (!cx.length) centri(); mx = e.clientX; dentro = +wm.style.getPropertyValue('--e') > .98; if (!hraf) hraf = requestAnimationFrame(muovi); });
+          wm.addEventListener('pointerleave', function () { dentro = false; if (!hraf) hraf = requestAnimationFrame(muovi); });
+          addEventListener('scroll', function () { cx = []; }, { passive: true });
+        }
+        var adatta = function () {
+          mot.style.fontSize = '100px';
+          var w = mot.scrollWidth || 1;
+          mot.style.fontSize = (wm.clientWidth / w * 100 * .995).toFixed(2) + 'px';
+        };
+        var componi = function () {
+          if (reduce.matches) { wm.style.setProperty('--e', 1); return; }
+          // si stringe mentre si scorre l'ultimo pezzo di pagina: è al suo posto solo quando si arriva in fondo
+          var resto = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY);
+          wm.style.setProperty('--e', (1 - Math.min(1, resto / (innerHeight * .45))).toFixed(3));
+        };
+        adatta(); componi();
+        if (document.fonts) document.fonts.ready.then(function () { adatta(); componi(); });
+        addEventListener('resize', function () { adatta(); componi(); if (typeof cx !== 'undefined') cx = []; });
+        addEventListener('scroll', componi, { passive: true });
+
+        // il segno finale gira come una trottola: si spinge passandoci sopra o trascinandolo
+        var tr = wm.querySelector('[data-trottola]'), ang = 0, vel = 0, raf = 0, last = 0, presa = null;
+        var gira = function () { tr.style.rotate = ang.toFixed(1) + 'deg'; };
+        var corri = function (t) {
+          var dt = Math.min(48, t - (last || t)); last = t;
+          ang += vel * dt; vel *= Math.pow(.965, dt / 16.7); gira();
+          if (Math.abs(vel) > .02 && !presa) raf = requestAnimationFrame(corri); else { raf = 0; last = 0; }
+        };
+        var spingi = function (v) { vel = Math.max(-3, Math.min(3, vel + v)); if (!raf) raf = requestAnimationFrame(corri); };
+        var angolo = function (e) { var b = tr.getBoundingClientRect(); return Math.atan2(e.clientY - b.top - b.height / 2, e.clientX - b.left - b.width / 2) * 180 / Math.PI; };
+        tr.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !presa && !reduce.matches) spingi(vel < 0 ? -.5 : .5); });
+        tr.addEventListener('pointerdown', function (e) { e.preventDefault(); tr.setPointerCapture(e.pointerId); cancelAnimationFrame(raf); raf = 0; presa = { a: angolo(e), t: e.timeStamp, v: 0 }; });
+        tr.addEventListener('pointermove', function (e) {
+          if (!presa) return;
+          var a = angolo(e), d = a - presa.a; if (d > 180) d -= 360; if (d < -180) d += 360;
+          ang += d; presa.v = d / Math.max(8, e.timeStamp - presa.t); presa.a = a; presa.t = e.timeStamp; gira();
+        });
+        var lascia = function () { if (!presa) return; var v = presa.v; presa = null; spingi(v); };
+        tr.addEventListener('pointerup', lascia); tr.addEventListener('pointercancel', lascia);
+      }
+
+      // Footer: sempre del colore opposto all'ultima sezione della pagina
+      var ultima = document.querySelector('main') && document.querySelector('main').lastElementChild;
+      while (ultima && ultima.tagName === 'SCRIPT') ultima = ultima.previousElementSibling;
+      var piede = document.querySelector('.pied');
+      if (piede) piede.classList.toggle('inv', !(ultima && ultima.classList.contains('inv')));
+      if (ultima && ultima.classList.contains('fascia')) document.querySelector('main').classList.add('finisce-fascia');
+
+      // Sottomenu di Works: si apre passando sopra (CSS); il pulsante con la freccia lo apre anche da tastiera e su touch
+      document.querySelectorAll('[data-sub]').forEach(function (it) {
+        var b = it.querySelector('.nav__sub-btn');
+        function apri(v) { it.classList.toggle('is-open', v); b.setAttribute('aria-expanded', v ? 'true' : 'false'); }
+        b.addEventListener('click', function (e) { e.preventDefault(); apri(!it.classList.contains('is-open')); });
+        it.addEventListener('keydown', function (e) { if (e.key === 'Escape') { apri(false); b.focus(); } });
+        document.addEventListener('click', function (e) { if (!it.contains(e.target)) apri(false); });
+        it.addEventListener('mouseleave', function () { apri(false); });
+      });
+
+      // Titoli che salgono dentro una maschera quando entrano nello schermo
+      var rises = document.querySelectorAll('.rise');
+      if (!('IntersectionObserver' in window) || reduce.matches) { rises.forEach(function (e) { e.classList.add('is-in'); }); }
+      else {
+        var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
+        rises.forEach(function (e) { io.observe(e); });
+      }
+
+      // Blocchi che salgono e compaiono quando entrano nello schermo (pagina progetto)
+      var riv = document.querySelectorAll('[data-rivela]');
+      if (!('IntersectionObserver' in window) || reduce.matches) { riv.forEach(function (e) { e.classList.add('is-in'); }); }
+      else {
+        var io2 = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io2.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+        riv.forEach(function (e) { io2.observe(e); });
+        window.lmmOsserva = function (e) { io2.observe(e); };
+      }
+    })();
+    // Form «Raccontami un progetto» (pop-up da Scrivimi e pagina Contatti): manda la richiesta al server del pannello.
+    (function () {
+      var TM = {"titolo":"Raccontami un <em>progetto</em>","intro":"Due righe bastano. Ti rispondo io, di persona, e di solito in giornata.","nome":"Come ti chiami","email":"Email","telefono":"Telefono","facoltativo":"facoltativo","servizi":"Cosa ti serve","servizi_aiuto":"anche più di una cosa","altro":"Altro","progetto":"Il progetto","progetto_aiuto":"Cosa ti serve, per chi, entro quando.","budget":"Budget indicativo","budget_scelte":["Sotto 1.000 €","1.000 – 3.000 €","3.000 – 7.000 €","Oltre 7.000 €","Da capire insieme"],"reference":"Reference","reference_aiuto":"Link a siti, profili o lavori che ti piacciono.","invia":"Invia la richiesta","invio":"Sto inviando…","grazie_titolo":"Ricevuto.","grazie_testo":"Grazie! Ti rispondo presto, di solito in giornata. Nel frattempo, mamma dice di stare tranquillo.","errore":"Qualcosa non è andato. Riprova, oppure scrivimi direttamente a","chiudi":"Chiudi","ancora":"Scrivi un'altra richiesta","privacy":"Uso questi dati solo per risponderti."}, MAIL = "calfa63@gmail.com";
+      document.querySelectorAll('[data-modulo-box]').forEach(function (box) {
+        var f = box.querySelector('[data-modulo-form]'), ok = box.querySelector('[data-modulo-ok]'), err = box.querySelector('[data-modulo-err]'), btn = box.querySelector('[data-modulo-invia]'), tx = box.querySelector('[data-modulo-testo]');
+        box.reset = function () { f.hidden = false; ok.hidden = true; err.hidden = true; };
+        var anc = box.querySelector('[data-modulo-ancora]'); if (anc) anc.addEventListener('click', function () { box.reset(); f.querySelector('input').focus(); });
+        f.addEventListener('submit', function (e) {
+          e.preventDefault(); err.hidden = true;
+          var campi = [].slice.call(f.querySelectorAll('[required]')), primo = campi.find(function (c) { return !c.checkValidity(); });
+          campi.forEach(function (c) { c.closest('.campo').classList.toggle('is-err', !c.checkValidity()); });
+          if (primo) { primo.focus(); return; }
+          var fd = new FormData(f), dati = Object.fromEntries(fd), serv = fd.getAll('servizi');
+          delete dati.servizi; if (serv.length) dati.progetto = 'Servizi: ' + serv.join(', ') + '\n\n' + dati.progetto;
+          dati.pagina = location.pathname;
+          btn.disabled = true; tx.textContent = TM.invio;
+          fetch('https://portfolio-login.calfa63.workers.dev/richiesta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dati) })
+            .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(r.status === 404 ? '' : j.error || ''); }); })
+            .then(function () { f.reset(); f.hidden = true; ok.hidden = false; ok.querySelector('button').focus(); })
+            .catch(function (x) { err.innerHTML = (x.message ? x.message + ' ' : '') + TM.errore + ' <a href="mailto:' + MAIL + '">' + MAIL + '</a>.'; err.hidden = false; })
+            .then(function () { btn.disabled = false; tx.textContent = TM.invia; });
+        });
+        f.addEventListener('input', function (e) { var c = e.target.closest('.campo'); if (c && e.target.checkValidity && e.target.checkValidity()) c.classList.remove('is-err'); });
+      });
+      var d = document.querySelector('[data-modulo]'); if (!d || !d.showModal) return;
+      var box = d.querySelector('[data-modulo-box]');
+      function apri(e) { if (e) e.preventDefault(); box.reset(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { d.querySelector('input').focus(); }, 40); }
+      d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
+      document.querySelectorAll('[data-modulo-apri]').forEach(function (b) { b.addEventListener('click', apri); });
+      d.querySelectorAll('[data-modulo-chiudi]').forEach(function (b) { b.addEventListener('click', function () { d.close(); }); });
+      d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+      if (location.hash === '#scrivimi') apri();
+    })();
+
+    // Cerca: si apre con la lente (o con il tasto /), filtra mentre scrivi, si chiude con Esc o cliccando fuori.
+    (function () {
+      var d = document.querySelector('[data-cerca]'); if (!d || !d.showModal) return;
+      var q = d.querySelector('[data-cerca-q]'), lista = d.querySelector('[data-cerca-lista]'), k = d.querySelector('[data-cerca-k]'), vuoto = d.querySelector('[data-cerca-vuoto]');
+      var righe = [].slice.call(lista.children), K0 = k.textContent, KR = "Risultati";
+      righe.sort(function (a, b) { return a.dataset.pos - b.dataset.pos; }).forEach(function (r) { lista.appendChild(r); });
+      var norm = function (x) { return (x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
+      function filtra() {
+        var v = norm(q.value.trim()), n = 0;
+        righe.forEach(function (r) {
+          var ok = v ? v.split(/\s+/).every(function (w) { return norm(r.dataset.testo).indexOf(w) >= 0; }) : r.dataset.pos <= 6;
+          r.hidden = !ok; if (ok) n++;
+        });
+        k.textContent = v ? KR : K0; vuoto.hidden = n > 0;
+      }
+      q.addEventListener('input', filtra);
+      function apri() { q.value = ''; filtra(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { q.focus(); }, 30); }
+      function chiudi() { d.close(); }
+      d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
+      document.querySelectorAll('[data-cerca-apri]').forEach(function (b) { b.addEventListener('click', apri); });
+      d.querySelector('[data-cerca-chiudi]').addEventListener('click', chiudi);
+      d.addEventListener('click', function (e) { if (e.target === d) chiudi(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && !d.open && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable) { e.preventDefault(); apri(); }
+      });
+    })();
+  </script>
+  <script>
+    if (location.hostname === 'likemommademe.github.io' && navigator.sendBeacon) {
+      navigator.sendBeacon('https://portfolio-login.calfa63.workers.dev/hit', JSON.stringify({ p: location.pathname, r: document.referrer }));
+    }
+  </script>
+  
+  <div class="segui" aria-hidden="true"><i></i></div>
+  <script>
+    (function () {
+      if (!matchMedia('(hover: hover)').matches) return;
+      var fermo = matchMedia('(prefers-reduced-motion: reduce)').matches;   // con meno movimento: segue senza ritardo e non gira
+      var el = document.querySelector('.segui'), x = -100, y = -100, tx = -100, ty = -100, giro = 0, su = false, attivo = false;
+      addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse') return;
+        tx = e.clientX; ty = e.clientY;
+        if (!attivo) { attivo = true; x = tx; y = ty; el.classList.add('is-on'); }
+        var s = !!(e.target.closest && e.target.closest('a, button, summary, label, [data-card], input, textarea, select'));
+        if (s !== su) { su = s; el.classList.toggle('is-su', su); }
+      }, { passive: true });
+      document.documentElement.addEventListener('pointerleave', function () { attivo = false; el.classList.remove('is-on'); });
+      addEventListener('blur', function () { attivo = false; el.classList.remove('is-on'); });
+      (function passo() {
+        var k = fermo ? 1 : .14; x += (tx - x) * k; y += (ty - y) * k; if (!fermo) giro += su ? 2.4 : .6;
+        el.style.transform = 'translate3d(' + (x + 14).toFixed(1) + 'px,' + (y + 14).toFixed(1) + 'px,0) rotate(' + (giro % 360).toFixed(1) + 'deg)';
+        requestAnimationFrame(passo);
+      })();
+    })();
+  </script>
+</body>
+</html>

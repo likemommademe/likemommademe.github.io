@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIKEMOMMADEME Showreel</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Showreel di LIKEMOMMADEME, Creative Designer: sei mondi in quindici secondi.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233D5AFF'/%3E%3Cpath d='M10 7h4v14h8v4H10z' fill='%23F5F5F2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,900&display=swap">
+<style>
+  :root {
+    --ink: #0A0A0A; --paper: #F5F5F2; --muted: #8A8A8A; --line: #262626;
+    --blue: #3D5AFF; --green: #12C08E; --pink: #FF3D8B;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+
+  #stage {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+    transform-origin: 0 0; overflow: hidden;
+    background: var(--ink); color: var(--paper);
+    font-family: "Cabinet Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .abs { position: absolute; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: top; }
+  .mask > span { display: inline-block; }
+
+  /* Nome */
+  #name { position: absolute; left: 0; right: 0; top: 372px; text-align: center; white-space: nowrap;
+          font-weight: 900; font-size: 190px; line-height: .8; letter-spacing: -.02em; z-index: 5; }
+  #name .mask { padding: .1em 0 .04em; margin: -.1em 0 -.04em; }
+  #role { position: absolute; left: 0; right: 0; top: 560px; text-align: center;
+          font-weight: 500; font-size: 44px; line-height: 1.15; }
+  .sq { width: 80px; height: 80px; border-radius: 14px; }
+
+  /* Cornice: marchio e mondi */
+  #mark { left: 64px; top: 52px; font-weight: 900; font-size: 30px; line-height: 1; letter-spacing: -.01em; }
+  .w { position: absolute; top: 980px; width: 272px; margin-left: -136px; text-align: center;
+       font-weight: 500; font-size: 24px; line-height: 1.3; }
+  .w .mask { padding-bottom: 14px; }
+  .w i { position: absolute; left: 50%; bottom: 0; width: 64px; height: 4px; margin-left: -32px;
+         border-radius: 2px; transform: scaleX(0); }
+
+  svg#fx { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; z-index: 4; }
+
+  /* Brand Identity */
+  #card { left: 1060px; top: 250px; width: 520px; height: 300px; border-radius: 18px;
+          background: var(--paper); color: var(--ink); padding: 36px; }
+  #card .mono { width: 64px; height: 64px; border-radius: 12px; background: var(--blue); color: var(--paper);
+                font-weight: 900; font-size: 48px; line-height: 64px; text-align: center; }
+  #card .n { margin-top: 28px; font-weight: 900; font-size: 34px; letter-spacing: -.01em; }
+  #card .r { margin-top: 6px; font-weight: 500; font-size: 20px; color: #5E5E5E; }
+  #card .bar { position: absolute; right: 36px; top: 36px; width: 120px; height: 10px; border-radius: 5px; background: #DADAD5; }
+  #card .bar + .bar { top: 56px; width: 80px; }
+  #palette { left: 1060px; top: 600px; display: flex; gap: 22px; }
+  #palette span { width: 96px; height: 96px; border-radius: 50%; }
+
+  /* Generative AI */
+  #prompt { left: 0; right: 0; top: 98px; text-align: center; font-weight: 500; font-size: 34px; line-height: 1.2; }
+  #prompt .caret { display: inline-block; width: 4px; height: 34px; margin-left: 6px; vertical-align: -5px; background: var(--pink); }
+  .cell { width: 260px; height: 200px; border-radius: 14px; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
+  .cell .scan { position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--pink); }
+
+  /* Motion Design */
+  #bez { left: 510px; top: 168px; font-weight: 500; font-size: 26px; color: var(--muted); }
+
+  /* UI/UX */
+  #phone { overflow: hidden; z-index: 3; }
+  #pfill { position: absolute; inset: 0; background: var(--paper); transform-origin: 50% 100%; }
+  #pcontent { position: absolute; left: 0; top: 0; width: 420px; height: 800px; color: var(--ink); transform-origin: 210px 400px; }
+  #ptitle { left: 36px; top: 46px; font-weight: 900; font-size: 40px; line-height: 1.05; }
+  #track { left: 300px; top: 44px; width: 84px; height: 44px; border-radius: 22px; }
+  #chart { left: 36px; top: 150px; width: 348px; height: 220px; }
+  #chart b { position: absolute; bottom: 0; width: 50px; border-radius: 8px 8px 0 0; transform-origin: 50% 100%; }
+  #slab { left: 36px; top: 410px; font-weight: 500; font-size: 22px; }
+  #sval { right: 36px; top: 410px; font-weight: 900; font-size: 22px; }
+  #strack { left: 36px; top: 470px; width: 348px; height: 6px; border-radius: 3px; background: #CFCFCA; }
+  #sfill { left: 0; top: 0; width: 348px; height: 6px; border-radius: 3px; background: var(--blue); transform-origin: 0 50%; }
+  #sknob { left: -15px; top: -12px; width: 30px; height: 30px; border-radius: 50%; background: var(--ink); }
+  #btnm { left: 36px; top: 640px; width: 348px; height: 84px; border-radius: 42px; overflow: hidden; }
+  #btn { position: absolute; inset: 0; border-radius: 42px; background: var(--blue); color: var(--paper);
+         font-weight: 500; font-size: 28px; display: flex; align-items: center; justify-content: center; }
+
+  /* Digital & Social: muro curvo in 3D */
+  #scene3d { left: 0; top: 0; width: 1920px; height: 1080px; perspective: 1400px; perspective-origin: 960px 500px;
+             transform-origin: 960px 500px; z-index: 2; }
+  #ring { left: 960px; top: 500px; width: 0; height: 0; transform-style: preserve-3d; }
+  .pc { position: absolute; left: -110px; top: -137.5px; width: 220px; height: 275px; border-radius: 18px;
+        background: var(--paper); overflow: hidden; backface-visibility: hidden; }
+  .pc .pimg { position: absolute; left: 10px; top: 10px; width: 200px; height: 200px; border-radius: 12px; overflow: hidden; }
+  .pc .pimg svg { display: block; }
+  .pc .pcap { position: absolute; left: 14px; right: 14px; bottom: 20px; height: 26px; }
+  .pc .pcap svg { position: absolute; left: 0; top: 1px; }
+  .pc .pcap i { position: absolute; left: 36px; top: 4px; width: 110px; height: 7px; border-radius: 4px; background: #CFCFCA; }
+  .pc .pcap i + i { top: 16px; width: 70px; }
+  .pc .plight { position: absolute; inset: 0; background: var(--green); opacity: 0; }
+
+  /* Riepilogo: sei tessere */
+  .tile { top: 380px; width: 240px; height: 240px; border-radius: 24px; box-shadow: inset 0 0 0 2px var(--line);
+          display: grid; place-items: center; }
+
+  /* Comandi */
+  #ui { position: fixed; left: 0; right: 0; bottom: 0; height: 56px; display: flex; align-items: center; justify-content: center;
+        gap: 14px; font: 14px/1 system-ui, sans-serif; color: #bbb; }
+  #ui button { font: inherit; color: #eee; background: #1b1b1b; border: 1px solid #333; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  #ui button:focus-visible, #ui input:focus-visible { outline: 2px solid #3D5AFF; outline-offset: 2px; }
+  #ui input { width: min(46vw, 620px); accent-color: #3D5AFF; }
+  #tc { width: 92px; font-variant-numeric: tabular-nums; }
+  body.clean #ui { display: none; }
+
+  /* Modalità scroll: la pagina è lunga, lo stage resta fermo e il tempo segue lo scroll */
+  html.scroll, html.scroll body { overflow-x: hidden; overflow-y: visible; height: auto; }
+  body.scroll #stage { position: fixed; }
+  body.scroll #ui { display: none; }
+  #scroller { display: none; }
+  body.scroll #scroller { display: block; height: 850vh; }
+  #hint { position: fixed; left: 0; right: 0; bottom: 28px; text-align: center; display: none;
+          font: 500 15px/1 "Cabinet Grotesk", system-ui, sans-serif; color: #8A8A8A; transition: opacity .25s; }
+  body.scroll #hint { display: block; }
+</style>
+</head>
+<body>
+<div id="stage" role="img" aria-label="Showreel di LIKEMOMMADEME, Creative Designer: Brand Identity, Illustration, Generative AI, Motion Design, UI/UX Design, Digital & Social.">
+
+  <div id="scene3d" class="abs"><div id="ring" class="abs"></div></div>
+
+  <div id="tiles"></div>
+
+  <div id="card" class="abs"><div class="mono">L</div><div class="n">LIKEMOMMADEME</div><div class="r">Creative Designer</div><span class="bar abs"></span><span class="bar abs"></span></div>
+  <div id="palette" class="abs"><span style="background:var(--blue)"></span><span style="background:var(--ink);box-shadow:inset 0 0 0 3px var(--paper)"></span><span style="background:var(--paper)"></span></div>
+
+  <div id="prompt" class="abs"><span class="mask"><span><span id="ptext"></span><span class="caret"></span></span></span></div>
+  <div id="cells"></div>
+
+  <div id="bez" class="abs"><span class="mask"><span>cubic-bezier(.16, 1, .3, 1)</span></span></div>
+
+  <div id="phone" class="abs">
+    <div id="pfill"></div>
+    <div id="pcontent">
+      <div id="ptitle" class="abs"><span class="mask"><span>Ciao, mamma!</span></span></div>
+      <div id="track" class="abs"></div>
+      <div id="chart" class="abs"></div>
+      <div id="slab" class="abs">Ironia</div>
+      <div id="sval" class="abs">15%</div>
+      <div id="strack" class="abs"><div id="sfill" class="abs"></div><div id="sknob" class="abs"></div></div>
+      <div id="btnm" class="abs"><div id="btn">Avanti</div></div>
+    </div>
+  </div>
+
+  <svg id="fx" viewBox="0 0 1920 1080" aria-hidden="true">
+    <g id="grid" fill="none" stroke="#8A8A8A" stroke-width="2">
+      <rect x="-260" y="-260" width="520" height="520" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <circle r="260" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <circle r="130" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <path d="M-360 0H360" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <path d="M0 -360V360" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <path d="M-260 -260L260 260" pathLength="1" vector-effect="non-scaling-stroke"/>
+      <path d="M260 -260L-260 260" pathLength="1" vector-effect="non-scaling-stroke"/>
+    </g>
+    <g id="graph" fill="none">
+      <path id="axes" d="M510 230V730H1410" stroke="#5E5E5E" stroke-width="3" pathLength="1"/>
+      <path id="tl" d="M510 830H1410" stroke="#262626" stroke-width="4" stroke-linecap="round" pathLength="1"/>
+      <path id="h1" d="M510 730L654 230" stroke="#8A8A8A" stroke-width="2"/>
+      <path id="h2" d="M1410 230L780 230" stroke="#8A8A8A" stroke-width="2"/>
+      <circle id="c1" cx="654" cy="230" r="12" fill="#FF3D8B"/>
+      <circle id="c2" cx="780" cy="230" r="12" fill="#FF3D8B"/>
+      <path id="curve" d="M510 730C654 230 780 230 1410 230" stroke="#FF3D8B" stroke-width="6" stroke-linecap="round" pathLength="1"/>
+      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#FF3D8B"/>
+      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#FF3D8B"/>
+      <rect class="kf" x="-13" y="-13" width="26" height="26" rx="4" fill="#FF3D8B"/>
+      <path id="head" d="M0 -34V34" stroke="#F5F5F2" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <path id="blob"/>
+    <path id="contour" fill="none" stroke="#F5F5F2" stroke-width="5" stroke-linejoin="round" pathLength="1"/>
+    <g id="face">
+      <circle id="eyeL" r="16" fill="#0A0A0A"/>
+      <circle id="eyeR" r="16" fill="#0A0A0A"/>
+      <path id="smile" d="M-84 40Q0 128 84 40" fill="none" stroke="#0A0A0A" stroke-width="14" stroke-linecap="round" pathLength="1"/>
+    </g>
+  </svg>
+
+  <div id="name" aria-hidden="true"></div>
+  <div id="role" aria-hidden="true"><span class="mask"><span>Creative Designer</span></span></div>
+  <div id="sq1" class="abs sq" style="background:var(--blue)"></div>
+  <div id="sq2" class="abs sq" style="background:var(--pink)"></div>
+  <div id="mark" class="abs"><span class="mask"><span>LIKEMOMMADEME</span></span></div>
+  <div id="worlds" aria-hidden="true"></div>
+</div>
+
+<div id="scroller"></div>
+<div id="hint">Scorri: sei mondi ti aspettano</div>
+<div id="ui">
+  <button id="pp" type="button">Pausa</button>
+  <input id="scrub" type="range" min="0" max="15" step="0.01" value="0" aria-label="Posizione nel tempo">
+  <span id="tc">00.00 / 15</span>
+  <button id="snd" type="button" aria-pressed="false">Suono: no</button>
+</div>
+
+<script>
+(() => {
+  /* ---------- Costanti ---------- */
+  const DUR = 15, BEAT = .5, TAU = Math.PI * 2;
+  const INK = '#0A0A0A', PAPER = '#F5F5F2', BLUE = '#3D5AFF', GREEN = '#12C08E', PINK = '#FF3D8B', TRACK = '#CFCFCA', LINE = '#262626';
+  const G = 95;                                  // apertura del nome
+  const WORLDS = [['Brand Identity', BLUE], ['Illustration', GREEN], ['Generative AI', PINK],
+                  ['Motion Design', PINK], ['UI/UX Design', BLUE], ['Digital & Social', GREEN]];
+  const TILE_X = [280, 552, 824, 1096, 1368, 1640], TILE_Y = 500;
+  const SELX = 1102, SELY = 500;                 // cella scelta nella griglia AI
+  const P = { x: 750, y: 120, w: 420, h: 800 };  // schermo del telefono
+  const POST = { x: 720, y: 200, w: 480, h: 600 };
+  const KY = P.y + 66, KOFF = P.x + 322, KON = P.x + 362;
+  const RING_R = 1400, PERSP = 1400, CARD_H = 275;
+  const DZ0 = PERSP - PERSP * CARD_H / POST.h;   // dolly iniziale: la card centrale coincide col post
+  const BZ = [[510, 730], [654, 230], [780, 230], [1410, 230]];
+
+  /* ---------- Funzioni del tempo ---------- */
+  const clamp = (x, a = 0, b = 1) => x < a ? a : x > b ? b : x;
+  const p = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const eOut = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+  const eIn = x => x <= 0 ? 0 : Math.pow(2, 10 * x - 10);
+  const eIO = x => x <= 0 ? 0 : x >= 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2;
+  const spring = x => x <= 0 ? 0 : x >= 1 ? 1 : 1 - (1 + 9 * x) * Math.exp(-9 * x);   // smorzamento critico: niente rimbalzo
+  const bump = x => Math.sin(Math.PI * clamp(x));
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, k) => { const A = rgb(a), B = rgb(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(',')})`; };
+  const maskY = (t, a, d, b, e, dir = 1) => {
+    if (t < a) return 110;
+    let y = 110 * (1 - eOut(p(t, a, a + d)));
+    if (b != null && t >= b) y = 110 * dir * eIn(p(t, b, b + e));
+    return y;
+  };
+  const bez = s => {
+    const u = 1 - s;
+    return [0, 1].map(i => u * u * u * BZ[0][i] + 3 * u * u * s * BZ[1][i] + 3 * u * s * s * BZ[2][i] + s * s * s * BZ[3][i]);
+  };
+
+  /* ---------- Forme ---------- */
+  const SQ = a => Math.pow(Math.pow(Math.abs(Math.cos(a)), 6) + Math.pow(Math.abs(Math.sin(a)), 6), -1 / 6);
+  const CI = () => 1;
+  const FL = a => 1 + .13 * Math.sin(6 * a);
+  const BL = a => 1 + .09 * Math.sin(3 * a + 1) + .05 * Math.sin(5 * a + 2.2);
+  const N = 180;
+  function shape(cx, cy, R, A, B, k, rot = 0, hand = false) {
+    if (R < .5) return 'M0 0';
+    let d = '';
+    for (let j = 0; j < N; j++) {
+      const a = j / N * TAU;
+      let r = R * lerp(A(a + rot), B(a + rot), k);
+      if (hand) r = r * 1.1 + Math.sin(11 * a) * 5 + Math.sin(23 * a + 1) * 3;
+      d += (j ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(1) + ' ' + (cy + r * Math.sin(a)).toFixed(1);
+    }
+    return d + 'Z';
+  }
+  const svgEl = (w, h, inner) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${inner}</svg>`;
+
+  /* ---------- Costruzione del DOM ---------- */
+  const $ = s => document.querySelector(s);
+  const stage = $('#stage');
+  const nameEl = $('#name');
+  'LIKEMOMMADEME'.split('').forEach(ch => {
+    const m = document.createElement('span'); m.className = 'mask';
+    const c = document.createElement('span'); c.textContent = ch;
+    m.appendChild(c); nameEl.appendChild(m);
+  });
+  const masks = [...nameEl.children], letters = masks.map(m => m.firstChild);
+  const group = i => i < 4 ? 0 : i < 9 ? 1 : 2;
+
+  const worldsEl = $('#worlds');
+  WORLDS.forEach(([label, col], i) => {
+    const w = document.createElement('div'); w.className = 'w'; w.style.left = TILE_X[i] + 'px';
+    w.innerHTML = `<span class="mask"><span>${label}</span></span><i style="background:${col}"></i>`;
+    worldsEl.appendChild(w);
+  });
+  const worldEls = [...worldsEl.children];
+
+  // Griglia di varianti AI
+  const cellsEl = $('#cells'), shapes = [FL, SQ, BL, CI], cols = [PINK, PAPER, BLUE, GREEN];
+  for (let c = 0; c < 12; c++) {
+    const el = document.createElement('div'); el.className = 'abs cell';
+    el.style.left = (404 + (c % 4) * 284) + 'px'; el.style.top = (176 + Math.floor(c / 4) * 224) + 'px';
+    if (c !== 6) {
+      const col = cols[(c * 5 + 1) % 4], outline = c % 5 === 2;
+      const d = shape(130, 100, 62, shapes[c % 4], shapes[(c * 3 + 1) % 4], .35, c * .7);
+      el.innerHTML = svgEl(260, 200, `<path d="${d}" ${outline ? `fill="none" stroke="${col}" stroke-width="5"` : `fill="${col}"`}/>`);
+    }
+    el.insertAdjacentHTML('beforeend', '<div class="scan"></div>');
+    cellsEl.appendChild(el);
+  }
+  const cells = [...cellsEl.children];
+  const cellOrder = [0, 1, 2, 3, 7, 11, 10, 9, 8, 4, 5];
+
+  // Grafico a barre del telefono
+  const chart = $('#chart'), BARS = [110, 170, 80, 200, 140];
+  BARS.forEach((h, i) => {
+    const b = document.createElement('b'); b.style.left = (i * 70) + 'px'; b.style.height = h + 'px';
+    b.style.background = i === 3 ? BLUE : INK; chart.appendChild(b);
+  });
+  const bars = [...chart.children];
+
+  // Muro di post: 7 colonne x 3 righe su un cilindro
+  const ring = $('#ring'), posts = [];
+  const heart = c => svgEl(24, 24, `<path d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z" fill="${c}"/>`);
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 7; c++) {
+    const i = r * 7 + c, center = r === 1 && c === 3;
+    const bg = center ? PINK : [BLUE, INK, GREEN, PINK, INK, BLUE, GREEN][(i * 3) % 7];
+    const fg = bg === INK ? [PINK, GREEN, PAPER][i % 3] : (bg === PINK ? INK : PAPER);
+    let art;
+    if (center) art = `<path d="${shape(100, 100, 62, BL, BL, 0, .6)}" fill="${INK}"/>`;
+    else if (i % 4 === 0) art = `<text x="100" y="138" text-anchor="middle" font-family="Cabinet Grotesk" font-weight="900" font-size="120" fill="${fg}">L</text>`;
+    else if (i % 4 === 1) art = `<path d="${shape(100, 100, 58, shapes[i % 4], FL, .5, i)}" fill="${fg}"/>`;
+    else if (i % 4 === 2) art = `<path d="M40 160C70 50 95 50 160 50" fill="none" stroke="${fg}" stroke-width="10" stroke-linecap="round"/>`;
+    else art = `<rect x="55" y="40" width="90" height="120" rx="14" fill="${fg}"/><rect x="70" y="128" width="60" height="16" rx="8" fill="${bg}"/>`;
+    const el = document.createElement('div'); el.className = 'pc';
+    el.innerHTML = `<div class="pimg" style="background:${bg}">${svgEl(200, 200, art)}</div>
+      <div class="pcap">${heart(center ? PINK : INK)}<i></i><i></i></div><div class="plight"></div>`;
+    ring.appendChild(el);
+    posts.push({ el, img: el.querySelector('.pimg'), light: el.querySelector('.plight'), r, c, center,
+                 ang: (c - 3) * 9.8, y: (r - 1) * 300, d: Math.abs(c - 3) + Math.abs(r - 1) });
+  }
+
+  // Sei tessere del riepilogo
+  const tilesEl = $('#tiles');
+  const tileArt = [
+    `<div style="width:150px;height:150px;border-radius:20px;background:${BLUE};color:${PAPER};font-weight:900;font-size:118px;line-height:150px;text-align:center">L</div>`,
+    svgEl(240, 240, `<circle cx="120" cy="120" r="72" fill="${GREEN}"/><circle cx="96" cy="108" r="7" fill="${INK}"/><circle cx="144" cy="108" r="7" fill="${INK}"/><path d="M90 132Q120 164 150 132" fill="none" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>`),
+    svgEl(240, 240, [0, 1, 2, 3, 4, 5, 6, 7, 8].map(k => `<rect x="${54 + (k % 3) * 46}" y="${54 + Math.floor(k / 3) * 46}" width="38" height="38" rx="9" ${k === 4 ? `fill="${PINK}"` : `fill="none" stroke="${k % 2 ? '#5E5E5E' : PINK}" stroke-width="3"`}/>`).join('')),
+    svgEl(240, 240, `<path d="M50 50V190H190" fill="none" stroke="#5E5E5E" stroke-width="3"/><path d="M50 190C72 60 92 60 190 60" fill="none" stroke="${PINK}" stroke-width="7" stroke-linecap="round"/><circle cx="150" cy="61" r="11" fill="${PINK}"/>`),
+    `<div style="position:relative;width:100px;height:180px;border-radius:18px;background:${PAPER}"><i style="position:absolute;left:14px;bottom:62px;width:12px;height:40px;background:${INK}"></i><i style="position:absolute;left:32px;bottom:62px;width:12px;height:60px;background:${INK}"></i><i style="position:absolute;left:50px;bottom:62px;width:12px;height:30px;background:${BLUE}"></i><i style="position:absolute;left:14px;right:14px;bottom:16px;height:24px;border-radius:12px;background:${BLUE}"></i></div>`,
+    ''
+  ];
+  tileArt.forEach((art, i) => {
+    const el = document.createElement('div'); el.className = 'abs tile'; el.style.left = (TILE_X[i] - 120) + 'px';
+    el.innerHTML = art; tilesEl.appendChild(el);
+  });
+  const tiles = [...tilesEl.children];
+
+  const E = id => document.getElementById(id);
+  const el = {
+    blob: E('blob'), contour: E('contour'), face: E('face'), eyeL: E('eyeL'), eyeR: E('eyeR'), smile: E('smile'),
+    grid: E('grid'), gridParts: [...E('grid').children], graph: E('graph'), axes: E('axes'), tl: E('tl'), curve: E('curve'),
+    h1: E('h1'), h2: E('h2'), c1: E('c1'), c2: E('c2'), kfs: [...document.querySelectorAll('.kf')], head: E('head'),
+    role: $('#role .mask > span'), sq1: E('sq1'), sq2: E('sq2'), mark: $('#mark .mask > span'),
+    card: E('card'), palette: [...E('palette').children], prompt: $('#prompt .mask > span'), ptext: E('ptext'),
+    bez: $('#bez .mask > span'), phone: E('phone'), pfill: E('pfill'), pcontent: E('pcontent'),
+    ptitle: $('#ptitle .mask > span'), track: E('track'), sfill: E('sfill'), sknob: E('sknob'), sval: E('sval'),
+    btn: E('btn'), scene: E('scene3d'), ring
+  };
+  const PROMPT = '› una forma, dodici varianti';
+  let M = null;   // misure del nome, prese una volta a riposo
+
+  function measure() {
+    const S = stage.getBoundingClientRect().width / 1920, s0 = stage.getBoundingClientRect();
+    const r = letters.map(c => { const b = c.getBoundingClientRect(); return { l: (b.left - s0.left) / S, r: (b.right - s0.left) / S, t: (b.top - s0.top) / S, b: (b.bottom - s0.top) / S }; });
+    const cy = (r[0].t + r[0].b) / 2;
+    M = { Lcx: (r[0].l + r[0].r) / 2, Lcy: cy, cy,
+          g1: ((r[3].r - G) + r[4].l) / 2, g2: (r[8].r + (r[9].l + G)) / 2 };
+  }
+
+  const vis = (node, on) => { node.style.visibility = on ? 'visible' : 'hidden'; };
+  const dash = (node, k) => { node.style.strokeDasharray = '1 1'; node.style.strokeDashoffset = String(1 - clamp(k)); };
+
+  /* ---------- La forma che attraversa i mondi ---------- */
+  function blobAt(t) {
+    const s = { cx: 960, cy: 500, R: 0, A: SQ, B: SQ, k: 0, col: BLUE, rot: 0 };
+    if (t < 2) return s;
+    if (t < 3) { s.R = 260 * spring(p(t, 2, 2.45)); return s; }
+    if (t < 3.5) { const m = eOut(p(t, 3, 3.4)); s.cx = lerp(960, 560, m); s.R = lerp(260, 190, m); return s; }
+    if (t < 4) { const m = eIO(p(t, 3.5, 4)); s.cx = lerp(560, 960, m); s.R = lerp(190, 240, m); s.B = CI; s.k = m; s.col = mix(BLUE, GREEN, m); return s; }
+    s.col = GREEN; s.R = 240; s.A = s.B = CI;
+    if (t < 5) return s;
+    if (t < 5.5) { s.B = FL; s.k = spring(p(t, 5, 5.4)); s.rot = (t - 5) * .6; return s; }
+    if (t < 6) { s.A = FL; s.B = BL; s.k = spring(p(t, 5.5, 5.9)); s.rot = .3 + (t - 5.5) * .6; return s; }
+    s.A = s.B = BL; s.rot = .6 + (t - 6) * .5;
+    if (t < 7.5) { const m = eIO(p(t, 6, 6.45)); s.cx = lerp(960, SELX, m); s.cy = lerp(500, SELY, m); s.R = lerp(240, 70, m); s.col = mix(GREEN, PINK, m); return s; }
+    s.col = PINK;
+    if (t < 8) { const m = eIO(p(t, 7.6, 8)); s.cx = lerp(SELX, 960, m); s.cy = lerp(SELY, 500, m); s.R = lerp(70, 200, m); return s; }
+    if (t < 8.5) { const m = eIO(p(t, 8, 8.4)); s.cx = lerp(960, BZ[0][0], m); s.cy = lerp(500, BZ[0][1], m); s.R = lerp(200, 28, m); s.B = CI; s.k = m; return s; }
+    s.A = s.B = CI; s.R = 28;
+    if (t < 9.95) { [s.cx, s.cy] = bez(p(t, 8.5, 9.5)); return s; }
+    if (t < 12) {
+      const m = eIO(p(t, 9.95, 10.35)), on = spring(p(t, 10.5, 10.85));
+      s.cx = lerp(BZ[3][0], lerp(KOFF, KON, on), m); s.cy = lerp(BZ[3][1], KY, m); s.R = lerp(28, 16, m);
+      s.col = t < 10.5 ? mix(PINK, INK, m) : mix(INK, PAPER, eOut(p(t, 10.5, 10.75)));
+      return s;
+    }
+    s.cx = KON; s.cy = KY; s.col = PAPER; s.R = 16 * (1 - eIn(p(t, 12, 12.25)));
+    return s;
+  }
+
+  /* ---------- seek(t): ogni stile dipende solo dal tempo ---------- */
+  function seek(t) {
+    if (!M) return;
+
+    /* Nome, ruolo, quadrati (battuta 1 e chiusura) */
+    for (let i = 0; i < 13; i++) {
+      const m = masks[i], c = letters[i];
+      if (i === 0 && t >= 1.5 && t < 14) {
+        m.style.overflow = 'visible'; vis(c, t < 4);
+        if (t >= 4) continue;
+        const b = blobAt(t), mv = eIO(p(t, 1.5, 2.1));
+        let s = 2.3 * (t >= 3 ? b.R / 260 : 1);
+        s = lerp(1, s, mv) * (1 - eIn(p(t, 3.55, 3.95)));
+        const tx = lerp(-G, b.cx - M.Lcx, mv), ty = lerp(0, b.cy - M.Lcy, mv);
+        c.style.transformOrigin = '50% 50%';
+        c.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`;
+        continue;
+      }
+      m.style.overflow = t < 1.45 ? 'visible' : 'hidden';
+      let x = 0, y = 0, sy = 1, jump = 0;
+      if (t < 2) {
+        sy = 1 + .25 * bump(p(t, .035 * i, .035 * i + .4));
+        jump = -14 * bump(p(t, .5 + .035 * (12 - i), .5 + .035 * (12 - i) + .4));
+        x = [-G, 0, G][group(i)] * eOut(p(t, 1, 1.4));
+        if (i > 0) y = 115 * eIn(p(t, 1.5 + .02 * i, 1.85 + .02 * i));
+      } else if (t < 14) { y = 115; }
+      else { y = 115 * (1 - eOut(p(t, 14.3 + .02 * i, 14.75 + .02 * i))); }
+      vis(c, y < 114);
+      c.style.transformOrigin = '50% 100%';
+      c.style.transform = `translate(${x}px, ${y + jump}%) scaleY(${sy})`;
+    }
+    let ry = 0;
+    if (t >= 1.5 && t < 14) ry = t < 2 ? 115 * eIn(p(t, 1.55, 1.9)) : 115;
+    else if (t >= 14) ry = 115 * (1 - eOut(p(t, 14.45, 14.9)));
+    el.role.style.transform = `translateY(${ry}%)`;
+    [[el.sq1, M.g1, -6], [el.sq2, M.g2, 6]].forEach(([q, gx, rot]) => {
+      const on = t >= 1 && t < 2; vis(q, on); if (!on) return;
+      const s = spring(p(t, 1, 1.35)), dy = 420 * eIn(p(t, 1.5, 1.85));
+      q.style.transform = `translate(${gx - 40}px, ${M.cy - 40 + dy}px) rotate(${rot}deg) scale(${s})`;
+    });
+
+    /* Cornice */
+    el.mark.style.transform = `translateY(${maskY(t, 2, .4, 13.9, .3)}%)`;
+    const active = t >= 13 ? -1 : Math.floor((t - 2) / 2);
+    worldEls.forEach((w, i) => {
+      w.firstChild.firstChild.style.transform = `translateY(${maskY(t, 2.1 + .04 * i, .4, 14 + .03 * i, .3)}%)`;
+      const lit = t >= 2 && t < 14 && (active === -1 || active === i);
+      w.style.color = lit ? PAPER : '#5E5E5E';
+      const u = active === i ? eOut(p(t, 2 + 2 * i, 2.3 + 2 * i)) : (active === -1 && t < 14 ? eOut(p(t, 13, 13.3)) : 0);
+      w.lastChild.style.transform = `scaleX(${u})`;
+    });
+
+    /* La forma */
+    const b = blobAt(t);
+    el.blob.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot));
+    el.blob.setAttribute('fill', b.col);
+
+    /* Brand Identity */
+    const gOn = t >= 2.5 && t < 3.8; vis(el.grid, gOn);
+    if (gOn) {
+      el.grid.setAttribute('transform', `translate(${b.cx} ${b.cy}) scale(${b.R / 260})`);
+      el.gridParts.forEach((g, j) => dash(g, eOut(p(t, 2.5 + .06 * j, 2.9 + .06 * j)) * (1 - eIn(p(t, 3.45 + .03 * j, 3.75 + .03 * j)))));
+    }
+    const cOn = t >= 3 && t < 3.9; vis(el.card, cOn);
+    if (cOn) {
+      const k = eOut(p(t, 3, 3.45));
+      el.card.style.transform = `translate(${1300 * eIn(p(t, 3.5, 3.9))}px, ${700 * (1 - k)}px) rotate(${lerp(-10, -3, k)}deg)`;
+    }
+    el.palette.forEach((d, i) => {
+      const s = spring(p(t, 3.2 + .08 * i, 3.55 + .08 * i)) * (1 - eIn(p(t, 3.5 + .04 * i, 3.8 + .04 * i)));
+      d.style.transform = `scale(${s})`; vis(d, s > .001);
+    });
+
+    /* Illustration */
+    const iOn = t >= 4 && t < 6; vis(el.contour, iOn);
+    if (iOn) {
+      el.contour.setAttribute('d', shape(b.cx, b.cy, b.R, b.A, b.B, b.k, b.rot, true));
+      dash(el.contour, eOut(p(t, 4, 4.55)) * (1 - eIn(p(t, 5.6, 5.95))));
+    }
+    const fs = spring(p(t, 4.5, 4.8)) * (1 - eIn(p(t, 5.45, 5.75)));
+    vis(el.face, fs > .001);
+    if (fs > .001) {
+      el.face.setAttribute('transform', `translate(${b.cx} ${b.cy}) scale(${fs})`);
+      el.eyeL.setAttribute('transform', 'translate(-72 -40)');
+      el.eyeR.setAttribute('transform', `translate(72 -40) scale(1 ${1 - .9 * bump(p(t, 5, 5.22))})`);
+      dash(el.smile, eOut(p(t, 4.6, 5)));
+    }
+
+    /* Generative AI */
+    el.prompt.style.transform = `translateY(${maskY(t, 6, .3, 7.6, .3, -1)}%)`;
+    el.ptext.textContent = PROMPT.slice(0, Math.round(PROMPT.length * p(t, 6, 6.7)));
+    cells.forEach((cell, c) => {
+      const j = cellOrder.indexOf(c), sel = c === 6;
+      const a = sel ? 6.3 : 6 + .12 * j;
+      const k = eOut(p(t, a, a + .35));
+      const out = sel ? eIn(p(t, 7.65, 7.95)) : eIn(p(t, 7.5 + .025 * j, 7.8 + .025 * j));
+      const on = t >= a && out < 1 && t < 8.2; vis(cell, on);
+      if (!on) return;
+      cell.style.clipPath = `inset(0 0 ${(1 - k) * 100}% 0 round 14px)`;
+      cell.style.transform = `scale(${(1 - out) * lerp(.94, 1, k)})`;
+      cell.style.boxShadow = `inset 0 0 0 ${sel ? 3 : 2}px ${sel ? mix(LINE, PINK, eOut(p(t, 7.45, 7.6))) : LINE}`;
+      const scan = cell.lastChild; vis(scan, k > 0 && k < .99);
+      scan.style.transform = `translateY(${k * 197}px)`;
+    });
+
+    /* Motion Design */
+    const mOn = t >= 8 && t < 10; vis(el.graph, mOn);
+    if (mOn) {
+      const out = 1 - eIn(p(t, 9.6, 9.95));
+      dash(el.axes, eOut(p(t, 8, 8.4)) * out);
+      dash(el.tl, eOut(p(t, 8, 8.4)) * out);
+      dash(el.curve, eOut(p(t, 8.2, 8.7)) * out);
+      const hs = spring(p(t, 8.5, 8.8)) * out;
+      [el.h1, el.h2].forEach(h => { dash(h, hs); h.setAttribute('pathLength', '1'); });
+      el.c1.setAttribute('r', 12 * hs); el.c2.setAttribute('r', 12 * hs);
+      const q = p(t, 8.5, 9.5);
+      el.kfs.forEach((kf, i) => {
+        const s = spring(p(t, 8.5 + .5 * i, 8.8 + .5 * i)) * out;
+        kf.setAttribute('transform', `translate(${510 + 450 * i} 830) rotate(45) scale(${s})`);
+      });
+      vis(el.head, t >= 8.5 && t < 9.6);
+      el.head.setAttribute('transform', `translate(${510 + 900 * q} 830)`);
+    }
+    el.bez.style.transform = `translateY(${maskY(t, 8.2, .35, 9.6, .3)}%)`;
+
+    /* UI/UX Design */
+    const phOn = t >= 9.75 && t < 12.4; vis(el.phone, phOn);
+    if (phOn) {
+      let r = { x: 510, y: 230, w: 900, h: 500 }, rad = 0;
+      if (t < 10.25) {
+        const m = eIO(p(t, 9.75, 10.25));
+        r = { x: lerp(510, P.x, m), y: lerp(230, P.y, m), w: lerp(900, P.w, m), h: lerp(500, P.h, m) }; rad = 48 * m;
+      } else if (t < 12) { r = P; rad = 48; }
+      else {
+        const m = eIO(p(t, 12, 12.4));
+        r = { x: lerp(P.x, POST.x, m), y: lerp(P.y, POST.y, m), w: lerp(P.w, POST.w, m), h: lerp(P.h, POST.h, m) };
+        rad = lerp(48, 18 * POST.w / 220, m);
+      }
+      Object.assign(el.phone.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px', borderRadius: rad + 'px' });
+      el.phone.style.boxShadow = `inset 0 0 0 3px ${PAPER}`;
+      el.pfill.style.transform = `scaleY(${eOut(p(t, 10, 10.35))})`;
+      el.pcontent.style.transform = `scale(${1 - eIn(p(t, 12, 12.25))})`;
+      vis(el.pcontent, t < 12.25);
+      el.ptitle.style.transform = `translateY(${maskY(t, 10.25, .35)}%)`;
+      const on = eOut(p(t, 10.5, 10.75));
+      el.track.style.background = t < 10.25 ? 'transparent' : mix(TRACK, BLUE, on);
+      bars.forEach((bar, i) => { bar.style.transform = `scaleY(${eOut(p(t, 10.5 + .07 * i, 10.9 + .07 * i))})`; });
+      const v = lerp(.15, .9, eOut(p(t, 11, 11.45)));
+      el.sfill.style.transform = `scaleX(${v})`;
+      el.sknob.style.transform = `translateX(${v * 348}px)`;
+      el.sval.textContent = Math.round(v * 100) + '%';
+      const press = 1 - .07 * bump(p(t, 11.5, 11.72));
+      el.btn.style.transform = `translateY(${110 * (1 - eOut(p(t, 10.75, 11.1)))}%) scale(${press})`;
+      el.btn.textContent = t >= 11.6 ? 'Fatto!' : 'Avanti';
+    }
+
+    /* Digital & Social: dolly, onda di luce, crane, ritorno alla tessera */
+    const wOn = t >= 12.4 && t < 14.6; vis(el.scene, wOn);
+    if (wOn) {
+      const dz = lerp(DZ0, 0, eIO(p(t, 12.45, 12.95)));
+      const crane = eIO(p(t, 12.95, 13.25));
+      el.ring.style.transform = `translateZ(${RING_R + dz}px) translateY(${-40 * crane}px) rotateX(${14 * crane}deg)`;
+      posts.forEach(o => {
+        const app = o.center ? 1 : spring(p(t, 12.5 + .05 * o.d, 12.85 + .05 * o.d));
+        const w = bump(p(t, 12.85 + .06 * o.c, 13.25 + .06 * o.c));
+        o.el.style.transform = `rotateY(${o.ang}deg) translateZ(${-RING_R}px) translateY(${o.y}px) rotateX(${-16 * w}deg) scale(${app})`;
+        vis(o.el, app > .001);
+        o.light.style.opacity = (.55 * w).toFixed(3);
+        if (o.center) o.img.style.transform = `scale(${spring(p(t, 12.4, 12.7))})`;
+      });
+      const k = eIO(p(t, 13.2, 13.5)), s = lerp(1, .14, k);
+      const dy = tileDy(t, 5);
+      el.scene.style.transform = `translate(${lerp(0, TILE_X[5] - 960, k)}px, ${dy}px) scale(${s})`;
+    }
+
+    /* Riepilogo: sei tessere */
+    tiles.forEach((tile, i) => {
+      const a = i === 5 ? 13.3 : 13.1 + .06 * i;
+      const inK = eOut(p(t, a, a + .4)), on = t >= a && t < 14.6; vis(tile, on);
+      if (!on) return;
+      const rise = i === 5 ? 0 : 500 * (1 - inK), s = i === 5 ? inK : 1;
+      tile.style.transform = `translateY(${rise + tileDy(t, i)}px) scale(${s})`;
+    });
+  }
+  function tileDy(t, i) {
+    return -28 * bump(p(t, 13.5 + .05 * i, 13.85 + .05 * i)) + 900 * eIn(p(t, 13.95 + .03 * i, 14.25 + .03 * i));
+  }
+
+  /* ---------- Orologio, comandi, suono ---------- */
+  const qs = new URLSearchParams(location.search);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (qs.has('clean')) document.body.classList.add('clean');
+  const scrollMode = !qs.has('play') && !qs.has('t') && !reduced;
+  if (scrollMode) { document.body.classList.add('scroll'); document.documentElement.classList.add('scroll'); }
+  let playing = !(reduced || qs.has('t')) && !scrollMode, sound = false, ctx = null, master = null, noise = null;
+  let base = qs.has('t') ? parseFloat(qs.get('t')) || 0 : 0, ref = 0, nextBeat = 0, dragging = false;
+  const clock = () => sound && ctx ? ctx.currentTime : performance.now() / 1000;
+  const nowT = () => playing ? base + (clock() - ref) : base;
+  const rebase = t => { base = t; ref = clock(); nextBeat = Math.ceil((t - 1e-6) / BEAT) * BEAT; };
+
+  function initAudio() {
+    ctx = new AudioContext(); master = ctx.createGain(); master.gain.value = .5; master.connect(ctx.destination);
+    noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+    const d = noise.getChannelData(0); let seed = 7;
+    for (let i = 0; i < d.length; i++) { seed = (seed * 16807) % 2147483647; d[i] = seed / 1073741823.5 - 1; }
+  }
+  const env = (g, at, peak, len) => { g.gain.setValueAtTime(peak, at); g.gain.exponentialRampToValueAtTime(.001, at + len); };
+  function kick(at, strong) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.setValueAtTime(150, at); o.frequency.exponentialRampToValueAtTime(42, at + .13);
+    env(g, at, strong ? .95 : .7, .28); o.connect(g).connect(master); o.start(at); o.stop(at + .3);
+  }
+  function hit(at) {
+    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    n.buffer = noise; f.type = 'highpass'; f.frequency.value = 2500; env(g, at, .3, .18);
+    n.connect(f).connect(g).connect(master); n.start(at); n.stop(at + .2);
+    const o = ctx.createOscillator(), g2 = ctx.createGain(); o.type = 'triangle'; o.frequency.value = 220;
+    env(g2, at, .22, .25); o.connect(g2).connect(master); o.start(at); o.stop(at + .3);
+  }
+  function riser(at, len) {
+    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    n.buffer = noise; n.loop = true; f.type = 'bandpass'; f.Q.value = 6;
+    f.frequency.setValueAtTime(300, at); f.frequency.exponentialRampToValueAtTime(6000, at + len);
+    g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.35, at + len); g.gain.linearRampToValueAtTime(0, at + len + .03);
+    n.connect(f).connect(g).connect(master); n.start(at); n.stop(at + len + .05);
+  }
+  function chime(at) {
+    [880, 1320].forEach((fq, i) => { const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = fq; env(g, at, .16 - i * .06, .6); o.connect(g).connect(master); o.start(at); o.stop(at + .65); });
+  }
+  function schedule(tu) {
+    while (nextBeat < tu + .2) {
+      const at = ref + (nextBeat - base);
+      if (at >= ctx.currentTime - .01) {
+        const b = Math.round((((nextBeat % DUR) + DUR) % DUR) / BEAT) % 30;
+        kick(at, b % 4 === 0);
+        if (b % 4 === 0) hit(at);
+        if (b === 24) riser(at, 2);
+        if (b === 28) chime(at);
+      }
+      nextBeat += BEAT;
+    }
+  }
+
+  const pp = E('pp'), scrub = E('scrub'), tc = E('tc'), snd = E('snd');
+  const setPlaying = on => { if (on === playing) return; const t = nowT(); playing = on; rebase(t); pp.textContent = on ? 'Pausa' : 'Play'; if (ctx) on && sound ? ctx.resume() : ctx.suspend(); };
+  pp.textContent = playing ? 'Pausa' : 'Play';
+  pp.onclick = () => setPlaying(!playing);
+  if (!scrollMode) stage.onclick = () => setPlaying(!playing);
+  scrub.oninput = () => { dragging = true; rebase(parseFloat(scrub.value)); };
+  scrub.onchange = () => { dragging = false; };
+  snd.onclick = () => {
+    if (!ctx) initAudio();
+    const t = nowT();
+    if (!sound) { ctx.resume().then(() => { sound = true; rebase(t); snd.textContent = 'Suono: sì'; snd.setAttribute('aria-pressed', 'true'); }); }
+    else { sound = false; rebase(t); ctx.suspend(); snd.textContent = 'Suono: no'; snd.setAttribute('aria-pressed', 'false'); }
+  };
+  addEventListener('keydown', e => {
+    if (e.target === scrub || scrollMode) return;
+    if (e.code === 'Space') { e.preventDefault(); setPlaying(!playing); }
+    if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') { setPlaying(false); rebase(clamp(Math.round(base / BEAT) * BEAT + (e.code === 'ArrowRight' ? BEAT : -BEAT), 0, DUR)); }
+  });
+
+  function fit() {
+    const uiH = document.body.classList.contains('clean') || document.body.classList.contains('scroll') ? 0 : 56;
+    const S = Math.min(innerWidth / 1920, (innerHeight - uiH) / 1080);
+    stage.style.transform = `translate(${(innerWidth - 1920 * S) / 2}px, ${(innerHeight - uiH - 1080 * S) / 2}px) scale(${S})`;
+  }
+  addEventListener('resize', fit); fit();
+
+  // Scroll: il tempo insegue la posizione con uno smorzamento esponenziale, così lo scrub è morbido
+  let st = 0, lastNow = 0;
+  const hint = E('hint');
+  function scrollFrame(now) {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const target = max > 0 ? clamp(scrollY / max) * DUR : 0;
+    const dt = lastNow ? Math.min(.05, (now - lastNow) / 1000) : .016; lastNow = now;
+    st += (target - st) * (1 - Math.exp(-dt * 9));
+    if (Math.abs(target - st) < .001) st = target;
+    seek(st);
+    hint.style.opacity = st < .3 ? '1' : '0';
+    requestAnimationFrame(scrollFrame);
+  }
+
+  function frame() {
+    const tu = nowT();
+    if (playing && sound) schedule(tu);
+    const t = playing ? ((tu % DUR) + DUR) % DUR : clamp(tu, 0, DUR);
+    seek(t);
+    if (!dragging) scrub.value = t.toFixed(2);
+    tc.textContent = t.toFixed(2).padStart(5, '0') + ' / 15';
+    requestAnimationFrame(frame);
+  }
+
+  window.seek = t => { playing = false; rebase(t); seek(t); };
+  const start = () => { if (M) return; measure(); rebase(base); document.documentElement.dataset.ready = '1';
+    if (scrollMode && qs.has('at')) scrollTo(0, parseFloat(qs.get('at')) * (document.documentElement.scrollHeight - innerHeight));   // per i test
+    requestAnimationFrame(scrollMode ? scrollFrame : frame); };
+  document.fonts.ready.then(start);
+  setTimeout(start, 2500);
+})();
+</script>
+</body>
+</html>
