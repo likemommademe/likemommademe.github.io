@@ -195,6 +195,29 @@
         em.innerHTML = '<svg viewBox="0 0 ' + p.w + ' ' + m.h + '" style="height:' + (m.h * k).toFixed(4) + 'em;vertical-align:' + (m.desc * k).toFixed(4) + 'em" aria-hidden="true" focusable="false"><path d="' + p.d + '"/></svg><span class="vet__t">' + em.innerHTML + '</span>';
       });
     })();
+    // Titoli di sezione: attorno alla parola speciale un cerchio fucsia disegnato a mano, che si traccia quando il titolo entra
+    (function () {
+      var parole = document.querySelectorAll('h2:not(.motto) em.vet'); if (!parole.length) return;
+      var C = '<svg class="cerchio" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M34 12C86 -1 176 3 193 30C206 57 142 78 90 76C30 74 1 58 8 35C14 16 66 5 128 9"/></svg>';
+      parole.forEach(function (em) { em.classList.add('con-cerchio'); em.insertAdjacentHTML('beforeend', C); });
+      function disegna(em) {
+        var r = em.closest('.rise');
+        setTimeout(function () { if (r) r.style.overflow = 'visible'; em.classList.add('is-cerchio'); }, r ? 900 : 200);
+      }
+      if (!('IntersectionObserver' in window)) { parole.forEach(disegna); return; }
+      var io = new IntersectionObserver(function (v) { v.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); disegna(e.target); } }); }, { rootMargin: '0px 0px -15% 0px' });
+      parole.forEach(function (em) { io.observe(em); });
+    })();
+    // Card dei progetti: si inclinano appena verso il mouse
+    (function () {
+      if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.addEventListener('pointermove', function (e) {
+        var el = e.target.closest && e.target.closest('.card-img, .pc__media'); if (!el) return;
+        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        el.style.transform = 'perspective(900px) rotateY(' + (x * 7).toFixed(2) + 'deg) rotateX(' + (-y * 7).toFixed(2) + 'deg)';
+        if (!el.dataset.inclina) { el.dataset.inclina = '1'; el.addEventListener('pointerleave', function () { el.style.transform = ''; }); }
+      }, { passive: true });
+    })();
   </script>
   <script>
     (function () {

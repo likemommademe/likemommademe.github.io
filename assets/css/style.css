@@ -114,7 +114,10 @@ em.vet .vet__t { position: absolute; width: 1px; height: 1px; overflow: hidden; 
 .btn__arrow { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #121414; color: #F5F5F2; flex: none; }
 .btn:hover .btn__arrow { background: var(--accent-1); }
 .btn__arrow svg { transition: transform .6s var(--ease); }
-.btn:hover .btn__arrow svg, .card:hover .btn__arrow svg, .mondo:hover .btn__arrow svg { transform: rotate(-45deg); }
+/* la freccia esce a destra e ne rientra una nuova da sinistra (da crency) */
+.btn__arrow, .nav__arrow, .servizi__go, .altre-cat__go { overflow: hidden; }
+:is(.btn, .card, .mondo, .nav__cta, .servizi__r, .altre-cat__c, .pc):hover :is(.btn__arrow, .nav__arrow, .servizi__go, .altre-cat__go) svg { animation: freccia-giro .7s var(--ease); }
+@keyframes freccia-giro { 0% { transform: translateX(0); } 45% { transform: translateX(160%); } 46% { transform: translateX(-160%); } 100% { transform: translateX(0); } }
 
 /* ---------- Menu: barra larga in cima, pillola scura quando si scorre ---------- */
 .nav { position: fixed; left: 0; right: 0; top: 0; z-index: 60; pointer-events: none; view-transition-name: barra; }
@@ -551,7 +554,7 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .mondo__n { font-family: var(--f-label); font-weight: 600; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; transition: color .45s; }
 .mondo:hover :is(.mondo__i, .mondo__n) { color: inherit; }
 .mondo .btn__arrow { transition: transform .6s var(--ease), background .3s; }
-.mondo:hover .btn__arrow { transform: rotate(-45deg); background: var(--accent-1); }
+.mondo:hover .btn__arrow { background: var(--accent-1); }
 /* entrata: la riga si disegna da sinistra e i testi salgono, una riga dopo l'altra */
 .mondi-sez.is-pronta .mondi li::after { transform: scaleX(0); transition: transform 1.1s var(--ease) calc(var(--i) * 90ms); }
 .mondi-sez.is-pronta .mondo > * { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .9s var(--ease), color .45s, background .3s; }
@@ -559,7 +562,6 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .mondi-sez.is-pronta li.is-in .mondo > * { opacity: 1; transform: none; transition-delay: calc(var(--i) * 90ms + 120ms), calc(var(--i) * 90ms + 120ms), 0s, 0s; }
 .mondi-sez.is-pronta li.is-in .mondo > :nth-child(3) { transition-delay: calc(var(--i) * 90ms + 200ms), calc(var(--i) * 90ms + 200ms), 0s, 0s; }
 .mondi-sez.is-pronta li.is-in .mondo:hover .mondo__d { transform: translateX(10px); }
-.mondi-sez.is-pronta li.is-in .mondo:hover .btn__arrow { transform: rotate(-45deg); }
 /* la foto che segue il cursore */
 .mondi__foto { position: fixed; left: 0; top: 0; z-index: 50; width: clamp(200px, 17vw, 280px); aspect-ratio: 4 / 5; margin: calc(clamp(200px, 17vw, 280px) * -.625) 0 0 calc(clamp(200px, 17vw, 280px) * -.5); pointer-events: none; }
 /* la foto nasce dal quadratino fucsia che segue il mouse: si apre da lì e lì si richiude */
@@ -1186,7 +1188,7 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .servizi__t { font-weight: 500; font-size: var(--t-h3); letter-spacing: -.02em; }
 .servizi__d { color: var(--muted); }
 .servizi__go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, transform .6s var(--ease); }
-.servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
+.servizi__r:hover .servizi__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
 .faq-cont { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
 .faq-cont__lato { display: grid; gap: 20px; justify-items: start; position: sticky; top: calc(var(--nav-h) + 24px); }
 .faq-cont__lato h2 { margin: 0; font-size: var(--t-h2); }
@@ -1238,7 +1240,7 @@ a.esp__in:hover { background: var(--card); }
 .altre-cat__testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
 .altre-cat__t { font-weight: 500; font-size: var(--t-h3); letter-spacing: -.02em; line-height: 1.1; }
 .altre-cat__go { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-2); transition: background .3s, color .3s, border-color .3s, transform .6s var(--ease); }
-.altre-cat__c:hover .altre-cat__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; transform: rotate(-45deg); }
+.altre-cat__c:hover .altre-cat__go { background: var(--accent-1); border-color: var(--accent-1); color: #F5F5F2; }
 .altre-cat__d { color: var(--muted); font-size: 15px; line-height: 1.5; }
 .altre-cat__n { font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
 @media (max-width: 1000px) { .altre-cat__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -1260,3 +1262,12 @@ a.esp__in:hover { background: var(--card); }
 .ahero__t .occhio__iride { animation: occhio-guarda 6s .4s var(--ease) infinite; }
 @keyframes occhio-sbatte { 0%, 8%, 16%, 100% { transform: scaleY(1); } 11%, 13% { transform: scaleY(.08); } }
 @keyframes occhio-guarda { 0% { transform: translateX(0); } 18%, 34% { transform: translateX(-12px); } 46%, 62% { transform: translateX(12px); } 74%, 100% { transform: translateX(0); } }
+
+/* cerchio disegnato a mano attorno alla parola speciale dei titoli di sezione */
+em.con-cerchio { position: relative; display: inline-block; }
+.cerchio { position: absolute; left: -.24em; top: -.1em; width: calc(100% + .48em); height: calc(100% + .3em); overflow: visible; pointer-events: none; }
+.cerchio path { fill: none; stroke: var(--accent-3); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s var(--ease-io); }
+em.is-cerchio .cerchio path { stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: reduce) { .cerchio path { transition: none; } }
+/* card che si inclinano verso il mouse */
+.card-img, .pc__media { transition: transform .5s var(--ease); will-change: transform; }
