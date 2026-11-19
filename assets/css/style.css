@@ -560,16 +560,13 @@ main.finisce-fascia { padding-bottom: 0 !important; }
 .mondi-sez.is-pronta li.is-in .mondo > * { opacity: 1; transform: none; transition-delay: calc(var(--i) * 90ms + 120ms), calc(var(--i) * 90ms + 120ms), 0s, 0s; }
 .mondi-sez.is-pronta li.is-in .mondo > :nth-child(3) { transition-delay: calc(var(--i) * 90ms + 200ms), calc(var(--i) * 90ms + 200ms), 0s, 0s; }
 .mondi-sez.is-pronta li.is-in .mondo:hover .mondo__d { transform: translateX(10px); }
-/* la foto che segue il cursore */
-.mondi__foto { position: fixed; left: 0; top: 0; z-index: 50; width: clamp(200px, 17vw, 280px); aspect-ratio: 4 / 5; margin: calc(clamp(200px, 17vw, 280px) * -.625) 0 0 calc(clamp(200px, 17vw, 280px) * -.5); pointer-events: none; }
-/* la foto nasce dal quadratino fucsia che segue il mouse: si apre da lì e lì si richiude */
-.mondi__foto::before { content: ""; position: absolute; inset: 0; border-radius: 14px; background: var(--accent-3); }
-.mondi__foto { clip-path: inset(calc(50% - 6px) calc(50% - 6px) round 3px); opacity: 0; transition: clip-path .5s var(--ease), opacity .15s .45s; }
-.mondi__foto.is-su { clip-path: inset(0 round 14px); opacity: 1; transition: clip-path .65s var(--ease), opacity 0s; }
-.mondi__foto img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 14px; opacity: 0; transform: scale(1.15); transition: opacity .35s, transform .8s var(--ease); }
-.mondi__foto.is-su img { opacity: 1; transform: scale(1); transition-delay: .12s, 0s; }
-body.mondi-foto .segui { opacity: 0; }
-@media (hover: none) { .mondi__foto { display: none; } }
+/* al passaggio la foto del mondo si apre dentro la riga, a sinistra del titolo, e il titolo le fa spazio */
+.mondo__t { display: flex; align-items: center; overflow: visible; }
+.mondo__roll { overflow: hidden; }
+.mondo__mini { flex: none; width: 0; height: 1.25em; margin-right: 0; border-radius: .3em; overflow: hidden; transition: width .6s var(--ease), margin .6s var(--ease); }
+.mondo__mini img { display: block; width: 2.4em; height: 100%; object-fit: cover; transform: scale(1.3); transition: transform .8s var(--ease); }
+.mondo:hover .mondo__mini { width: 2.4em; margin-right: .35em; }
+.mondo:hover .mondo__mini img { transform: none; }
 @media (max-width: 860px) {
   .mondo { grid-template-columns: 32px minmax(0, 1fr) auto; }
   .mondo__d, .mondo__n { grid-column: 2; }
