@@ -400,12 +400,13 @@ html.cerca-aperta { overflow: hidden; }
 
 /* ---------- Passaggio tra le pagine (View Transitions) ---------- */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: vt-esce .55s var(--ease-io) both; transform-origin: 50% 30%; }
-::view-transition-new(root) { animation: vt-entra .9s var(--ease) both; }
+/* passaggio calmo: la pagina vecchia svanisce in fretta, la nuova compare salendo appena; il menu resta fermo */
+::view-transition-old(root) { animation: vt-esce .22s ease-out both; }
+::view-transition-new(root) { animation: vt-entra .5s var(--ease) .06s both; }
 ::view-transition-group(barra), ::view-transition-old(barra), ::view-transition-new(barra) { animation: none; }
 ::view-transition-old(barra) { display: none; }   /* nel cambio pagina resta solo il menu della pagina nuova (prima la notch vecchia restava sopra) */
-@keyframes vt-esce { to { transform: scale(.94); border-radius: 32px; filter: brightness(.7); } }
-@keyframes vt-entra { from { transform: translateY(100vh); } }
+@keyframes vt-esce { to { opacity: 0; } }
+@keyframes vt-entra { from { opacity: 0; transform: translateY(18px); } }
 /* cambio tema: il cerchio lo disegna il JavaScript, qui si spengono le animazioni standard */
 html.vt-tema::view-transition-old(root), html.vt-tema::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 html.vt-tema::view-transition-new(root) { z-index: 2; }
