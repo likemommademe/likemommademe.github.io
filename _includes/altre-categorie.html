@@ -1,5 +1,5 @@
 {% comment %}
-  Sotto ogni categoria: le altre categorie, a card con la foto.
+  Sotto ogni categoria: le altre categorie, con le stesse schede della home (foto stondata, etichette, titolo, frase, Vedi).
   La foto è l'Immagine della categoria (pannello); se manca, la copertina del suo primo progetto.
 {% endcomment %}
 {% assign tcat = site.data.testi.categoria %}
@@ -11,14 +11,14 @@
     {% for c in categorie %}{% if c.slug != page.slug %}
     {% assign n = 0 %}{% assign foto = c.copertina %}
     {% for p in tutti %}{% if p.categoria == c.slug or p.altre_categorie contains c.slug %}{% assign n = n | plus: 1 %}{% if foto == nil and p.categoria == c.slug and p.copertina %}{% assign foto = p.copertina %}{% endif %}{% endif %}{% endfor %}
-    <li><a class="altre-cat__c" href="{{ c.url | relative_url }}">
-      <span class="altre-cat__img">{% if foto %}<img src="{{ foto | relative_url }}" alt="" loading="lazy">{% endif %}</span>
-      <span class="altre-cat__testa">
-        <span class="altre-cat__t">{{ c.title }}</span>
-        <span class="altre-cat__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <li><a class="pc altre-cat__c" href="{{ c.url | relative_url }}">
+      <span class="pc__media">{% if foto %}<img src="{{ foto | relative_url }}" alt="" loading="lazy">{% endif %}</span>
+      <span class="pc__corpo">
+        <span class="pc__tag"><span class="pc__tag-cat">{{ tcat.etichetta }}</span>{% if n > 0 %}<span class="pc__tag-dot">{{ n }} {% if n == 1 %}{{ tcat.progetto }}{% else %}{{ tcat.progetti }}{% endif %}</span>{% endif %}</span>
+        <span class="pc__t">{{ c.title }}</span>
+        <span class="pc__q">{{ c.content | strip_html | strip_newlines }}</span>
+        <span class="pc__go">{{ tcat.vedi }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </span>
-      <span class="altre-cat__d">{{ c.content | strip_html | strip_newlines }}</span>
-      {% if n > 0 %}<span class="altre-cat__n">{{ n }} {% if n == 1 %}{{ tcat.progetto }}{% else %}{{ tcat.progetti }}{% endif %}</span>{% endif %}
     </a></li>
     {% endif %}{% endfor %}
   </ul>
