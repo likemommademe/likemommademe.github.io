@@ -156,7 +156,7 @@ layout: default
       });
       var passo = function (t) {
         var dt = Math.min(.05, (t - (ultimoT || t)) / 1000); ultimoT = t;
-        var base = reduce ? 0 : 14 + Math.min(160, spinta * 2.5);   // lente: scorrendo la pagina accelerano solo un po' spinta *= Math.pow(.02, dt);
+        var base = reduce ? 0 : 14 + Math.min(160, spinta * 2.5); spinta *= Math.pow(.02, dt);   // lente: scorrendo la pagina accelerano solo un po'
         piste.forEach(function (p, i) {
           var meta = sopra[i] ? 5 : base;
           vel[i] += (meta - vel[i]) * Math.min(1, dt * 5);   // rallenta e riparte con dolcezza
