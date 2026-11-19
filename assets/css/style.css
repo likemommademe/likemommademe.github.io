@@ -1120,34 +1120,31 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .vita__ph.v4 img { aspect-ratio: 1; }
 .vita__ph.v5 img { aspect-ratio: 3 / 4; }
 
-/* About: valori, una scena per parola che parte dall'occhio (Visione, Execution, Coordinamento) */
+/* About: valori, ogni parola ha il suo elemento (occhio, cubo, orbite) disegnato sulla tela */
 .vocchio__scena { position: relative; }
-.vocchio__tela { display: none; }
-.vocchio__occhio { position: relative; width: clamp(150px, 20vw, 300px); margin: clamp(24px, 4vw, 56px) auto; color: var(--fg); }
-.vocchio__galleggia { will-change: transform; }
-.vocchio__galleggia svg { display: block; width: 100%; overflow: visible; }
-.vocchio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
-.vocchio__palpebra.is-strizza { animation: occhiolino .5s var(--ease); }
-.vocchio__pupilla { transform-box: fill-box; transform-origin: 50% 50%; }
+.vocchio__tela { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+.vocchio__parole { position: relative; z-index: 1; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.vparola { display: grid; grid-template-columns: clamp(64px, 7vw, 116px) minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: var(--gap); padding: clamp(14px, 1.6vw, 24px) 0; border-bottom: 1px solid var(--line); }
+.vparola__posto { display: block; aspect-ratio: 1; }
+.vparola__t { margin: 0; font-weight: 500; font-size: clamp(2.5rem, 1rem + 4.2vw, 6rem); line-height: 1; letter-spacing: -.045em; }
+.vparola__d { margin: 0; max-width: 40ch; color: var(--muted); }
 /* «Tu»: l'etichetta attaccata al tuo cursore, è quello che l'occhio guarda */
 .vocchio__tu { position: fixed; left: 0; top: 0; z-index: 9998; pointer-events: none; opacity: 0; transition: opacity .25s; }
 .vocchio__tu.is-su { opacity: 1; }
 body:has(.vocchio__tu.is-su) .segui { opacity: 0; }
 .vocchio__tu b { display: block; margin: 14px 0 0 8px; padding: 4px 12px; border: 1.5px solid currentColor; border-radius: 999px; background: var(--accent-3); color: #121414; font-family: var(--f-label); font-weight: 600; font-size: 13px; }
-.vocchio__parole { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.vparola { padding: clamp(14px, 1.6vw, 22px) 0; border-bottom: 1px solid var(--line); }
-.vparola__t { margin: 0; font-weight: 500; font-size: clamp(2.75rem, 1rem + 4.8vw, 6.5rem); line-height: 1; letter-spacing: -.045em; }
-.vparola__d { margin: 8px 0 0; max-width: 52ch; color: var(--muted); }
-.vlettera { display: inline-block; white-space: pre; }
 @media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
-  .vocchio { height: 560vh; padding-bottom: 0; }
+  .vocchio { height: 520vh; padding-bottom: 0; }
   .vocchio__scena { position: sticky; top: 0; height: 100vh; overflow: hidden; }
   .vocchio__head { position: absolute; left: 0; top: calc(var(--nav-h) + 24px); margin: 0; z-index: 3; }
-  .vocchio__tela { display: block; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
-  .vocchio__occhio { position: absolute; left: 22%; top: 58%; margin: 0; transform: translate(-50%, -50%); z-index: 1; }
-  .vocchio__parole { position: absolute; left: 44%; right: 0; top: 58%; transform: translateY(-50%); z-index: 1; }
-  .vocchio.is-viva .vparola:nth-child(n+2) .vparola__t, .vocchio.is-viva .vparola__d { opacity: 0; }
-  .vocchio.is-viva .vlettera { opacity: 0; }
+  .vocchio__parole { position: absolute; left: 0; right: 0; bottom: clamp(32px, 6vh, 72px); opacity: var(--palco, 1); transition: opacity .3s; }
+  .vocchio.is-viva .vparola :is(.vparola__t, .vparola__d) { opacity: .14; transform: translateY(14px); transition: opacity .6s var(--ease), transform .8s var(--ease); }
+  .vocchio.is-viva .vparola.is-qui :is(.vparola__t, .vparola__d) { opacity: 1; transform: none; }
+  .vocchio.is-viva .vparola.is-qui .vparola__d { transition-delay: .15s; }
+}
+@media (max-width: 860px) {
+  .vparola { grid-template-columns: 64px minmax(0, 1fr); }
+  .vparola__d { grid-column: 2; }
 }
 @media (max-width: 860px), (prefers-reduced-motion: reduce) {
   .vocchio__tu { display: none; }
