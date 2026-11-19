@@ -275,27 +275,35 @@ layout: default
         var palco = { x: W / 2, y: H * .55 }, grande = Math.min(H * .52, W * .3), sulPalco = 0;
         for (var i = 0; i < 3; i++) {
           var a = .04 + i * .31, k = vivo ? tra(p, a, a + .31) : 1;   // k: avanzamento della scena di questa parola
-          var entra = E(tra(k, 0, .14)), recita = tra(k, .14, .7), siede = EIO(tra(k, .7, .95));
-          var posto = dentro(posti[i]), piccolo = posto.w;
-          var x = lerp(palco.x, posto.x, siede), y = lerp(palco.y, posto.y, siede), S = lerp(grande, piccolo, siede);
+          var entra = E(tra(k, 0, .16)), recita = tra(k, .16, .68), siede = EIO(tra(k, .68, .95));
+          var posto = dentro(posti[i]), piccolo = posto.w * .82;
+          // entra salendo dal basso; poi va al suo posto con una curva (passa sopra la riga e ci scende dentro)
+          var x0 = palco.x, y0 = palco.y + (1 - entra) * H * .22, u = 1 - siede;
+          var ctrlX = lerp(x0, posto.x, .15), ctrlY = Math.min(y0, posto.y) - H * .08;
+          var x = u * u * x0 + 2 * u * siede * ctrlX + siede * siede * posto.x, y = u * u * y0 + 2 * u * siede * ctrlY + siede * siede * posto.y;
+          var S = lerp(grande, piccolo, siede);
           if (k > 0 && k < .95) sulPalco = Math.max(sulPalco, Math.min(entra, 1 - siede));
           righe[i].classList.toggle('is-qui', k >= .9);
           if (k <= 0) continue;
-          cx.save(); cx.globalAlpha = Math.min(1, entra * 1.5);
-          var Sz = S * (siede > 0 ? 1 : .2 + .8 * entra);
+          cx.save(); cx.globalAlpha = Math.min(1, entra * 1.4);
+          var Sz = S * (.88 + .12 * entra);
           if (i === 0) {
-            // ti guarda, poi mette a fuoco a destra e a sinistra (vede lontano), si spalanca e alla fine strizza l'occhio
-            var guarda = te, pupilla = 1;
-            if (k < .95 && recita > 0) { var sx = Math.sin(recita * Math.PI * 2) * W * .4; guarda = { x: x + sx, y: y - H * .1 }; pupilla = recita > .55 ? lerp(1, 1.7, tra(recita, .55, .8)) * (1 - tra(recita, .85, 1)) + tra(recita, .85, 1) * .9 : .75; }
-            var chiuso = 0;
-            if (k > .58 && k < .66) chiuso = Math.sin(tra(k, .58, .66) * Math.PI);
+            // guarda te, poi a sinistra, poi a destra (con una pausa su ognuno), si meraviglia e strizza l'occhio
+            var guarda = te, pupilla = 1, chiuso = 0;
+            if (k < .95 && recita > 0) {
+              if (recita < .22) guarda = te || { x: x, y: y + 1 };
+              else if (recita < .44) { guarda = { x: x - W * .45, y: y - H * .05 }; pupilla = .75; }
+              else if (recita < .66) { guarda = { x: x + W * .45, y: y - H * .05 }; pupilla = .75; }
+              else { guarda = te || { x: x, y: y + 1 }; pupilla = 1 + .6 * Math.sin(tra(recita, .66, .9) * Math.PI); }
+              if (recita > .88) chiuso = Math.sin(tra(recita, .88, 1) * Math.PI);
+            }
             if (k >= .95 && ora - occhio.strizza < 500) chiuso = Math.sin((ora - occhio.strizza) / 500 * Math.PI);
-            disegnaOcchio(x, y, Sz * 1.15, guarda, pupilla, chiuso);
+            disegnaOcchio(x, y, Sz, guarda, pupilla, chiuso);
           } else if (i === 1) {
-            scena3d.yaw += dt * (k < .95 ? .5 : .25);
-            disegnaCubo(x, y, Sz, k < .95 ? recita : 0, scena3d.yaw);
+            scena3d.yaw += dt * (k < .95 ? .45 : .22);
+            disegnaCubo(x, y, Sz * 1.05, k < .95 ? recita : 0, scena3d.yaw);
           } else {
-            disegnaOrbite(x, y, Sz * 1.1, k < .95 ? recita : 1, dt);
+            disegnaOrbite(x, y, Sz * 1.05, k < .95 ? recita : 1, dt);
           }
           cx.restore();
         }
