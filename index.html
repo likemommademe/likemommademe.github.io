@@ -166,12 +166,12 @@ reel: true
         a.addEventListener('pointerenter', function (e) {
           if (img.getAttribute('src') !== a.dataset.foto) img.src = a.dataset.foto;
           if (!su) { x = tx = e.clientX; y = ty = e.clientY; }
-          su = true; box.classList.add('is-su'); if (!vivo) { vivo = true; requestAnimationFrame(passo); }
+          su = true; box.classList.add('is-su'); document.body.classList.add('mondi-foto'); if (!vivo) { vivo = true; requestAnimationFrame(passo); }
         });
       });
-      sez.querySelector('.mondi').addEventListener('pointerleave', function () { su = false; box.classList.remove('is-su'); });
+      sez.querySelector('.mondi').addEventListener('pointerleave', function () { su = false; box.classList.remove('is-su'); document.body.classList.remove('mondi-foto'); });
       addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
-      addEventListener('scroll', function () { if (su && !sez.querySelector('.mondi').matches(':hover')) { su = false; box.classList.remove('is-su'); } }, { passive: true });
+      addEventListener('scroll', function () { if (su && !sez.querySelector('.mondi').matches(':hover')) { su = false; box.classList.remove('is-su'); document.body.classList.remove('mondi-foto'); } }, { passive: true });
       function passo() {
         var k = fermo ? 1 : .16, dx = (tx - x) * k; x += dx; y += (ty - y) * k;
         rot += ((fermo ? 0 : Math.max(-12, Math.min(12, dx * .6))) - rot) * .2;
