@@ -1122,18 +1122,41 @@ html.js [data-rivela].is-in { opacity: 1; transform: none; }
 .vita__ph.v4 img { aspect-ratio: 1; }
 .vita__ph.v5 img { aspect-ratio: 3 / 4; }
 
-/* About: valori, la parola si scrive seguendo lo scroll (fantasma, inchiostro, penna) */
-.valori { position: relative; border-top: 1px solid var(--line); }
-.valori ul { margin: 0; padding: 0; list-style: none; }
-.valore { display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--gap); align-items: center; padding: clamp(32px, 4vw, 64px) 0; border-bottom: 1px solid var(--line); }
-.valore__t { font-weight: 500; font-size: clamp(2.5rem, 1.4rem + 4.4vw, 6.5rem); line-height: 1; letter-spacing: -.045em; }
-.valore__mot { position: relative; display: inline-block; white-space: nowrap; }
-.valore__fantasma { color: color-mix(in srgb, var(--fg) 13%, transparent); }
-.valore__inchiostro { position: absolute; left: 0; top: 0; color: var(--fg); clip-path: inset(-.25em 100% -.3em -.05em); }
-.valori__penna { position: absolute; left: 0; top: 0; z-index: 1; width: .16em; height: .16em; margin: 0 0 0 .04em; font-size: clamp(2.5rem, 1.4rem + 4.4vw, 6.5rem);
-  border-radius: .03em; background: var(--accent-3); opacity: 0; pointer-events: none; transition: transform .35s var(--ease), opacity .3s; }
-.valore__d { margin: 0; max-width: 40ch; font-size: var(--t-body); line-height: 1.55; color: var(--muted); opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
-.valore.is-on .valore__d { opacity: 1; transform: none; }
+/* About: valori, le tre parole escono dall'occhio (spunto da crency.agency) */
+.vocchio__scena { position: relative; }
+.vocchio__occhio { position: relative; width: clamp(160px, 24vw, 380px); margin: clamp(24px, 4vw, 56px) auto; color: var(--fg); }
+.vocchio__galleggia { animation: vocchio-galleggia 5.5s ease-in-out infinite; }
+.vocchio__galleggia svg { display: block; width: 100%; overflow: visible; }
+@keyframes vocchio-galleggia { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(3deg); } }
+.vocchio__palpebra { transform-box: fill-box; transform-origin: 50% 50%; }
+.vocchio__palpebra.is-strizza { animation: occhiolino .5s var(--ease); }
+.vocchio__iride { transition: transform .5s var(--ease); }
+/* il cursore «Tu» che gira attorno all'occhio */
+.vocchio__tu { position: absolute; left: -8%; top: 58%; display: flex; align-items: flex-start; gap: 0; animation: vocchio-tu 7s ease-in-out infinite; pointer-events: none; }
+.vocchio__tu b { margin: 16px 0 0 -4px; padding: 4px 12px; border: 1.5px solid currentColor; border-radius: 999px; background: var(--accent-3); color: #121414; font-family: var(--f-label); font-weight: 600; font-size: 13px; }
+@keyframes vocchio-tu { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(-26px, -18px); } 60% { transform: translate(-6px, 22px); } }
+.vocchio__parole { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(28px, 4vw, 48px); }
+.vparola__t { margin: 0; font-weight: 500; font-size: clamp(2.5rem, 1.4rem + 4.4vw, 6rem); line-height: 1; letter-spacing: -.045em; }
+.vparola__d { margin: 12px 0 0; max-width: 32ch; color: var(--muted); }
+/* desktop: la sezione resta ferma e le parole volano fuori dall'occhio */
+@media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+  .vocchio { height: 300vh; padding-bottom: 0; }
+  .vocchio__scena { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+  .vocchio__head { position: absolute; left: 0; top: calc(var(--nav-h) + 24px); margin: 0; z-index: 2; }
+  .vocchio__occhio { position: absolute; left: 50%; top: 52%; margin: 0; transform: translate(-50%, -50%); z-index: 1; }
+  .vparola { position: absolute; z-index: 2; will-change: transform, opacity; }
+  .vocchio.is-viva .vparola { opacity: 0; }
+  .vparola--1 { left: 0; top: 46%; }
+  .vparola--2 { right: 0; top: 30%; text-align: right; }
+  .vparola--2 .vparola__d { margin-left: auto; }
+  .vparola--3 { right: 4%; bottom: 9%; text-align: right; }
+  .vparola--3 .vparola__d { margin-left: auto; }
+  .vparola__d { opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .6s var(--ease); }
+  .vparola.is-fuori .vparola__d { opacity: 1; transform: none; }
+}
+@media (max-width: 860px), (prefers-reduced-motion: reduce) {
+  .vocchio__tu { display: none; }
+}
 
 /* About: dove lavoro, con l'ora */
 .dove__p { margin: 0 0 clamp(32px, 4vw, 56px); }
@@ -1265,7 +1288,7 @@ a.esp__in:hover { background: var(--card); }
 
 /* cerchio disegnato a mano attorno alla parola speciale dei titoli di sezione */
 em.con-cerchio { position: relative; display: inline-block; }
-.cerchio { position: absolute; left: -.24em; top: -.1em; width: calc(100% + .48em); height: calc(100% + .3em); overflow: visible; pointer-events: none; }
+em.vet svg.cerchio, .cerchio { position: absolute; left: -.24em; top: -.1em; width: calc(100% + .48em); height: calc(100% + .3em); overflow: visible; pointer-events: none; }
 .cerchio path { fill: none; stroke: var(--accent-3); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s var(--ease-io); }
 em.is-cerchio .cerchio path { stroke-dashoffset: 0; }
 @media (prefers-reduced-motion: reduce) { .cerchio path { transition: none; } }

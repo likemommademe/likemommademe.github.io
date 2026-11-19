@@ -120,6 +120,7 @@ about:
     - anno: "∞"
       testo: Non smetterò di stupirmi.
   valori_titolo: "Tre parole mi <em>descrivono</em>"
+  valori_tu: Tu   # l'etichetta del cursorino che gira attorno all'occhio
   valori:
     - nome: Visione
       testo: Concept e art direction. Ogni progetto nasce da un'idea forte e riconoscibile.

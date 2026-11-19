@@ -69,17 +69,22 @@ layout: default
   {% endfor %}
 </section>
 
-{% comment %} 4. Valori (come bitwip "Three values guide us"): ogni parola si scrive seguendo lo scroll,
-   le lettere fantasma diventano piene e una penna corre davanti all'inchiostro {% endcomment %}
-<section class="fascia">
-  <div class="sec-head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
-  <div class="valori" data-scrittura>
-    <i class="valori__penna" aria-hidden="true"></i>
-    <ul>
+{% comment %} 4. Valori (spunto da crency.agency, sezione Trust): la sezione resta ferma, al centro l'occhio galleggia e segue il mouse;
+   scorrendo, le tre parole escono una alla volta dall'occhio e volano al loro posto. Su telefono e con meno movimento: tutto in colonna. {% endcomment %}
+<section class="fascia vocchio" data-vocchio>
+  <div class="vocchio__scena">
+    <div class="sec-head vocchio__head"><h2 class="rise"><span>{{ a.valori_titolo }}<i class="segno" aria-hidden="true"></i></span></h2></div>
+    <div class="vocchio__occhio" aria-hidden="true">
+      <div class="vocchio__galleggia">
+        <svg viewBox="0 0 100 90"><g class="vocchio__palpebra"><path d="M50 9.75C69 9.75 88 21.5 94 45C88 68.5 69 80.25 50 80.25C31 80.25 12 68.5 6 45C12 21.5 31 9.75 50 9.75Z" fill="var(--bg)" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/><g class="vocchio__iride"><circle cx="50" cy="45" r="22" fill="var(--accent-3)"/><circle cx="50" cy="45" r="10" fill="#121414"/><circle cx="55" cy="39" r="3.4" fill="#F5F5F2"/></g></g></svg>
+      </div>
+      <span class="vocchio__tu"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 2l7.5 19 2.6-7.9L21 10.5z" fill="var(--accent-3)" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><b>{{ a.valori_tu | default: "Tu" }}</b></span>
+    </div>
+    <ul class="vocchio__parole">
       {% for v in a.valori %}
-        <li class="valore">
-          <h3 class="valore__t"><span class="valore__mot"><span class="valore__fantasma">{{ v.nome }}</span><span class="valore__inchiostro" aria-hidden="true">{{ v.nome }}</span></span></h3>
-          <p class="valore__d">{{ v.testo }}</p>
+        <li class="vparola vparola--{{ forloop.index }}" data-vparola>
+          <h3 class="vparola__t">{{ v.nome }}</h3>
+          <p class="vparola__d">{{ v.testo }}</p>
         </li>
       {% endfor %}
     </ul>
@@ -173,31 +178,41 @@ layout: default
       misura();
     }
 
-    // Valori: la parola si scrive seguendo lo scroll; la penna corre davanti all'inchiostro e salta alla parola dopo
-    var scr = document.querySelector('[data-scrittura]');
-    if (scr) {
-      var parole = Array.prototype.slice.call(scr.querySelectorAll('.valore__mot')),
-          inch = parole.map(function (p) { return p.querySelector('.valore__inchiostro'); }),
-          voci = parole.map(function (p) { return p.closest('li'); }), penna = scr.querySelector('.valori__penna');
-      var scrivi = function () {
-        var base = scr.getBoundingClientRect(), testa = null;
-        parole.forEach(function (p, i) {
-          var r = p.getBoundingClientRect(), h = Math.max(1, voci[i].offsetHeight);
-          var f = reduce ? 1 : clamp((innerHeight * .66 - r.top) / h, 0, 1);
-          inch[i].style.clipPath = 'inset(-.25em ' + ((1 - f) * 100).toFixed(2) + '% -.3em -.05em)';
-          voci[i].classList.toggle('is-on', f > 0);
-          if (f > 0) testa = { x: r.left - base.left + f * r.width, y: r.top - base.top + r.height * .18, giro: (i + f) * 360 };
+    // Valori: le parole escono dall'occhio una alla volta, seguendo lo scroll; l'occhio le guarda e poi fa l'occhiolino
+    var vo = document.querySelector('[data-vocchio]');
+    if (vo) {
+      var occ = vo.querySelector('.vocchio__occhio'), iride = vo.querySelector('.vocchio__iride'), palp = vo.querySelector('.vocchio__palpebra'),
+          vp = Array.prototype.slice.call(vo.querySelectorAll('[data-vparola]')), largo = matchMedia('(min-width: 861px)'),
+          mx = innerWidth / 2, my = innerHeight / 2, fatte = [], gx = 0, gy = 0;
+      var strizza = function () { palp.classList.remove('is-strizza'); void palp.getBBox(); palp.classList.add('is-strizza'); };
+      var vivo = function () { return largo.matches && !reduce; };
+      var muovi = function () {
+        if (!vivo()) { vo.classList.remove('is-viva'); vp.forEach(function (w) { w.style.transform = ''; w.style.opacity = ''; }); return; }
+        vo.classList.add('is-viva');
+        var r = vo.getBoundingClientRect(), p = clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1),
+            o = occ.getBoundingClientRect(), ox = o.left + o.width / 2, oy = o.top + o.height / 2, guarda = null;
+        vp.forEach(function (w, i) {
+          var t = clamp((p - (.06 + i * .26)) / .2, 0, 1), e = 1 - Math.pow(1 - t, 3);
+          w.style.transform = '';
+          var b = w.getBoundingClientRect(), dx = ox - (b.left + b.width / 2), dy = oy - (b.top + b.height / 2);
+          w.style.transform = 'translate(' + (dx * (1 - e)).toFixed(1) + 'px,' + (dy * (1 - e)).toFixed(1) + 'px) scale(' + (.12 + .88 * e).toFixed(3) + ') rotate(' + ((1 - e) * (i % 2 ? 14 : -14)).toFixed(2) + 'deg)';
+          w.style.opacity = Math.min(1, t * 4).toFixed(2);
+          w.classList.toggle('is-fuori', t >= 1);
+          if (t > 0 && t < 1) guarda = { x: b.left + b.width / 2, y: b.top + b.height / 2 };
+          if (t >= 1 && !fatte[i]) { fatte[i] = true; strizza(); }
+          if (t <= 0) fatte[i] = false;
         });
-        if (testa && !reduce) {
-          penna.style.opacity = '1';
-          penna.style.transform = 'translate(' + testa.x.toFixed(1) + 'px,' + testa.y.toFixed(1) + 'px) rotate(' + testa.giro.toFixed(1) + 'deg)';
-        } else penna.style.opacity = '0';
+        var tx = guarda ? guarda.x : mx, ty = guarda ? guarda.y : my, a = Math.atan2(ty - oy, tx - ox), d = Math.min(1, Math.hypot(tx - ox, ty - oy) / 300);
+        gx = Math.cos(a) * 13 * d; gy = Math.sin(a) * 9 * d;
+        iride.style.transform = 'translate(' + gx.toFixed(2) + 'px,' + gy.toFixed(2) + 'px)';
       };
-      var tic2 = false;
-      addEventListener('scroll', function () { if (!tic2) { tic2 = true; requestAnimationFrame(function () { tic2 = false; scrivi(); }); } }, { passive: true });
-      addEventListener('resize', scrivi);
-      if (document.fonts) document.fonts.ready.then(scrivi);
-      scrivi();
+      var tic2 = false, giro = function () { if (!tic2) { tic2 = true; requestAnimationFrame(function () { tic2 = false; muovi(); }); } };
+      addEventListener('scroll', giro, { passive: true });
+      addEventListener('resize', giro);
+      addEventListener('pointermove', function (e) { mx = e.clientX; my = e.clientY; giro(); }, { passive: true });
+      occ.addEventListener('pointerenter', strizza);
+      setInterval(function () { if (vivo() && !document.hidden) strizza(); }, 4200);
+      muovi();
     }
 
 
