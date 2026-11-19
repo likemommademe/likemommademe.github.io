@@ -403,6 +403,7 @@ html.cerca-aperta { overflow: hidden; }
 ::view-transition-old(root) { animation: vt-esce .55s var(--ease-io) both; transform-origin: 50% 30%; }
 ::view-transition-new(root) { animation: vt-entra .9s var(--ease) both; }
 ::view-transition-group(barra), ::view-transition-old(barra), ::view-transition-new(barra) { animation: none; }
+::view-transition-old(barra) { display: none; }   /* nel cambio pagina resta solo il menu della pagina nuova (prima la notch vecchia restava sopra) */
 @keyframes vt-esce { to { transform: scale(.94); border-radius: 32px; filter: brightness(.7); } }
 @keyframes vt-entra { from { transform: translateY(100vh); } }
 /* cambio tema: il cerchio lo disegna il JavaScript, qui si spengono le animazioni standard */
