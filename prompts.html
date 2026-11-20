@@ -17,7 +17,7 @@ permalink: /prompts/
     <p class="cs-label cs-head__k">{{ t.k }}</p>
     <p class="prhero__n">N° <b>{{ tutti.size | prepend: "00" | slice: -3, 3 }}</b></p>
   </div>
-  <h1 class="prhero__t rise"><span>{{ t.titolo }}</span></h1>
+  <h1 class="prhero__t" data-decodifica aria-label="{{ t.titolo }}">{{ t.titolo }}</h1>
   <p class="lead prhero__lead">{{ t.intro }}</p>
 </section>
 
@@ -40,7 +40,7 @@ permalink: /prompts/
     {% assign prog = nil %}{% if p.progetto %}{% assign prog = site.progetti | where: "slug", p.progetto | first %}{% endif %}
     <article class="prc" id="{{ p.slug }}" data-str="{% for s in p.strumenti %}{{ s | slugify }} {% endfor %}" data-testo="{{ p.title | downcase | escape }} {{ p.content | strip_html | strip_newlines | downcase | escape }} {{ p.strumenti | join: ' ' | downcase }}" data-frase="{{ p.content | strip_html | strip_newlines | escape }}">
 
-      {% if p.immagine %}<a class="prc__img"{% if prog %} href="{{ prog.url | relative_url }}"{% endif %}><img src="{{ p.immagine | relative_url }}" alt="{{ p.title }}" loading="lazy"></a>{% endif %}
+      {% if p.immagine %}<a class="prc__img"{% if prog %} href="{{ prog.url | relative_url }}"{% endif %}><img src="{{ p.immagine | relative_url }}" alt="{{ p.title }}" loading="lazy"><span class="prc__gen" aria-hidden="true"><i></i><b data-gen>0%</b></span></a>{% endif %}
       <header class="prc__testa">
         <span class="prc__num">P—{{ forloop.index | prepend: "00" | slice: -3, 3 }}</span>
         {% if p.anno %}<span class="prc__anno">{{ p.anno }}</span>{% endif %}
@@ -125,6 +125,40 @@ permalink: /prompts/
         s.textContent = aperto ? es.dataset.meno : es.dataset.piu;
       });
     });
+    // il titolo si «genera»: ogni lettera passa per caratteri a caso e poi si ferma, una dopo l'altra
+    var tit = document.querySelector('[data-decodifica]');
+    if (tit && !ridotto) {
+      var fin = tit.textContent.trim(), POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+?', t0 = performance.now();
+      tit.innerHTML = fin.split('').map(function () { return '<span aria-hidden="true">&nbsp;</span>'; }).join('');
+      var lett = [].slice.call(tit.children);
+      (function giro(t) {
+        var tutte = true;
+        lett.forEach(function (l, i) {
+          var fine = 260 + i * 110 + 420;
+          if (t - t0 < 260 + i * 110) { l.textContent = '\u00a0'; tutte = false; }
+          else if (t - t0 < fine) { l.textContent = POOL[Math.floor(Math.random() * POOL.length)]; l.className = 'is-gira'; tutte = false; }
+          else { l.textContent = fin[i]; l.className = 'is-ok'; }
+        });
+        if (!tutte) requestAnimationFrame(giro);
+      })(t0);
+    }
+    // le schede si «generano» entrando nello schermo: l'immagine passa dal rumore sfocato al nitido e la percentuale sale
+    if ('IntersectionObserver' in window && !ridotto) {
+      w.classList.add('is-gen');
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          var c = e.target, ritardo = (schede.filter(function (x) { return !x.hidden; }).indexOf(c) % 3) * 140;
+          setTimeout(function () {
+            c.classList.add('is-in');
+            var g = c.querySelector('[data-gen]'), t1 = performance.now();
+            if (g) (function cresce(t) { var k = Math.min(1, (t - t1) / 1300); g.textContent = Math.round(100 * (1 - Math.pow(1 - k, 2))) + '%'; if (k < 1) requestAnimationFrame(cresce); else c.classList.add('is-fatta'); })(t1);
+          }, ritardo);
+        });
+      }, { rootMargin: '0px 0px -10% 0px' });
+      schede.forEach(function (c) { io.observe(c); });
+    }
     // arrivando da un progetto (/prompts/#nome): la scheda si illumina
     if (location.hash) { var c = document.getElementById(location.hash.slice(1)); if (c) c.classList.add('is-qui'); }
   })();

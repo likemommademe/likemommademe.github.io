@@ -234,7 +234,7 @@
     // Card (progetti, news, categorie, testimonianze): la foto si inclina appena verso il mouse, su tutto il sito
     (function () {
       if (!matchMedia('(hover: hover)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var FOTO = '.card-img, .pc__media, .nc__img, .altre-cat__img, .cs-pn__img, .rec__img', ora = null;
+      var FOTO = '.card-img, .pc__media, .nc__img, .altre-cat__img, .cs-pn__img, .rec__img, .prc__img', ora = null;
       function dritta() { if (ora) { ora.style.transform = ''; ora = null; } }
       document.addEventListener('pointermove', function (e) {
         var box = e.target.closest && e.target.closest('a, figure'), el = box && (box.matches(FOTO) ? box : box.querySelector(FOTO));
