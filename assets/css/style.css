@@ -1431,14 +1431,14 @@ body:has(.ven__drag.is-su) .segui { opacity: 0; }
 .contatti-pag--solo .contatti-pag__form { width: 100%; max-width: 980px; margin: 0 auto; }
 
 /* PROMPTS: la barra di ricerca che scrive da sola */
-.prcerca { position: relative; display: flex; align-items: center; gap: 14px; height: clamp(64px, 6vw, 84px); padding: 0 24px; margin-bottom: 18px; border: 1.5px solid var(--fg); border-radius: 999px; background: var(--card); transition: box-shadow .4s var(--ease), border-color .3s; }
+.prcerca { position: relative; display: flex; align-items: center; gap: 12px; max-width: 720px; height: 52px; padding: 0 20px; margin-bottom: 18px; border: 1.5px solid var(--fg); border-radius: 999px; background: var(--card); transition: box-shadow .4s var(--ease), border-color .3s; }
 .prcerca:focus-within { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-3) 18%, transparent); border-color: var(--accent-3); }
 .prcerca__ico { flex: none; display: grid; place-items: center; color: var(--accent-3); animation: prcerca-gira 6s linear infinite; }
 @keyframes prcerca-gira { 50% { transform: rotate(180deg) scale(.85); } 100% { transform: rotate(360deg); } }
-.prcerca__in { flex: 1; min-width: 0; height: 100%; border: 0; background: none; color: var(--fg); font: 500 clamp(1.05rem, .95rem + .6vw, 1.5rem) var(--f-sans); letter-spacing: -.01em; outline: none; }
+.prcerca__in { flex: 1; min-width: 0; height: 100%; border: 0; background: none; color: var(--fg); font: 500 16px var(--f-sans); letter-spacing: -.01em; outline: none; }
 .prcerca__in::placeholder { color: transparent; }
 .prcerca__in::-webkit-search-cancel-button { filter: grayscale(1); }
-.prcerca__finta { position: absolute; left: calc(24px + 22px + 14px); right: 150px; top: 50%; transform: translateY(-50%); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font: 500 clamp(1.05rem, .95rem + .6vw, 1.5rem) var(--f-sans); letter-spacing: -.01em; pointer-events: none; }
+.prcerca__finta { position: absolute; left: calc(20px + 18px + 12px); right: 120px; top: 50%; transform: translateY(-50%); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font: 500 16px var(--f-sans); letter-spacing: -.01em; pointer-events: none; }
 .prcerca.is-scritta .prcerca__finta { opacity: 0; }
 .prcerca__cursore { display: inline-block; width: 2px; height: 1.1em; margin-left: 2px; vertical-align: -.18em; background: var(--accent-3); animation: prcerca-blink 1s steps(1) infinite; }
 @keyframes prcerca-blink { 50% { opacity: 0; } }
