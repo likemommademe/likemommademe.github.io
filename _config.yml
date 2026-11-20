@@ -20,6 +20,8 @@ collections:
     output: false
   esperienze:
     output: false   # dove ho lavorato e studiato (loghi in About e Contatti)
+  prompts:
+    output: false   # i prompt dei lavori fatti con l'AI: tutti nella pagina /prompts/
   testimonianze:
     output: false   # parole di chi mi conosce: compaiono solo se pubblicate   # le news portano ad articoli su altri siti: niente pagina propria
 

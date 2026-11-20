@@ -61,6 +61,7 @@
           </div>
           <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>{{ f.chi_sono }}</a>
           <a href="{{ '/news/' | relative_url }}"{% if page.url == '/news/' %} aria-current="page"{% endif %}>{{ f.news | default: "News" }}</a>
+          <a href="{{ '/prompts/' | relative_url }}"{% if page.url == '/prompts/' %} aria-current="page"{% endif %}>{{ f.prompts | default: "Prompts" }}</a>
       </nav>
       <div class="nav__right">
         <div class="nav__tools">
@@ -85,12 +86,14 @@
         </div>
         <div class="mv"><div class="mv__riga"><a href="{{ '/about/' | relative_url }}"><span>{{ f.chi_sono }}</span></a></div></div>
         <div class="mv"><div class="mv__riga"><a href="{{ '/news/' | relative_url }}"><span>{{ f.news | default: "News" }}</span></a></div></div>
+        <div class="mv"><div class="mv__riga"><a href="{{ '/prompts/' | relative_url }}"><span>{{ f.prompts | default: "Prompts" }}</span></a></div></div>
       </nav>
       <div class="nav__mob-piede">
         <div class="nav__mob-riga">
           {% if info.telefono and info.telefono != "" %}<div><p class="nav__mob-k">{{ f.telefono | default: "Telefono" }}</p><a class="nav__mob-tel" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a></div>{% endif %}
           <a class="nav__mob-cta" href="{{ '/contatti/' | relative_url }}">{{ f.contatti }}<span class="nav__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
         </div>
+        {% if info.instagram != "" or info.linkedin != "" %}<p class="nav__mob-social">{% if info.instagram != "" %}<a href="{{ info.instagram }}" target="_blank" rel="noopener">Instagram ↗</a>{% endif %}{% if info.linkedin != "" %}<a href="{{ info.linkedin }}" target="_blank" rel="noopener">LinkedIn ↗</a>{% endif %}</p>{% endif %}
         <ul class="nav__mob-ore" aria-label="{{ t_or.orari_k }}">{% for c in t_or.orari_citta %}<li data-ora-fuso="{{ c.fuso }}"><span class="nav__mob-k" title="{{ c.citta }}">{{ c.sigla | default: c.citta | slice: 0, 3 | upcase }}</span><span class="nav__mob-ora">--<i>:</i>--</span></li>{% endfor %}</ul>
       </div>
     </div>
@@ -148,11 +151,11 @@
     (function () { var m = document.querySelector('main'), u = m && m.lastElementChild; while (u && u.tagName === 'SCRIPT') u = u.previousElementSibling; if (u && !u.classList.contains('inv')) document.getElementById('contatti').classList.add('inv'); })();
   </script>
     <div class="pied__in">
-      <div class="pied__cta">
+      {% unless page.cta_in_pagina %}<div class="pied__cta">
         <h2 class="rise"><span>{{ f.cta_titolo }}</span></h2>
         <p>{{ f.cta_testo }}</p>
         <a class="btn" href="{% if info.email and info.email != '' %}mailto:{{ info.email }}{% else %}{{ '/about/' | relative_url }}{% endif %}" data-modulo-apri>{{ f.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-      </div>
+      </div>{% endunless %}
       <div class="pied__cols">
         <div>
           <h3>{{ f.menu }}</h3>
@@ -161,6 +164,7 @@
             <li><a href="{{ '/work/' | relative_url }}">{{ f.progetti }}</a></li>
             <li><a href="{{ '/about/' | relative_url }}">{{ f.chi_sono }}</a></li>
             <li><a href="{{ '/news/' | relative_url }}">{{ f.news | default: "News" }}</a></li>
+            <li><a href="{{ '/prompts/' | relative_url }}">{{ f.prompts | default: "Prompts" }}</a></li>
           </ul>
         </div>
         <div>
@@ -501,6 +505,8 @@
           if (primo) { primo.focus(); return; }
           var fd = new FormData(f), dati = Object.fromEntries(fd), serv = fd.getAll('servizi');
           delete dati.servizi; if (serv.length) dati.progetto = 'Servizi: ' + serv.join(', ') + '\n\n' + dati.progetto;
+          if (dati.richiesta_prompt) dati.progetto = 'RICHIESTA PROMPT: «' + dati.richiesta_prompt + '»\n\n' + dati.progetto;   // così in Richieste si vede subito di quale lavoro
+          delete dati.richiesta_prompt;
           dati.pagina = location.pathname;
           btn.disabled = true; tx.textContent = TM.invio;
           fetch('https://portfolio-login.calfa63.workers.dev/richiesta', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dati) })
@@ -513,7 +519,25 @@
       });
       var d = document.querySelector('[data-modulo]'); if (!d || !d.showModal) return;
       var box = d.querySelector('[data-modulo-box]');
-      function apri(e) { if (e) e.preventDefault(); box.reset(); d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { d.querySelector('input').focus(); }, 40); }
+      // modalità prompt: il pop-up si apre già compilato con il nome del lavoro (data-prompt-titolo sul link)
+      var titolo = d.querySelector('.modulo__t'), intro = d.querySelector('.modulo__intro'), T0 = titolo && titolo.innerHTML, I0 = intro && intro.textContent;
+      var campoP = d.querySelector('[data-prompt-campo]'), testo = d.querySelector('textarea[name="progetto"]'), refe = d.querySelector('textarea[name="reference"]');
+      function modoPrompt(nome, url) {
+        box.classList.toggle('is-prompt', !!nome);
+        campoP.value = nome || '';
+        if (nome) {
+          titolo.textContent = TM.prompt_titolo.replace('{p}', nome); intro.textContent = TM.prompt_intro;
+          testo.value = TM.prompt_testo.replace('{p}', nome); if (refe) refe.value = url ? location.origin + url : '';
+        } else if (titolo.textContent !== T0) {
+          titolo.innerHTML = T0; intro.textContent = I0;
+          if (/«/.test(testo.value)) testo.value = ''; if (refe && /^https?:/.test(refe.value)) refe.value = '';
+        }
+      }
+      function apri(e) {
+        var el = e && e.currentTarget;
+        if (e) e.preventDefault(); box.reset();
+        modoPrompt(el && el.dataset ? el.dataset.promptTitolo : '', el && el.dataset ? el.dataset.promptUrl : '');
+        d.showModal(); document.documentElement.classList.add('cerca-aperta'); setTimeout(function () { d.querySelector('input').focus(); }, 40); }
       d.addEventListener('close', function () { document.documentElement.classList.remove('cerca-aperta'); });
       document.querySelectorAll('[data-modulo-apri]').forEach(function (b) { b.addEventListener('click', apri); });
       d.querySelectorAll('[data-modulo-chiudi]').forEach(function (b) { b.addEventListener('click', function () { d.close(); }); });

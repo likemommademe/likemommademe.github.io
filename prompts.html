@@ -1,0 +1,100 @@
+---
+layout: default
+title: Prompts
+permalink: /prompts/
+---
+{% comment %}
+  PROMPTS: l'archivio dei prompt che ho usato per i lavori fatti con l'AI (raccolta Prompts nel pannello).
+  Ogni scheda: numero di catalogo, immagine, titolo, concept, strumenti e il prompt. Se il prompt è scritto nel pannello
+  si legge e si copia; se è vuoto compare «Richiedi il prompt», che apre il form già compilato con il nome del lavoro.
+{% endcomment %}
+{% assign t = site.data.testi.prompts %}{% assign tm = site.data.testi.modulo %}
+{% assign tutti = site.prompts | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
+{% assign strumenti = "" | split: "" %}{% for p in tutti %}{% assign strumenti = strumenti | concat: p.strumenti %}{% endfor %}{% assign strumenti = strumenti | uniq | sort %}
+
+<section class="prhero">
+  <div class="prhero__su">
+    <p class="cs-label cs-head__k">{{ t.k }}</p>
+    <p class="prhero__n">N° <b>{{ tutti.size | prepend: "00" | slice: -3, 3 }}</b></p>
+  </div>
+  <h1 class="prhero__t rise"><span>{{ t.titolo }}</span></h1>
+  <p class="lead prhero__lead">{{ t.intro }}</p>
+</section>
+
+<div class="prarch" data-prompts>
+  <div class="news-filtri prarch__filtri" role="group" aria-label="{{ t.filtro }}">
+    <button type="button" class="news-f" data-f="" aria-pressed="true">{{ t.tutti }} <span>{{ tutti.size }}</span></button>
+    {% for s in strumenti %}{% assign n = 0 %}{% for p in tutti %}{% if p.strumenti contains s %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}<button type="button" class="news-f" data-f="{{ s | slugify }}" aria-pressed="false">{{ s }} <span>{{ n }}</span></button>{% endfor %}
+  </div>
+  {% if tutti.size == 0 %}<p class="vuoto">{{ t.vuoto }}</p>{% endif %}
+  <div class="prarch__griglia">
+    {% for p in tutti %}
+    {% assign prog = nil %}{% if p.progetto %}{% assign prog = site.progetti | where: "slug", p.progetto | first %}{% endif %}
+    <article class="prc" id="{{ p.slug }}" data-str="{% for s in p.strumenti %}{{ s | slugify }} {% endfor %}" style="--i: {{ forloop.index0 }}">
+      <header class="prc__testa">
+        <span class="prc__num">P—{{ forloop.index | prepend: "00" | slice: -3, 3 }}</span>
+        {% if p.anno %}<span class="prc__anno">{{ p.anno }}</span>{% endif %}
+      </header>
+      {% if p.immagine %}<a class="prc__img"{% if prog %} href="{{ prog.url | relative_url }}"{% endif %}><img src="{{ p.immagine | relative_url }}" alt="{{ p.title }}" loading="lazy"></a>{% endif %}
+      <h2 class="prc__t">{{ p.title }}</h2>
+      {% if p.content != "" %}<div class="prc__d">{{ p.content | strip_html | strip_newlines }}</div>{% endif %}
+      {% if p.strumenti.size > 0 %}<ul class="prc__str">{% for s in p.strumenti %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+      {% if p.prompt and p.prompt != "" %}
+      <div class="prc__box" data-box>
+        <p class="prc__k">{{ tm.prompt_k }}</p>
+        <pre class="prc__pre" data-testo>{{ p.prompt | escape }}</pre>
+        <div class="prc__az">
+          <button type="button" class="prc__b" data-copia data-fatto="{{ t.copiato }}"><span>{{ t.copia }}</span></button>
+          <button type="button" class="prc__b prc__b--link" data-espandi data-meno="{{ t.riduci }}"><span>{{ t.espandi }}</span></button>
+        </div>
+      </div>
+      {% else %}
+      <a class="prc__box prc__box--chiuso" href="{{ '/contatti/' | relative_url }}" data-modulo-apri data-prompt-titolo="{{ p.title | escape }}" data-prompt-url="{% if prog %}{{ prog.url }}{% else %}/prompts/#{{ p.slug }}{% endif %}">
+        <p class="prc__k">{{ tm.prompt_k }}</p>
+        <span class="prc__righe" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="prc__chiedi">{{ t.richiedi }} <span aria-hidden="true">→</span></span>
+      </a>
+      {% endif %}
+      {% if prog %}<a class="prc__prog lnk" href="{{ prog.url | relative_url }}">{{ t.vedi_progetto }}</a>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var w = document.querySelector('[data-prompts]'); if (!w) return;
+    var schede = [].slice.call(w.querySelectorAll('.prc'));
+    // filtro per strumento
+    w.querySelectorAll('.news-f').forEach(function (b) {
+      b.addEventListener('click', function () {
+        w.querySelectorAll('.news-f').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+        var k = 0;
+        schede.forEach(function (c) {
+          var ok = !b.dataset.f || (' ' + c.dataset.str).indexOf(' ' + b.dataset.f + ' ') >= 0;
+          c.hidden = !ok;
+          if (ok && c.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) c.animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }], { duration: 500, delay: Math.min(k++, 8) * 40, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'backwards' });
+        });
+      });
+    });
+    // copia il prompt / leggilo tutto
+    w.querySelectorAll('[data-box]').forEach(function (box) {
+      var pre = box.querySelector('[data-testo]'), cp = box.querySelector('[data-copia]'), es = box.querySelector('[data-espandi]');
+      if (pre.scrollHeight <= pre.clientHeight + 4) { es.hidden = true; box.classList.add('is-tutto'); }
+      cp.addEventListener('click', function () {
+        var s = cp.querySelector('span'), s0 = s.textContent;
+        (navigator.clipboard ? navigator.clipboard.writeText(pre.textContent) : Promise.reject()).then(function () {
+          s.textContent = cp.dataset.fatto; cp.classList.add('is-fatto');
+          setTimeout(function () { s.textContent = s0; cp.classList.remove('is-fatto'); }, 1800);
+        }).catch(function () {});
+      });
+      es.addEventListener('click', function () {
+        var s = es.querySelector('span'), aperto = box.classList.toggle('is-aperto');
+        if (!es.dataset.piu) es.dataset.piu = s.textContent;
+        s.textContent = aperto ? es.dataset.meno : es.dataset.piu;
+      });
+    });
+    // arrivando da un progetto (/prompts/#nome): la scheda si illumina
+    if (location.hash) { var c = document.getElementById(location.hash.slice(1)); if (c) c.classList.add('is-qui'); }
+  })();
+</script>

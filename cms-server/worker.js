@@ -5,7 +5,8 @@
 //      lo fa con la chiave GitHub, che così non esce mai da Cloudflare;
 //   3. conta le visite al sito pubblico (senza cookie) e le mostra nella dashboard del pannello;
 //   4. riceve le richieste del form «Raccontami un progetto» e le mostra nel pannello, in Richieste;
-//   5. collega Instagram, TikTok e LinkedIn e pubblica i post social dal pannello (Social → Account social).
+//   5. collega Instagram, TikTok e LinkedIn e pubblica i post social dal pannello (Social → Account social);
+//   6. cancella da solo richieste e statistiche più vecchie di 24 mesi (vedi «Cancellazione automatica»).
 //
 // Da impostare nel Worker, in Settings → Variables and Secrets:
 //   EMAIL           le email che possono entrare, separate da virgola (es. tu@gmail.com, amica@gmail.com).
@@ -192,6 +193,7 @@ async function hit(request, env) {
   } catch {}
   const device = /iPad|Tablet/i.test(ua) ? 'Tablet' : /Mobi|Android|iPhone/i.test(ua) ? 'Telefono' : 'Computer';
   await ensureTable(env);
+  await pulizia(env);
   await env.DB.prepare('INSERT INTO hits (day, path, country, ref, device, visitor) VALUES (?, ?, ?, ?, ?, ?)')
     .bind(day, String(body.p || '/').slice(0, 200), request.cf?.country || '', ref, device, visitor).run();
   return new Response(null, { status: 204 });
@@ -220,6 +222,27 @@ async function stats(request, env, url) {
     refs: refs.results,
     devices: devices.results,
   });
+}
+
+// ─── Cancellazione automatica (come scritto nella Privacy) ───
+// Richieste e statistiche delle visite si cancellano da sole dopo 24 mesi. La pulizia parte al massimo
+// una volta al giorno, alla prima visita al sito o alla prima apertura del pannello.
+const CONSERVA_MESI = 24;
+let ultimaPulizia = '';
+async function pulizia(env) {
+  if (!env.DB) return;
+  const oggi = new Date().toISOString().slice(0, 10);
+  if (ultimaPulizia === oggi) return;
+  ultimaPulizia = oggi;
+  const limite = new Date();
+  limite.setUTCMonth(limite.getUTCMonth() - CONSERVA_MESI);
+  const iso = limite.toISOString();
+  await ensureTable(env);
+  await ensureRichieste(env);
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM richieste WHERE quando < ?').bind(iso),
+    env.DB.prepare('DELETE FROM hits WHERE day < ?').bind(iso.slice(0, 10)),
+  ]);
 }
 
 // ─── Richieste dal form «Raccontami un progetto» ───
@@ -275,6 +298,7 @@ async function richieste(request, env, url) {
   if (!(await session(request, env))) return json({ error: 'Sessione scaduta: accedi di nuovo.' }, 401);
   if (!env.DB) return json({ error: 'Richieste non attive: manca il database.' }, 503);
   await ensureRichieste(env);
+  await pulizia(env);
   if (request.method === 'GET') {
     const { results } = await env.DB.prepare('SELECT id, quando, nome, email, telefono, progetto, budget, reference, stato, paese, pagina FROM richieste ORDER BY id DESC LIMIT 500').all();
     return json({ richieste: results });

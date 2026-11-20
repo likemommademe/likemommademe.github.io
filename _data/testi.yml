@@ -62,6 +62,7 @@ lavori:
   conta_piu: progetti
 
 footer:
+  prompts: Prompts
   curriculum: Scarica il curriculum
   cta_titolo: "Hai un progetto in <em>testa</em>?"
   cta_testo: Raccontamelo. Rispondo io, di persona, e di solito in giornata.
@@ -206,6 +207,13 @@ cerca:
   tutti: Vedi tutti i progetti
 
 modulo:
+  # richiesta del prompt (dai progetti Generative AI e dalla pagina Prompts): {p} è il nome del lavoro
+  prompt_titolo: "Il prompt di «{p}»"
+  prompt_intro: Lasciami nome ed email e ti mando il prompt che ho usato per questo lavoro. Se vuoi, dimmi anche a cosa ti serve.
+  prompt_testo: "Ciao! Mi piacerebbe ricevere il prompt di «{p}»."
+  prompt_richiedi: Richiedi il prompt di questo progetto
+  prompt_leggi: Leggi il prompt di questo progetto
+  prompt_k: Prompt
   titolo: "Ce l'hai un progetto in <em>testa</em>?"
   intro: Due righe bastano. Ti rispondo io, di persona, e di solito in giornata.
   nome: Come ti chiami
@@ -256,10 +264,41 @@ categoria:
   etichetta: Categoria
   vedi: Vedi i progetti
 
+prompts:
+  k: Archivio
+  titolo: Prompts
+  intro: I prompt che ho scritto e usato per i miei lavori con l'intelligenza artificiale. Alcuni si leggono qui, gli altri li mando a chi me li chiede.
+  filtro: Strumento
+  tutti: Tutti
+  copia: Copia il prompt
+  copiato: Copiato!
+  espandi: Leggi tutto
+  riduci: Riduci
+  richiedi: Richiedi il prompt
+  vedi_progetto: Vedi il progetto
+  vuoto: Nessun prompt, per ora.
+
 contatti:
   social_k: Mi trovi anche su
   k: Scrivimi
   titolo: Contatti
+  titolo_1: Parliamo di
+  titolo_ultima: un'idea.
+  disponibile: Disponibile per nuovi progetti
+  email_k: Email
+  tel_k: Telefono
+  copia: Copia
+  copiata: Copiata!
+  chiama: Chiama
+  linkedin_v: Emanuele Calfa
+  passi_k: Come funziona
+  passi:
+    - t: Mi racconti il progetto
+      d: Anche due righe. Cosa ti serve, per chi, entro quando.
+    - t: Ti rispondo io
+      d: Di persona, di solito in giornata, dal lunedì al venerdì.
+    - t: Ne parliamo insieme
+      d: Capiamo cosa serve davvero e da dove partire.
   intro: Hai un progetto o anche solo una domanda? Lasciami due righe, il resto lo vediamo insieme.
   diretto: Preferisci scrivermi direttamente?
   cv_k: Il curriculum

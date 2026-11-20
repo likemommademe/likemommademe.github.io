@@ -5,39 +5,42 @@ permalink: /contatti/
 ---
 {% assign tc = site.data.testi.contatti %}{% assign info = site.data.impostazioni %}{% assign a = site.data.testi.about %}
 
-<section class="phero">
-  <p class="cs-label cs-head__k">{{ tc.k }}</p>
-  <h1 class="rise"><span>{{ tc.titolo }}</span></h1>
-  <p class="lead">{{ tc.intro }}</p>
+{% comment %}
+  Apertura: stato e ora di Roma dal vivo, un titolo enorme con la parola che cambia, poi l'indice dei contatti
+  (l'email si copia con un clic). Sotto, il form con accanto i tre passi di come funziona.
+{% endcomment %}
+{% assign cats_c = site.categorie | sort: "ordine", "last" %}
+<section class="chero" data-chero>
+  <div class="chero__su">
+    <p class="cs-label cs-head__k">{{ tc.k }}</p>
+    <p class="chero__stato"><i aria-hidden="true"></i>{{ tc.disponibile }} <span class="chero__ora">· Roma <b data-ora-roma>--:--</b></span></p>
+  </div>
+  <h1 class="chero__t">
+    <span class="chero__r1">{{ tc.titolo_1 }}</span>
+    <span class="chero__giro" aria-hidden="true"><span class="chero__pista" data-giro>{% for c in cats_c %}<span>{{ c.title | downcase }}</span>{% endfor %}<span>{{ tc.titolo_ultima }}</span><span>{{ cats_c.first.title | downcase }}</span></span></span>
+    <span class="sr-only">{{ tc.titolo_ultima }}</span>
+  </h1>
+  <p class="lead chero__lead">{{ tc.intro }}</p>
+  <ol class="chero__indice">
+    {% if info.email != "" %}<li class="crow"><span class="crow__n" aria-hidden="true"></span><span class="crow__k">{{ tc.email_k }}</span><a class="crow__v" href="mailto:{{ info.email }}">{{ info.email }}</a><button class="crow__az" type="button" data-copia="{{ info.email }}" data-fatto="{{ tc.copiata }}"><span>{{ tc.copia }}</span></button></li>{% endif %}
+    {% if info.telefono != "" %}<li class="crow"><span class="crow__n" aria-hidden="true"></span><span class="crow__k">{{ tc.tel_k }}</span><a class="crow__v" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a><a class="crow__az" href="tel:{{ info.telefono | remove: ' ' }}"><span>{{ tc.chiama }}</span></a></li>{% endif %}
+    {% if info.instagram != "" %}<li class="crow"><span class="crow__n" aria-hidden="true"></span><span class="crow__k">Instagram</span><a class="crow__v" href="{{ info.instagram }}" target="_blank" rel="noopener">@{{ info.instagram | split: "instagram.com/" | last | remove: "/" }}</a><a class="crow__az" href="{{ info.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>{% endif %}
+    {% if info.linkedin != "" %}<li class="crow"><span class="crow__n" aria-hidden="true"></span><span class="crow__k">LinkedIn</span><a class="crow__v" href="{{ info.linkedin }}" target="_blank" rel="noopener">{{ tc.linkedin_v }}</a><a class="crow__az" href="{{ info.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>{% endif %}
+    {% if info.curriculum != "" %}<li class="crow"><span class="crow__n" aria-hidden="true"></span><span class="crow__k">{{ tc.cv_k }}</span><a class="crow__v" href="{{ info.curriculum | relative_url }}" download>{{ site.data.testi.footer.curriculum }}</a><a class="crow__az" href="{{ info.curriculum | relative_url }}" download aria-label="{{ site.data.testi.footer.curriculum }}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>{% endif %}
+  </ol>
 </section>
 
-{% comment %} 1. Il form e, di lato, i contatti diretti {% endcomment %}
+{% comment %} 1. Il form e, di lato, come funziona {% endcomment %}
 <section class="fascia inv contatti-pag">
   <div class="contatti-pag__form">
     <h2 class="contatti-pag__t">{{ site.data.testi.modulo.titolo }}</h2>
     {% include modulo.html id="p" senza_titolo=true %}
   </div>
   <aside class="contatti-pag__lato">
-    <div class="contatti-pag__blocco">
-      <p class="cs-label">{{ tc.diretto }}</p>
-      {% if info.email != "" %}<a class="contatti-pag__grande" href="mailto:{{ info.email }}">{{ info.email }}</a>{% endif %}
-      {% if info.telefono != "" %}<a class="contatti-pag__grande" href="tel:{{ info.telefono | remove: ' ' }}">{{ info.telefono }}</a>{% endif %}
-    </div>
-    {% if info.instagram != "" or info.linkedin != "" %}<div class="contatti-pag__blocco">
-      <p class="cs-label">{{ tc.social_k }}</p>
-      <div class="contatti-pag__social">
-        {% if info.instagram != "" %}<a class="rec__vedi" href="{{ info.instagram }}" target="_blank" rel="noopener">Instagram<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
-        {% if info.linkedin != "" %}<a class="rec__vedi" href="{{ info.linkedin }}" target="_blank" rel="noopener">LinkedIn<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
-      </div>
-    </div>{% endif %}
-    {% if info.curriculum != "" %}<div class="contatti-pag__blocco">
-      <p class="cs-label">{{ tc.cv_k }}</p>
-      <a class="rec__vedi" href="{{ info.curriculum | relative_url }}" download>{{ site.data.testi.footer.curriculum }}<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7.5 8 11.5 12 7.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    </div>{% endif %}
-    <div class="contatti-pag__blocco">
-      <p class="cs-label">{{ tc.tempi_k }}</p>
-      <p class="contatti-pag__p">{{ tc.tempi }}</p>
-    </div>
+    <p class="cs-label">{{ tc.passi_k }}</p>
+    <ol class="passi">
+      {% for x in tc.passi %}<li><span class="passi__n">{{ forloop.index }}</span><div><p class="passi__t">{{ x.t }}</p><p class="contatti-pag__p">{{ x.d }}</p></div></li>{% endfor %}
+    </ol>
   </aside>
 </section>
 
@@ -65,3 +68,29 @@ permalink: /contatti/
 
 {% comment %} 5. Domande frequenti {% endcomment %}
 {% include domande.html id="contatti" inv=true %}
+
+<script>
+  (function () {
+    var h = document.querySelector('[data-chero]'); if (!h) return;
+    // l'ora di Roma, dal vivo
+    var ora = h.querySelector('[data-ora-roma]'), fmt = new Intl.DateTimeFormat('it-IT', { timeZone: 'Europe/Rome', hour: '2-digit', minute: '2-digit' });
+    (function tic() { ora.textContent = fmt.format(new Date()); setTimeout(tic, 15000); })();
+    // la parola che cambia nel titolo: scorre in su dentro la sua maschera
+    var pista = h.querySelector('[data-giro]'), voci = pista.children.length, i = 0;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(function () {
+      if (document.hidden) return;
+      i++; pista.style.transition = ''; pista.style.transform = 'translateY(' + (-i * 100 / voci) + '%)';
+      if (i === voci - 1) setTimeout(function () { pista.style.transition = 'none'; i = 0; pista.style.transform = 'translateY(0)'; }, 800);
+    }, 2200);
+    // copia l'email con un clic
+    h.querySelectorAll('[data-copia]').forEach(function (b) {
+      var t = b.querySelector('span'), t0 = t.textContent;
+      b.addEventListener('click', function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copia) : Promise.reject()).then(function () {
+          t.textContent = b.dataset.fatto; b.classList.add('is-fatto');
+          setTimeout(function () { t.textContent = t0; b.classList.remove('is-fatto'); }, 1800);
+        }).catch(function () { location.href = 'mailto:' + b.dataset.copia; });
+      });
+    });
+  })();
+</script>

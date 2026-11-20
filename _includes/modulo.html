@@ -21,6 +21,7 @@
       <div class="scelte">{% for b in tm.budget_scelte %}<label class="scelta"><input type="radio" name="budget" value="{{ b }}"><span>{{ b }}</span></label>{% endfor %}</div>
     </fieldset>
     <label class="campo"><span class="campo__k">{{ tm.reference }} <i>{{ tm.facoltativo }}</i></span><textarea name="reference" id="{{ k }}-ref" rows="2" maxlength="1500" placeholder="{{ tm.reference_aiuto }}"></textarea></label>
+    <input type="hidden" name="richiesta_prompt" value="" data-prompt-campo>
     <label class="modulo__trappola" aria-hidden="true">Sito web<input name="sito_web" tabindex="-1" autocomplete="off"></label>
     <p class="modulo__err" data-modulo-err role="alert" hidden></p>
     <div class="modulo__fine">
