@@ -11,7 +11,7 @@ permalink: /prompts/
 {% endcomment %}
 {% assign t = site.data.testi.prompts %}{% assign tm = site.data.testi.modulo %}
 {% assign tutti = site.prompts | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
-{% assign strumenti = "" | split: "" %}{% for p in tutti %}{% assign strumenti = strumenti | concat: p.strumenti %}{% endfor %}{% assign strumenti = strumenti | uniq | sort %}
+{% assign strumenti = "" | split: "" %}{% for p in tutti %}{% for s in p.strumenti %}{% assign strumenti = strumenti | push: s %}{% endfor %}{% endfor %}   {% comment %} anche una scheda senza strumenti va bene {% endcomment %}{% assign strumenti = strumenti | uniq | sort %}
 
 <section class="prhero">
   <div class="prhero__su">
@@ -50,7 +50,7 @@ permalink: /prompts/
         <div class="prc__info">
           <h2 class="prc__t">{{ p.title }}</h2>
           {% if p.content != "" %}<p class="prc__d">{{ p.content | strip_html | strip_newlines }}</p>{% endif %}
-          {% if p.strumenti.size > 0 %}<ul class="prc__str">{% for s in p.strumenti %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+          {% if p.strumenti and p.strumenti.size > 0 %}<ul class="prc__str">{% for s in p.strumenti %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
         </div>
         {% if p.prompt and p.prompt != "" %}
         <div class="prc__pann" data-box>
