@@ -151,7 +151,7 @@
     (function () { var m = document.querySelector('main'), u = m && m.lastElementChild; while (u && u.tagName === 'SCRIPT') u = u.previousElementSibling; if (u && !u.classList.contains('inv')) document.getElementById('contatti').classList.add('inv'); })();
   </script>
     <div class="pied__in">
-      {% unless page.cta_in_pagina %}<div class="pied__cta">
+      {% unless page.cta_in_pagina or page.senza_cta %}<div class="pied__cta">
         <h2 class="rise"><span>{{ f.cta_titolo }}</span></h2>
         <p>{{ f.cta_testo }}</p>
         <a class="btn" href="{% if info.email and info.email != '' %}mailto:{{ info.email }}{% else %}{{ '/about/' | relative_url }}{% endif %}" data-modulo-apri>{{ f.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
@@ -216,11 +216,12 @@
         ['cerchio2', 'M100 4C160 2 199 18 196 42C193 66 150 79 96 77C40 75 3 62 6 38C9 16 52 3 112 8']
       ];
       var COLORI = ['var(--accent-3)', 'var(--accent-1)', 'var(--accent-2)'];
-      var dove = location.pathname.length;
-      parole.forEach(function (em, i) {
-        var k = (i + dove) % SEGNI.length, g = SEGNI[k];
+      // il segno dipende dal titolo: lo stesso titolo ha lo stesso segno su tutte le pagine
+      var impronta = function (t) { var x = 7; for (var j = 0; j < t.length; j++) x = (x * 31 + t.charCodeAt(j)) % 9973; return x; };
+      parole.forEach(function (em) {
+        var n = impronta((em.closest('h2') || em).textContent.trim()), g = SEGNI[n % SEGNI.length];
         em.classList.add('con-cerchio', 'segno--' + g[0]);
-        em.style.setProperty('--segno', COLORI[(i + dove * 2) % COLORI.length]);
+        em.style.setProperty('--segno', COLORI[Math.floor(n / SEGNI.length) % COLORI.length]);
         em.insertAdjacentHTML('beforeend', '<svg class="cerchio" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="' + g[1] + '"/></svg>');
       });
       function disegna(em) {
