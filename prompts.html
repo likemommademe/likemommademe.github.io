@@ -4,9 +4,10 @@ title: Prompts
 permalink: /prompts/
 ---
 {% comment %}
-  PROMPTS: l'archivio dei prompt che ho usato per i lavori fatti con l'AI (raccolta Prompts nel pannello).
-  Ogni scheda: numero di catalogo, immagine, titolo, concept, strumenti e il prompt. Se il prompt è scritto nel pannello
-  si legge e si copia; se è vuoto compare «Richiedi il prompt», che apre il form già compilato con il nome del lavoro.
+  PROMPTS: l'archivio dei prompt dei miei lavori con l'AI (raccolta Prompts nel pannello).
+  Ogni scheda è una foto grande con sopra numero, anno, titolo e strumenti; la freccia in alto porta al progetto.
+  Passandoci sopra sale il pannello del prompt: se è scritto nel pannello (prompt pubblico) si legge e si copia,
+  altrimenti «Richiedi il prompt» apre il form già compilato con il nome del lavoro. Su telefono il pannello si vede sempre.
 {% endcomment %}
 {% assign t = site.data.testi.prompts %}{% assign tm = site.data.testi.modulo %}
 {% assign tutti = site.prompts | where_exp: "p", "p.published != false" | sort: "ordine", "last" %}
@@ -22,49 +23,52 @@ permalink: /prompts/
 </section>
 
 <div class="prarch" data-prompts>
-  {% comment %} La barra di ricerca, come quella di un generatore: scrive da sola i concept dei lavori finché non ci scrivi tu {% endcomment %}
-  <div class="prcerca" data-prcerca>
-    <span class="prcerca__ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2.5l1.8 5.7 5.7 1.8-5.7 1.8L12 17.5l-1.8-5.7L4.5 10l5.7-1.8z" fill="currentColor"/><path d="M19 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor"/></svg></span>
-    <label class="sr-only" for="prq">{{ t.cerca }}</label>
-    <input class="prcerca__in" id="prq" type="search" autocomplete="off" spellcheck="false" placeholder="{{ t.cerca }}" data-prq>
-    <span class="prcerca__finta" aria-hidden="true"><span data-scrive></span><i class="prcerca__cursore"></i></span>
-    <span class="prcerca__n" data-prn aria-live="polite">{{ tutti.size }} {{ t.risultati }}</span>
-  </div>
-  <div class="news-filtri prarch__filtri" role="group" aria-label="{{ t.filtro }}">
-    <button type="button" class="news-f" data-f="" aria-pressed="true">{{ t.tutti }} <span>{{ tutti.size }}</span></button>
-    {% for s in strumenti %}{% assign n = 0 %}{% for p in tutti %}{% if p.strumenti contains s %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}<button type="button" class="news-f" data-f="{{ s | slugify }}" aria-pressed="false">{{ s }} <span>{{ n }}</span></button>{% endfor %}
+  <div class="prbar">
+    {% comment %} la ricerca: un bottone tondo con la stellina che gira; passandoci sopra (o cliccando) si allarga in un campo {% endcomment %}
+    <label class="prcerca" data-prcerca>
+      <span class="prcerca__ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 2.5l1.8 5.7 5.7 1.8-5.7 1.8L12 17.5l-1.8-5.7L4.5 10l5.7-1.8z" fill="currentColor"/><path d="M19 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor"/></svg></span>
+      <span class="sr-only">{{ t.cerca }}</span>
+      <input class="prcerca__in" type="search" autocomplete="off" spellcheck="false" placeholder="{{ t.cerca }}" data-prq>
+    </label>
+    <div class="news-filtri prarch__filtri" role="group" aria-label="{{ t.filtro }}">
+      <button type="button" class="news-f" data-f="" aria-pressed="true">{{ t.tutti }} <span>{{ tutti.size }}</span></button>
+      {% for s in strumenti %}{% assign n = 0 %}{% for p in tutti %}{% if p.strumenti contains s %}{% assign n = n | plus: 1 %}{% endif %}{% endfor %}<button type="button" class="news-f" data-f="{{ s | slugify }}" aria-pressed="false">{{ s }} <span>{{ n }}</span></button>{% endfor %}
+    </div>
+    <span class="prbar__n" data-prn aria-live="polite">{{ tutti.size }} {{ t.risultati }}</span>
   </div>
   <p class="vuoto" data-prvuoto{% if tutti.size > 0 %} hidden{% endif %}>{{ t.vuoto }}</p>
   <div class="prarch__griglia">
     {% for p in tutti %}
     {% assign prog = nil %}{% if p.progetto %}{% assign prog = site.progetti | where: "slug", p.progetto | first %}{% endif %}
-    <article class="prc" id="{{ p.slug }}" data-str="{% for s in p.strumenti %}{{ s | slugify }} {% endfor %}" data-testo="{{ p.title | downcase | escape }} {{ p.content | strip_html | strip_newlines | downcase | escape }} {{ p.strumenti | join: ' ' | downcase }}" data-frase="{{ p.content | strip_html | strip_newlines | escape }}">
-
-      {% if p.immagine %}<a class="prc__img"{% if prog %} href="{{ prog.url | relative_url }}"{% endif %}><img src="{{ p.immagine | relative_url }}" alt="{{ p.title }}" loading="lazy"><span class="prc__gen" aria-hidden="true"><i></i><b data-gen>0%</b></span></a>{% endif %}
-      <header class="prc__testa">
-        <span class="prc__num">P—{{ forloop.index | prepend: "00" | slice: -3, 3 }}</span>
-        {% if p.anno %}<span class="prc__anno">{{ p.anno }}</span>{% endif %}
-      </header>
-      <h2 class="prc__t">{{ p.title }}</h2>
-      {% if p.content != "" %}<div class="prc__d">{{ p.content | strip_html | strip_newlines }}</div>{% endif %}
-      {% if p.strumenti.size > 0 %}<ul class="prc__str">{% for s in p.strumenti %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
-      {% if p.prompt and p.prompt != "" %}
-      <div class="prc__box" data-box>
-        <p class="prc__k">{{ tm.prompt_k }}</p>
-        <pre class="prc__pre" data-testo>{{ p.prompt | escape }}</pre>
-        <div class="prc__az">
-          <button type="button" class="prc__b" data-copia data-fatto="{{ t.copiato }}"><span>{{ t.copia }}</span></button>
-          <button type="button" class="prc__b prc__b--link" data-espandi data-meno="{{ t.riduci }}"><span>{{ t.espandi }}</span></button>
-        </div>
+    <article class="prc" id="{{ p.slug }}" data-str="{% for s in p.strumenti %}{{ s | slugify }} {% endfor %}" data-testo="{{ p.title | downcase | escape }} {{ p.content | strip_html | strip_newlines | downcase | escape }} {{ p.strumenti | join: ' ' | downcase }}">
+      <div class="prc__img">{% if p.immagine %}<img src="{{ p.immagine | relative_url }}" alt="{{ p.title }}" loading="lazy">{% endif %}<span class="prc__gen" aria-hidden="true"><i></i><b data-gen>0%</b></span></div>
+      <div class="prc__su">
+        <span class="prc__num">P—{{ forloop.index | prepend: "00" | slice: -3, 3 }}{% if p.anno %} · {{ p.anno }}{% endif %}</span>
+        {% if prog %}<a class="prc__vai" href="{{ prog.url | relative_url }}" aria-label="{{ t.vedi_progetto }}: {{ p.title }}" title="{{ t.vedi_progetto }}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5.5 4H12v6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>{% endif %}
       </div>
-      {% else %}
-      <a class="prc__box prc__box--chiuso" href="{{ '/contatti/' | relative_url }}" data-modulo-apri data-prompt-titolo="{{ p.title | escape }}" data-prompt-url="{% if prog %}{{ prog.url }}{% else %}/prompts/#{{ p.slug }}{% endif %}">
-        <p class="prc__k">{{ tm.prompt_k }}</p>
-        <span class="prc__righe" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="prc__chiedi">{{ t.richiedi }} <span aria-hidden="true">→</span></span>
-      </a>
-      {% endif %}
-      {% if prog %}<a class="prc__prog lnk" href="{{ prog.url | relative_url }}">{{ t.vedi_progetto }}</a>{% endif %}
+      <div class="prc__giu">
+        <div class="prc__info">
+          <h2 class="prc__t">{{ p.title }}</h2>
+          {% if p.content != "" %}<p class="prc__d">{{ p.content | strip_html | strip_newlines }}</p>{% endif %}
+          {% if p.strumenti.size > 0 %}<ul class="prc__str">{% for s in p.strumenti %}<li>{{ s }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+        {% if p.prompt and p.prompt != "" %}
+        <div class="prc__pann" data-box>
+          <p class="prc__k">{{ tm.prompt_k }}</p>
+          <pre class="prc__pre" data-testo>{{ p.prompt | escape }}</pre>
+          <div class="prc__az">
+            <button type="button" class="prc__b" data-copia data-fatto="{{ t.copiato }}"><span>{{ t.copia }}</span></button>
+            <button type="button" class="prc__b prc__b--link" data-espandi data-meno="{{ t.riduci }}"><span>{{ t.espandi }}</span></button>
+          </div>
+        </div>
+        {% else %}
+        <a class="prc__pann prc__pann--chiuso" href="{{ '/contatti/' | relative_url }}" data-modulo-apri data-prompt-titolo="{{ p.title | escape }}" data-prompt-url="{% if prog %}{{ prog.url }}{% else %}/prompts/#{{ p.slug }}{% endif %}">
+          <span class="prc__k">{{ tm.prompt_k }}</span>
+          <span class="prc__righe" aria-hidden="true"><i></i><i></i></span>
+          <span class="prc__chiedi">{{ t.richiedi }} <span aria-hidden="true">→</span></span>
+        </a>
+        {% endif %}
+      </div>
     </article>
     {% endfor %}
   </div>
@@ -73,10 +77,10 @@ permalink: /prompts/
 <script>
   (function () {
     var w = document.querySelector('[data-prompts]'); if (!w) return;
-    var schede = [].slice.call(w.querySelectorAll('.prc'));
-    // ricerca + filtro per strumento, insieme
-    var q = w.querySelector('[data-prq]'), nRis = w.querySelector('[data-prn]'), vuoto = w.querySelector('[data-prvuoto]'), filtro = '', ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var norm = function (x) { return (x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
+    var schede = [].slice.call(w.querySelectorAll('.prc')), ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // ricerca + filtro per strumento
+    var q = w.querySelector('[data-prq]'), nRis = w.querySelector('[data-prn]'), vuoto = w.querySelector('[data-prvuoto]'), filtro = '';
+    var norm = function (x) { return (x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
     var R1 = {{ t.risultato | jsonify }}, RN = {{ t.risultati | jsonify }};
     function mostra() {
       var v = norm(q.value.trim()), k = 0, n = 0;
@@ -94,38 +98,9 @@ permalink: /prompts/
       });
     });
     q.addEventListener('input', mostra);
-    // la barra scrive da sola i concept dei lavori (finché non la usi tu)
-    var bar = w.querySelector('[data-prcerca]'), scrive = w.querySelector('[data-scrive]'), frasi = schede.map(function (c) { return c.dataset.frase; }).filter(Boolean), fi = 0, ci = 0, cancella = false, ferma = false;
-    function sync() { bar.classList.toggle('is-scritta', q.value !== '' || document.activeElement === q); }
-    q.addEventListener('focus', sync); q.addEventListener('blur', sync); q.addEventListener('input', sync);
-    if (!ridotto && frasi.length) (function batti() {
-      if (!bar.classList.contains('is-scritta')) {
-        var f = frasi[fi % frasi.length];
-        if (!cancella) { ci++; if (ci >= f.length) { cancella = true; scrive.textContent = f; return setTimeout(batti, 1700); } }
-        else { ci -= 3; if (ci <= 0) { ci = 0; cancella = false; fi++; } }
-        scrive.textContent = f.slice(0, ci);
-      }
-      setTimeout(batti, cancella ? 18 : 42 + Math.random() * 40);
-    })();
-    else if (frasi.length) scrive.textContent = frasi[0];
-    // copia il prompt / leggilo tutto
-    w.querySelectorAll('[data-box]').forEach(function (box) {
-      var pre = box.querySelector('[data-testo]'), cp = box.querySelector('[data-copia]'), es = box.querySelector('[data-espandi]');
-      if (pre.scrollHeight <= pre.clientHeight + 4) { es.hidden = true; box.classList.add('is-tutto'); }
-      cp.addEventListener('click', function () {
-        var s = cp.querySelector('span'), s0 = s.textContent;
-        (navigator.clipboard ? navigator.clipboard.writeText(pre.textContent) : Promise.reject()).then(function () {
-          s.textContent = cp.dataset.fatto; cp.classList.add('is-fatto');
-          setTimeout(function () { s.textContent = s0; cp.classList.remove('is-fatto'); }, 1800);
-        }).catch(function () {});
-      });
-      es.addEventListener('click', function () {
-        var s = es.querySelector('span'), aperto = box.classList.toggle('is-aperto');
-        if (!es.dataset.piu) es.dataset.piu = s.textContent;
-        s.textContent = aperto ? es.dataset.meno : es.dataset.piu;
-      });
-    });
-    // il titolo si «genera»: ogni lettera passa per caratteri a caso e poi si ferma, una dopo l'altra
+    var barra = w.querySelector('[data-prcerca]');
+    q.addEventListener('input', function () { barra.classList.toggle('is-piena', q.value !== ''); });
+    // il titolo si «genera»: ogni lettera passa per caratteri a caso e poi si ferma
     var tit = document.querySelector('[data-decodifica]');
     if (tit && !ridotto) {
       var fin = tit.textContent.trim(), POOL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+?', t0 = performance.now();
@@ -134,32 +109,46 @@ permalink: /prompts/
       (function giro(t) {
         var tutte = true;
         lett.forEach(function (l, i) {
-          var fine = 260 + i * 110 + 420;
-          if (t - t0 < 260 + i * 110) { l.textContent = '\u00a0'; tutte = false; }
-          else if (t - t0 < fine) { l.textContent = POOL[Math.floor(Math.random() * POOL.length)]; l.className = 'is-gira'; tutte = false; }
+          if (t - t0 < 260 + i * 110) { l.textContent = ' '; tutte = false; }
+          else if (t - t0 < 680 + i * 110) { l.textContent = POOL[Math.floor(Math.random() * POOL.length)]; l.className = 'is-gira'; tutte = false; }
           else { l.textContent = fin[i]; l.className = 'is-ok'; }
         });
         if (!tutte) requestAnimationFrame(giro);
       })(t0);
     }
-    // le schede si «generano» entrando nello schermo: l'immagine passa dal rumore sfocato al nitido e la percentuale sale
+    // le schede si «generano» entrando nello schermo: dal rumore sfocato al nitido, con la percentuale
     if ('IntersectionObserver' in window && !ridotto) {
       w.classList.add('is-gen');
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
           if (!e.isIntersecting) return;
           io.unobserve(e.target);
-          var c = e.target, ritardo = (schede.filter(function (x) { return !x.hidden; }).indexOf(c) % 3) * 140;
+          var c = e.target;
           setTimeout(function () {
             c.classList.add('is-in');
             var g = c.querySelector('[data-gen]'), t1 = performance.now();
-            if (g) (function cresce(t) { var k = Math.min(1, (t - t1) / 1300); g.textContent = Math.round(100 * (1 - Math.pow(1 - k, 2))) + '%'; if (k < 1) requestAnimationFrame(cresce); else c.classList.add('is-fatta'); })(t1);
-          }, ritardo);
+            (function cresce(t) { var k = Math.min(1, (t - t1) / 1300); g.textContent = Math.round(100 * (1 - Math.pow(1 - k, 2))) + '%'; if (k < 1) requestAnimationFrame(cresce); else c.classList.add('is-fatta'); })(t1);
+          }, (schede.filter(function (x) { return !x.hidden; }).indexOf(c) % 3) * 140);
         });
       }, { rootMargin: '0px 0px -10% 0px' });
       schede.forEach(function (c) { io.observe(c); });
     }
-    // arrivando da un progetto (/prompts/#nome): la scheda si illumina
+    // prompt pubblico: copia e leggi tutto
+    w.querySelectorAll('[data-box]').forEach(function (box) {
+      var pre = box.querySelector('[data-testo]'), cp = box.querySelector('[data-copia]'), es = box.querySelector('[data-espandi]');
+      if (pre.scrollHeight <= pre.clientHeight + 4) { es.hidden = true; box.classList.add('is-tutto'); }
+      cp.addEventListener('click', function () {
+        var s = cp.querySelector('span'), s0 = s.textContent;
+        (navigator.clipboard ? navigator.clipboard.writeText(pre.textContent) : Promise.reject()).then(function () {
+          s.textContent = cp.dataset.fatto; setTimeout(function () { s.textContent = s0; }, 1800);
+        }).catch(function () {});
+      });
+      es.addEventListener('click', function () {
+        var s = es.querySelector('span'), aperto = box.classList.toggle('is-aperto');
+        if (!es.dataset.piu) es.dataset.piu = s.textContent;
+        s.textContent = aperto ? es.dataset.meno : es.dataset.piu;
+      });
+    });
     if (location.hash) { var c = document.getElementById(location.hash.slice(1)); if (c) c.classList.add('is-qui'); }
   })();
 </script>
