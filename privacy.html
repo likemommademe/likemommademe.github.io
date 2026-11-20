@@ -1,0 +1,212 @@
+---
+layout: default
+title: Privacy
+permalink: /privacy/
+description: "Informativa privacy di LIKEMOMMADEME: quali dati raccoglie il modulo Contatti, dove finiscono, per quanto restano e quali servizi esterni usa il sito."
+aggiornata: "20 novembre 2026"
+# Versione inglese, pronta per quando il sito avrà anche l'inglese.
+body_en: |
+  # Privacy
+
+  What happens to the data you leave me, without beating around the bush. Last updated: 20 November 2026.
+
+  ## In short
+  - **What I collect**: only what you write in the contact form, plus anonymous visit statistics without cookies.
+  - **Where it goes**: to a private database that only I can open, plus a notification to my email.
+  - **How long**: 24 months, then it is deleted automatically.
+  - **What I don't do**: no profiling cookies, no ads, I don't sell or pass your data on to anyone.
+
+  ## 01 · Who handles your data
+  The data controller is **Emanuele Calfa** (LIKEMOMMADEME), a private individual. For anything about your data, write to the email shown on the site.
+
+  ## 02 · The contact form
+  **What you give me.** Required: name, email and a description of the project. Optional: phone, the services you need, an indicative budget and reference links. In the description you can write anything you like: please don't include information that isn't needed (health, opinions, other people's data).
+
+  **What is added automatically.** Date and time of sending, the country you are connecting from, the page you wrote from, and a code derived from your connection that changes every day. Your IP address is not stored: the code only serves to block anyone sending more than 5 requests a day.
+
+  **Why.** To read your request, reply and assess the project together. Legal basis: steps taken at your request before a possible agreement (art. 6(1)(b) GDPR). The anti-abuse code is based on my legitimate interest in protecting the form from spam (art. 6(1)(f)).
+
+  **Where it goes.** The form sends the data to my server on Cloudflare, which stores it in a Cloudflare D1 database and sends me a notification email through Resend, to my Gmail inbox. Requests can only be read by me, from a private panel that requires login.
+
+  **How long.** Requests are deleted automatically 24 months after they were sent; if you ask, I delete them sooner. Notification emails and the correspondence that follows stay in my inbox for as long as needed to handle the request and any collaboration.
+
+  **Do you have to?** No. But without name, email and project description I can't reply to you.
+
+  ## 03 · Visit statistics
+  To know how many people visit the site and which pages they look at, every page sends my server: the page visited, the site you came from, your country, the type of device (computer, phone, tablet) and a code derived from IP address and browser that changes every day. No cookies, and IP and browser are not stored as such: the next day I can't tell whether you are the same person. Legal basis: legitimate interest in understanding how the site is used (art. 6(1)(f)). The data is deleted automatically after 24 months.
+
+  ## 04 · Browsing, fonts and videos
+  - **Hosting.** The site is published on GitHub Pages: GitHub records visitors' IP addresses for security reasons. I have no access to this data.
+  - **Fonts.** The fonts are loaded from Fontshare (Indian Type Foundry, India) and Adobe Fonts (Adobe): your browser connects to their servers and so passes on your IP address. Adobe says it sets no cookies to serve its fonts; Indian Type Foundry says Fontshare does not collect personal data.
+  - **Videos and prototypes.** Some projects include Vimeo videos and Figma prototypes. When you open those pages, your browser connects to Vimeo and Figma, which receive your IP address and may use their own cookies, under their privacy policies.
+  - **Preferences.** The site remembers, only on your device, a few technical choices: day or night mode, the view of the Work page and whether the music is on. Nothing is sent to me.
+
+  ## 05 · External services
+  | Service | What it does | Country | Transfer safeguard |
+  |---|---|---|---|
+  | Cloudflare, Inc. | server for the form and the statistics, database | USA | EU-US Data Privacy Framework and Standard Contractual Clauses |
+  | Resend | sends the notification email | USA | EU-US Data Privacy Framework and Standard Contractual Clauses |
+  | Google (Gmail) | inbox that receives the notifications | USA | EU-US Data Privacy Framework |
+  | GitHub, Inc. | site hosting | USA | see GitHub's privacy statement |
+  | Adobe (Adobe Fonts) | fonts | USA | EU-US Data Privacy Framework |
+  | Indian Type Foundry (Fontshare) | fonts | India | see the Fontshare website |
+  | Vimeo | videos inside the projects | USA | EU-US Data Privacy Framework |
+  | Figma | prototypes inside the projects | USA | EU-US Data Privacy Framework |
+
+  Your data may therefore be processed outside the European Union. I don't sell your data and I don't pass it on for marketing or advertising.
+
+  ## 06 · Your rights
+  At any time you can ask me to access your data, correct it, delete it, restrict its use, object to it or receive a copy (arts. 15–22 GDPR). Write to the email on the site: I'll reply within one month, as the GDPR requires. If you think something is wrong, you can lodge a complaint with the Italian Data Protection Authority (garanteprivacy.it).
+
+  ## 07 · Security
+  The site and the server only travel over an encrypted connection (HTTPS). The requests panel only opens for authorised accounts, with Google sign-in or a link sent by email. IP addresses are not stored in clear.
+
+  ## 08 · Changes
+  If the way the site works changes, I'll update this page and its date.
+---
+{% assign mail = site.data.impostazioni.email %}
+<style>
+  .leg-hero__agg { margin-top: 20px; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .leg-breve { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--gap); margin: clamp(32px, 4vw, 56px) 0 0; padding: 0; list-style: none; }
+  .leg-breve li { padding-top: 20px; border-top: 1px solid var(--line-2); }
+  .leg-breve b { display: block; margin-bottom: 10px; font-family: var(--f-label); font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .leg-breve p { margin: 0; color: var(--muted); font-size: var(--t-body); line-height: 1.5; }
+  .leg-sez { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: calc(var(--gap) * 2); }
+  .leg-sez + .leg-sez { margin-top: clamp(64px, 7vw, 112px); }
+  .leg-sez__lato { align-self: start; position: sticky; top: 120px; }
+  .leg-sez__lato h2 { margin: 16px 0 0; font-size: var(--t-h3); font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  .leg-testo { max-width: 68ch; font-size: var(--t-body); line-height: 1.6; }
+  .leg-testo > :first-child { margin-top: 0; }
+  .leg-testo p, .leg-testo ul { margin: 0 0 18px; }
+  .leg-testo h3 { margin: 32px 0 8px; font-size: var(--t-body); font-weight: 700; }
+  .leg-testo ul { padding-left: 1.1em; }
+  .leg-testo li { margin-bottom: 10px; }
+  .leg-testo a { border-bottom: 1.5px solid currentColor; }
+  .leg-testo a:hover { color: var(--accent-1); }
+  .leg-testo .leg-nota { color: var(--muted); }
+  .leg-tab { width: 100%; border-collapse: collapse; font-size: var(--t-small); line-height: 1.45; }
+  .leg-tab th { padding: 0 16px 12px 0; text-align: left; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line-2); }
+  .leg-tab td { padding: 16px 16px 16px 0; vertical-align: top; border-bottom: 1px solid var(--line); }
+  .leg-tab td:first-child { font-weight: 700; }
+  .leg-tab td:last-child { color: var(--muted); }
+  @media (max-width: 860px) {
+    .leg-sez { grid-template-columns: 1fr; gap: 24px; }
+    .leg-sez__lato { position: static; }
+    .leg-tab thead { display: none; }
+    .leg-tab tr { display: block; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .leg-tab td { display: block; padding: 2px 0; border: 0; }
+    .leg-tab td[data-k]::before { content: attr(data-k) " · "; color: var(--muted); font-weight: 400; }
+  }
+</style>
+
+<section class="phero">
+  <p class="cs-label">Privacy</p>
+  <h1 class="rise"><span>I tuoi dati, in <em>chiaro</em>.</span></h1>
+  <p class="lead">Cosa succede ai dati che mi lasci, detto senza giri di parole. Mamma mi ha insegnato a dire le cose come stanno.</p>
+  <p class="leg-hero__agg">Aggiornata il {{ page.aggiornata }}</p>
+</section>
+
+<section class="fascia inv">
+  <p class="cs-label">In breve</p>
+  <ul class="leg-breve">
+    <li><b>Cosa raccolgo</b><p>Solo quello che scrivi nel modulo Contatti, più statistiche anonime delle visite, senza cookie.</p></li>
+    <li><b>Dove finisce</b><p>In un database privato che apro solo io, più un avviso alla mia email.</p></li>
+    <li><b>Per quanto</b><p>24 mesi, poi si cancella da solo.</p></li>
+    <li><b>Cosa non faccio</b><p>Niente cookie di profilazione, niente pubblicità. Non vendo e non cedo i tuoi dati a nessuno.</p></li>
+  </ul>
+</section>
+
+<section class="fascia">
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">01</p><h2>Chi tratta i tuoi dati</h2></div>
+    <div class="leg-testo">
+      <p>Il titolare del trattamento è <strong>Emanuele Calfa</strong> (LIKEMOMMADEME), persona fisica.</p>
+      <p>Per qualsiasi cosa sui tuoi dati scrivimi a <a href="mailto:{{ mail }}">{{ mail }}</a>.</p>
+    </div>
+  </div>
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">02</p><h2>Il modulo Contatti</h2></div>
+    <div class="leg-testo">
+      <h3>Cosa mi dai</h3>
+      <p>Obbligatori: nome, email e la descrizione del progetto. Facoltativi: telefono, i servizi che ti servono, un budget indicativo e dei link di reference.</p>
+      <p class="leg-nota">Nella descrizione puoi scrivere quello che vuoi: evita però informazioni che non servono, come dati sulla salute, opinioni o dati di altre persone.</p>
+      <h3>Cosa si aggiunge da solo</h3>
+      <p>Data e ora dell'invio, il paese da cui ti colleghi, la pagina da cui hai scritto e un codice ricavato dalla tua connessione che cambia ogni giorno. Il tuo indirizzo IP non viene salvato: il codice serve solo a bloccare chi manda più di 5 richieste al giorno.</p>
+      <h3>Perché</h3>
+      <p>Per leggere la tua richiesta, risponderti e valutare insieme il progetto. Base giuridica: misure prese su tua richiesta prima di un eventuale accordo (art. 6.1.b GDPR). Il codice contro gli abusi si basa sul mio legittimo interesse a proteggere il modulo dallo spam (art. 6.1.f).</p>
+      <h3>Dove va</h3>
+      <p>Il modulo manda i dati al mio server su Cloudflare, che li salva in un database Cloudflare D1 e mi invia un avviso via email con Resend, nella mia casella Gmail. Le richieste le leggo solo io, da un pannello privato che si apre solo con l'accesso.</p>
+      <h3>Per quanto</h3>
+      <p>Le richieste si cancellano da sole 24 mesi dopo l'invio. Se me lo chiedi, le cancello prima. Le email di avviso e la corrispondenza che ne segue restano nella mia casella per il tempo necessario a gestire la richiesta e l'eventuale collaborazione.</p>
+      <h3>Sei obbligato?</h3>
+      <p>No. Ma senza nome, email e descrizione del progetto non posso risponderti.</p>
+    </div>
+  </div>
+</section>
+
+<section class="fascia inv">
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">03</p><h2>Statistiche delle visite</h2></div>
+    <div class="leg-testo">
+      <p>Per sapere quante persone visitano il sito e quali pagine guardano, ogni pagina manda al mio server: la pagina visitata, il sito da cui arrivi, il paese, il tipo di dispositivo (computer, telefono, tablet) e un codice ricavato da indirizzo IP e browser che cambia ogni giorno.</p>
+      <p>Niente cookie, e IP e browser non vengono salvati così come sono: il giorno dopo non posso sapere se sei la stessa persona.</p>
+      <p>Base giuridica: legittimo interesse a capire come viene usato il sito (art. 6.1.f GDPR). I dati si cancellano da soli dopo 24 mesi.</p>
+    </div>
+  </div>
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">04</p><h2>Navigazione, font e video</h2></div>
+    <div class="leg-testo">
+      <ul>
+        <li><strong>Hosting.</strong> Il sito è pubblicato su GitHub Pages: GitHub registra l'indirizzo IP di chi visita il sito per motivi di sicurezza. Io a questi dati non ho accesso.</li>
+        <li><strong>Font.</strong> I caratteri arrivano da Fontshare (Indian Type Foundry, India) e da Adobe Fonts (Adobe): il tuo browser si collega ai loro server e così comunica il tuo indirizzo IP. Adobe dichiara di non usare cookie per i font; Indian Type Foundry dichiara che Fontshare non raccoglie dati personali.</li>
+        <li><strong>Video e prototipi.</strong> In alcuni progetti ci sono video Vimeo e prototipi Figma. Quando apri quelle pagine, il tuo browser si collega a Vimeo e a Figma, che ricevono il tuo indirizzo IP e possono usare i loro cookie, secondo le loro informative.</li>
+        <li><strong>Preferenze.</strong> Il sito ricorda, solo sul tuo dispositivo, qualche scelta tecnica: modalità giorno o notte, la vista della pagina Work e se la musica è accesa. Non mi arriva niente.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="fascia">
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">05</p><h2>Servizi esterni</h2></div>
+    <div class="leg-testo">
+      <table class="leg-tab">
+        <thead><tr><th>Servizio</th><th>Cosa fa</th><th>Paese</th><th>Garanzia per il trasferimento</th></tr></thead>
+        <tbody>
+          <tr><td>Cloudflare, Inc.</td><td>server del modulo e delle statistiche, database</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework e Clausole contrattuali tipo</td></tr>
+          <tr><td>Resend</td><td>invio dell'email di avviso</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework e Clausole contrattuali tipo</td></tr>
+          <tr><td>Google (Gmail)</td><td>casella che riceve gli avvisi</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework</td></tr>
+          <tr><td>GitHub, Inc.</td><td>hosting del sito</td><td data-k="Paese">USA</td><td>vedi l'<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">informativa di GitHub</a></td></tr>
+          <tr><td>Adobe (Adobe Fonts)</td><td>caratteri</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework</td></tr>
+          <tr><td>Indian Type Foundry (Fontshare)</td><td>caratteri</td><td data-k="Paese">India</td><td>vedi il <a href="https://www.fontshare.com" target="_blank" rel="noopener">sito di Fontshare</a></td></tr>
+          <tr><td>Vimeo</td><td>video dentro i progetti</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework</td></tr>
+          <tr><td>Figma</td><td>prototipi dentro i progetti</td><td data-k="Paese">USA</td><td>EU-US Data Privacy Framework</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:24px">I tuoi dati possono quindi essere trattati anche fuori dall'Unione Europea. Non vendo i tuoi dati e non li passo a nessuno per marketing o pubblicità.</p>
+    </div>
+  </div>
+</section>
+
+<section class="fascia inv">
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">06</p><h2>I tuoi diritti</h2></div>
+    <div class="leg-testo">
+      <p>Quando vuoi puoi chiedermi di vedere i tuoi dati, correggerli, cancellarli, limitarne l'uso, opporti al trattamento o riceverne una copia (artt. 15–22 GDPR).</p>
+      <p>Scrivimi a <a href="mailto:{{ mail }}">{{ mail }}</a>: ti rispondo entro un mese, come prevede il GDPR.</p>
+      <p>Se pensi che qualcosa non vada, puoi fare reclamo al <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.</p>
+    </div>
+  </div>
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">07</p><h2>Sicurezza</h2></div>
+    <div class="leg-testo">
+      <p>Il sito e il server viaggiano solo su connessione cifrata (HTTPS). Il pannello delle richieste si apre solo agli account autorizzati, con l'accesso Google o con un link mandato per email. Gli indirizzi IP non vengono salvati in chiaro.</p>
+    </div>
+  </div>
+  <div class="leg-sez">
+    <div class="leg-sez__lato"><p class="cs-label">08</p><h2>Modifiche</h2></div>
+    <div class="leg-testo">
+      <p>Se cambia il modo in cui funziona il sito, aggiorno questa pagina e la sua data.</p>
+    </div>
+  </div>
+</section>
