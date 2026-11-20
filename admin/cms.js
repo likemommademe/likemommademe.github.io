@@ -1257,7 +1257,7 @@ async function richiesteView() {
     const pNome = promptDi(r), pTesto = pNome && privati.find((p) => (p.titolo || '').toLowerCase() === pNome.toLowerCase());
     const nomeBreve = (r.nome || '').split(' ')[0];
     const risposta = pNome && (pTesto
-      ? h('a', { class: 'btn primary small', href: `mailto:${r.email}?subject=${encodeURIComponent(`Il prompt di «${pNome}»`)}&body=${encodeURIComponent(`Ciao ${nomeBreve},\n\ngrazie per avermelo chiesto! Ecco il prompt che ho usato per «${pNome}»:\n\n${pTesto.testo}\n\nSe lo usi, fammi vedere cosa ne esce.\n\nEmanuele · LIKEMOMMADEME`)}`, onclick: () => { sel.value = 'risposta'; sel.dispatchEvent(new Event('input')); } }, icon('mail'), h('span', {}, 'Rispondi con il prompt'))
+      ? h('a', { class: 'btn primary small', href: `mailto:${r.email}?subject=${encodeURIComponent(`Il prompt di «${pNome}»`)}&body=${encodeURIComponent(`Ciao ${nomeBreve},\n\ngrazie per avermelo chiesto! Ecco il prompt di «${pNome}»:\n\n${pTesto.testo}\n\nSe lo usi, fammi vedere cosa ne esce.\n\nEmanuele · LIKEMOMMADEME`)}`, onclick: () => { sel.value = 'risposta'; sel.dispatchEvent(new Event('input')); } }, icon('mail'), h('span', {}, 'Rispondi con il prompt'))
       : h('p', { class: 'muted small' }, `Il prompt di «${pNome}» non è ancora salvato: aprilo in Prompts e incollalo in «Prompt privato».`));
     return h('section', { class: `panel richiesta ${r.stato === 'nuova' ? 'is-nuova' : ''}` },
       h('div', { class: 'panel-head' },
