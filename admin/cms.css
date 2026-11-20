@@ -676,3 +676,8 @@ input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1p
 .richiesta-testo h3 { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .richiesta-testo p { margin: 0; white-space: pre-wrap; line-height: 1.55; max-width: 72ch; overflow-wrap: anywhere; }
 .chip.green { background: var(--ok-bg); color: var(--ok); }
+
+/* Prompts: il prompt privato, salvato nel database del pannello */
+.prompt-privato { display: grid; gap: 12px; margin-bottom: 18px; }
+.prompt-privato textarea { width: 100%; font: 13.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.savebar.inline { position: static; display: flex; align-items: center; gap: 12px; padding: 0; margin: 0; border: 0; background: none; box-shadow: none; }

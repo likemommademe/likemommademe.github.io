@@ -122,7 +122,7 @@ window.CMS = {
             { group: 'Adobe', items: ['Photoshop', 'Illustrator', 'After Effects'] },
           ],
         },
-        { name: 'prompt', label: 'Il prompt completo', type: 'text', rows: 8, hint: 'Se lo scrivi qui si legge e si copia dal sito. Se lo lasci vuoto, sul sito compare «Richiedi il prompt» e la richiesta ti arriva in Richieste.' },
+        { name: 'prompt', label: 'Prompt pubblico (si legge sul sito)', type: 'text', rows: 6, hint: 'Facoltativo. Se lo scrivi qui, sul sito si legge e si copia, ed è pubblico anche su GitHub. Se vuoi darlo solo a chi lo chiede, lascialo vuoto e salvalo più sotto in «Prompt privato».' },
         { name: 'ordine', type: 'hidden' },
       ],
     },

@@ -269,6 +269,9 @@ prompts:
   titolo: Prompts
   intro: I prompt che ho scritto e usato per i miei lavori con l'intelligenza artificiale. Alcuni si leggono qui, gli altri li mando a chi me li chiede.
   filtro: Strumento
+  cerca: Cerca un prompt, un materiale, uno strumento…
+  risultato: prompt
+  risultati: prompt
   tutti: Tutti
   copia: Copia il prompt
   copiato: Copiato!

@@ -1,5 +1,5 @@
 ---
-cta_in_pagina: true   # «Hai un progetto in testa?» sta subito dopo i progetti: il piè di pagina non la ripete
+cta_in_pagina: true   # «Hai un progetto in testa?» è l'ultima sezione della home: il piè di pagina non la ripete
 layout: default
 reel: true
 ---
@@ -158,22 +158,14 @@ reel: true
   </div>
 </section>
 
-{% comment %} «Hai un progetto in testa?»: subito dopo i progetti, come all'inizio (i testi sono quelli del piè di pagina) {% endcomment %}
-{% assign fc = site.data.testi.footer %}{% assign ic = site.data.impostazioni %}
-<section class="fascia cta-home" aria-label="{{ fc.cta_titolo | strip_html }}">
-  <div class="pied__cta">
-    <h2 class="rise"><span>{{ fc.cta_titolo }}</span></h2>
-    <p>{{ fc.cta_testo }}</p>
-    <a class="btn" href="{{ '/contatti/' | relative_url }}" data-modulo-apri>{{ fc.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-  </div>
-</section>
+
 
 {% include testimonianze.html %}
 
 {% comment %} News: le ultime quattro, come sulla pagina News {% endcomment %}
 {% assign tn = site.data.testi.news %}{% assign ultime = site.news | sort: "data" | reverse %}
 {% if ultime.size > 0 %}
-<section class="fascia inv news-home" aria-labelledby="t-news">
+<section class="fascia news-home" aria-labelledby="t-news">
   <p class="cs-label cs-head__k">{{ tn.home_k }}</p>
   <div class="news-home__head">
     <h2 class="rise" id="t-news"><span>{{ tn.home_titolo }}</span></h2>
@@ -185,7 +177,7 @@ reel: true
 </section>
 {% endif %}
 
-{% include orari.html %}
+{% include orari.html inv=true %}
 
 <script>
   // Scorrimento orizzontale dei lavori (come bitwip): per ogni pixel di scroll in giù la fila va a sinistra di 1/0,7 px;
@@ -309,3 +301,13 @@ reel: true
     }
   })();
 </script>
+
+{% comment %} «Hai un progetto in testa?»: l'ultima sezione della home (i testi sono quelli del piè di pagina) {% endcomment %}
+{% assign fc = site.data.testi.footer %}{% assign ic = site.data.impostazioni %}
+<section class="fascia cta-home" aria-label="{{ fc.cta_titolo | strip_html }}">
+  <div class="pied__cta">
+    <h2 class="rise"><span>{{ fc.cta_titolo }}</span></h2>
+    <p>{{ fc.cta_testo }}</p>
+    <a class="btn" href="{{ '/contatti/' | relative_url }}" data-modulo-apri>{{ fc.cta_bottone }}<span class="btn__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </div>
+</section>

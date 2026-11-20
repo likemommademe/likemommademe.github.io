@@ -54,6 +54,7 @@ export default {
       else if (url.pathname === '/stats') res = await stats(request, env, url);
       else if (url.pathname === '/richiesta' && request.method === 'POST') res = await nuovaRichiesta(request, env);
       else if (url.pathname === '/richieste') res = await richieste(request, env, url);
+      else if (url.pathname === '/prompt-privati') res = await promptPrivati(request, env);
       else if (url.pathname.startsWith('/github/')) res = await github(request, env, url);
       else if (url.pathname.startsWith('/social/')) res = await social(request, env, url);
       else res = json({ error: 'Not found' }, 404);
@@ -312,6 +313,28 @@ async function richieste(request, env, url) {
   }
   if (request.method === 'DELETE') {
     await env.DB.prepare('DELETE FROM richieste WHERE id = ?').bind(id).run();
+    return json({ ok: true });
+  }
+  return json({ error: 'Not found' }, 404);
+}
+
+// Prompt privati: il testo dei prompt che non va sul sito (il codice del sito è pubblico su GitHub).
+// Li legge e li scrive solo il pannello, con la sessione; servono per rispondere alle richieste «Richiedi il prompt».
+async function promptPrivati(request, env) {
+  if (!(await session(request, env))) return json({ error: 'Sessione scaduta: accedi di nuovo.' }, 401);
+  if (!env.DB) return json({ error: 'Manca il database.' }, 503);
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS prompt_privati (slug TEXT PRIMARY KEY, titolo TEXT, testo TEXT, quando TEXT)').run();
+  if (request.method === 'GET') {
+    const { results } = await env.DB.prepare('SELECT slug, titolo, testo, quando FROM prompt_privati ORDER BY titolo').all();
+    return json({ prompt: results });
+  }
+  if (request.method === 'PUT') {
+    const { slug, titolo, testo } = await request.json().catch(() => ({}));
+    if (typeof slug !== 'string' || !/^[a-z0-9-]{1,80}$/.test(slug)) return json({ error: 'Prompt non valido.' }, 400);
+    const t = String(testo || '').slice(0, 20000);
+    if (!t.trim()) await env.DB.prepare('DELETE FROM prompt_privati WHERE slug = ?').bind(slug).run();
+    else await env.DB.prepare('INSERT INTO prompt_privati (slug, titolo, testo, quando) VALUES (?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET titolo = excluded.titolo, testo = excluded.testo, quando = excluded.quando')
+      .bind(slug, String(titolo || slug).slice(0, 200), t, new Date().toISOString()).run();
     return json({ ok: true });
   }
   return json({ error: 'Not found' }, 404);

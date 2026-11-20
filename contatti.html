@@ -30,18 +30,11 @@ permalink: /contatti/
   </ol>
 </section>
 
-{% comment %} 1. Il form e, di lato, come funziona {% endcomment %}
-<section class="fascia inv contatti-pag">
+{% comment %} 1. Il form {% endcomment %}
+<section class="fascia inv contatti-pag contatti-pag--solo">
   <div class="contatti-pag__form">
-    <h2 class="contatti-pag__t">{{ site.data.testi.modulo.titolo }}</h2>
     {% include modulo.html id="p" senza_titolo=true %}
   </div>
-  <aside class="contatti-pag__lato">
-    <p class="cs-label">{{ tc.passi_k }}</p>
-    <ol class="passi">
-      {% for x in tc.passi %}<li><span class="passi__n">{{ forloop.index }}</span><div><p class="passi__t">{{ x.t }}</p><p class="contatti-pag__p">{{ x.d }}</p></div></li>{% endfor %}
-    </ol>
-  </aside>
 </section>
 
 {% comment %} 2. Dove ho lavorato e studiato {% endcomment %}

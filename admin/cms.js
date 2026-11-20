@@ -1223,6 +1223,9 @@ async function richiesteView() {
         ? 'Il form non è ancora attivo: va aggiornato il Worker su Cloudflare (vedi riassunto-cms.md).'
         : e.message))));
   }
+  // i prompt privati, per rispondere a «Richiedi il prompt» (se il Worker non è aggiornato, semplicemente non ci sono)
+  const privati = await request('/prompt-privati').then((r) => (r ? r.prompt : [])).catch(() => []);
+  const promptDi = (r) => { const m = /^RICHIESTA PROMPT: «(.+?)»/.exec(r.progetto || ''); return m ? m[1] : null; };
   let filtro = read('cms.richieste.filtro') || 'aperte';
   const conta = (s) => lista.filter((r) => r.stato === s).length;
   const tabs = h('div', { class: 'chips richieste-tabs' });
@@ -1251,10 +1254,15 @@ async function richiesteView() {
       catch (e) { alert(e.message); }
     } }, icon('trash'));
     const segna = () => { if (r.stato === 'nuova') { sel.value = 'letta'; sel.dispatchEvent(new Event('input')); } };
+    const pNome = promptDi(r), pTesto = pNome && privati.find((p) => (p.titolo || '').toLowerCase() === pNome.toLowerCase());
+    const nomeBreve = (r.nome || '').split(' ')[0];
+    const risposta = pNome && (pTesto
+      ? h('a', { class: 'btn primary small', href: `mailto:${r.email}?subject=${encodeURIComponent(`Il prompt di «${pNome}»`)}&body=${encodeURIComponent(`Ciao ${nomeBreve},\n\ngrazie per avermelo chiesto! Ecco il prompt che ho usato per «${pNome}»:\n\n${pTesto.testo}\n\nSe lo usi, fammi vedere cosa ne esce.\n\nEmanuele · LIKEMOMMADEME`)}`, onclick: () => { sel.value = 'risposta'; sel.dispatchEvent(new Event('input')); } }, icon('mail'), h('span', {}, 'Rispondi con il prompt'))
+      : h('p', { class: 'muted small' }, `Il prompt di «${pNome}» non è ancora salvato: aprilo in Prompts e incollalo in «Prompt privato».`));
     return h('section', { class: `panel richiesta ${r.stato === 'nuova' ? 'is-nuova' : ''}` },
       h('div', { class: 'panel-head' },
         h('div', {},
-          h('div', { class: 'title-row' }, h('h2', {}, r.nome), chip(st[1], st[2])),
+          h('div', { class: 'title-row' }, h('h2', {}, r.nome), chip(st[1], st[2]), pNome && chip('Prompt', 'green')),
           h('p', { class: 'muted small' }, quando(r.quando), r.paese ? ` · ${countryNames.of(r.paese)}` : '', r.pagina ? ` · da ${r.pagina}` : '')),
         h('div', { class: 'actions' }, sel, del)),
       h('div', { class: 'richiesta-body' },
@@ -1263,7 +1271,8 @@ async function richiesteView() {
           r.telefono && h('div', {}, h('dt', {}, 'Telefono'), h('dd', {}, h('a', { href: `tel:${r.telefono.replace(/\s/g, '')}` }, r.telefono))),
           h('div', {}, h('dt', {}, 'Budget'), h('dd', {}, r.budget || '—'))),
         h('div', { class: 'richiesta-testo' }, h('h3', {}, 'Il progetto'), h('p', {}, r.progetto)),
-        r.reference && h('div', { class: 'richiesta-testo' }, h('h3', {}, 'Reference'), h('p', {}, linkify(r.reference)))));
+        r.reference && h('div', { class: 'richiesta-testo' }, h('h3', {}, 'Reference'), h('p', {}, linkify(r.reference))),
+        risposta && h('div', { class: 'richiesta-testo' }, risposta)));
   }
 
   shell([['Richieste']], h('div', {},
@@ -1511,6 +1520,33 @@ async function listView(coll) {
   draw();
 }
 
+// Il prompt privato di una scheda Prompts: sta nel database del pannello, non su GitHub (il codice del sito è pubblico)
+async function promptPrivatoPanel(slug, titolo) {
+  const ta = h('textarea', { rows: 10, placeholder: 'Incolla qui il prompt completo. Lo vedi solo tu: serve per rispondere a chi te lo chiede.' });
+  const stato = h('span', { class: 'status' });
+  const btn = h('button', { type: 'button', class: 'btn' }, h('span', {}, 'Salva il prompt privato'));
+  const panel = h('section', { class: 'panel padded prompt-privato' },
+    h('div', { class: 'title-row' }, h('h2', {}, 'Prompt privato'), chip('Solo per te', 'green')),
+    h('p', { class: 'muted small' }, 'Non va sul sito né su GitHub: resta nel database del pannello. Quando qualcuno richiede questo prompt, in Richieste trovi il pulsante «Rispondi con il prompt» che prepara la mail con questo testo. (Il campo «Il prompt completo» qui sopra invece lo pubblica sul sito.)'),
+    ta, h('div', { class: 'savebar inline' }, stato, h('span', { class: 'grow' }), btn));
+  try {
+    const r = await request('/prompt-privati');
+    if (!r) throw Object.assign(new Error(''), { status: 404 });
+    const x = r.prompt.find((p) => p.slug === slug); ta.value = x ? x.testo : '';
+  } catch (e) {
+    ta.disabled = true; btn.disabled = true;
+    stato.className = 'status error';
+    stato.textContent = e.status === 404 ? 'Per usarlo va aggiornato il Worker su Cloudflare (vedi riassunto-cms.md).' : e.message;
+  }
+  btn.onclick = async () => {
+    btn.disabled = true; stato.className = 'status'; stato.textContent = 'Salvataggio…';
+    try { await request('/prompt-privati', { method: 'PUT', body: { slug, titolo, testo: ta.value } }); stato.className = 'status ok'; stato.textContent = 'Salvato nel pannello.'; }
+    catch (e) { stato.className = 'status error'; stato.textContent = e.message; }
+    btn.disabled = false;
+  };
+  return panel;
+}
+
 async function collectionEditor(coll, slug) {
   const isNew = slug === 'nuovo';
   shell([[coll.label, `#/c/${coll.name}`], ['…']], loading());
@@ -1587,6 +1623,10 @@ async function collectionEditor(coll, slug) {
       return true;
     }),
   });
+  if (coll.name === 'prompts' && !isNew) {
+    const bar = document.querySelector('.editor > .savebar');
+    if (bar) bar.before(await promptPrivatoPanel(slug, entry.data.title || slug));
+  }
 }
 
 async function pageEditor(page) {
