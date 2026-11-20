@@ -92,6 +92,8 @@ body_en: |
   .leg-testo a { border-bottom: 1.5px solid currentColor; }
   .leg-testo a:hover { color: var(--accent-1); }
   .leg-testo .leg-nota { color: var(--muted); }
+  .leg-grazie h2 { margin: 14px 0 0; font-weight: 900; font-size: clamp(3.5rem, 1.6rem + 8vw, 10rem); line-height: .86; letter-spacing: -.045em; }
+  .leg-grazie .lead { max-width: 46ch; margin: clamp(20px, 2.4vw, 32px) 0 28px; }
   .leg-tab { width: 100%; border-collapse: collapse; font-size: var(--t-small); line-height: 1.45; }
   .leg-tab th { padding: 0 16px 12px 0; text-align: left; font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line-2); }
   .leg-tab td { padding: 16px 16px 16px 0; vertical-align: top; border-bottom: 1px solid var(--line); }
@@ -216,4 +218,12 @@ body_en: |
       <p>Se cambia il modo in cui funziona il sito, aggiorno questa pagina e la sua data.</p>
     </div>
   </div>
+</section>
+
+{% comment %} In fondo, un grazie {% endcomment %}
+<section class="fascia leg-grazie">
+  <p class="cs-label">09</p>
+  <h2 class="rise"><span>Grazie.</span></h2>
+  <p class="lead">Per aver letto fin qui. Lo so, non è il romanzo dell'anno, ma i tuoi dati meritano chiarezza. Mamma sarebbe fiera.</p>
+  <a class="rec__vedi" href="mailto:{{ mail }}">Una domanda? Scrivimi<svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </section>
