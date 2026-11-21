@@ -145,14 +145,14 @@ galleria:
     testo: Gli stand per Marca e Cosmopack.
     testo_en: The stands for Marca and Cosmopack.
   - type: foto
-    immagine: /assets/uploads/etica-stand-marca.webp
+    immagine: /assets/uploads/etica-stand-marca.webp?v=2
     titolo: Stand Marca 2023
     titolo_en: Marca 2023 stand
     didascalia: Lo stand verde e nero, con le teche per le etichette.
     didascalia_en: The green and black stand, with display cases for the labels.
     formato: meta
   - type: foto
-    immagine: /assets/uploads/etica-stand-cosmopack.webp
+    immagine: /assets/uploads/etica-stand-cosmopack.webp?v=2
     titolo: Stand Cosmopack
     titolo_en: Cosmopack stand
     didascalia: Il banco e le pareti con il marchio in grande.
