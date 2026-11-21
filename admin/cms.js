@@ -497,29 +497,60 @@ function pickFromLibrary() {
 // ─── Trascinamento per riordinare ───────────────────────────
 
 // Rende riordinabili gli elementi `.sort-item` di `list` trascinandoli dalla maniglia `.grip`.
+// Nelle griglie (`.grid-sort`, es. la galleria) si può prendere anche la miniatura intera: il trascinamento
+// parte dopo qualche pixel di movimento, così un clic semplice continua ad aprire la scheda.
 function sortable(list, onChange) {
+  const grid = list.classList.contains('grid-sort');
+  // Sposta `item` prima di `ref` con una piccola animazione degli altri elementi (FLIP).
+  const place = (item, ref) => {
+    if (ref === item || item.nextElementSibling === ref || (ref === null && list.lastElementChild === item)) return false;
+    const others = [...list.children].filter((c) => c !== item);
+    const before = new Map(others.map((c) => [c, c.getBoundingClientRect()]));
+    list.insertBefore(item, ref);
+    for (const c of others) {
+      const a = before.get(c), b = c.getBoundingClientRect();
+      const dx = a.left - b.left, dy = a.top - b.top;
+      if (dx || dy) c.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 160, easing: 'ease-out' });
+    }
+    return true;
+  };
   list.addEventListener('pointerdown', (e) => {
-    const handle = e.target.closest('.grip');
-    const item = handle?.closest('.sort-item');
+    if (e.button !== 0) return;
+    let handle = e.target.closest('.grip');
+    let item = handle?.closest('.sort-item');
+    if (!handle && grid) {
+      if (e.target.closest('.g-del, input, textarea, select')) return;
+      item = e.target.closest('.sort-item');
+      handle = item;
+    }
     if (!item || item.parentElement !== list) return;
     e.preventDefault();
-    handle.setPointerCapture(e.pointerId);
-    item.classList.add('dragging');
+    // Solo la maniglia cattura il puntatore: sulla miniatura intera la cattura sposterebbe il clic e la scheda non si aprirebbe.
+    if (handle !== item) handle.setPointerCapture(e.pointerId);
+    const x0 = e.clientX, y0 = e.clientY;
+    let started = !!e.target.closest('.grip');
+    let last = null, lockUntil = 0;
+    const start = () => { started = true; item.classList.add('dragging'); list.classList.add('sorting'); };
+    if (started) start();
     const move = (ev) => {
+      if (!started) { if (Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) return; start(); }
       if (ev.clientY < 70) window.scrollBy(0, -14);
       else if (ev.clientY > window.innerHeight - 70) window.scrollBy(0, 14);
-      if (list.classList.contains('grid-sort')) {
+      if (grid) {
+        if (performance.now() < lockUntil) return;
         // Griglia: l'elemento va prima o dopo quello sotto il puntatore, a seconda della metà in cui si trova.
         const over = [...list.children].find((c) => {
           if (c === item) return false;
           const r = c.getBoundingClientRect();
           return ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
         });
-        if (over) {
-          const r = over.getBoundingClientRect();
-          const after = over.classList.contains('g-sez') ? ev.clientY > r.top + r.height / 2 : ev.clientX > r.left + r.width / 2;
-          list.insertBefore(item, after ? over.nextElementSibling : over);
-        }
+        if (!over) return;
+        const r = over.getBoundingClientRect();
+        const after = over.classList.contains('g-sez') ? ev.clientY > r.top + r.height / 2 : ev.clientX > r.left + r.width / 2;
+        const key = `${[...list.children].indexOf(over)}${after}`;
+        if (key === last) return;
+        last = key;
+        if (place(item, after ? over.nextElementSibling : over)) lockUntil = performance.now() + 170;
         return;
       }
       const next = [...list.children].find((c) => c !== item && ev.clientY < c.getBoundingClientRect().top + c.offsetHeight / 2);
@@ -527,15 +558,21 @@ function sortable(list, onChange) {
     };
     const up = () => {
       item.classList.remove('dragging');
-      handle.removeEventListener('pointermove', move);
-      handle.removeEventListener('pointerup', up);
-      handle.removeEventListener('pointercancel', up);
+      list.classList.remove('sorting');
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+      if (!started) return;
+      quietUntil = performance.now() + 400; // il clic che segue un trascinamento non apre la scheda
       onChange();
     };
-    handle.addEventListener('pointermove', move);
-    handle.addEventListener('pointerup', up);
-    handle.addEventListener('pointercancel', up);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
   });
+  let quietUntil = 0;
+  list.addEventListener('click', (e) => { if (performance.now() < quietUntil) { e.stopPropagation(); e.preventDefault(); quietUntil = 0; } }, true);
+  return { place };
 }
 
 const grip = () => h('span', { class: 'grip', title: 'Trascina per riordinare' }, icon('grip'));
@@ -723,7 +760,7 @@ function openSheet(title, body, onClose, note = 'Le modifiche vanno online quand
   return close;
 }
 
-// Galleria: una griglia di miniature. Si trascinano dalla maniglia per riordinarle; un clic apre la scheda
+// Galleria: una griglia di miniature. Si trascinano (intere o dalla maniglia) per riordinarle; un clic apre la scheda
 // con titolo, didascalia (italiano e inglese) e larghezza sul sito.
 const FORMATI = [['intera', 'Tutta larghezza'], ['meta', 'Metà'], ['sola', 'Da sola'], ['grande', 'Grande']];
 
@@ -738,9 +775,24 @@ function galleryWidget(value) {
   const addFiles = (chosen) => { for (const f of chosen) add({ type: 'foto' }, f); markDirty(); };
   const count = () => {
     const n = items.size;
-    counter.textContent = n ? `${n} ${n === 1 ? 'elemento' : 'elementi'} · trascina ⋮⋮ per riordinare, clicca per titolo e didascalia` : '';
+    counter.textContent = n ? `${n} ${n === 1 ? 'elemento' : 'elementi'} · trascina le foto per cambiare l’ordine, clicca per titolo e didascalia` : '';
   };
   const field = (label, input) => h('div', {}, h('label', { class: 'label' }, label), input);
+  // Riga «Posizione» nella scheda: sposta l'elemento senza trascinarlo.
+  const position = (el) => {
+    const where = h('span', { class: 'hint pos-where' });
+    const draw = () => { const all = [...list.children]; where.textContent = `${all.indexOf(el) + 1} di ${all.length}`; };
+    const go = (ref) => { if (sorter.place(el, ref)) { draw(); markDirty(); } };
+    const btn = (label, title, fn) => h('button', { type: 'button', class: 'btn small', title, onclick: fn }, label);
+    draw();
+    return h('div', {}, h('span', { class: 'label' }, 'Posizione nella galleria'),
+      h('div', { class: 'row pos-row' },
+        btn('⇤ In cima', 'Diventa il primo', () => go(list.firstElementChild)),
+        btn('← Prima', 'Uno indietro', () => go(el.previousElementSibling)),
+        where,
+        btn('Dopo →', 'Uno avanti', () => go(el.nextElementSibling?.nextElementSibling ?? null)),
+        btn('In fondo ⇥', 'Diventa l’ultimo', () => go(null))));
+  };
   const del = (el) => h('button', {
     type: 'button', class: 'icon-btn danger g-del', title: 'Elimina',
     onclick: (e) => { e.stopPropagation(); if (!confirm('Togliere questo elemento dalla galleria?')) return; items.delete(el); el.remove(); count(); markDirty(); },
@@ -761,6 +813,7 @@ function galleryWidget(value) {
       const label = h('span', { class: 'g-sez__t' });
       const draw = () => { label.textContent = entry.title.value.trim() || 'Titolo di sezione senza nome'; };
       const open = () => openSheet('Titolo di sezione', h('div', { class: 'sheet-fields' },
+        position(el),
         field('Titolo 🇮🇹', entry.title), field('Title 🇬🇧', entry.titleEn),
         field('Testo 🇮🇹', entry.text), field('Text 🇬🇧', entry.textEn)), draw);
       el.append(grip(), h('button', { type: 'button', class: 'g-sez__open', onclick: open }, icon('tag'), label, h('span', { class: 'g-sez__k' }, 'Sezione')), del(el));
@@ -809,6 +862,7 @@ function galleryWidget(value) {
     const open = () => openSheet(entry.type === 'foto' ? 'Foto' : 'Video', h('div', { class: 'sheet-grid' },
       h('div', { class: 'sheet-media' }, entry.image ? entry.image.el : field('Link del video', entry.link)),
       h('div', { class: 'sheet-fields' },
+        position(el),
         h('div', {}, h('span', { class: 'label' }, 'Larghezza sul sito'), h('div', { class: 'seg' }, segs)),
         field('Titolo 🇮🇹', entry.title), field('Title 🇬🇧', entry.titleEn),
         field('Didascalia 🇮🇹', entry.caption), field('Caption 🇬🇧', entry.captionEn))), draw);
@@ -823,7 +877,7 @@ function galleryWidget(value) {
   }
 
   for (const item of value || []) add(item);
-  sortable(list, markDirty);
+  const sorter = sortable(list, markDirty);
   const zone = h('div', { class: 'gallery-zone' },
     counter,
     list,

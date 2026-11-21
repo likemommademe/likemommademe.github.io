@@ -40,7 +40,7 @@ window.CMS = {
         { name: 'body', label: 'Brief e obiettivo', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Cosa chiedeva il cliente e qual era l’obiettivo.' },
         { name: 'concept', label: 'Concept', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'L’idea e perché funziona.' },
         { name: 'execution', label: 'Execution', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Come l’hai realizzato. Immagini e video vanno nella Galleria qui sotto.' },
-        { name: 'galleria', label: 'Galleria', type: 'gallery', group: 'Case study', hint: 'Trascina qui le foto dal Finder. Riordina con la maniglia ⋮⋮ a sinistra.' },
+        { name: 'galleria', label: 'Galleria', type: 'gallery', group: 'Case study', hint: 'Trascina qui le foto dal Finder. Trascina le foto per metterle nell’ordine che vuoi.' },
         { name: 'coordinamento', label: 'Coordinamento e processo', type: 'markdown', rows: 5, i18n: true, group: 'Case study', hint: 'Chi era coinvolto, tempi, fornitori, fasi.' },
         { name: 'risultato', label: 'Risultato', type: 'markdown', rows: 4, i18n: true, group: 'Case study', hint: 'Cosa è cambiato per il cliente: numeri, riscontri, uscite.' },
         { name: 'crediti', label: 'Crediti', type: 'markdown', rows: 4, i18n: true, group: 'Case study' },

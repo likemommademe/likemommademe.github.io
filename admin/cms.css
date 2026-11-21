@@ -681,3 +681,13 @@ input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1p
 .prompt-privato { display: grid; gap: 12px; margin-bottom: 18px; }
 .prompt-privato textarea { width: 100%; font: 13.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .savebar.inline { position: static; display: flex; align-items: center; gap: 12px; padding: 0; margin: 0; border: 0; background: none; box-shadow: none; }
+
+/* Galleria: si trascina la miniatura intera */
+.g-tile { cursor: grab; }
+.g-tile img, .g-tile video { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.g-grid.sorting, .g-grid.sorting * { cursor: grabbing !important; }
+.g-tile.dragging { transform: scale(1.03); border-color: var(--fg); box-shadow: var(--shadow); z-index: 3; }
+.g-grid.sorting .g-tile:not(.dragging) { opacity: .85; }
+.pos-row { flex-wrap: wrap; align-items: center; gap: 6px; }
+.pos-where { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.g-tile .g-open { cursor: grab; }
