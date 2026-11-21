@@ -169,8 +169,10 @@ galleria:
     titolo_en: The carousel
     didascalia: Blog, progetti, day routine e welcome on board, uno accanto all'altro.
     didascalia_en: Blog, projects, day routine and welcome on board, side by side.
-coordinamento: Il progetto è dell'agenzia **Pixell** ([qui la pagina del progetto sul loro sito](https://www.pixell.it/progetti/etic-a/)): io ho collaborato con il team dei grafici alla comunicazione di Etic.a durante il mio periodo lavorativo lì. Per il sito ho lavorato a wireframe e design, poi il reparto IT lo ha sviluppato.
-coordinamento_en: The project belongs to the **Pixell** agency ([the project on their website](https://www.pixell.it/progetti/etic-a/)): I worked with the design team on Etic.a's communication during my time there. For the website I worked on wireframes and design, then the IT department built it.
+coordinamento: |-
+  Il progetto è dell'agenzia **Pixell** ([qui la pagina del progetto sul loro sito](https://www.pixell.it/progetti/etic-a/)): io ho collaborato con il team dei grafici alla comunicazione di Etic.a durante il mio periodo lavorativo lì. Per il sito ho lavorato a wireframe e design, poi il reparto IT lo ha sviluppato.
+coordinamento_en: |-
+  The project belongs to the **Pixell** agency ([the project on their website](https://www.pixell.it/progetti/etic-a/)): I worked with the design team on Etic.a's communication during my time there. For the website I worked on wireframes and design, then the IT department built it.
 crediti: |-
   Agenzia: Pixell  
   Wireframe, design del sito e comunicazione: team grafico di Pixell, con Emanuele Calfa  
