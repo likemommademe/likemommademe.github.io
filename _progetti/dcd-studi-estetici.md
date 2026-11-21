@@ -170,11 +170,12 @@ galleria:
     testo: "Il sito di DCD, con la nuova identità."
     testo_en: "DCD's website, with the new identity."
   - type: "foto"
-    immagine: "/assets/uploads/dcd-sito.webp"
+    immagine: "/assets/uploads/dcd-sito.webp?v=2"
     titolo: "La home"
     titolo_en: "The homepage"
     didascalia: "I trattamenti, le storie dei clienti e i colori del brand."
     didascalia_en: "Treatments, client stories and the brand colours."
+    formato: "grande"
 strumenti:
   - InDesign
   - Illustrator
