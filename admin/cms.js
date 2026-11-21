@@ -974,7 +974,7 @@ async function relationListWidget(field, value) {
     const chosen = new Set([...list.children].map((el) => el.dataset.slug));
     select.replaceChildren(
       h('option', { value: '' }, field.addLabel || '+ Aggiungi un progetto…'),
-      entries.filter((e) => !chosen.has(e.slug)).map((e) => h('option', { value: e.slug }, e.data.title || e.slug)));
+      ...entries.filter((e) => !chosen.has(e.slug)).map((e) => h('option', { value: e.slug }, e.data.title || e.slug)));
   }
   for (const slug of value || []) add(slug);
   refresh();
