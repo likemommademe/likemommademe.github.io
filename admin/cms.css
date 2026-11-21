@@ -691,3 +691,7 @@ input[type=date], input[type=time] { width: 100%; padding: 12px 14px; border: 1p
 .pos-row { flex-wrap: wrap; align-items: center; gap: 6px; }
 .pos-where { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
 .g-tile .g-open { cursor: grab; }
+
+/* Scheda categoria: ordine dei progetti */
+.cat-order-panel { display: grid; gap: 12px; margin-bottom: 18px; }
+.cat-order-panel .cat-order { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }

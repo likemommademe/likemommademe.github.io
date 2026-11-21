@@ -1681,6 +1681,62 @@ async function collectionEditor(coll, slug) {
     const bar = document.querySelector('.editor > .savebar');
     if (bar) bar.before(await promptPrivatoPanel(slug, entry.data.title || slug));
   }
+  if (coll.name === 'categorie' && !isNew) {
+    const bar = document.querySelector('.editor > .savebar');
+    if (bar) bar.before(await categoryOrderPanel(slug));
+  }
+}
+
+// Nella scheda di una categoria: i suoi progetti (principali e «Anche in»), da trascinare nell'ordine del sito.
+// Si salva da solo, con il suo bottone: scrive "ordine" o "ordini.<categoria>" nei file dei progetti.
+async function categoryOrderPanel(slug) {
+  const pc = findCollection('progetti');
+  const all = await loadCollection(pc);
+  const list = h('div', { class: 'rows sort-list cat-order' });
+  const status = h('span', { class: 'status' });
+  const btn = h('button', { type: 'button', class: 'btn primary', disabled: true }, h('span', {}, 'Salva ordine'));
+  const draw = () => {
+    const mine = all.filter((e) => inGroup(pc, e, slug)).sort((a, b) => (groupRank(pc, a, slug) - groupRank(pc, b, slug)) || 0
+      || String(a.data.title || a.slug).localeCompare(String(b.data.title || b.slug), 'it'));
+    list.replaceChildren(...(mine.length ? mine.map((e) => h('div', { class: 'sort-item list-row', 'data-slug': e.slug },
+      grip(),
+      h('a', { href: `#/c/progetti/${e.slug}` },
+        thumb(e.data.copertina),
+        h('span', { class: 'row-text' }, h('strong', {}, e.data.title || e.slug)),
+        h('span', { class: 'chips' }, e.data.categoria !== slug && chip('Anche in questa categoria'), isDraft(e) && chip('Bozza', 'amber')),
+        icon('right'))))
+      : [h('p', { class: 'empty-state' }, 'Ancora nessun progetto in questa categoria.')]));
+  };
+  draw();
+  sortable(list, () => { btn.disabled = false; status.className = 'status'; status.textContent = 'Ordine cambiato, non ancora salvato.'; });
+  btn.onclick = async () => {
+    btn.disabled = true;
+    status.className = 'status';
+    status.textContent = 'Salvataggio…';
+    const changes = [];
+    [...list.children].forEach((el, i) => {
+      const e = all.find((x) => x.slug === el.dataset.slug);
+      if (!e) return;
+      const extra = e.data.categoria !== slug;
+      if ((extra ? e.data.ordini?.[slug] : e.data.ordine) === i + 1) return;
+      e.data = extra ? { ...e.data, ordini: { ...(e.data.ordini || {}), [slug]: i + 1 } } : { ...e.data, ordine: i + 1 };
+      changes.push({ path: e.path, text: serialize(pc, e.data, e.body) });
+    });
+    try {
+      if (changes.length) await commit(changes, `Riordina i progetti di “${slug}”`);
+      status.className = 'status ok';
+      status.textContent = 'Ordine salvato! Sul sito tra 1–2 minuti.';
+    } catch (e) {
+      status.className = 'status error';
+      status.textContent = e.message;
+      btn.disabled = false;
+    }
+  };
+  return h('section', { class: 'panel padded cat-order-panel' },
+    h('div', { class: 'title-row' }, h('h2', {}, 'Ordine dei progetti')),
+    h('p', { class: 'muted small' }, 'Trascina le righe dalla maniglia ⋮⋮ per decidere in che ordine compaiono i progetti nella pagina di questa categoria, poi clicca «Salva ordine». Ci sono anche i progetti che hanno questa categoria in «Anche in».'),
+    list,
+    h('div', { class: 'savebar inline' }, status, h('span', { class: 'grow' }), btn));
 }
 
 async function pageEditor(page) {
