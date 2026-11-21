@@ -25,23 +25,23 @@ concept_en: |
 
   The new mark is three capital letters, D, C and D, set in **Aviano Serif** in powder blue. Above them, pink wings: they become a pattern of seagulls that returns on window graphics, envelopes and counters. The idea holding it all together is **lightness**.
 execution: |
-  Ho seguito tutta la comunicazione di DCD: il restyling del marchio, il logo animato, i post social, i volantini, le brochure, i listini e tutti i materiali per i centri. Il cuore del lavoro è il **brand identity manual**, 116 pagine in quattro capitoli.
+  Durante il periodo in cui ho lavorato in **Pixell** ho collaborato alla comunicazione di DCD: il restyling del marchio, il logo animato, i post social, i volantini, le brochure, i listini e i materiali per i centri. Il cuore del lavoro è il **brand identity manual**, 116 pagine in quattro capitoli.
 
   - **Marchio istituzionale**: costruzione geometrica, area di rispetto, dimensioni, versioni a colori e monocromatiche, versione social, palette, font e loghi dei trattamenti.
   - **Immagine coordinata**: carta intestata, biglietti, buste, firma mail, shopper, packaging dei prodotti, schede cliente, diari alimentari, listini e materiali per le cabine.
   - **Advertising**: le gabbie per i post, le affissioni, i monitor in sede, i materiali per la segreteria e le brochure.
   - **Arredamento dei punti vendita**: reception, sala d'attesa, cabine, insegne, targhe, vetrofanie, tappeti e divise.
 execution_en: |
-  I handled all of DCD's communication: the logo restyling, the animated logo, social posts, flyers, brochures, price lists and every material for the centres. At the heart of it is the **brand identity manual**, 116 pages in four chapters.
+  During my time at **Pixell** I worked on DCD's communication: the logo restyling, the animated logo, social posts, flyers, brochures, price lists and materials for the centres. At the heart of it is the **brand identity manual**, 116 pages in four chapters.
 
   - **Logo**: geometric construction, clear space, sizes, colour and single-colour versions, social version, palette, typefaces and treatment logos.
   - **Brand identity**: letterhead, business cards, envelopes, email signature, shopper, product packaging, client cards, food diaries, price lists and treatment-room materials.
   - **Advertising**: templates for posts, billboards, in-store screens, front-desk materials and brochures.
   - **Store design**: reception, waiting room, treatment rooms, signs, plaques, window graphics, mats and uniforms.
 coordinamento: |
-  Ho lavorato al progetto dentro **Pixell**, l'agenzia di comunicazione di DCD, occupandomi di tutta la comunicazione del brand: dal brand manual al video animato, dai social ai volantini. Per il restyling dei punti vendita ho lavorato insieme allo Studio Loft Canova di Roma.
+  Ho collaborato alla comunicazione di DCD durante il mio periodo lavorativo in **Pixell**, l'agenzia che segue il brand: dal brand manual al video animato, dai social ai volantini. Per il restyling dei punti vendita ho lavorato insieme allo Studio Loft Canova di Roma.
 coordinamento_en: |
-  I worked on the project at **Pixell**, DCD's communication agency, handling all of the brand's communication: from the brand manual to the animated video, from social media to flyers. For the store restyling I worked alongside Studio Loft Canova in Rome.
+  I worked on DCD's communication during my time at **Pixell**, the agency behind the brand: from the brand manual to the animated video, from social media to flyers. For the store restyling I worked alongside Studio Loft Canova in Rome.
 galleria:
   - type: "sezione"
     titolo: "Il marchio"
@@ -182,11 +182,11 @@ strumenti:
   - Photoshop
   - After Effects
 crediti: |
-  Comunicazione, brand identity manual, video, social e stampati: Emanuele Calfa  
+  Brand identity manual, video, social e stampati: Emanuele Calfa, in collaborazione con Pixell  
   Agenzia: Pixell  
   Restyling dei punti vendita con lo Studio Loft Canova
 crediti_en: |
-  Communication, brand identity manual, video, social and print: Emanuele Calfa  
+  Brand identity manual, video, social and print: Emanuele Calfa, in collaboration with Pixell  
   Agency: Pixell  
   Store restyling with Studio Loft Canova
 ordine: 2
