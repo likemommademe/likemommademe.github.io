@@ -11,8 +11,8 @@ copertina: /assets/uploads/etica-sito-home.webp
 link: https://www.eticasrl.net/
 link_testo: Vai al sito di Etic.a
 link_testo_en: Visit the Etic.a website
-sottotitolo: Il sito, il nuovo marchio e tutta la comunicazione di un'azienda di etichette
-sottotitolo_en: The website, the new logo and all the communication for a label maker
+sottotitolo: Il sito, il nuovo marchio e la comunicazione di un'azienda di etichette
+sottotitolo_en: The website, the new logo and the communication for a label maker
 domanda: Dress your brand.
 domanda_en: Dress your brand.
 body_en: Etic.a has been printing labels for food, beverage, cosmetics, pharma, home care and automotive since 2009. It needed a new identity and a website able to show off its techniques, sectors and projects, and to turn visits into enquiries.
@@ -29,13 +29,13 @@ concept_en: |-
 
   The website grows from the same idea: the logo's green and black, large photos of the print work and a clear path for anyone looking for the right label, by sector, by printing technique, by project. There's also a **virtual tour** to visit the company.
 execution: |-
-  Del sito mi sono occupato dall'inizio alla fine: struttura, **wireframe** e **design** di tutte le pagine, desktop e mobile, dalla home alle interne di lavorazioni, etichette, portfolio, news, sostenibilità e lavora con noi. Poi l'ho passato al **reparto IT** per lo sviluppo.
+  Il progetto è di **Pixell**, e io facevo parte del team. Sul sito ho lavorato a struttura, **wireframe** e **design** delle pagine, desktop e mobile, dalla home alle interne di lavorazioni, etichette, portfolio, news, sostenibilità e lavora con noi. Poi il **reparto IT** lo ha sviluppato.
 
-  Intorno al sito, tutta la comunicazione: il **brand manual** del nuovo marchio, il **logo animato**, gli **stand** per le fiere (Cosmopack, Ipack Ima, Marca), i pannelli, i **post social**, le firme mail e i banner, il pieghevole, la cartellina, il campionario e l'immagine coordinata.
+  Intorno al sito, la comunicazione a cui ho collaborato con il team: il **brand manual** del nuovo marchio, il **logo animato**, gli **stand** per le fiere (Cosmopack, Ipack Ima, Marca), i pannelli, i **post social**, le firme mail e i banner, il pieghevole, la cartellina, il campionario e l'immagine coordinata.
 execution_en: |-
-  I handled the website from start to finish: structure, **wireframes** and **design** for every page, desktop and mobile, from the homepage to the pages on printing techniques, labels, portfolio, news, sustainability and careers. Then I handed it to the **IT department** for development.
+  The project belongs to **Pixell**, and I was part of the team. On the website I worked on structure, **wireframes** and **design** for the pages, desktop and mobile, from the homepage to the pages on printing techniques, labels, portfolio, news, sustainability and careers. Then the **IT department** built it.
 
-  Around the website, all the communication: the **brand manual** for the new logo, the **animated logo**, trade fair **stands** (Cosmopack, Ipack Ima, Marca), panels, **social posts**, email signatures and banners, the leaflet, the folder, the sample book and the brand identity.
+  Around the website, the communication I worked on with the team: the **brand manual** for the new logo, the **animated logo**, trade fair **stands** (Cosmopack, Ipack Ima, Marca), panels, **social posts**, email signatures and banners, the leaflet, the folder, the sample book and the brand identity.
 galleria:
   - type: sezione
     titolo: Il sito
@@ -84,8 +84,8 @@ galleria:
   - type: sezione
     titolo: Wireframe e design
     titolo_en: Wireframes and design
-    testo: Le tavole che ho disegnato prima di passarle al reparto IT.
-    testo_en: The boards I designed before handing them to the IT department.
+    testo: Le tavole di wireframe e design, prima del passaggio al reparto IT.
+    testo_en: The wireframe and design boards, before they went to the IT department.
   - type: foto
     immagine: /assets/uploads/etica-design-home.webp
     titolo: La home
@@ -169,13 +169,15 @@ galleria:
     titolo_en: The carousel
     didascalia: Blog, progetti, day routine e welcome on board, uno accanto all'altro.
     didascalia_en: Blog, projects, day routine and welcome on board, side by side.
-coordinamento: Ho lavorato al progetto dentro **Pixell** ([qui la pagina del progetto sul loro sito](https://www.pixell.it/progetti/etic-a/)), insieme al team dei grafici, seguendo tutta la comunicazione di Etic.a. Per il sito ho curato wireframe e design, poi ho passato i file al reparto IT che lo ha sviluppato.
-coordinamento_en: I worked on the project at **Pixell** ([the project on their website](https://www.pixell.it/progetti/etic-a/)), together with the design team, handling all of Etic.a's communication. For the website I took care of wireframes and design, then handed the files to the IT department, who built it.
+coordinamento: Il progetto è dell'agenzia **Pixell** ([qui la pagina del progetto sul loro sito](https://www.pixell.it/progetti/etic-a/)): io ho collaborato con il team dei grafici alla comunicazione di Etic.a durante il mio periodo lavorativo lì. Per il sito ho lavorato a wireframe e design, poi il reparto IT lo ha sviluppato.
+coordinamento_en: The project belongs to the **Pixell** agency ([the project on their website](https://www.pixell.it/progetti/etic-a/)): I worked with the design team on Etic.a's communication during my time there. For the website I worked on wireframes and design, then the IT department built it.
 crediti: |-
-  Wireframe, design del sito e comunicazione: Emanuele Calfa, con il team grafico di Pixell  
+  Agenzia: Pixell  
+  Wireframe, design del sito e comunicazione: team grafico di Pixell, con Emanuele Calfa  
   Sviluppo: reparto IT
 crediti_en: |-
-  Wireframes, web design and communication: Emanuele Calfa, with the Pixell design team  
+  Agency: Pixell  
+  Wireframes, web design and communication: Pixell design team, with Emanuele Calfa  
   Development: IT department
 strumenti:
   - Sketch
